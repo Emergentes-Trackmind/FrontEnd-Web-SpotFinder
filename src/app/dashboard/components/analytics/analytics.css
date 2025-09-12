@@ -1,0 +1,12 @@
+.analytics-cards {
+  max-width: 800px;
+  max-height: 4000px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.analytics-cards mat-card {
+  flex: 1;
+  text-align: center;
+}
