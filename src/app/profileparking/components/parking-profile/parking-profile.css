@@ -1,0 +1,290 @@
+/* Tokens de color locales */
+:host {
+  --card: #FFFFFF;
+  --bg: #F9FAFB;
+  --border: #E5E7EB;
+  --text: #111827;
+  --muted: #6B7280;
+  --primary: #6D5AE6;
+  --accent: #F59E0B;
+  --accent-hover: #D97706;
+  --success: #16A34A;
+  --danger: #EF4444;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.03);
+}
+
+.parking-profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+/* Header del parking */
+.parking-header {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.parking-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex: 1;
+}
+
+.parking-image {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.parking-image img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.parking-type {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--muted);
+  color: white;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.parking-details h2 {
+  margin: 0 0 8px 0;
+  color: var(--text);
+  font-size: 24px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.active-badge {
+  background: var(--success);
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+/* Status badges dinámicos */
+.status-badge {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.status-activo {
+  background-color: #ECFDF5;
+  color: var(--success);
+  border: 1px solid #D1FAE5;
+}
+
+.status-mantenimiento {
+  background-color: #FFFBEB;
+  color: #F59E0B;
+  border: 1px solid #FED7AA;
+}
+
+.status-inactivo {
+  background-color: #FEF2F2;
+  color: #EF4444;
+  border: 1px solid #FECACA;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  margin: 12px 0;
+  font-size: 14px;
+}
+
+.location mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 14px;
+}
+
+.rating, .availability {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted);
+}
+
+.rating mat-icon {
+  color: #FFC107;
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.availability mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+/* Header Actions (Analytics Button) */
+.header-actions {
+  margin-left: 20px;
+}
+
+.analytics-btn {
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 12px 20px;
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+}
+
+.analytics-btn:hover {
+  background-color: rgba(109, 90, 230, 0.04);
+}
+
+.analytics-btn mat-icon {
+  margin-right: 8px;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+/* Tabs con estilo píldora morado */
+.profile-tabs {
+  background: transparent;
+  margin-bottom: 0;
+}
+
+:host ::ng-deep .profile-tabs .mat-mdc-tab-group {
+  background: transparent;
+}
+
+:host ::ng-deep .profile-tabs .mat-mdc-tab-header {
+  background: transparent;
+  border: none;
+  padding: 0 0 20px 0;
+  margin-bottom: 0;
+}
+
+:host ::ng-deep .profile-tabs .mat-mdc-tab-header-pagination {
+  display: none;
+}
+
+:host ::ng-deep .profile-tabs .mat-mdc-tab-labels {
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+}
+
+:host ::ng-deep .profile-tabs .mat-mdc-tab {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 25px;
+  padding: 10px 24px;
+  margin: 0;
+  min-width: auto;
+  min-height: 40px;
+  opacity: 1;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+:host ::ng-deep .profile-tabs .mat-mdc-tab:hover {
+  background: rgba(109, 90, 230, 0.05);
+  border-color: var(--primary);
+}
+
+:host ::ng-deep .profile-tabs .mat-mdc-tab.mdc-tab--active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(109, 90, 230, 0.3);
+}
+
+:host ::ng-deep .profile-tabs .mat-mdc-tab-ripple {
+  display: none;
+}
+
+:host ::ng-deep .profile-tabs .mat-ink-bar {
+  display: none;
+}
+
+:host ::ng-deep .profile-tabs .mat-mdc-tab-body-wrapper {
+  padding: 20px 0 0 0;
+}
+
+:host ::ng-deep .profile-tabs .mat-mdc-tab-body {
+  overflow: visible;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .parking-profile-container {
+    padding: 16px;
+  }
+
+  .parking-header {
+    padding: 20px;
+    margin-bottom: 24px;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .parking-info {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .header-actions {
+    margin-left: 0;
+    align-self: stretch;
+  }
+
+  :host ::ng-deep .profile-tabs .mat-mdc-tab-labels {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  :host ::ng-deep .profile-tabs .mat-mdc-tab {
+    padding: 8px 16px;
+    min-height: 36px;
+  }
+}

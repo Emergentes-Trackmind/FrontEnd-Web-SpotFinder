@@ -1,0 +1,66 @@
+<div class="parking-profile-container">
+  <!-- Header del parking seleccionado -->
+  <div *ngIf="selectedProfile" class="header-section">
+    <mat-card class="parking-header">
+      <div class="parking-info">
+        <div class="parking-image">
+          <img [src]="'assets/parking-centro.jpg'" alt="{{ selectedProfile.name }}" />
+          <span class="parking-type">{{ selectedProfile.type }}</span>
+        </div>
+        <div class="parking-details">
+          <h2>{{ selectedProfile.name }}</h2>
+          <span class="status-badge" [class]="'status-' + selectedProfile.status.toLowerCase()">{{ selectedProfile.status }}</span>
+          <p class="location">
+            <mat-icon>location_on</mat-icon>
+            {{ selectedProfile.description || 'Ubicación no especificada' }}
+          </p>
+          <div class="stats">
+            <span class="rating">
+              <mat-icon>star</mat-icon>
+              4.5 (128 reseñas)
+            </span>
+            <span class="availability">
+              <mat-icon>local_parking</mat-icon>
+              {{ selectedProfile.totalSpaces }} plazas totales
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analytics Button -->
+      <div class="header-actions">
+        <button
+          mat-stroked-button
+          color="primary"
+          class="analytics-btn"
+          [routerLink]="['/parkings', selectedProfileId, 'analytics']">
+          <mat-icon>analytics</mat-icon>
+          Ver Analytics
+        </button>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Tabs de navegación -->
+  <mat-tab-group
+    class="profile-tabs"
+    (selectedTabChange)="onTabChanged($event.index)"
+    [selectedIndex]="selectedTabIndex">
+
+    <mat-tab label="Información">
+      <app-basic-info-tab [profileId]="selectedProfileId"></app-basic-info-tab>
+    </mat-tab>
+
+    <mat-tab label="Ubicación">
+      <app-location-tab [profileId]="selectedProfileId"></app-location-tab>
+    </mat-tab>
+
+    <mat-tab label="Precios">
+      <app-pricing-tab [profileId]="selectedProfileId"></app-pricing-tab>
+    </mat-tab>
+
+    <mat-tab label="Características">
+      <app-features-tab [profileId]="selectedProfileId"></app-features-tab>
+    </mat-tab>
+  </mat-tab-group>
+</div>

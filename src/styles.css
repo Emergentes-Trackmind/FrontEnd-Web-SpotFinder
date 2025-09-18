@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+/* Tema preconstruido de Angular Material */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import 'leaflet/dist/leaflet.css';
+
+/* Variables CSS globales */
+:root {
+  --app-bg: #F9FAFB;
+  --app-text: #111827;
+  --app-muted: #6B7280;
+  --app-border: #E5E7EB;
+  --primary-color: #6366f1;
+  --secondary-color: #f59e0b;
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* Estilos base */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--app-bg);
+  color: var(--app-text);
+  font-family: 'Roboto', sans-serif;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}

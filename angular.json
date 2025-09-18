@@ -88,5 +88,13 @@
         }
       }
     }
+  },
+  "schematics": {
+    "@angular/angular:application": {
+      "stylesheet": "tailwind"
+    }
+  },
+  "cli": {
+    "analytics": "04517eba-c1b4-46e7-87fb-097b4c2dc249"
   }
 }

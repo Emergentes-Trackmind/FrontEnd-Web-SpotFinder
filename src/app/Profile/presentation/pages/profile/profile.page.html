@@ -1,0 +1,363 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="header-content">
+      <div class="avatar-section">
+        <div class="avatar-placeholder">
+          <mat-icon>account_circle</mat-icon>
+        </div>
+        <div class="user-info">
+          <h1>Mi Perfil</h1>
+          <p>Gestiona tu información personal y preferencias</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-content">
+    <mat-card class="profile-card">
+      <mat-tab-group class="profile-tabs" animationDuration="300ms">
+        <!-- Datos Personales -->
+        <mat-tab label="Datos Personales">
+          <div class="tab-content">
+            <form [formGroup]="personalDataForm" (ngSubmit)="onSavePersonalData()" class="profile-form">
+              <div class="section-header">
+                <h3>Información Personal</h3>
+                <p>Actualiza tu información básica</p>
+              </div>
+
+              <div class="form-grid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Nombre</mat-label>
+                  <input matInput formControlName="firstName" placeholder="Tu nombre">
+                  <mat-icon matSuffix>person</mat-icon>
+                  <mat-error>{{ getFieldError(personalDataForm, 'firstName') }}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Apellido</mat-label>
+                  <input matInput formControlName="lastName" placeholder="Tu apellido">
+                  <mat-icon matSuffix>person_outline</mat-icon>
+                  <mat-error>{{ getFieldError(personalDataForm, 'lastName') }}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Email</mat-label>
+                  <input matInput type="email" [value]="profile()?.email" disabled>
+                  <mat-icon matSuffix>email</mat-icon>
+                  <mat-hint>El email no se puede modificar</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Teléfono</mat-label>
+                  <input matInput type="tel" formControlName="phone" placeholder="+52 55 1234 5678">
+                  <mat-icon matSuffix>phone</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Biografía</mat-label>
+                  <textarea
+                    matInput
+                    formControlName="bio"
+                    rows="3"
+                    placeholder="Cuéntanos algo sobre ti..."
+                  ></textarea>
+                  <mat-icon matSuffix>edit_note</mat-icon>
+                  <mat-hint>{{ (personalDataForm.get('bio')?.value?.length || 0) }}/500 caracteres</mat-hint>
+                  <mat-error>{{ getFieldError(personalDataForm, 'bio') }}</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-actions">
+                <button
+                  mat-raised-button
+                  type="submit"
+                  class="primary-button"
+                  [disabled]="personalDataForm.invalid || isLoading()"
+                >
+                  @if (isLoading()) {
+                    <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+                    Guardando...
+                  } @else {
+                    Guardar Cambios
+                  }
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+
+        <!-- Preferencias -->
+        <mat-tab label="Preferencias">
+          <div class="tab-content">
+            <form [formGroup]="preferencesForm" (ngSubmit)="onSavePreferences()" class="profile-form">
+              <div class="section-header">
+                <h3>Configuración General</h3>
+                <p>Personaliza tu experiencia en la aplicación</p>
+              </div>
+
+              <div class="form-grid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Idioma</mat-label>
+                  <mat-select formControlName="language">
+                    @for (lang of languages; track lang.value) {
+                      <mat-option [value]="lang.value">{{ lang.label }}</mat-option>
+                    }
+                  </mat-select>
+                  <mat-icon matSuffix>language</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Zona Horaria</mat-label>
+                  <mat-select formControlName="timezone">
+                    @for (tz of timezones; track tz.value) {
+                      <mat-option [value]="tz.value">{{ tz.label }}</mat-option>
+                    }
+                  </mat-select>
+                  <mat-icon matSuffix>schedule</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Formato de Fecha</mat-label>
+                  <mat-select formControlName="dateFormat">
+                    @for (format of dateFormats; track format.value) {
+                      <mat-option [value]="format.value">{{ format.label }}</mat-option>
+                    }
+                  </mat-select>
+                  <mat-icon matSuffix>calendar_today</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Tema</mat-label>
+                  <mat-select formControlName="theme">
+                    @for (theme of themes; track theme.value) {
+                      <mat-option [value]="theme.value">{{ theme.label }}</mat-option>
+                    }
+                  </mat-select>
+                  <mat-icon matSuffix>palette</mat-icon>
+                </mat-form-field>
+              </div>
+
+              <div class="section-header">
+                <h3>Notificaciones</h3>
+                <p>Controla qué notificaciones deseas recibir</p>
+              </div>
+
+              <div class="notifications-grid" formGroupName="notifications">
+                <div class="notification-item">
+                  <mat-slide-toggle formControlName="email">
+                    <span class="toggle-label">
+                      <mat-icon>email</mat-icon>
+                      Email
+                    </span>
+                  </mat-slide-toggle>
+                  <span class="toggle-description">Recibir notificaciones por correo</span>
+                </div>
+
+                <div class="notification-item">
+                  <mat-slide-toggle formControlName="push">
+                    <span class="toggle-label">
+                      <mat-icon>notifications</mat-icon>
+                      Push
+                    </span>
+                  </mat-slide-toggle>
+                  <span class="toggle-description">Notificaciones push en el navegador</span>
+                </div>
+
+                <div class="notification-item">
+                  <mat-slide-toggle formControlName="sms">
+                    <span class="toggle-label">
+                      <mat-icon>sms</mat-icon>
+                      SMS
+                    </span>
+                  </mat-slide-toggle>
+                  <span class="toggle-description">Recibir mensajes de texto</span>
+                </div>
+
+                <div class="notification-item">
+                  <mat-slide-toggle formControlName="parkingAlerts">
+                    <span class="toggle-label">
+                      <mat-icon>local_parking</mat-icon>
+                      Alertas de Parking
+                    </span>
+                  </mat-slide-toggle>
+                  <span class="toggle-description">Notificaciones sobre tus parkings</span>
+                </div>
+
+                <div class="notification-item">
+                  <mat-slide-toggle formControlName="systemUpdates">
+                    <span class="toggle-label">
+                      <mat-icon>system_update</mat-icon>
+                      Actualizaciones del Sistema
+                    </span>
+                  </mat-slide-toggle>
+                  <span class="toggle-description">Información sobre nuevas funciones</span>
+                </div>
+
+                <div class="notification-item">
+                  <mat-slide-toggle formControlName="marketing">
+                    <span class="toggle-label">
+                      <mat-icon>campaign</mat-icon>
+                      Marketing
+                    </span>
+                  </mat-slide-toggle>
+                  <span class="toggle-description">Ofertas y promociones especiales</span>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button
+                  mat-raised-button
+                  type="submit"
+                  class="primary-button"
+                  [disabled]="preferencesForm.invalid || isLoading()"
+                >
+                  @if (isLoading()) {
+                    <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+                    Guardando...
+                  } @else {
+                    Guardar Preferencias
+                  }
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+
+        <!-- Seguridad -->
+        <mat-tab label="Seguridad">
+          <div class="tab-content">
+            <div class="section-header">
+              <h3>Configuración de Seguridad</h3>
+              <p>Protege tu cuenta con configuraciones de seguridad</p>
+            </div>
+
+            <div class="security-options">
+              <mat-card class="security-card">
+                <mat-card-content>
+                  <div class="security-item">
+                    <div class="security-icon">
+                      <mat-icon>lock</mat-icon>
+                    </div>
+                    <div class="security-info">
+                      <h4>Cambiar Contraseña</h4>
+                      <p>Actualiza tu contraseña para mantener tu cuenta segura</p>
+                    </div>
+                    <button mat-stroked-button class="secondary-button">
+                      Cambiar
+                    </button>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="security-card">
+                <mat-card-content>
+                  <div class="security-item">
+                    <div class="security-icon">
+                      <mat-icon>security</mat-icon>
+                    </div>
+                    <div class="security-info">
+                      <h4>Autenticación de Dos Factores</h4>
+                      <p>Agrega una capa extra de seguridad a tu cuenta</p>
+                    </div>
+                    <button mat-stroked-button class="secondary-button">
+                      Configurar
+                    </button>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- Sesiones Activas -->
+        <mat-tab label="Sesiones Activas">
+          <div class="tab-content">
+            <div class="section-header">
+              <h3>Dispositivos Conectados</h3>
+              <p>Revisa y gestiona los dispositivos donde has iniciado sesión</p>
+            </div>
+
+            <div class="sessions-list">
+              @for (session of activeSessions(); track session.id) {
+                <mat-card class="session-card">
+                  <mat-card-content>
+                    <div class="session-item">
+                      <div class="session-icon">
+                        <mat-icon>{{ session.device.includes('iPhone') ? 'smartphone' : 'computer' }}</mat-icon>
+                      </div>
+                      <div class="session-info">
+                        <h4>
+                          {{ session.device }}
+                          @if (session.current) {
+                            <span class="current-session">Esta sesión</span>
+                          }
+                        </h4>
+                        <p>{{ session.location }}</p>
+                        <span class="session-time">Última actividad: {{ session.lastActivity | date:'short' }}</span>
+                      </div>
+                      @if (!session.current) {
+                        <button
+                          mat-stroked-button
+                          class="danger-button"
+                          (click)="onCloseSession(session.id)"
+                        >
+                          Cerrar Sesión
+                        </button>
+                      }
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              }
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- Acciones de Cuenta -->
+        <mat-tab label="Mi Cuenta">
+          <div class="tab-content">
+            <div class="section-header">
+              <h3>Acciones de Cuenta</h3>
+              <p>Opciones avanzadas para gestionar tu cuenta</p>
+            </div>
+
+            <div class="account-actions">
+              <mat-card class="action-card">
+                <mat-card-content>
+                  <div class="action-item">
+                    <div class="action-icon">
+                      <mat-icon>download</mat-icon>
+                    </div>
+                    <div class="action-info">
+                      <h4>Descargar Mis Datos</h4>
+                      <p>Obtén una copia de toda tu información personal</p>
+                    </div>
+                    <button mat-stroked-button class="secondary-button">
+                      Descargar
+                    </button>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="action-card warning">
+                <mat-card-content>
+                  <div class="action-item">
+                    <div class="action-icon">
+                      <mat-icon>delete_forever</mat-icon>
+                    </div>
+                    <div class="action-info">
+                      <h4>Eliminar Cuenta</h4>
+                      <p>Elimina permanentemente tu cuenta y todos tus datos</p>
+                    </div>
+                    <button mat-stroked-button class="danger-button">
+                      Eliminar
+                    </button>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</div>

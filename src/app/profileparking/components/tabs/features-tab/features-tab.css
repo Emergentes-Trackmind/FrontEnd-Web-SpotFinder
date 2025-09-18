@@ -1,0 +1,146 @@
+/* ======= Tokens de color locales del componente ======= */
+:host {
+  --card: #FFFFFF;
+  --bg: #F9FAFB;
+  --border: #E5E7EB;
+  --text: #111827;
+  --muted: #6B7280;
+  --primary: #6D5AE6;
+  --accent: #F59E0B;
+  --accent-hover: #D97706;
+  --danger: #EF4444;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.03);
+}
+
+/* ======= Grid principal de características ======= */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px; /* Aumentar el gap */
+  margin-bottom: 32px; /* Más margen inferior */
+}
+
+/* ======= Card ======= */
+mat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+  min-height: 280px; /* Altura mínima consistente */
+}
+
+/* ======= Título ======= */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Más espacio entre icono y texto */
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 24px 0; /* Más margen inferior */
+}
+
+.section-title mat-icon {
+  font-size: 22px; /* Iconos más grandes */
+  height: 22px;
+  width: 22px;
+  color: var(--primary);
+}
+
+/* ======= Lista de características ======= */
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Más espacio entre elementos */
+}
+
+/* ======= Angular Material checkboxes overrides ======= */
+:host ::ng-deep .mat-mdc-checkbox {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+:host ::ng-deep .mat-mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+:host ::ng-deep .mat-mdc-checkbox .mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+:host ::ng-deep .mat-mdc-checkbox .mdc-form-field {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+:host ::ng-deep .mat-mdc-checkbox:hover .mdc-checkbox__native-control:not(:checked)~.mdc-checkbox__background {
+  border-color: var(--primary);
+}
+
+/* Mejorar la alineación de los checkboxes */
+:host ::ng-deep .mat-mdc-checkbox .mdc-checkbox {
+  margin-right: 12px; /* Más espacio entre checkbox y texto */
+}
+
+/* ======= Botón principal ======= */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px; /* Más espacio superior */
+  padding-top: 24px;
+  border-top: 1px solid var(--border); /* Separador visual */
+}
+
+.brand-button {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-radius: 10px !important;
+  padding: 12px 28px !important; /* Más padding */
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  box-shadow: var(--shadow);
+  transition: all .2s ease;
+  border: none !important;
+  min-height: 44px; /* Altura mínima */
+}
+
+.brand-button:hover {
+  background: var(--accent-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.brand-button:active {
+  transform: translateY(0);
+}
+
+/* ======= Responsive ======= */
+@media (max-width: 768px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  mat-card {
+    padding: 20px;
+    min-height: auto;
+  }
+
+  .section-title {
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+
+  .features-list {
+    gap: 14px;
+  }
+
+  .actions {
+    margin-top: 24px;
+    padding-top: 20px;
+  }
+}

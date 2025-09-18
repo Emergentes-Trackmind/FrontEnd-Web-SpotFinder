@@ -1,0 +1,216 @@
+/* ======= Tokens de color locales del componente ======= */
+:host {
+  --card: #FFFFFF;
+  --bg: #F9FAFB;
+  --border: #E5E7EB;
+  --text: #111827;
+  --muted: #6B7280;
+  --primary: #6D5AE6;
+  --accent: #F59E0B;
+  --accent-hover: #D97706;
+  --danger: #EF4444;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.03);
+}
+
+/* ======= Card ======= */
+mat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+/* ======= Título ======= */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+}
+
+.section-title mat-icon {
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+  color: var(--primary);
+}
+
+/* ======= Grid del formulario ======= */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px 22px;
+}
+
+/* ======= Toggle section ======= */
+.toggle-section {
+  margin-bottom: 24px;
+}
+
+/* ======= Días de funcionamiento ======= */
+.days-section {
+  margin-top: 20px;
+}
+
+.days-section h4 {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px 16px;
+}
+
+/* ======= Lista de promociones ======= */
+.promotions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.promotion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.promotion-item:last-child {
+  border-bottom: none;
+}
+
+.promotion-content h4 {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.promotion-content p {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+/* ======= Angular Material overrides ======= */
+:host ::ng-deep .mat-mdc-form-field {
+  width: 100%;
+}
+
+:host ::ng-deep .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  border-radius: 10px !important;
+  background: #fff;
+}
+
+:host ::ng-deep .mat-mdc-form-field .mdc-notched-outline {
+  border-color: var(--border);
+}
+
+:host ::ng-deep .mat-mdc-form-field .mdc-notched-outline .mdc-notched-outline__leading,
+:host ::ng-deep .mat-mdc-form-field .mdc-notched-outline .mdc-notched-outline__notch,
+:host ::ng-deep .mat-mdc-form-field .mdc-notched-outline .mdc-notched-outline__trailing {
+  border-radius: 10px;
+  border-color: var(--border);
+}
+
+:host ::ng-deep .mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-notched-outline--focused .mdc-notched-outline__leading,
+:host ::ng-deep .mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-notched-outline--focused .mdc-notched-outline__notch,
+:host ::ng-deep .mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-notched-outline--focused .mdc-notched-outline__trailing {
+  border-color: var(--primary) !important;
+  border-width: 2px;
+}
+
+:host ::ng-deep .mat-mdc-form-field .mat-mdc-floating-label {
+  color: #374151;
+}
+
+:host ::ng-deep .mat-mdc-form-field .mat-mdc-floating-label.mdc-floating-label--float-above {
+  color: var(--primary);
+}
+
+/* ======= Checkboxes y toggles ======= */
+:host ::ng-deep .mat-mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+:host ::ng-deep .mat-mdc-slide-toggle .mdc-switch--selected .mdc-switch__track {
+  background-color: var(--primary);
+}
+
+:host ::ng-deep .mat-mdc-slide-toggle .mdc-switch--selected .mdc-switch__handle::after {
+  background-color: var(--primary);
+}
+
+/* ======= Mensajes de error ======= */
+mat-error {
+  font-size: 12px;
+  color: var(--danger);
+  margin-top: 4px;
+}
+
+/* ======= Botón principal ======= */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.brand-button {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-radius: 10px !important;
+  padding: 10px 22px !important;
+  font-weight: 600 !important;
+  box-shadow: var(--shadow);
+  transition: all .2s ease;
+  border: none !important;
+}
+
+.brand-button:hover {
+  background: var(--accent-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,.12);
+}
+
+.brand-button:active {
+  transform: translateY(0);
+}
+
+/* ======= Responsive ======= */
+@media (max-width: 768px) {
+  mat-card {
+    padding: 16px;
+  }
+
+  .section-title {
+    font-size: 15px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .days-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .promotion-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

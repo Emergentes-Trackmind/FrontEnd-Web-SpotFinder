@@ -1,0 +1,190 @@
+<div class="sidebar-container" [class.mobile]="isMobile()" [class.collapsed]="isCollapsed()">
+  <mat-sidenav-container class="sidenav-container">
+    <!-- Sidebar Navigation -->
+    <mat-sidenav
+      #sidenav
+      class="sidebar"
+      [mode]="isMobile() ? 'over' : 'side'"
+      [opened]="isOpen()"
+      [fixedInViewport]="isMobile()"
+      [fixedTopGap]="0"
+      [fixedBottomGap]="0"
+    >
+      <div class="sidebar-content">
+        <!-- Header del Sidebar -->
+        <div class="sidebar-header">
+          <div class="logo-section" [class.collapsed]="isCollapsed()">
+            <div class="logo-icon">
+              <mat-icon>local_parking</mat-icon>
+            </div>
+            @if (!isCollapsed()) {
+              <div class="logo-text">
+                <h1>QuadrApp</h1>
+                <p>Gestión de Parkings</p>
+              </div>
+            }
+          </div>
+
+          <!-- Botón de colapsar (solo desktop) -->
+          @if (!isMobile()) {
+            <button
+              mat-icon-button
+              class="collapse-btn"
+              (click)="toggleSidebar()"
+              [matTooltip]="isCollapsed() ? 'Expandir sidebar' : 'Colapsar sidebar'"
+            >
+              <mat-icon>{{ isCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+            </button>
+          }
+        </div>
+
+        <!-- Información del Usuario -->
+        @if (isAuthenticated()) {
+          <div class="user-info" [class.collapsed]="isCollapsed()">
+            <div class="user-avatar">
+              <div class="avatar-circle">
+                <span class="avatar-initials">{{ getUserInitials() }}</span>
+              </div>
+              @if (!isCollapsed()) {
+                <div class="user-status-indicator"></div>
+              }
+            </div>
+            @if (!isCollapsed()) {
+              <div class="user-details">
+                <h3>{{ getUserFullName() }}</h3>
+                <p>{{ user()?.email }}</p>
+                <span class="user-role">{{ user()?.roles?.[0] || 'user' }}</span>
+              </div>
+            }
+          </div>
+        }
+
+        <mat-divider></mat-divider>
+
+        <!-- Navegación Principal -->
+        <div class="navigation-section">
+          @if (!isCollapsed()) {
+            <h4 class="section-title">Navegación</h4>
+          }
+
+          <mat-nav-list class="nav-list">
+            @for (item of navigationItems; track item.id) {
+              <mat-list-item
+                class="nav-item"
+                [class.coming-soon]="item.comingSoon"
+                [class.disabled]="item.disabled"
+                (click)="onItemClick(item)"
+                [matTooltip]="isCollapsed() ? item.label : (item.comingSoon ? 'Próximamente' : '')"
+                matTooltipPosition="right"
+              >
+                <mat-icon matListItemIcon [class.coming-soon-icon]="item.comingSoon">
+                  {{ item.icon }}
+                </mat-icon>
+
+                @if (!isCollapsed()) {
+                  <span matListItemTitle>{{ item.label }}</span>
+
+                  @if (item.badge && item.badge > 0) {
+                    <span matListItemMeta class="nav-badge" [matBadge]="item.badge" matBadgeColor="accent">
+                    </span>
+                  }
+
+                  @if (item.comingSoon) {
+                    <span matListItemMeta class="coming-soon-label">Próximamente</span>
+                  }
+                }
+              </mat-list-item>
+            }
+          </mat-nav-list>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Sección de Configuración -->
+        <div class="config-section">
+          @if (!isCollapsed()) {
+            <h4 class="section-title">Configuración</h4>
+          }
+
+          <mat-nav-list class="nav-list">
+            @for (item of configItems; track item.id) {
+              <mat-list-item
+                class="nav-item"
+                [class.coming-soon]="item.comingSoon"
+                [class.disabled]="item.disabled"
+                (click)="onItemClick(item)"
+                [matTooltip]="isCollapsed() ? item.label : (item.comingSoon ? 'Próximamente' : '')"
+                matTooltipPosition="right"
+              >
+                <mat-icon matListItemIcon [class.coming-soon-icon]="item.comingSoon">
+                  {{ item.icon }}
+                </mat-icon>
+
+                @if (!isCollapsed()) {
+                  <span matListItemTitle>{{ item.label }}</span>
+
+                  @if (item.comingSoon) {
+                    <span matListItemMeta class="coming-soon-label">Próximamente</span>
+                  }
+                }
+              </mat-list-item>
+            }
+          </mat-nav-list>
+        </div>
+
+        <!-- Botón de Logout -->
+        <div class="logout-section">
+          <mat-divider></mat-divider>
+
+          <button
+            mat-list-item
+            class="logout-btn"
+            (click)="onLogout()"
+            [matTooltip]="isCollapsed() ? 'Cerrar Sesión' : ''"
+            matTooltipPosition="right"
+          >
+            <mat-icon matListItemIcon class="logout-icon">logout</mat-icon>
+            @if (!isCollapsed()) {
+              <span matListItemTitle>Cerrar Sesión</span>
+            }
+          </button>
+        </div>
+      </div>
+    </mat-sidenav>
+
+    <!-- Contenido Principal -->
+    <mat-sidenav-content class="main-content">
+      <!-- Header móvil -->
+      @if (isMobile()) {
+        <mat-toolbar class="mobile-toolbar">
+          <button
+            mat-icon-button
+            (click)="toggleSidebar()"
+            aria-label="Toggle sidenav"
+          >
+            <mat-icon>menu</mat-icon>
+          </button>
+
+          <div class="mobile-logo">
+            <mat-icon class="mobile-logo-icon">local_parking</mat-icon>
+            <span class="mobile-logo-text">QuadrApp</span>
+          </div>
+
+          @if (isAuthenticated()) {
+            <div class="mobile-user">
+              <div class="mobile-avatar">
+                <span>{{ getUserInitials() }}</span>
+              </div>
+            </div>
+          }
+        </mat-toolbar>
+      }
+
+      <!-- Contenido de la aplicación -->
+      <div class="content-wrapper" [class.collapsed]="isCollapsed() && !isMobile()">
+        <ng-content></ng-content>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+

@@ -1,0 +1,270 @@
+/* ======= Tokens de color locales del componente ======= */
+:host {
+  --card: #FFFFFF;
+  --bg: #F9FAFB;
+  --border: #E5E7EB;
+  --text: #111827;
+  --muted: #6B7280;
+  --primary: #6D5AE6;
+  --accent: #F59E0B;
+  --accent-hover: #D97706;
+  --success: #16A34A;
+  --danger: #EF4444;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.03);
+}
+
+/* ======= Grid de KPIs superiores ======= */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.kpi-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+  min-height: 140px;
+}
+
+.kpi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.kpi-title {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.kpi-icon {
+  font-size: 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  color: var(--primary);
+}
+
+.kpi-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+
+.kpi-change {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.change-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.change-badge.positive {
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--success);
+}
+
+.change-badge.negative {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+}
+
+.change-description {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ======= Cards generales ======= */
+.chart-card,
+.activity-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+/* ======= Título ======= */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 28px 0;
+}
+
+.section-title mat-icon {
+  font-size: 24px !important;
+  height: 24px !important;
+  width: 24px !important;
+  color: var(--primary);
+}
+
+/* ======= Gráfico de ocupación por hora ======= */
+.occupancy-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.occupancy-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 60px;
+  align-items: center;
+  gap: 20px;
+}
+
+.hour-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: right;
+}
+
+.progress-container {
+  position: relative;
+  height: 10px;
+  background: #f3f4f6;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #f3f4f6;
+  border-radius: 5px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary) 0%, #8b7cf8 100%);
+  border-radius: 5px;
+  transition: width 0.4s ease;
+  box-shadow: 0 1px 3px rgba(109, 90, 230, 0.3);
+}
+
+.percentage-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: right;
+}
+
+/* ======= Lista de actividad reciente ======= */
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.activity-content {
+  flex: 1;
+}
+
+.activity-action {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.activity-details {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.activity-time {
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+  margin-left: 20px;
+  font-weight: 500;
+}
+
+/* ======= Responsive ======= */
+@media (max-width: 1024px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .kpi-card {
+    padding: 20px;
+    min-height: 120px;
+  }
+
+  .kpi-value {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .kpi-card,
+  .chart-card,
+  .activity-card {
+    padding: 20px;
+  }
+
+  .section-title {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .occupancy-row {
+    grid-template-columns: 50px 1fr 50px;
+    gap: 16px;
+  }
+
+  .activity-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 16px 0;
+  }
+
+  .activity-time {
+    margin-left: 0;
+    align-self: flex-end;
+  }
+}

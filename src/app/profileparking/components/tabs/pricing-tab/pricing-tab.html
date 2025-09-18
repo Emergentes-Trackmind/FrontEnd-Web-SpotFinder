@@ -1,0 +1,120 @@
+<!-- Card de Tarifas -->
+<mat-card>
+  <h3 class="section-title">
+    <mat-icon>euro</mat-icon>
+    Tarifas
+  </h3>
+
+  <form [formGroup]="pricingForm" class="form-grid">
+
+    <!-- Tarifa por Hora -->
+    <mat-form-field appearance="outline">
+      <mat-label>Tarifa por Hora (€)</mat-label>
+      <input matInput type="number" formControlName="hourlyRate" placeholder="5">
+      <mat-error *ngIf="pricingForm.get('hourlyRate')?.hasError('required')">
+        La tarifa por hora es requerida
+      </mat-error>
+      <mat-error *ngIf="pricingForm.get('hourlyRate')?.hasError('min')">
+        La tarifa no puede ser negativa
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Tarifa Diaria -->
+    <mat-form-field appearance="outline">
+      <mat-label>Tarifa Diaria (€)</mat-label>
+      <input matInput type="number" formControlName="dailyRate" placeholder="25">
+      <mat-error *ngIf="pricingForm.get('dailyRate')?.hasError('required')">
+        La tarifa diaria es requerida
+      </mat-error>
+      <mat-error *ngIf="pricingForm.get('dailyRate')?.hasError('min')">
+        La tarifa no puede ser negativa
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Tarifa Mensual -->
+    <mat-form-field appearance="outline">
+      <mat-label>Tarifa Mensual (€)</mat-label>
+      <input matInput type="number" formControlName="monthlyRate" placeholder="150">
+      <mat-error *ngIf="pricingForm.get('monthlyRate')?.hasError('required')">
+        La tarifa mensual es requerida
+      </mat-error>
+      <mat-error *ngIf="pricingForm.get('monthlyRate')?.hasError('min')">
+        La tarifa no puede ser negativa
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-card>
+
+<!-- Card de Horarios -->
+<mat-card>
+  <form [formGroup]="pricingForm">
+    <h3 class="section-title">
+      <mat-icon>schedule</mat-icon>
+      Horarios
+    </h3>
+
+    <!-- Abierto 24 horas -->
+    <div class="toggle-section">
+      <mat-slide-toggle formControlName="open24h" color="primary">
+        Abierto 24 horas
+      </mat-slide-toggle>
+    </div>
+
+    <!-- Días de Funcionamiento -->
+    <div class="days-section">
+      <h4>Días de Funcionamiento</h4>
+      <div class="days-grid" formGroupName="operatingDays">
+        <mat-checkbox formControlName="monday" color="primary">Lunes</mat-checkbox>
+        <mat-checkbox formControlName="tuesday" color="primary">Martes</mat-checkbox>
+        <mat-checkbox formControlName="wednesday" color="primary">Miércoles</mat-checkbox>
+        <mat-checkbox formControlName="thursday" color="primary">Jueves</mat-checkbox>
+        <mat-checkbox formControlName="friday" color="primary">Viernes</mat-checkbox>
+        <mat-checkbox formControlName="saturday" color="primary">Sábado</mat-checkbox>
+        <mat-checkbox formControlName="sunday" color="primary">Domingo</mat-checkbox>
+      </div>
+    </div>
+  </form>
+</mat-card>
+
+<!-- Card de Descuentos y Promociones -->
+<mat-card>
+  <form [formGroup]="pricingForm">
+    <h3 class="section-title">
+      <mat-icon>local_offer</mat-icon>
+      Descuentos y Promociones
+    </h3>
+
+    <div class="promotions-list" formGroupName="promotions">
+      <div class="promotion-item">
+        <div class="promotion-content">
+          <h4>Descuento madrugador</h4>
+          <p>20% de descuento antes de las 8:00</p>
+        </div>
+        <mat-slide-toggle formControlName="earlyBird" color="primary"></mat-slide-toggle>
+      </div>
+
+      <div class="promotion-item">
+        <div class="promotion-content">
+          <h4>Tarifa de fin de semana</h4>
+          <p>Precio especial sábados y domingos</p>
+        </div>
+        <mat-slide-toggle formControlName="weekend" color="primary"></mat-slide-toggle>
+      </div>
+
+      <div class="promotion-item">
+        <div class="promotion-content">
+          <h4>Descuento larga estancia</h4>
+          <p>10% de descuento por más de 8 horas</p>
+        </div>
+        <mat-slide-toggle formControlName="longStay" color="primary"></mat-slide-toggle>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button mat-raised-button class="brand-button" (click)="onSave()">
+        Guardar Cambios
+      </button>
+    </div>
+  </form>
+</mat-card>

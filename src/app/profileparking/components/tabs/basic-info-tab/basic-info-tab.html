@@ -1,0 +1,147 @@
+<mat-card>
+  <h3 class="section-title">
+    <mat-icon>info</mat-icon>
+    Información Básica
+  </h3>
+
+  <form [formGroup]="basicInfoForm" (ngSubmit)="onSave()" class="form-grid">
+
+    <!-- Nombre del Parking -->
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre del Parking</mat-label>
+      <input matInput formControlName="name" placeholder="Ingrese el nombre">
+      <mat-error *ngIf="basicInfoForm.get('name')?.hasError('required')">
+        El nombre es requerido
+      </mat-error>
+      <mat-error *ngIf="basicInfoForm.get('name')?.hasError('minlength')">
+        El nombre debe tener al menos 3 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Tipo de Parking -->
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de Parking</mat-label>
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let type of parkingTypes" [value]="type">
+          {{ type }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="basicInfoForm.get('type')?.hasError('required')">
+        Seleccione un tipo de parking
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Estado del Parking -->
+    <mat-form-field appearance="outline">
+      <mat-label>Estado del Parking</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let status of parkingStatuses" [value]="status">
+          <span class="status-option" [class]="'status-' + status.toLowerCase()">
+            {{ status }}
+          </span>
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="basicInfoForm.get('status')?.hasError('required')">
+        Seleccione el estado del parking
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Descripción -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="description" rows="3"
+                placeholder="Describa las características principales"></textarea>
+      <mat-error *ngIf="basicInfoForm.get('description')?.hasError('required')">
+        La descripción es requerida
+      </mat-error>
+      <mat-error *ngIf="basicInfoForm.get('description')?.hasError('minlength')">
+        La descripción debe tener al menos 10 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Total de Plazas -->
+    <mat-form-field appearance="outline">
+      <mat-label>Total de Plazas</mat-label>
+      <input matInput type="number" formControlName="totalSpaces" placeholder="150">
+      <mat-error *ngIf="basicInfoForm.get('totalSpaces')?.hasError('required')">
+        El total de plazas es requerido
+      </mat-error>
+      <mat-error *ngIf="basicInfoForm.get('totalSpaces')?.hasError('min')">
+        Debe tener al menos 1 plaza
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Plazas Accesibles -->
+    <mat-form-field appearance="outline">
+      <mat-label>Plazas Accesibles</mat-label>
+      <input matInput type="number" formControlName="accessibleSpaces" placeholder="5">
+      <mat-error *ngIf="basicInfoForm.get('accessibleSpaces')?.hasError('required')">
+        Las plazas accesibles son requeridas
+      </mat-error>
+      <mat-error *ngIf="basicInfoForm.get('accessibleSpaces')?.hasError('min')">
+        No puede ser menor que 0
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Teléfono de Contacto -->
+    <mat-form-field appearance="outline">
+      <mat-label>Teléfono de Contacto</mat-label>
+      <input matInput formControlName="phone" placeholder="+34 600 123 456">
+      <mat-error *ngIf="basicInfoForm.get('phone')?.hasError('required')">
+        El teléfono es requerido
+      </mat-error>
+      <mat-error *ngIf="basicInfoForm.get('phone')?.hasError('pattern')">
+        Formato de teléfono inválido
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Email de Contacto -->
+    <mat-form-field appearance="outline">
+      <mat-label>Email de Contacto</mat-label>
+      <input matInput formControlName="email" placeholder="info@parking.com">
+      <mat-error *ngIf="basicInfoForm.get('email')?.hasError('required')">
+        El email es requerido
+      </mat-error>
+      <mat-error *ngIf="basicInfoForm.get('email')?.hasError('email')">
+        Formato de email inválido
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Sitio Web -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Sitio Web</mat-label>
+      <input matInput formControlName="website" placeholder="https://parking.com">
+      <mat-error *ngIf="basicInfoForm.get('website')?.hasError('pattern')">
+        URL inválida (debe comenzar con http:// o https://)
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-card>
+
+<!-- Card de Imágenes -->
+<mat-card class="upload-section">
+  <h3 class="section-title">
+    <mat-icon>image</mat-icon>
+    Imágenes
+  </h3>
+
+  <div class="upload-container">
+    <label class="upload-box" for="imageUpload">
+      <input type="file" id="imageUpload" hidden accept="image/*" (change)="onFileSelected($event)">
+      <mat-icon>cloud_upload</mat-icon>
+      <span *ngIf="!selectedFileName">Subir imagen</span>
+      <span *ngIf="selectedFileName" class="file-name">{{ selectedFileName }}</span>
+    </label>
+
+    <div *ngIf="selectedFileName" class="image-preview">
+      <img src="assets/parking.jpg" alt="Parking" />
+    </div>
+  </div>
+
+  <div class="actions">
+    <button mat-raised-button class="brand-button" (click)="onSave()">
+      Guardar Cambios
+    </button>
+  </div>
+</mat-card>

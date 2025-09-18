@@ -1,0 +1,107 @@
+<mat-card>
+  <h3 class="section-title">
+    <mat-icon>location_on</mat-icon>
+    Dirección
+  </h3>
+
+  <form [formGroup]="locationForm" (ngSubmit)="onSave()" class="form-grid">
+
+    <!-- Dirección completa -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Dirección</mat-label>
+      <input matInput formControlName="addressLine" placeholder="Calle Gran Vía, 28">
+      <mat-error *ngIf="locationForm.get('addressLine')?.hasError('required')">
+        La dirección es requerida
+      </mat-error>
+      <mat-error *ngIf="locationForm.get('addressLine')?.hasError('minlength')">
+        La dirección debe tener al menos 5 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Ciudad -->
+    <mat-form-field appearance="outline">
+      <mat-label>Ciudad</mat-label>
+      <input matInput formControlName="city" placeholder="Madrid">
+      <mat-error *ngIf="locationForm.get('city')?.hasError('required')">
+        La ciudad es requerida
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Código Postal -->
+    <mat-form-field appearance="outline">
+      <mat-label>Código Postal</mat-label>
+      <input matInput formControlName="postalCode" placeholder="28013">
+      <mat-error *ngIf="locationForm.get('postalCode')?.hasError('required')">
+        El código postal es requerido
+      </mat-error>
+      <mat-error *ngIf="locationForm.get('postalCode')?.hasError('pattern')">
+        Formato de código postal inválido
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Provincia -->
+    <mat-form-field appearance="outline">
+      <mat-label>Provincia</mat-label>
+      <input matInput formControlName="state" placeholder="Madrid">
+      <mat-error *ngIf="locationForm.get('state')?.hasError('required')">
+        La provincia es requerida
+      </mat-error>
+    </mat-form-field>
+
+    <!-- País -->
+    <mat-form-field appearance="outline">
+      <mat-label>País</mat-label>
+      <input matInput formControlName="country" placeholder="España">
+      <mat-error *ngIf="locationForm.get('country')?.hasError('required')">
+        El país es requerido
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-card>
+
+<!-- Card del Mapa -->
+<mat-card>
+  <h3 class="section-title">
+    <mat-icon>map</mat-icon>
+    Ubicación en el Mapa
+  </h3>
+
+  <!-- Placeholder del mapa -->
+  <div class="map-placeholder">
+    <mat-icon class="map-icon">location_on</mat-icon>
+    <h4>Mapa interactivo</h4>
+    <p>Arrastra el marcador para ajustar la ubicación</p>
+  </div>
+
+  <!-- Coordenadas -->
+  <form [formGroup]="locationForm" class="coordinates-grid">
+    <mat-form-field appearance="outline">
+      <mat-label>Latitud</mat-label>
+      <input matInput type="number" step="any" formControlName="latitude" placeholder="40.4168">
+      <mat-error *ngIf="locationForm.get('latitude')?.hasError('required')">
+        La latitud es requerida
+      </mat-error>
+      <mat-error *ngIf="locationForm.get('latitude')?.hasError('min') || locationForm.get('latitude')?.hasError('max')">
+        Latitud inválida (debe estar entre -90 y 90)
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Longitud</mat-label>
+      <input matInput type="number" step="any" formControlName="longitude" placeholder="-3.7038">
+      <mat-error *ngIf="locationForm.get('longitude')?.hasError('required')">
+        La longitud es requerida
+      </mat-error>
+      <mat-error *ngIf="locationForm.get('longitude')?.hasError('min') || locationForm.get('longitude')?.hasError('max')">
+        Longitud inválida (debe estar entre -180 y 180)
+      </mat-error>
+    </mat-form-field>
+  </form>
+
+  <div class="actions">
+    <button mat-raised-button class="brand-button" (click)="onSave()">
+      Guardar Cambios
+    </button>
+  </div>
+</mat-card>

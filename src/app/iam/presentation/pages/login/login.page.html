@@ -1,0 +1,94 @@
+<div class="login-container">
+  <div class="login-card">
+    <!-- Logo de la app -->
+    <div class="logo-section">
+      <div class="logo-icon">
+        <div class="logo-background">
+          <mat-icon class="parking-icon">local_parking</mat-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario de login -->
+    <div class="login-form-container">
+      <h2 class="login-title">Iniciar sesión</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <!-- Campo Email -->
+        <div class="form-field">
+          <label class="field-label">Email</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <input
+              matInput
+              type="email"
+              formControlName="email"
+              placeholder="tu@email.com"
+              autocomplete="email"
+            >
+          </mat-form-field>
+          <mat-error *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+            {{ getFieldError('email') }}
+          </mat-error>
+        </div>
+
+        <!-- Campo Contraseña -->
+        <div class="form-field">
+          <label class="field-label">Contraseña</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <input
+              matInput
+              [type]="hidePassword() ? 'password' : 'text'"
+              formControlName="password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+            >
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="'Toggle password visibility'"
+            >
+              <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-error *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            {{ getFieldError('password') }}
+          </mat-error>
+        </div>
+
+        <!-- Checkbox Recordarme -->
+        <div class="remember-section">
+          <mat-checkbox formControlName="rememberMe" class="remember-checkbox">
+            Recordarme
+          </mat-checkbox>
+        </div>
+
+        <!-- Botón Iniciar sesión -->
+        <button
+          mat-raised-button
+          type="submit"
+          class="login-button"
+          [disabled]="isLoading()"
+        >
+          @if (isLoading()) {
+            <mat-spinner diameter="20"></mat-spinner>
+            Iniciando sesión...
+          } @else {
+            Iniciar sesión
+          }
+        </button>
+
+        <!-- Enlaces -->
+        <div class="form-links">
+          <a routerLink="/auth/forgot-password" class="forgot-link">
+            ¿Olvidaste tu contraseña?
+          </a>
+          <a routerLink="/auth/register" class="create-account-link">
+            Crear cuenta
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

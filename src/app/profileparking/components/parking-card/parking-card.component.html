@@ -1,0 +1,72 @@
+<mat-card class="parking-card">
+  <!-- Thumbnail -->
+  <div class="card-thumbnail">
+    <div *ngIf="!parking.imageUrl" class="placeholder-thumbnail">
+      <mat-icon>local_parking</mat-icon>
+    </div>
+    <img *ngIf="parking.imageUrl" [src]="parking.imageUrl" [alt]="parking.name" class="thumbnail-image">
+  </div>
+
+  <!-- Card Content -->
+  <mat-card-content class="card-content">
+    <!-- Header with title and status -->
+    <div class="card-header">
+      <h3 class="parking-title">{{ parking.name }}</h3>
+      <div class="status-badge" [class]="'status-' + parking.status.toLowerCase()">
+        {{ parking.status }}
+      </div>
+    </div>
+
+    <!-- Address -->
+    <div class="address-row">
+      <mat-icon class="location-icon">location_on</mat-icon>
+      <span class="address-text">{{ parking.address }}</span>
+    </div>
+
+    <!-- Rating and Reviews -->
+    <div class="rating-row">
+      <div class="stars">
+        <mat-icon
+          *ngFor="let star of ratingStars"
+          [class]="star ? 'star-filled' : 'star-empty'">
+          star
+        </mat-icon>
+        <span class="rating-value">{{ parking.rating }}</span>
+      </div>
+      <span class="reviews-count">({{ parking.reviewsCount }})</span>
+    </div>
+
+    <!-- Availability -->
+    <div class="availability-row">
+      <mat-icon class="spaces-icon">local_parking</mat-icon>
+      <span class="availability-text">
+        {{ parking.available }}/{{ parking.total }} plazas disponibles
+      </span>
+      <div class="availability-indicator" [class]="'indicator-' + availabilityColor"></div>
+    </div>
+
+    <!-- Price -->
+    <div class="price-row">
+      <span class="price-amount">€{{ parking.pricePerMonth }}</span>
+      <span class="price-period">/mes</span>
+    </div>
+
+    <!-- Actions -->
+    <div class="card-actions">
+      <button
+        mat-stroked-button
+        color="primary"
+        class="edit-btn"
+        [routerLink]="['/parkings', parking.id, 'edit']">
+        Editar Parking
+      </button>
+
+      <button
+        mat-button
+        class="analytics-btn"
+        [routerLink]="['/parkings', parking.id, 'analytics']">
+        Ver Analytics
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

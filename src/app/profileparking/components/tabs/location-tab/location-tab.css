@@ -1,0 +1,198 @@
+/* ======= Tokens de color locales del componente ======= */
+:host {
+  --card: #FFFFFF;
+  --bg: #F9FAFB;
+  --border: #E5E7EB;
+  --text: #111827;
+  --muted: #6B7280;
+  --primary: #6D5AE6;
+  --accent: #F59E0B;
+  --accent-hover: #D97706;
+  --danger: #EF4444;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.03);
+}
+
+/* ======= Card ======= */
+mat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+/* ======= Título ======= */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+}
+
+.section-title mat-icon {
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+  color: var(--primary);
+}
+
+/* ======= Grid del formulario ======= */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px 22px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* ======= Placeholder del mapa ======= */
+.map-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  background: #f8f9fa;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  color: var(--muted);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.map-placeholder .map-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  color: var(--primary);
+}
+
+.map-placeholder h4 {
+  margin: 0 0 8px 0;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.map-placeholder p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ======= Grid de coordenadas ======= */
+.coordinates-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* ======= Angular Material form fields overrides ======= */
+:host ::ng-deep .mat-mdc-form-field {
+  width: 100%;
+}
+
+:host ::ng-deep .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  border-radius: 10px !important;
+  background: #fff;
+}
+
+:host ::ng-deep .mat-mdc-form-field .mdc-notched-outline {
+  border-color: var(--border);
+}
+
+:host ::ng-deep .mat-mdc-form-field .mdc-notched-outline .mdc-notched-outline__leading,
+:host ::ng-deep .mat-mdc-form-field .mdc-notched-outline .mdc-notched-outline__notch,
+:host ::ng-deep .mat-mdc-form-field .mdc-notched-outline .mdc-notched-outline__trailing {
+  border-radius: 10px;
+  border-color: var(--border);
+}
+
+:host ::ng-deep .mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-notched-outline--focused .mdc-notched-outline__leading,
+:host ::ng-deep .mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-notched-outline--focused .mdc-notched-outline__notch,
+:host ::ng-deep .mat-mdc-form-field:not(.mat-mdc-form-field-invalid) .mdc-notched-outline--focused .mdc-notched-outline__trailing {
+  border-color: var(--primary) !important;
+  border-width: 2px;
+}
+
+:host ::ng-deep .mat-mdc-form-field .mat-mdc-floating-label {
+  color: #374151;
+}
+
+:host ::ng-deep .mat-mdc-form-field .mat-mdc-floating-label.mdc-floating-label--float-above {
+  color: var(--primary);
+}
+
+/* ======= Mensajes de error ======= */
+mat-error {
+  font-size: 12px;
+  color: var(--danger);
+  margin-top: 4px;
+}
+
+/* ======= Botón principal ======= */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.brand-button {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-radius: 10px !important;
+  padding: 10px 22px !important;
+  font-weight: 600 !important;
+  box-shadow: var(--shadow);
+  transition: all .2s ease;
+  border: none !important;
+}
+
+.brand-button:hover {
+  background: var(--accent-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,.12);
+}
+
+.brand-button:active {
+  transform: translateY(0);
+}
+
+/* ======= Responsive ======= */
+@media (max-width: 768px) {
+  mat-card {
+    padding: 16px;
+  }
+
+  .section-title {
+    font-size: 15px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .coordinates-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .map-placeholder {
+    height: 160px;
+  }
+
+  .map-placeholder .map-icon {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+  }
+}

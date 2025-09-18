@@ -1,2 +1,95 @@
+@if (showSidebar()) {
+  <mat-sidenav-container class="app-container">
+    <mat-sidenav #sidenav class="app-sidebar" mode="side" opened="true">
+      <div class="sidebar-content">
+        <!-- Header del Sidebar -->
+        <div class="sidebar-header">
+          <div class="logo-section">
+            <mat-icon class="app-logo">local_parking</mat-icon>
+            <div class="logo-text">
+              <h1>QuadrApp</h1>
+              <p>Gestión de Parkings</p>
+            </div>
+          </div>
+        </div>
 
-<router-outlet />
+        <!-- Información del Usuario -->
+        <div class="user-info">
+          <div class="user-avatar">
+            <div class="avatar-circle">
+              <span>{{ getUserInitials() }}</span>
+            </div>
+          </div>
+          <div class="user-details">
+            <h3>{{ authService.user()?.firstName }} {{ authService.user()?.lastName }}</h3>
+            <p>{{ authService.user()?.email }}</p>
+          </div>
+        </div>
+
+        <!-- Navegación Principal -->
+        <div class="navigation-section">
+          <h4 class="section-title">Navegación</h4>
+          <mat-nav-list>
+            <mat-list-item routerLink="/dashboard" routerLinkActive="active">
+              <mat-icon matListItemIcon>dashboard</mat-icon>
+              <span matListItemTitle>Dashboard</span>
+            </mat-list-item>
+
+            <mat-list-item routerLink="/parkings" routerLinkActive="active">
+              <mat-icon matListItemIcon>local_parking</mat-icon>
+              <span matListItemTitle>Mis Parkings</span>
+            </mat-list-item>
+
+            <mat-list-item routerLink="/parkings/new" routerLinkActive="active">
+              <mat-icon matListItemIcon>add_location</mat-icon>
+              <span matListItemTitle>Nuevo Parking</span>
+            </mat-list-item>
+
+            <mat-list-item class="coming-soon">
+              <mat-icon matListItemIcon>event_available</mat-icon>
+              <span matListItemTitle>Reservaciones</span>
+              <span matListItemMeta class="coming-soon-badge">Próximamente</span>
+            </mat-list-item>
+
+            <mat-list-item class="coming-soon">
+              <mat-icon matListItemIcon>star_rate</mat-icon>
+              <span matListItemTitle>Reseñas</span>
+              <span matListItemMeta class="coming-soon-badge">Próximamente</span>
+            </mat-list-item>
+          </mat-nav-list>
+        </div>
+
+        <!-- Configuración -->
+        <div class="config-section">
+          <h4 class="section-title">Configuración</h4>
+          <mat-nav-list>
+            <mat-list-item routerLink="/me/profile" routerLinkActive="active">
+              <mat-icon matListItemIcon>account_circle</mat-icon>
+              <span matListItemTitle>Mi Perfil</span>
+            </mat-list-item>
+
+            <mat-list-item class="coming-soon">
+              <mat-icon matListItemIcon>settings</mat-icon>
+              <span matListItemTitle>Configuración</span>
+              <span matListItemMeta class="coming-soon-badge">Próximamente</span>
+            </mat-list-item>
+          </mat-nav-list>
+        </div>
+
+        <!-- Logout -->
+        <div class="logout-section">
+          <button mat-list-item class="logout-btn" (click)="onLogout()">
+            <mat-icon matListItemIcon class="logout-icon">logout</mat-icon>
+            <span matListItemTitle>Cerrar Sesión</span>
+          </button>
+        </div>
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="main-content">
+      <router-outlet />
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+} @else {
+  <router-outlet />
+}

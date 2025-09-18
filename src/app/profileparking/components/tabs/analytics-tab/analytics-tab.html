@@ -1,0 +1,54 @@
+<!-- KPI Cards superiores -->
+<div class="kpi-grid">
+  <mat-card *ngFor="let kpi of kpiData" class="kpi-card">
+    <div class="kpi-header">
+      <span class="kpi-title">{{ kpi.title }}</span>
+      <mat-icon class="kpi-icon">{{ kpi.icon }}</mat-icon>
+    </div>
+    <div class="kpi-value">{{ kpi.value }}</div>
+    <div class="kpi-change">
+      <span class="change-badge" [ngClass]="kpi.trend === 'up' ? 'positive' : 'negative'">
+        {{ kpi.change }}
+      </span>
+      <span class="change-description">{{ kpi.description }}</span>
+    </div>
+  </mat-card>
+</div>
+
+<!-- Card de Ocupación por Hora -->
+<mat-card class="chart-card">
+  <h3 class="section-title">
+    <mat-icon>bar_chart</mat-icon>
+    Ocupación por Hora
+  </h3>
+
+  <div class="occupancy-chart">
+    <div *ngFor="let item of hourlyOccupation" class="occupancy-row">
+      <span class="hour-label">{{ item.hour }}</span>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="item.percentage"></div>
+        </div>
+      </div>
+      <span class="percentage-label">{{ item.percentage }}%</span>
+    </div>
+  </div>
+</mat-card>
+
+<!-- Card de Actividad Reciente -->
+<mat-card class="activity-card">
+  <h3 class="section-title">
+    <mat-icon>history</mat-icon>
+    Actividad Reciente
+  </h3>
+
+  <div class="activity-list">
+    <div *ngFor="let activity of recentActivity" class="activity-item">
+      <div class="activity-content">
+        <div class="activity-action">{{ activity.action }}</div>
+        <div class="activity-details">{{ activity.details }}</div>
+      </div>
+      <div class="activity-time">{{ activity.time }}</div>
+    </div>
+  </div>
+</mat-card>

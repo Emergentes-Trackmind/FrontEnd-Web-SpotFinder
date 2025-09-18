@@ -1,0 +1,143 @@
+<div class="parking-wizard">
+  <!-- Header del wizard -->
+  <div class="wizard-header">
+    <h1 class="wizard-title">Registrar Nuevo Parking</h1>
+
+    <!-- Barra de progreso y pasos -->
+    <mat-card class="progress-card">
+      <div class="progress-header">
+        <h2 class="progress-title">Registro de Parking</h2>
+        <span class="step-indicator">Paso {{ currentStep }} de 5</span>
+      </div>
+
+      <!-- Barra de progreso -->
+      <div class="progress-container">
+        <mat-progress-bar
+          mode="determinate"
+          [value]="progressPercentage"
+          class="progress-bar">
+        </mat-progress-bar>
+      </div>
+
+      <!-- Indicadores de pasos -->
+      <div class="steps-indicator">
+        <div
+          *ngFor="let step of steps"
+          class="step-item"
+          [class.active]="step.number === currentStep"
+          [class.completed]="step.number < currentStep"
+          [class.clickable]="step.number < currentStep || (step.number === currentStep + 1 && canGoNext)"
+          (click)="onStepClicked(step.number)">
+
+          <div class="step-circle">
+            <mat-icon *ngIf="step.number < currentStep" class="check-icon">check</mat-icon>
+            <span *ngIf="step.number >= currentStep" class="step-number">{{ step.number }}</span>
+          </div>
+
+          <div class="step-line" *ngIf="step.number < steps.length"></div>
+        </div>
+      </div>
+
+      <!-- Título del paso actual -->
+      <div class="current-step-info" *ngIf="currentStepData">
+        <h3 class="step-title">{{ currentStepData.title }}</h3>
+        <p class="step-subtitle">{{ currentStepData.subtitle }}</p>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Contenido del paso actual -->
+  <div class="wizard-content">
+
+    <!-- Paso 1: Información Básica -->
+    <app-step-basic
+      *ngIf="currentStep === 1"
+      class="step-content">
+    </app-step-basic>
+
+    <!-- Paso 2: Ubicación -->
+    <app-step-location
+      *ngIf="currentStep === 2"
+      class="step-content">
+    </app-step-location>
+
+    <!-- Paso 3: Características -->
+    <app-step-features
+      *ngIf="currentStep === 3"
+      class="step-content">
+    </app-step-features>
+
+    <!-- Paso 4: Precios -->
+    <app-step-pricing
+      *ngIf="currentStep === 4"
+      class="step-content">
+    </app-step-pricing>
+
+    <!-- Paso 5: Revisión -->
+    <app-step-review
+      *ngIf="currentStep === 5"
+      class="step-content">
+    </app-step-review>
+
+  </div>
+
+  <!-- Controles de navegación -->
+  <div class="wizard-controls">
+    <mat-card class="controls-card">
+      <div class="controls-content">
+
+        <!-- Botón Anterior -->
+        <button
+          mat-stroked-button
+          type="button"
+          [disabled]="!canGoPrevious"
+          (click)="onPreviousClick()"
+          class="previous-btn">
+          <mat-icon>chevron_left</mat-icon>
+          Anterior
+        </button>
+
+        <!-- Espaciador -->
+        <div class="controls-spacer"></div>
+
+        <!-- Botón Cancelar -->
+        <button
+          mat-button
+          type="button"
+          (click)="onCancel()"
+          class="cancel-btn">
+          Cancelar
+        </button>
+
+        <!-- Botón Siguiente/Registrar -->
+        <button
+          mat-raised-button
+          type="button"
+          [disabled]="currentStep === 5 ? isSubmitting : !canGoNext"
+          (click)="currentStep === 5 ? onSubmitClick() : onNextClick()"
+          class="next-btn">
+
+          <!-- Loading spinner -->
+          <mat-icon *ngIf="isSubmitting" class="loading-icon">
+            <svg class="spinner" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="31.416" stroke-dashoffset="31.416">
+                <animate attributeName="stroke-dasharray" dur="2s" values="0 31.416;15.708 15.708;0 31.416" repeatCount="indefinite"/>
+                <animate attributeName="stroke-dashoffset" dur="2s" values="0;-15.708;-31.416" repeatCount="indefinite"/>
+              </circle>
+            </svg>
+          </mat-icon>
+
+          <!-- Texto del botón -->
+          <span *ngIf="currentStep === 5">
+            {{ isSubmitting ? 'Registrando...' : 'Registrar Parking' }}
+          </span>
+          <span *ngIf="currentStep < 5">
+            Siguiente
+            <mat-icon>chevron_right</mat-icon>
+          </span>
+        </button>
+
+      </div>
+    </mat-card>
+  </div>
+</div>

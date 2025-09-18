@@ -1,0 +1,138 @@
+<div class="register-container">
+  <div class="register-card">
+    <mat-card>
+      <mat-card-header>
+        <div class="register-header">
+          <div class="logo-section">
+            <mat-icon class="app-logo">local_parking</mat-icon>
+            <h1>QuadrApp</h1>
+          </div>
+          <h2>Crear Cuenta</h2>
+          <p>Únete a nuestra plataforma para gestionar tus parkings</p>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+          <div class="form-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="firstName"
+                placeholder="Tu nombre"
+                autocomplete="given-name"
+              >
+              <mat-icon matSuffix>person</mat-icon>
+              <mat-error>{{ getFieldError('firstName') }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Apellido</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="lastName"
+                placeholder="Tu apellido"
+                autocomplete="family-name"
+              >
+              <mat-icon matSuffix>person_outline</mat-icon>
+              <mat-error>{{ getFieldError('lastName') }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email</mat-label>
+              <input
+                matInput
+                type="email"
+                formControlName="email"
+                placeholder="tu@email.com"
+                autocomplete="email"
+              >
+              <mat-icon matSuffix>email</mat-icon>
+              <mat-error>{{ getFieldError('email') }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Contraseña</mat-label>
+              <input
+                matInput
+                [type]="hidePassword() ? 'password' : 'text'"
+                formControlName="password"
+                placeholder="Mínimo 8 caracteres"
+                autocomplete="new-password"
+              >
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="togglePasswordVisibility('password')"
+                [attr.aria-label]="'Toggle password visibility'"
+              >
+                <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error>{{ getFieldError('password') }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Confirmar Contraseña</mat-label>
+              <input
+                matInput
+                [type]="hideConfirmPassword() ? 'password' : 'text'"
+                formControlName="confirmPassword"
+                placeholder="Repite tu contraseña"
+                autocomplete="new-password"
+              >
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="togglePasswordVisibility('confirmPassword')"
+                [attr.aria-label]="'Toggle confirm password visibility'"
+              >
+                <mat-icon>{{hideConfirmPassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error>{{ getFieldError('confirmPassword') }}</mat-error>
+            </mat-form-field>
+
+            <div class="terms-section">
+              <mat-checkbox formControlName="acceptTerms">
+                <span class="terms-text">
+                  Acepto los
+                  <a href="/terms" target="_blank" class="terms-link">términos y condiciones</a>
+                  y la
+                  <a href="/privacy" target="_blank" class="terms-link">política de privacidad</a>
+                </span>
+              </mat-checkbox>
+              <div class="terms-error" *ngIf="getFieldError('acceptTerms')">
+                {{ getFieldError('acceptTerms') }}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button
+              mat-raised-button
+              type="submit"
+              class="primary-button"
+              [disabled]="isLoading()"
+            >
+              @if (isLoading()) {
+                <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+                Creando cuenta...
+              } @else {
+                Crear Cuenta
+              }
+            </button>
+
+            <div class="login-link">
+              ¿Ya tienes cuenta?
+              <a routerLink="/auth/login" class="link">Iniciar sesión</a>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

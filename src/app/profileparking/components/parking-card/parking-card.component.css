@@ -1,0 +1,287 @@
+:host {
+  --card: #fff;
+  --bg: #F9FAFB;
+  --border: #E5E7EB;
+  --text: #111827;
+  --muted: #6B7280;
+  --primary: #6D5AE6;
+  --accent: #F59E0B;
+  --accent-hover: #D97706;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.03);
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+}
+
+.parking-card {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  background: var(--card);
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.parking-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+  transform: translateY(-2px);
+}
+
+/* Thumbnail */
+.card-thumbnail {
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+}
+
+.placeholder-thumbnail {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #F3F4F6, #E5E7EB);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-thumbnail mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: var(--muted);
+}
+
+.thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Content */
+.card-content {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.parking-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+  flex: 1;
+  line-height: 1.3;
+}
+
+.status-badge {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.status-activo {
+  background-color: #ECFDF5;
+  color: var(--success);
+  border: 1px solid #D1FAE5;
+}
+
+.status-mantenimiento {
+  background-color: #FFFBEB;
+  color: var(--warning);
+  border: 1px solid #FED7AA;
+}
+
+.status-inactivo {
+  background-color: #FEF2F2;
+  color: var(--error);
+  border: 1px solid #FECACA;
+}
+
+/* Address */
+.address-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 6px;
+}
+
+.location-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+}
+
+.address-text {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* Rating */
+.rating-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.stars mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.star-filled {
+  color: #FBBF24;
+}
+
+.star-empty {
+  color: #D1D5DB;
+}
+
+.rating-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  margin-left: 4px;
+}
+
+.reviews-count {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Availability */
+.availability-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 6px;
+}
+
+.spaces-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+}
+
+.availability-text {
+  font-size: 14px;
+  color: var(--text);
+  flex: 1;
+}
+
+.availability-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.indicator-success {
+  background-color: var(--success);
+}
+
+.indicator-warning {
+  background-color: var(--warning);
+}
+
+.indicator-error {
+  background-color: var(--error);
+}
+
+/* Price */
+.price-row {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 20px;
+  margin-left: auto;
+  gap: 4px;
+}
+
+.price-amount {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.price-period {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Actions */
+.card-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.edit-btn {
+  flex: 1;
+  border-radius: 8px;
+  font-weight: 500;
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+}
+
+.edit-btn:hover {
+  background-color: rgba(109, 90, 230, 0.04);
+}
+
+.analytics-btn {
+  flex: 1;
+  border-radius: 8px;
+  font-weight: 500;
+  color: var(--muted);
+  background-color: transparent;
+}
+
+.analytics-btn:hover {
+  background-color: #F3F4F6;
+  color: var(--text);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .card-content {
+    padding: 16px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .price-row {
+    margin-left: 0;
+  }
+
+  .card-actions {
+    flex-direction: column;
+  }
+}

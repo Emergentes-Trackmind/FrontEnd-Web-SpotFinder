@@ -1,0 +1,224 @@
+:host {
+  --primary-gradient-start: #FF7A59;
+  --primary-gradient-end: #FF4520;
+  --orange-button: #FF8C42;
+  --orange-button-hover: #FF7A2E;
+  --background: #F8F9FA;
+  --card-background: #FFFFFF;
+  --text-primary: #2D3748;
+  --text-secondary: #718096;
+  --text-link: #4299E1;
+  --border-color: #E2E8F0;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.login-container {
+  min-height: 100vh;
+  background: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--card-background);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  padding: 40px;
+  text-align: center;
+}
+
+/* Logo Section */
+.logo-section {
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+.logo-icon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-background {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.parking-icon {
+  color: white;
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+}
+
+/* Form Container */
+.login-form-container {
+  text-align: left;
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  margin: 0 0 32px 0;
+}
+
+/* Form Fields */
+.form-field {
+  margin-bottom: 20px;
+}
+
+.field-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.full-width ::ng-deep .mat-mdc-form-field-flex {
+  background: var(--card-background);
+}
+
+.full-width ::ng-deep .mat-mdc-text-field-wrapper {
+  background: var(--card-background);
+  border-radius: 8px;
+}
+
+.full-width ::ng-deep .mat-mdc-form-field-outline {
+  color: var(--border-color);
+}
+
+.full-width ::ng-deep .mat-mdc-form-field-outline-thick {
+  color: var(--orange-button);
+}
+
+.full-width ::ng-deep input {
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.full-width ::ng-deep input::placeholder {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+
+/* Remember Me Section */
+.remember-section {
+  margin: 16px 0 24px 0;
+}
+
+.remember-checkbox {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.remember-checkbox ::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+  background-color: var(--orange-button);
+}
+
+/* Login Button */
+.login-button {
+  width: 100%;
+  height: 48px;
+  background: var(--orange-button);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  transition: background-color 0.2s ease;
+}
+
+.login-button:hover:not([disabled]) {
+  background: var(--orange-button-hover);
+}
+
+.login-button:disabled {
+  background: #CBD5E0;
+  color: #A0AEC0;
+}
+
+.login-button ::ng-deep .mat-button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Form Links */
+.form-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.forgot-link,
+.create-account-link {
+  font-size: 14px;
+  color: var(--text-link);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.forgot-link:hover,
+.create-account-link:hover {
+  color: var(--orange-button);
+  text-decoration: underline;
+}
+
+/* Error Messages */
+mat-error {
+  font-size: 12px;
+  color: #E53E3E;
+  margin-top: 4px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 16px;
+  }
+
+  .login-card {
+    padding: 32px 24px;
+  }
+
+  .logo-background {
+    width: 70px;
+    height: 70px;
+    border-radius: 16px;
+  }
+
+  .parking-icon {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .login-title {
+    font-size: 20px;
+  }
+}

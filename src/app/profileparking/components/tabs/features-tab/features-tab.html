@@ -1,0 +1,100 @@
+<form [formGroup]="featuresForm">
+  <div class="features-grid">
+    <!-- Card de Seguridad -->
+    <mat-card>
+      <h3 class="section-title">
+        <mat-icon>security</mat-icon>
+        Seguridad
+      </h3>
+
+      <div class="features-list" formGroupName="security">
+        <mat-checkbox formControlName="security24h" color="primary">
+          Seguridad 24 horas
+        </mat-checkbox>
+        <mat-checkbox formControlName="cameras" color="primary">
+          Cámaras de vigilancia
+        </mat-checkbox>
+        <mat-checkbox formControlName="lighting" color="primary">
+          Iluminación LED
+        </mat-checkbox>
+        <mat-checkbox formControlName="accessControl" color="primary">
+          Control de acceso
+        </mat-checkbox>
+      </div>
+    </mat-card>
+
+    <!-- Card de Comodidades -->
+    <mat-card>
+      <h3 class="section-title">
+        <mat-icon>deck</mat-icon>
+        Comodidades
+      </h3>
+
+      <div class="features-list" formGroupName="amenities">
+        <mat-checkbox formControlName="covered" color="primary">
+          Cubierto
+        </mat-checkbox>
+        <mat-checkbox formControlName="elevator" color="primary">
+          Ascensor
+        </mat-checkbox>
+        <mat-checkbox formControlName="bathrooms" color="primary">
+          Baños
+        </mat-checkbox>
+        <mat-checkbox formControlName="carWash" color="primary">
+          Lavado de coches
+        </mat-checkbox>
+      </div>
+    </mat-card>
+
+    <!-- Card de Servicios -->
+    <mat-card>
+      <h3 class="section-title">
+        <mat-icon>build</mat-icon>
+        Servicios
+      </h3>
+      <div class="features-list" formGroupName="services">
+        <mat-checkbox formControlName="electricCharging" color="primary">
+          Carga eléctrica
+        </mat-checkbox>
+        <mat-checkbox formControlName="freeWifi" color="primary">
+          WiFi gratuito
+        </mat-checkbox>
+        <mat-checkbox formControlName="valetService" color="primary">
+          Servicio de valet
+        </mat-checkbox>
+        <mat-checkbox formControlName="maintenance" color="primary">
+          Mantenimiento
+        </mat-checkbox>
+      </div>
+    </mat-card>
+
+    <!-- Card de Pagos -->
+    <mat-card>
+      <h3 class="section-title">
+        <mat-icon>payment</mat-icon>
+        Pagos
+      </h3>
+
+      <div class="features-list" formGroupName="payments">
+        <mat-checkbox formControlName="cardPayment" color="primary">
+          Pago con tarjeta
+        </mat-checkbox>
+        <mat-checkbox formControlName="mobilePayment" color="primary">
+          Pago móvil
+        </mat-checkbox>
+        <mat-checkbox formControlName="monthlyPasses" color="primary">
+          Abonos mensuales
+        </mat-checkbox>
+        <mat-checkbox formControlName="corporateRates" color="primary">
+          Tarifas corporativas
+        </mat-checkbox>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="actions">
+    <button mat-raised-button class="brand-button" (click)="onSave()">
+      Guardar Cambios
+    </button>
+  </div>
+</form>

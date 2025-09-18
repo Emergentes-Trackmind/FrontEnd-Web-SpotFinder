@@ -1,0 +1,208 @@
+<mat-card class="step-card">
+  <mat-card-header class="step-header">
+    <mat-card-title>Precios y Horarios</mat-card-title>
+    <mat-card-subtitle>Configura las tarifas y horarios de funcionamiento de tu parking</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content class="step-content">
+    <form [formGroup]="pricingForm" class="pricing-form">
+
+      <!-- Tarifas Básicas -->
+      <div class="section-card">
+        <div class="section-header">
+          <mat-icon class="section-icon">euro</mat-icon>
+          <h3>Tarifas Básicas</h3>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Tarifa por Hora ({{ selectedCurrency }}) *</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="hourlyRate"
+              placeholder="5.00"
+              min="0"
+              max="999.99"
+              step="0.01">
+            <span matTextSuffix>{{ selectedCurrency }}</span>
+            <mat-error *ngIf="isFieldInvalid('hourlyRate')">
+              {{ getErrorMessage('hourlyRate') }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Tarifa Diaria ({{ selectedCurrency }}) *</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="dailyRate"
+              placeholder="25.00"
+              min="0"
+              max="9999.99"
+              step="0.01">
+            <span matTextSuffix>{{ selectedCurrency }}</span>
+            <mat-error *ngIf="isFieldInvalid('dailyRate')">
+              {{ getErrorMessage('dailyRate') }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Tarifa Mensual ({{ selectedCurrency }}) *</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="monthlyRate"
+              placeholder="150.00"
+              min="0"
+              max="99999.99"
+              step="0.01">
+            <span matTextSuffix>{{ selectedCurrency }}</span>
+            <mat-error *ngIf="isFieldInvalid('monthlyRate')">
+              {{ getErrorMessage('monthlyRate') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Moneda *</mat-label>
+            <mat-select formControlName="currency">
+              <mat-option *ngFor="let currency of currencies" [value]="currency.value">
+                {{ currency.label }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>currency_exchange</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Estancia Mínima *</mat-label>
+            <mat-select formControlName="minimumStay">
+              <mat-option *ngFor="let option of minimumStayOptions" [value]="option.value">
+                {{ option.label }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>schedule</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Horarios de Funcionamiento -->
+      <div class="section-card">
+        <div class="section-header">
+          <mat-icon class="section-icon">access_time</mat-icon>
+          <h3>Horarios de Funcionamiento</h3>
+        </div>
+
+        <!-- Toggle 24 horas -->
+        <div class="toggle-section">
+          <mat-slide-toggle
+            formControlName="open24h"
+            class="toggle-control">
+            Abierto 24 horas
+          </mat-slide-toggle>
+          <p class="toggle-description">
+            {{ isOpen24h ? 'Tu parking estará disponible las 24 horas del día' : 'Define horarios específicos de apertura y cierre' }}
+          </p>
+        </div>
+
+        <!-- Horarios específicos (solo si no es 24h) -->
+        <div *ngIf="!isOpen24h" formGroupName="operatingHours" class="hours-section">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Hora de Apertura *</mat-label>
+              <mat-select formControlName="openTime">
+                <mat-option *ngFor="let time of timeSlots" [value]="time">
+                  {{ time }}
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>schedule</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Hora de Cierre *</mat-label>
+              <mat-select formControlName="closeTime">
+                <mat-option *ngFor="let time of timeSlots" [value]="time">
+                  {{ time }}
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>schedule</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Días de Funcionamiento -->
+        <div class="days-section" formGroupName="operatingDays">
+          <div class="days-header">
+            <h4>Días de Funcionamiento</h4>
+            <div class="days-actions">
+              <span class="selection-count" *ngIf="getSelectedDaysCount() > 0">
+                {{ getSelectedDaysCount() }} días seleccionados
+              </span>
+              <div class="quick-actions">
+                <button mat-button type="button" (click)="selectWeekdays()" class="quick-btn">
+                  Lunes a Viernes
+                </button>
+                <button mat-button type="button" (click)="selectWeekends()" class="quick-btn">
+                  Fines de semana
+                </button>
+                <button mat-button type="button" (click)="selectAllDays()" class="quick-btn">
+                  Todos los días
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="days-grid">
+            <div *ngFor="let day of weekDays" class="day-item">
+              <mat-checkbox [formControlName]="day.key" class="day-checkbox">
+                {{ day.label }}
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Promociones y Descuentos -->
+      <div class="section-card">
+        <div class="section-header">
+          <mat-icon class="section-icon">local_offer</mat-icon>
+          <h3>Promociones</h3>
+          <span class="selection-count" *ngIf="getSelectedPromotionsCount() > 0">
+            {{ getSelectedPromotionsCount() }} promociones activas
+          </span>
+        </div>
+
+        <div formGroupName="promotions" class="promotions-grid">
+          <div class="promotion-item">
+            <mat-checkbox formControlName="earlyBird" class="promotion-checkbox">
+              <div class="promotion-content">
+                <span class="promotion-title">Early Bird</span>
+                <span class="promotion-description">Descuentos por reservas anticipadas</span>
+              </div>
+            </mat-checkbox>
+          </div>
+
+          <div class="promotion-item">
+            <mat-checkbox formControlName="weekend" class="promotion-checkbox">
+              <div class="promotion-content">
+                <span class="promotion-title">Fin de Semana</span>
+                <span class="promotion-description">Tarifas especiales para fines de semana</span>
+              </div>
+            </mat-checkbox>
+          </div>
+
+          <div class="promotion-item">
+            <mat-checkbox formControlName="longStay" class="promotion-checkbox">
+              <div class="promotion-content">
+                <span class="promotion-title">Estancia Larga</span>
+                <span class="promotion-description">Descuentos por estancias prolongadas</span>
+              </div>
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>

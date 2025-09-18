@@ -1,0 +1,1374 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@quadrapp.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Admin",
+      "lastName": "Usuario",
+      "roles": [
+        "admin",
+        "user"
+      ],
+      "isEmailVerified": true,
+      "createdAt": "2023-12-01T10:00:00.000Z",
+      "lastLoginAt": "2025-09-18T03:44:39.717Z"
+    },
+    {
+      "id": "2",
+      "email": "user@quadrapp.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Usuario",
+      "lastName": "Demo",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": true,
+      "createdAt": "2023-12-15T09:00:00.000Z",
+      "lastLoginAt": "2025-09-18T03:45:02.526Z"
+    },
+    {
+      "id": "1758166617803",
+      "email": "luis.eduardo.200325@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-09-18T03:36:57.803Z",
+      "lastLoginAt": "2025-09-18T03:36:57.803Z"
+    },
+    {
+      "id": "1758167131165",
+      "email": "luis.eduardo@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-09-18T03:45:31.165Z",
+      "lastLoginAt": "2025-09-18T03:45:31.165Z"
+    },
+    {
+      "id": "1758170181625",
+      "email": "pedro@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Pedro",
+      "lastName": "Juan",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-09-18T04:36:21.625Z",
+      "lastLoginAt": "2025-09-18T05:43:47.602Z"
+    },
+    {
+      "id": "1758172768732",
+      "email": "lalito@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-09-18T05:19:28.732Z",
+      "lastLoginAt": "2025-09-18T05:44:10.250Z"
+    }
+  ],
+  "tokens": [
+    {
+      "id": "1",
+      "userId": "1",
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwiZW1haWwiOiJhZG1pbkBxdWFkcmFwcC5jb20iLCJyb2xlcyI6WyJhZG1pbiIsInVzZXIiXX0.fake_signature",
+      "refreshToken": "refresh_token_1",
+      "expiresIn": 3600,
+      "createdAt": "2024-01-15T14:30:00.000Z"
+    }
+  ],
+  "profiles": [
+    {
+      "id": "1",
+      "userId": "1",
+      "firstName": "Admin",
+      "lastName": "Usuario",
+      "email": "admin@quadrapp.com",
+      "phone": "+52 55 1234 5678",
+      "avatar": null,
+      "bio": "Administrador de la plataforma QuadrApp",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2024-01-15T14:30:00.000Z"
+    },
+    {
+      "id": "2",
+      "userId": "2",
+      "firstName": "Usuario",
+      "lastName": "Demo",
+      "email": "user@quadrapp.com",
+      "phone": "+52 55 9876 5432",
+      "avatar": null,
+      "bio": "Usuario demo de QuadrApp",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": false,
+          "sms": false,
+          "marketing": true,
+          "parkingAlerts": true,
+          "systemUpdates": false
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "auto"
+      },
+      "updatedAt": "2024-01-14T16:45:00.000Z"
+    },
+    {
+      "id": "1758166617803",
+      "userId": "1758166617803",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "email": "luis.eduardo.200325@gmail.com",
+      "phone": null,
+      "avatar": null,
+      "bio": "",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2025-09-18T03:36:57.804Z"
+    },
+    {
+      "id": "1758167131165",
+      "userId": "1758167131165",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "email": "luis.eduardo@gmail.com",
+      "phone": null,
+      "avatar": null,
+      "bio": "",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2025-09-18T03:45:31.166Z"
+    },
+    {
+      "id": "1758170181625",
+      "userId": "1758170181625",
+      "firstName": "Pedro",
+      "lastName": "Juan",
+      "email": "pedro@gmail.com",
+      "phone": null,
+      "avatar": null,
+      "bio": "",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2025-09-18T04:36:21.627Z"
+    },
+    {
+      "id": "1758172768732",
+      "userId": "1758172768732",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "email": "lalito@gmail.com",
+      "phone": null,
+      "avatar": null,
+      "bio": "",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2025-09-18T05:19:28.736Z"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "1",
+      "userId": "1",
+      "device": "Chrome - Windows 10",
+      "location": "Ciudad de México, México",
+      "ipAddress": "192.168.1.100",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "lastActivity": "2024-01-15T14:30:00.000Z",
+      "current": true,
+      "createdAt": "2024-01-15T10:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "userId": "1",
+      "device": "Safari - iPhone 14",
+      "location": "Ciudad de México, México",
+      "ipAddress": "192.168.1.101",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)",
+      "lastActivity": "2024-01-15T12:30:00.000Z",
+      "current": false,
+      "createdAt": "2024-01-14T08:00:00.000Z"
+    }
+  ],
+  "passwordResets": [
+    {
+      "id": "1",
+      "email": "admin@quadrapp.com",
+      "token": "reset_token_123456",
+      "expiresAt": "2024-01-16T14:30:00.000Z",
+      "used": false,
+      "createdAt": "2024-01-15T14:30:00.000Z"
+    }
+  ],
+  "parkingProfiles": [
+    {
+      "id": "1",
+      "ownerId": "1",
+      "name": "Parking Centro Comercial",
+      "type": "Comercial",
+      "description": "Parking cubierto de 3 plantas en pleno centro comercial con fácil acceso",
+      "totalSpaces": 150,
+      "accessibleSpaces": 12,
+      "phone": "+34 911 234 567",
+      "email": "info@parkingcentro.com",
+      "website": "https://parkingcentro.com",
+      "status": "Activo"
+    },
+    {
+      "id": "2",
+      "ownerId": "1",
+      "name": "Parking Plaza Mayor",
+      "type": "Público",
+      "description": "Parking subterráneo histórico cerca de la Plaza Mayor con acceso 24/7",
+      "totalSpaces": 200,
+      "accessibleSpaces": 18,
+      "phone": "+34 915 678 901",
+      "email": "contacto@plazamayor-parking.es",
+      "website": "https://plazamayor-parking.es",
+      "status": "Activo"
+    },
+    {
+      "id": "3",
+      "ownerId": "2",
+      "name": "Parking Aeropuerto Terminal T1",
+      "type": "Comercial",
+      "description": "Parking de larga estancia en terminal T1 con servicio de traslado gratuito",
+      "totalSpaces": 500,
+      "accessibleSpaces": 35,
+      "phone": "+34 902 123 456",
+      "email": "reservas@aeropuerto-parking.com",
+      "website": "https://aeropuerto-parking.com",
+      "status": "Mantenimiento"
+    },
+    {
+      "id": "4",
+      "ownerId": "2",
+      "name": "Parking Retiro",
+      "type": "Público",
+      "description": "Parking ecológico cerca del Parque del Retiro con puntos de carga eléctrica",
+      "totalSpaces": 120,
+      "accessibleSpaces": 10,
+      "phone": "+34 913 456 789",
+      "email": "info@parking-retiro.es",
+      "website": "https://parking-retiro.es",
+      "status": "Activo"
+    },
+    {
+      "id": "5",
+      "ownerId": "1",
+      "name": "Parking Residencial Las Flores",
+      "type": "Residencial",
+      "description": "Parking privado para residentes del complejo Las Flores con seguridad 24h",
+      "totalSpaces": 80,
+      "accessibleSpaces": 6,
+      "phone": "+34 916 789 012",
+      "email": "administracion@lasflores.com",
+      "website": "https://lasflores.com",
+      "status": "Inactivo"
+    },
+    {
+      "id": "6",
+      "ownerId": "2",
+      "name": "Parking Gran Vía Premium",
+      "type": "Privado",
+      "description": "Parking premium en Gran Vía con servicio de valet y car wash",
+      "totalSpaces": 90,
+      "accessibleSpaces": 8,
+      "phone": "+34 917 890 123",
+      "email": "premium@granvia-parking.com",
+      "website": "https://granvia-parking.com",
+      "status": "Activo"
+    }
+  ],
+  "analytics": [
+    {
+      "id": "1",
+      "profileId": "1",
+      "kpis": {
+        "avgOccupation": {
+          "value": 78.5,
+          "trend": 5.2
+        },
+        "monthlyRevenue": {
+          "value": 18500,
+          "trend": 12.8
+        },
+        "uniqueUsers": {
+          "value": 342,
+          "trend": -2.1
+        },
+        "avgTime": {
+          "value": 3.2,
+          "trend": 0.8
+        }
+      },
+      "hourlyOccupation": [
+        {
+          "hour": "06:00",
+          "percentage": 25
+        },
+        {
+          "hour": "07:00",
+          "percentage": 45
+        },
+        {
+          "hour": "08:00",
+          "percentage": 78
+        },
+        {
+          "hour": "09:00",
+          "percentage": 89
+        },
+        {
+          "hour": "10:00",
+          "percentage": 95
+        },
+        {
+          "hour": "11:00",
+          "percentage": 92
+        },
+        {
+          "hour": "12:00",
+          "percentage": 88
+        },
+        {
+          "hour": "13:00",
+          "percentage": 85
+        },
+        {
+          "hour": "14:00",
+          "percentage": 82
+        },
+        {
+          "hour": "15:00",
+          "percentage": 86
+        },
+        {
+          "hour": "16:00",
+          "percentage": 90
+        },
+        {
+          "hour": "17:00",
+          "percentage": 94
+        },
+        {
+          "hour": "18:00",
+          "percentage": 91
+        },
+        {
+          "hour": "19:00",
+          "percentage": 87
+        },
+        {
+          "hour": "20:00",
+          "percentage": 75
+        },
+        {
+          "hour": "21:00",
+          "percentage": 62
+        },
+        {
+          "hour": "22:00",
+          "percentage": 45
+        },
+        {
+          "hour": "23:00",
+          "percentage": 32
+        }
+      ],
+      "recentActivity": [
+        {
+          "action": "Nueva reserva",
+          "details": "Cliente VIP - Plaza premium por 1 mes",
+          "timeAgo": "hace 5 min"
+        },
+        {
+          "action": "Pago completado",
+          "details": "Tarjeta **** 1234 - €125.00",
+          "timeAgo": "hace 12 min"
+        },
+        {
+          "action": "Usuario registrado",
+          "details": "Nuevo cliente desde app móvil",
+          "timeAgo": "hace 25 min"
+        },
+        {
+          "action": "Mantenimiento programado",
+          "details": "Revisión sistema ventilación - Zona B",
+          "timeAgo": "hace 1 hora"
+        },
+        {
+          "action": "Incidencia resuelta",
+          "details": "Problema de iluminación sector 3 solucionado",
+          "timeAgo": "hace 2 horas"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "profileId": "2",
+      "kpis": {
+        "avgOccupation": {
+          "value": 65.3,
+          "trend": -3.1
+        },
+        "monthlyRevenue": {
+          "value": 22300,
+          "trend": 8.4
+        },
+        "uniqueUsers": {
+          "value": 428,
+          "trend": 6.7
+        },
+        "avgTime": {
+          "value": 2.8,
+          "trend": -1.2
+        }
+      },
+      "hourlyOccupation": [
+        {
+          "hour": "06:00",
+          "percentage": 15
+        },
+        {
+          "hour": "07:00",
+          "percentage": 35
+        },
+        {
+          "hour": "08:00",
+          "percentage": 68
+        },
+        {
+          "hour": "09:00",
+          "percentage": 82
+        },
+        {
+          "hour": "10:00",
+          "percentage": 88
+        },
+        {
+          "hour": "11:00",
+          "percentage": 85
+        },
+        {
+          "hour": "12:00",
+          "percentage": 79
+        },
+        {
+          "hour": "13:00",
+          "percentage": 75
+        },
+        {
+          "hour": "14:00",
+          "percentage": 71
+        },
+        {
+          "hour": "15:00",
+          "percentage": 76
+        },
+        {
+          "hour": "16:00",
+          "percentage": 83
+        },
+        {
+          "hour": "17:00",
+          "percentage": 89
+        },
+        {
+          "hour": "18:00",
+          "percentage": 86
+        },
+        {
+          "hour": "19:00",
+          "percentage": 81
+        },
+        {
+          "hour": "20:00",
+          "percentage": 69
+        },
+        {
+          "hour": "21:00",
+          "percentage": 55
+        },
+        {
+          "hour": "22:00",
+          "percentage": 38
+        },
+        {
+          "hour": "23:00",
+          "percentage": 22
+        }
+      ],
+      "recentActivity": [
+        {
+          "action": "Promoción activada",
+          "details": "Descuento 20% fines de semana",
+          "timeAgo": "hace 8 min"
+        },
+        {
+          "action": "Reserva cancelada",
+          "details": "Cliente solicitó reembolso",
+          "timeAgo": "hace 15 min"
+        },
+        {
+          "action": "Actualización tarifas",
+          "details": "Nuevas tarifas nocturnas aplicadas",
+          "timeAgo": "hace 45 min"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "profileId": "3",
+      "kpis": {
+        "avgOccupation": {
+          "value": 92.1,
+          "trend": 15.6
+        },
+        "monthlyRevenue": {
+          "value": 45200,
+          "trend": 22.3
+        },
+        "uniqueUsers": {
+          "value": 1284,
+          "trend": 18.9
+        },
+        "avgTime": {
+          "value": 7.5,
+          "trend": 4.2
+        }
+      },
+      "hourlyOccupation": [
+        {
+          "hour": "06:00",
+          "percentage": 85
+        },
+        {
+          "hour": "07:00",
+          "percentage": 88
+        },
+        {
+          "hour": "08:00",
+          "percentage": 92
+        },
+        {
+          "hour": "09:00",
+          "percentage": 95
+        },
+        {
+          "hour": "10:00",
+          "percentage": 97
+        },
+        {
+          "hour": "11:00",
+          "percentage": 96
+        },
+        {
+          "hour": "12:00",
+          "percentage": 94
+        },
+        {
+          "hour": "13:00",
+          "percentage": 93
+        },
+        {
+          "hour": "14:00",
+          "percentage": 95
+        },
+        {
+          "hour": "15:00",
+          "percentage": 96
+        },
+        {
+          "hour": "16:00",
+          "percentage": 98
+        },
+        {
+          "hour": "17:00",
+          "percentage": 99
+        },
+        {
+          "hour": "18:00",
+          "percentage": 97
+        },
+        {
+          "hour": "19:00",
+          "percentage": 94
+        },
+        {
+          "hour": "20:00",
+          "percentage": 91
+        },
+        {
+          "hour": "21:00",
+          "percentage": 89
+        },
+        {
+          "hour": "22:00",
+          "percentage": 87
+        },
+        {
+          "hour": "23:00",
+          "percentage": 86
+        }
+      ],
+      "recentActivity": [
+        {
+          "action": "Capacidad máxima",
+          "details": "Parking completo - activada lista de espera",
+          "timeAgo": "hace 2 min"
+        },
+        {
+          "action": "Reserva larga estancia",
+          "details": "Viaje internacional - 15 días",
+          "timeAgo": "hace 18 min"
+        },
+        {
+          "action": "Servicio shuttle",
+          "details": "Traslado completado - Terminal T1",
+          "timeAgo": "hace 22 min"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "profileId": "4",
+      "kpis": {
+        "avgOccupation": {
+          "value": 58.9,
+          "trend": 2.8
+        },
+        "monthlyRevenue": {
+          "value": 14800,
+          "trend": 5.1
+        },
+        "uniqueUsers": {
+          "value": 267,
+          "trend": 4.3
+        },
+        "avgTime": {
+          "value": 4.1,
+          "trend": 1.5
+        }
+      },
+      "hourlyOccupation": [
+        {
+          "hour": "06:00",
+          "percentage": 20
+        },
+        {
+          "hour": "07:00",
+          "percentage": 30
+        },
+        {
+          "hour": "08:00",
+          "percentage": 45
+        },
+        {
+          "hour": "09:00",
+          "percentage": 55
+        },
+        {
+          "hour": "10:00",
+          "percentage": 65
+        },
+        {
+          "hour": "11:00",
+          "percentage": 70
+        },
+        {
+          "hour": "12:00",
+          "percentage": 75
+        },
+        {
+          "hour": "13:00",
+          "percentage": 72
+        },
+        {
+          "hour": "14:00",
+          "percentage": 68
+        },
+        {
+          "hour": "15:00",
+          "percentage": 71
+        },
+        {
+          "hour": "16:00",
+          "percentage": 76
+        },
+        {
+          "hour": "17:00",
+          "percentage": 78
+        },
+        {
+          "hour": "18:00",
+          "percentage": 74
+        },
+        {
+          "hour": "19:00",
+          "percentage": 69
+        },
+        {
+          "hour": "20:00",
+          "percentage": 62
+        },
+        {
+          "hour": "21:00",
+          "percentage": 48
+        },
+        {
+          "hour": "22:00",
+          "percentage": 35
+        },
+        {
+          "hour": "23:00",
+          "percentage": 25
+        }
+      ],
+      "recentActivity": [
+        {
+          "action": "Carga eléctrica",
+          "details": "Nuevo punto de carga instalado",
+          "timeAgo": "hace 30 min"
+        },
+        {
+          "action": "Evento especial",
+          "details": "Descuento visitantes museo del Prado",
+          "timeAgo": "hace 1 hora"
+        }
+      ]
+    }
+  ],
+  "locations": [
+    {
+      "id": "1",
+      "profileId": "1",
+      "addressLine": "Calle Gran Vía, 25",
+      "city": "Madrid",
+      "postalCode": "28013",
+      "state": "Madrid",
+      "country": "España",
+      "latitude": 40.4168,
+      "longitude": -3.7038
+    },
+    {
+      "id": "2",
+      "profileId": "2",
+      "addressLine": "Plaza Mayor, 15",
+      "city": "Madrid",
+      "postalCode": "28012",
+      "state": "Madrid",
+      "country": "España",
+      "latitude": 40.4155,
+      "longitude": -3.7074
+    },
+    {
+      "id": "3",
+      "profileId": "3",
+      "addressLine": "Terminal T1, Barajas",
+      "city": "Madrid",
+      "postalCode": "28042",
+      "state": "Madrid",
+      "country": "España",
+      "latitude": 40.4719,
+      "longitude": -3.5626
+    },
+    {
+      "id": "4",
+      "profileId": "4",
+      "addressLine": "Calle Alfonso XII, 62",
+      "city": "Madrid",
+      "postalCode": "28014",
+      "state": "Madrid",
+      "country": "España",
+      "latitude": 40.4153,
+      "longitude": -3.6844
+    },
+    {
+      "id": "5",
+      "profileId": "5",
+      "addressLine": "Calle de las Flores, 123",
+      "city": "Madrid",
+      "postalCode": "28015",
+      "state": "Madrid",
+      "country": "España",
+      "latitude": 40.42,
+      "longitude": -3.71
+    },
+    {
+      "id": "6",
+      "profileId": "6",
+      "addressLine": "Gran Vía, 50",
+      "city": "Madrid",
+      "postalCode": "28013",
+      "state": "Madrid",
+      "country": "España",
+      "latitude": 40.418,
+      "longitude": -3.705
+    },
+    {
+      "id": "7",
+      "profileId": "7",
+      "addressLine": "Calle de ejemplo",
+      "city": "Madrid",
+      "postalCode": "28001",
+      "state": "Madrid",
+      "country": "España",
+      "latitude": 40.4168,
+      "longitude": -3.7038
+    },
+    {
+      "id": "8",
+      "profileId": "8",
+      "addressLine": "Calle Principal, 456",
+      "city": "Madrid",
+      "postalCode": "28002",
+      "state": "Madrid",
+      "country": "España",
+      "latitude": 40.415,
+      "longitude": -3.702
+    },
+    {
+      "profileId": "9",
+      "addressLine": "Avenida Central",
+      "city": "Lima",
+      "postalCode": "15804",
+      "state": "Lima",
+      "country": "España",
+      "latitude": -12.13611834278628,
+      "longitude": -76.96143985530442,
+      "id": "gBzLc7x"
+    }
+  ],
+  "pricing": [
+    {
+      "id": "1",
+      "profileId": "1",
+      "hourlyRate": 2.5,
+      "dailyRate": 18,
+      "monthlyRate": 285,
+      "open24h": true,
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": false,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": true
+      },
+      "promotions": {
+        "earlyBird": true,
+        "weekend": false,
+        "longStay": true
+      }
+    },
+    {
+      "id": "2",
+      "profileId": "2",
+      "hourlyRate": 3.2,
+      "dailyRate": 22,
+      "monthlyRate": 320,
+      "open24h": true,
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": true
+      },
+      "promotions": {
+        "earlyBird": false,
+        "weekend": true,
+        "longStay": false
+      }
+    },
+    {
+      "id": "3",
+      "profileId": "3",
+      "hourlyRate": 4.5,
+      "dailyRate": 28,
+      "monthlyRate": 410,
+      "open24h": true,
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": true
+      },
+      "promotions": {
+        "earlyBird": true,
+        "weekend": false,
+        "longStay": true
+      }
+    },
+    {
+      "id": "4",
+      "profileId": "4",
+      "hourlyRate": 2.8,
+      "dailyRate": 20,
+      "monthlyRate": 265,
+      "open24h": false,
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": false
+      },
+      "promotions": {
+        "earlyBird": true,
+        "weekend": true,
+        "longStay": false
+      }
+    },
+    {
+      "id": "5",
+      "profileId": "5",
+      "hourlyRate": 2,
+      "dailyRate": 16,
+      "monthlyRate": 250,
+      "open24h": false,
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": false,
+        "sunday": false
+      },
+      "promotions": {
+        "earlyBird": false,
+        "weekend": false,
+        "longStay": true
+      }
+    },
+    {
+      "id": "6",
+      "profileId": "6",
+      "hourlyRate": 5,
+      "dailyRate": 35,
+      "monthlyRate": 500,
+      "open24h": true,
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": true
+      },
+      "promotions": {
+        "earlyBird": true,
+        "weekend": false,
+        "longStay": true
+      }
+    },
+    {
+      "id": "7",
+      "profileId": "7",
+      "hourlyRate": 2,
+      "dailyRate": 15,
+      "monthlyRate": 200,
+      "open24h": false,
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": true
+      },
+      "promotions": {
+        "earlyBird": false,
+        "weekend": false,
+        "longStay": false
+      }
+    },
+    {
+      "id": "8",
+      "profileId": "8",
+      "hourlyRate": 3,
+      "dailyRate": 20,
+      "monthlyRate": 250,
+      "open24h": false,
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": false
+      },
+      "promotions": {
+        "earlyBird": false,
+        "weekend": false,
+        "longStay": false
+      }
+    },
+    {
+      "profileId": "9",
+      "hourlyRate": 2,
+      "dailyRate": 3,
+      "monthlyRate": 5,
+      "open24h": false,
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": false
+      },
+      "promotions": {
+        "earlyBird": false,
+        "weekend": false,
+        "longStay": false
+      },
+      "id": "hkIrUZ6"
+    }
+  ],
+  "features": [
+    {
+      "id": "1",
+      "profileId": "1",
+      "security": {
+        "security24h": true,
+        "cameras": true,
+        "lighting": true,
+        "accessControl": true
+      },
+      "amenities": {
+        "covered": true,
+        "elevator": true,
+        "bathrooms": true,
+        "carWash": true
+      },
+      "services": {
+        "electricCharging": true,
+        "freeWifi": true,
+        "valetService": true,
+        "maintenance": true
+      },
+      "payments": {
+        "cardPayment": true,
+        "mobilePayment": true,
+        "monthlyPasses": true,
+        "corporateRates": true
+      }
+    },
+    {
+      "id": "2",
+      "profileId": "2",
+      "security": {
+        "security24h": true,
+        "cameras": true,
+        "lighting": true,
+        "accessControl": false
+      },
+      "amenities": {
+        "covered": false,
+        "elevator": false,
+        "bathrooms": true,
+        "carWash": false
+      },
+      "services": {
+        "electricCharging": true,
+        "freeWifi": false,
+        "valetService": false,
+        "maintenance": true
+      },
+      "payments": {
+        "cardPayment": true,
+        "mobilePayment": false,
+        "monthlyPasses": true,
+        "corporateRates": true
+      }
+    },
+    {
+      "id": "3",
+      "profileId": "3",
+      "security": {
+        "security24h": true,
+        "cameras": true,
+        "lighting": true,
+        "accessControl": true
+      },
+      "amenities": {
+        "covered": true,
+        "elevator": true,
+        "bathrooms": true,
+        "carWash": true
+      },
+      "services": {
+        "electricCharging": true,
+        "freeWifi": true,
+        "valetService": true,
+        "maintenance": true
+      },
+      "payments": {
+        "cardPayment": true,
+        "mobilePayment": true,
+        "monthlyPasses": true,
+        "corporateRates": true
+      }
+    },
+    {
+      "id": "4",
+      "profileId": "4",
+      "security": {
+        "security24h": false,
+        "cameras": true,
+        "lighting": true,
+        "accessControl": false
+      },
+      "amenities": {
+        "covered": true,
+        "elevator": false,
+        "bathrooms": false,
+        "carWash": false
+      },
+      "services": {
+        "electricCharging": true,
+        "freeWifi": true,
+        "valetService": false,
+        "maintenance": false
+      },
+      "payments": {
+        "cardPayment": true,
+        "mobilePayment": true,
+        "monthlyPasses": false,
+        "corporateRates": false
+      }
+    },
+    {
+      "id": "5",
+      "profileId": "5",
+      "security": {
+        "security24h": true,
+        "cameras": true,
+        "lighting": true,
+        "accessControl": true
+      },
+      "amenities": {
+        "covered": true,
+        "elevator": true,
+        "bathrooms": true,
+        "carWash": false
+      },
+      "services": {
+        "electricCharging": false,
+        "freeWifi": false,
+        "valetService": false,
+        "maintenance": true
+      },
+      "payments": {
+        "cardPayment": true,
+        "mobilePayment": false,
+        "monthlyPasses": true,
+        "corporateRates": false
+      }
+    },
+    {
+      "id": "6",
+      "profileId": "6",
+      "security": {
+        "security24h": true,
+        "cameras": true,
+        "lighting": true,
+        "accessControl": true
+      },
+      "amenities": {
+        "covered": true,
+        "elevator": true,
+        "bathrooms": true,
+        "carWash": true
+      },
+      "services": {
+        "electricCharging": false,
+        "freeWifi": true,
+        "valetService": true,
+        "maintenance": true
+      },
+      "payments": {
+        "cardPayment": true,
+        "mobilePayment": true,
+        "monthlyPasses": true,
+        "corporateRates": true
+      }
+    },
+    {
+      "id": "7",
+      "profileId": "7",
+      "security": {
+        "security24h": false,
+        "cameras": false,
+        "lighting": true,
+        "accessControl": false
+      },
+      "amenities": {
+        "covered": false,
+        "elevator": false,
+        "bathrooms": false,
+        "carWash": false
+      },
+      "services": {
+        "electricCharging": false,
+        "freeWifi": false,
+        "valetService": false,
+        "maintenance": false
+      },
+      "payments": {
+        "cardPayment": true,
+        "mobilePayment": false,
+        "monthlyPasses": false,
+        "corporateRates": false
+      }
+    },
+    {
+      "id": "8",
+      "profileId": "8",
+      "security": {
+        "security24h": false,
+        "cameras": false,
+        "lighting": true,
+        "accessControl": false
+      },
+      "amenities": {
+        "covered": false,
+        "elevator": false,
+        "bathrooms": false,
+        "carWash": false
+      },
+      "services": {
+        "electricCharging": false,
+        "freeWifi": false,
+        "valetService": false,
+        "maintenance": false
+      },
+      "payments": {
+        "cardPayment": true,
+        "mobilePayment": false,
+        "monthlyPasses": false,
+        "corporateRates": false
+      }
+    },
+    {
+      "profileId": "9",
+      "security": {
+        "security24h": true,
+        "cameras": true,
+        "lighting": false,
+        "accessControl": false
+      },
+      "amenities": {
+        "covered": true,
+        "elevator": true,
+        "bathrooms": false,
+        "carWash": false
+      },
+      "services": {
+        "electricCharging": true,
+        "freeWifi": true,
+        "valetService": false,
+        "maintenance": false
+      },
+      "payments": {
+        "cardPayment": true,
+        "mobilePayment": true,
+        "monthlyPasses": false,
+        "corporateRates": false
+      },
+      "id": "SopYy7v"
+    }
+  ],
+  "uploads": []
+}

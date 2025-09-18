@@ -1,0 +1,22 @@
+{
+  "/api/*": "/$1",
+  "/api/auth/login": "/auth/login",
+  "/api/auth/register": "/auth/register",
+  "/api/auth/refresh": "/auth/refresh",
+  "/api/auth/forgot-password": "/auth/forgot-password",
+  "/api/auth/reset-password": "/auth/reset-password",
+  "/api/profile": "/profiles",
+  "/api/account/sessions": "/sessions",
+  "/api/account/sessions/:id": "/sessions/:id",
+  "/api/account/change-password": "/account/change-password",
+  "/api/account/download": "/account/download",
+  "/api/account/delete": "/account/delete",
+  "/api/account/2fa/toggle": "/account/2fa-toggle",
+  "/api/parkingProfiles": "/parkingProfiles",
+  "/api/analytics": "/analytics",
+  "/api/locations": "/locations",
+  "/api/pricing": "/pricing",
+  "/api/features": "/features",
+  "/api/uploads": "/uploads"
+}
+

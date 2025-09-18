@@ -1,0 +1,170 @@
+<mat-card class="step-card">
+  <mat-card-header class="step-header">
+    <mat-card-title>Ubicación</mat-card-title>
+    <mat-card-subtitle>Dirección y localización en el mapa</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content class="step-content">
+    <form [formGroup]="locationForm" class="location-form">
+
+      <!-- Primera fila: Dirección y Ciudad -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Dirección *</mat-label>
+          <input
+            matInput
+            formControlName="addressLine"
+            placeholder="Calle Gran Vía, 28"
+            maxlength="200">
+          <mat-icon matSuffix>place</mat-icon>
+          <mat-error *ngIf="isFieldInvalid('addressLine')">
+            {{ getErrorMessage('addressLine') }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Ciudad *</mat-label>
+          <input
+            matInput
+            formControlName="city"
+            placeholder="Madrid"
+            maxlength="100">
+          <mat-icon matSuffix>location_city</mat-icon>
+          <mat-error *ngIf="isFieldInvalid('city')">
+            {{ getErrorMessage('city') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Segunda fila: Código Postal, Provincia y País -->
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Código Postal *</mat-label>
+          <input
+            matInput
+            formControlName="postalCode"
+            placeholder="28013"
+            maxlength="5">
+          <mat-icon matSuffix>markunread_mailbox</mat-icon>
+          <mat-error *ngIf="isFieldInvalid('postalCode')">
+            {{ getErrorMessage('postalCode') }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Provincia</mat-label>
+          <input
+            matInput
+            formControlName="state"
+            placeholder="Madrid"
+            maxlength="100">
+          <mat-icon matSuffix>map</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>País *</mat-label>
+          <input
+            matInput
+            formControlName="country"
+            placeholder="España">
+          <mat-icon matSuffix>flag</mat-icon>
+          <mat-error *ngIf="isFieldInvalid('country')">
+            {{ getErrorMessage('country') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Sección del mapa -->
+      <div class="map-section">
+        <div class="map-header">
+          <div class="map-title">
+            <mat-icon>location_on</mat-icon>
+            <span>Ubicación en el Mapa</span>
+          </div>
+
+          <!-- Botón de ubicación actual -->
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="onUseCurrentLocation()"
+            [disabled]="isLoadingCurrentLocation"
+            class="current-location-btn">
+            <mat-icon *ngIf="!isLoadingCurrentLocation">my_location</mat-icon>
+            <mat-progress-spinner
+              *ngIf="isLoadingCurrentLocation"
+              diameter="16"
+              mode="indeterminate">
+            </mat-progress-spinner>
+            Usar mi ubicación
+          </button>
+        </div>
+
+        <div class="map-description">
+          <p>El mapa se mostrará aquí una vez que ingreses la dirección</p>
+          <p>Puedes arrastrar el marcador para ajustar la ubicación exacta</p>
+        </div>
+
+        <!-- Componente del mapa -->
+        <div class="map-container">
+          <app-map
+            [center]="mapCenter"
+            [zoom]="15"
+            [markerDraggable]="true"
+            [height]="'320px'"
+            [showCurrentLocationButton]="false"
+            (mapClicked)="onMapClicked($event)"
+            (markerMoved)="onMarkerMoved($event)">
+          </app-map>
+        </div>
+
+        <!-- Loading indicator para geocodificación -->
+        <div *ngIf="isGeocoding" class="geocoding-loading">
+          <mat-progress-spinner diameter="24" mode="indeterminate"></mat-progress-spinner>
+          <span>Buscando ubicación...</span>
+        </div>
+
+        <!-- Resultados de geocodificación -->
+        <div *ngIf="geocodeResults.length > 0" class="geocode-results">
+          <h4>Ubicaciones encontradas:</h4>
+          <div class="results-list">
+            <button
+              *ngFor="let result of geocodeResults; let i = index"
+              mat-stroked-button
+              type="button"
+              (click)="onGeocodeResultSelected(result)"
+              class="result-item">
+              <mat-icon>place</mat-icon>
+              <span>{{ result.displayName }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Coordenadas -->
+        <div class="coordinates-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Latitud</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="latitude"
+              step="0.000001"
+              readonly>
+            <mat-icon matSuffix>explore</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Longitud</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="longitude"
+              step="0.000001"
+              readonly>
+            <mat-icon matSuffix>explore</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>
