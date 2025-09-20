@@ -99,13 +99,24 @@ export class AuthService {
 
   refreshToken(): Observable<boolean> {
     const refreshToken = this.authState().refreshToken;
+
     if (!refreshToken) {
       return of(false);
     }
 
     return this.refreshTokenUseCase.execute(refreshToken).pipe(
       tap(response => {
-        this.updateTokens(response.accessToken, response.refreshToken);
+        // Para refresh token, solo actualizamos los tokens, manteniendo el usuario actual
+        const currentUser = this.authState().user;
+        if (currentUser) {
+          const authResponse: AuthResponse = {
+            user: currentUser,
+            accessToken: response.accessToken,
+            refreshToken: response.refreshToken,
+            expiresIn: response.expiresIn
+          };
+          this.setAuthData(authResponse);
+        }
       }),
       switchMap(() => of(true)),
       catchError(() => {
@@ -116,12 +127,19 @@ export class AuthService {
   }
 
   logout(): void {
-    this.clearAuthData();
+    this.clearStorage();
+    this.updateState({
+      user: null,
+      accessToken: null,
+      refreshToken: null,
+      isAuthenticated: false,
+      isLoading: false
+    });
     this.router.navigate(['/auth/login']);
   }
 
   private setAuthData(response: AuthResponse): void {
-    const newState: AuthState = {
+    const state: AuthState = {
       user: response.user,
       accessToken: response.accessToken,
       refreshToken: response.refreshToken,
@@ -129,113 +147,107 @@ export class AuthService {
       isLoading: false
     };
 
-    this.authState.set(newState);
-    this.authSubject.next(newState);
-    this.storeAuthData(response);
-  }
-
-  private updateTokens(accessToken: string, refreshToken: string): void {
-    const currentState = this.authState();
-    const newState = {
-      ...currentState,
-      accessToken,
-      refreshToken
-    };
-
-    this.authState.set(newState);
-    this.authSubject.next(newState);
-
-    localStorage.setItem(this.TOKEN_KEY, accessToken);
-    localStorage.setItem(this.REFRESH_KEY, refreshToken);
+    this.updateState(state);
+    this.saveToStorage(response);
   }
 
   private updateState(partial: Partial<AuthState>): void {
-    const currentState = this.authState();
-    const newState = { ...currentState, ...partial };
-
+    const current = this.authState();
+    const newState = { ...current, ...partial };
     this.authState.set(newState);
     this.authSubject.next(newState);
   }
 
-  private storeAuthData(response: AuthResponse): void {
-    localStorage.setItem(this.TOKEN_KEY, response.accessToken);
-    localStorage.setItem(this.REFRESH_KEY, response.refreshToken);
-    localStorage.setItem(this.USER_KEY, JSON.stringify(response.user));
-  }
-
   private loadStoredAuth(): void {
-    const token = localStorage.getItem(this.TOKEN_KEY);
-    const refreshToken = localStorage.getItem(this.REFRESH_KEY);
-    const userStr = localStorage.getItem(this.USER_KEY);
+    try {
+      const token = localStorage.getItem(this.TOKEN_KEY);
+      const refreshToken = localStorage.getItem(this.REFRESH_KEY);
+      const userData = localStorage.getItem(this.USER_KEY);
 
-    console.log('🔍 Cargando auth desde localStorage:', {
-      hasToken: !!token,
-      hasRefreshToken: !!refreshToken,
-      hasUser: !!userStr,
-      tokenValue: token ? token.substring(0, 20) + '...' : null
-    });
-
-    if (token && refreshToken && userStr) {
-      try {
-        const user = JSON.parse(userStr) as User;
-        const newState: AuthState = {
+      if (token && refreshToken && userData) {
+        const user = JSON.parse(userData);
+        this.updateState({
           user,
           accessToken: token,
           refreshToken,
           isAuthenticated: true,
           isLoading: false
-        };
-
-        console.log('✅ Estado de auth restaurado:', {
-          userId: user.id,
-          email: user.email,
-          isAuthenticated: true,
-          tokenLength: token.length
         });
-
-        this.authState.set(newState);
-        this.authSubject.next(newState);
-      } catch (error) {
-        console.error('❌ Error al parsear datos de auth:', error);
-        this.clearAuthData();
       }
-    } else {
-      console.log('⚠️ No hay datos de auth en localStorage - Usuario no logueado');
+    } catch (error) {
+      console.error('Error loading stored auth:', error);
+      this.clearStorage();
     }
   }
 
-  // Método para debugging - verificar estado de auth
-  debugAuthState(): void {
-    const currentState = this.authState();
-    console.log('🔎 Estado actual de autenticación:', {
-      isAuthenticated: currentState.isAuthenticated,
-      hasUser: !!currentState.user,
-      hasToken: !!currentState.accessToken,
-      userId: currentState.user?.id,
-      userEmail: currentState.user?.email,
-      tokenPreview: currentState.accessToken?.substring(0, 30) + '...'
-    });
+  private saveToStorage(response: AuthResponse): void {
+    try {
+      localStorage.setItem(this.TOKEN_KEY, response.accessToken);
+      localStorage.setItem(this.REFRESH_KEY, response.refreshToken);
+      localStorage.setItem(this.USER_KEY, JSON.stringify(response.user));
+    } catch (error) {
+      console.error('Error saving auth to storage:', error);
+    }
   }
 
-  private clearAuthData(): void {
-    const newState: AuthState = {
-      user: null,
-      accessToken: null,
-      refreshToken: null,
-      isAuthenticated: false,
-      isLoading: false
-    };
-
-    this.authState.set(newState);
-    this.authSubject.next(newState);
-
+  private clearStorage(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.REFRESH_KEY);
     localStorage.removeItem(this.USER_KEY);
   }
 
-  // Observable para guards y componentes que lo necesiten
+  // Método público para verificar autenticación (compatible con AuthGuard)
+  isAuthenticatedSync(): boolean {
+    return this.authState().isAuthenticated;
+  }
+
+  // Observable del estado de autenticación
   getAuthState(): Observable<AuthState> {
     return this.authSubject.asObservable();
+  }
+
+  // Método para obtener el token actual
+  getCurrentToken(): string | null {
+    return this.authState().accessToken;
+  }
+
+  // Método para obtener el usuario actual
+  getCurrentUser(): User | null {
+    return this.authState().user;
+  }
+
+  // Método de debug para desarrollo
+  debugAuthState(): void {
+    const state = this.authState();
+    console.group('🔍 Auth Debug State');
+    console.log('📊 Current State:', {
+      isAuthenticated: state.isAuthenticated,
+      isLoading: state.isLoading,
+      hasUser: !!state.user,
+      hasAccessToken: !!state.accessToken,
+      hasRefreshToken: !!state.refreshToken,
+      user: state.user ? {
+        id: state.user.id,
+        email: state.user.email,
+        firstName: state.user.firstName,
+        lastName: state.user.lastName,
+        roles: state.user.roles
+      } : null
+    });
+
+    console.log('💾 localStorage contents:', {
+      token: localStorage.getItem(this.TOKEN_KEY),
+      refreshToken: localStorage.getItem(this.REFRESH_KEY),
+      user: localStorage.getItem(this.USER_KEY) ? 'exists' : 'missing',
+      userData: localStorage.getItem(this.USER_KEY) ? JSON.parse(localStorage.getItem(this.USER_KEY) || '{}') : null
+    });
+
+    console.log('🔑 Token Info:', {
+      accessTokenLength: state.accessToken?.length || 0,
+      refreshTokenLength: state.refreshToken?.length || 0,
+      tokenStarts: state.accessToken ? state.accessToken.substring(0, 20) + '...' : 'none'
+    });
+
+    console.groupEnd();
   }
 }

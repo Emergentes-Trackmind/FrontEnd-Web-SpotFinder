@@ -44,6 +44,12 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'reviews',
+    loadComponent: () => import('./reviews/presentation/pages/reviews/reviews.page').then(m => m.ReviewsPage),
+    title: 'Reviews',
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'parkings',
     component: ParkingListPage,
     title: 'Mis Parkings',
@@ -78,11 +84,18 @@ export const routes: Routes = [
       }
     ]
   },
+  // ✅ RESERVAS HABILITADAS - Conectadas al bounded context DDD
   {
     path: 'reservations',
-    loadComponent: () => import('./shared/pages/reservations/reservations.page').then(m => m.ReservationsPage),
-    title: 'Reservaciones',
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./reservations/presentation/pages/reservations-list/reservations-list.page').then(m => m.ReservationsListPage),
+    title: 'Gestión de Reservas'
+  },
+  {
+    path: 'reservations/:id',
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./reservations/presentation/pages/reservation-detail/reservation-detail.page').then(m => m.ReservationDetailPage),
+    title: 'Detalle de Reserva'
   },
   {
     path: 'reviews',

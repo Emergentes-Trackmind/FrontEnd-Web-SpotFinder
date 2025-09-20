@@ -1,0 +1,263 @@
+:host {
+  --card: #fff;
+  --bg: #F9FAFB;
+  --border: #E5E7EB;
+  --text: #111827;
+  --muted: #6B7280;
+  --primary: #6D5AE6;
+  --accent: #F59E0B;
+  --accent-hover: #D97706;
+  --success: #16A34A;
+  --danger: #EF4444;
+  --info: #8B5CF6;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.03);
+}
+
+.review-item {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+  transition: all 0.2s ease;
+}
+
+.review-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24px 24px 16px 24px;
+}
+
+.user-info {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-avatar mat-icon {
+  color: var(--muted);
+  font-size: 20px;
+}
+
+.user-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 4px 0;
+}
+
+.parking-name {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin: 0 0 8px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.review-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rating {
+  display: flex;
+  gap: 2px;
+}
+
+.rating mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.rating .star-filled {
+  color: var(--accent);
+}
+
+.rating .star-empty {
+  color: var(--border);
+}
+
+.review-date {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.review-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-chip {
+  font-size: 0.75rem;
+  font-weight: 500;
+  height: 28px;
+  border-radius: 14px;
+}
+
+.status-chip.responded {
+  background-color: rgba(109, 90, 230, 0.1);
+  color: var(--primary);
+}
+
+.status-chip.pending {
+  background-color: rgba(107, 114, 128, 0.1);
+  color: var(--muted);
+}
+
+.review-content {
+  padding: 0 24px 16px 24px;
+}
+
+.review-comment {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text);
+  margin: 0 0 16px 0;
+}
+
+.review-response {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.response-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.response-header mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--primary);
+}
+
+.response-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.response-date {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-left: auto;
+}
+
+.response-text {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text);
+  margin: 0;
+}
+
+.review-footer {
+  padding: 16px 24px 24px 24px;
+  border-top: 1px solid var(--border);
+}
+
+.footer-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.respond-btn {
+  background-color: var(--accent);
+  color: white;
+}
+
+.respond-btn:hover {
+  background-color: var(--accent-hover);
+}
+
+.footer-actions button {
+  font-size: 0.875rem;
+}
+
+.footer-actions button mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .review-header {
+    padding: 20px 20px 12px 20px;
+  }
+
+  .review-content {
+    padding: 0 20px 12px 20px;
+  }
+
+  .review-footer {
+    padding: 12px 20px 20px 20px;
+  }
+
+  .user-info {
+    gap: 10px;
+  }
+
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .user-name {
+    font-size: 0.875rem;
+  }
+
+  .parking-name {
+    font-size: 0.8125rem;
+  }
+
+  .footer-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .footer-actions button {
+    justify-content: center;
+  }
+}

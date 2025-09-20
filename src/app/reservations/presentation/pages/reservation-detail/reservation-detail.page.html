@@ -1,0 +1,108 @@
+<div class="detail-container" *ngIf="reservation$ | async as reservation; else loading">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <button mat-icon-button (click)="onBack()" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1 class="page-title">Detalle de reserva #{{ reservation.id }}</h1>
+    </div>
+    <div class="header-actions">
+      <span class="support-link">Soporte</span>
+      <span class="account-link">Cuenta</span>
+    </div>
+  </div>
+
+  <!-- Detail Card -->
+  <div class="detail-card">
+    <div class="detail-content">
+      <div class="detail-field">
+        <label class="field-label">Usuario</label>
+        <div class="field-value">{{ reservation.userName || 'N/A' }}</div>
+      </div>
+
+      <div class="detail-field">
+        <label class="field-label">Email</label>
+        <div class="field-value">{{ reservation.userEmail || 'N/A' }}</div>
+      </div>
+
+      <div class="detail-field">
+        <label class="field-label">Horario</label>
+        <div class="field-value">
+          {{ formatTime(reservation.startTime) }} - {{ formatTime(reservation.endTime) }}
+        </div>
+      </div>
+
+      <div class="detail-field">
+        <label class="field-label">Espacio</label>
+        <div class="field-value">{{ reservation.space || 'N/A' }}</div>
+      </div>
+
+      <div class="detail-field">
+        <label class="field-label">Monto</label>
+        <div class="field-value">
+          {{ formatCurrency(reservation.totalPrice, reservation.currency) }}
+        </div>
+      </div>
+
+      <div class="detail-field">
+        <label class="field-label">Estado</label>
+        <div class="field-value">
+          <app-status-pill [status]="reservation.status"></app-status-pill>
+        </div>
+      </div>
+
+      <div class="detail-field">
+        <label class="field-label">Parking</label>
+        <div class="field-value">{{ reservation.parkingName || 'N/A' }}</div>
+      </div>
+
+      <div class="detail-field">
+        <label class="field-label">Placa del vehículo</label>
+        <div class="field-value">{{ reservation.vehiclePlate || 'N/A' }}</div>
+      </div>
+
+      <div class="detail-field">
+        <label class="field-label">Fecha de creación</label>
+        <div class="field-value">{{ formatDateTime(reservation.createdAt) }}</div>
+      </div>
+
+      <div class="detail-field">
+        <label class="field-label">Última actualización</label>
+        <div class="field-value">{{ formatDateTime(reservation.updatedAt) }}</div>
+      </div>
+    </div>
+
+    <div class="detail-actions">
+      <button mat-flat-button
+              color="accent"
+              class="confirm-btn"
+              *ngIf="canConfirm(reservation.status)"
+              (click)="onConfirmReservation(reservation)">
+        Confirmar
+      </button>
+
+      <button mat-stroked-button
+              class="cancel-btn"
+              *ngIf="canCancel(reservation.status)"
+              (click)="onCancelReservation(reservation)">
+        Cancelar
+      </button>
+
+      <button mat-button
+              class="export-btn"
+              (click)="onExportReservation(reservation)">
+        Exportar CSV
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading-container">
+    <div class="loading-spinner">
+      <mat-icon>hourglass_empty</mat-icon>
+      <p>Cargando reserva...</p>
+    </div>
+  </div>
+</ng-template>

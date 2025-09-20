@@ -1,227 +1,384 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
+import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { AuthService } from '../../../iam/services/auth.service';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatBadgeModule } from '@angular/material/badge';
+import { BehaviorSubject } from 'rxjs';
+
+// Analytics Port
+import { AnalyticsPort } from '../../domain/services/analytics.port';
+
+// DTOs
+import {
+  TotalsKpiDTO,
+  RevenueByMonthDTO,
+  OccupancyByHourDTO,
+  ActivityItemDTO,
+  TopParkingDTO
+} from '../../domain/dtos/metrics.dto';
+
+interface KpiCard {
+  id: string;
+  title: string;
+  value: string;
+  delta: string;
+  deltaType: 'positive' | 'negative' | 'neutral';
+  icon: string;
+  color: string;
+  loading?: boolean;
+}
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
   imports: [
     CommonModule,
-    RouterModule,
-    MatCardModule,
     MatIconModule,
     MatButtonModule,
-    MatGridListModule
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+    MatBadgeModule
   ],
-  template: `
-    <div class="dashboard-container">
-      <div class="dashboard-header">
-        <h1>¡Bienvenido de vuelta, {{ getUserFirstName() }}!</h1>
-        <p>Aquí tienes un resumen rápido de tus parkings</p>
-      </div>
-
-      <div class="dashboard-content">
-        <div class="stats-grid">
-          <mat-card class="stat-card">
-            <mat-card-content>
-              <div class="stat-item">
-                <mat-icon class="stat-icon primary">local_parking</mat-icon>
-                <div class="stat-info">
-                  <h3>Total Parkings</h3>
-                  <p class="stat-number">{{ totalParkings }}</p>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-
-          <mat-card class="stat-card">
-            <mat-card-content>
-              <div class="stat-item">
-                <mat-icon class="stat-icon success">trending_up</mat-icon>
-                <div class="stat-info">
-                  <h3>Ocupación Promedio</h3>
-                  <p class="stat-number">{{ avgOccupation }}%</p>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-
-          <mat-card class="stat-card">
-            <mat-card-content>
-              <div class="stat-item">
-                <mat-icon class="stat-icon accent">attach_money</mat-icon>
-                <div class="stat-info">
-                  <h3>Ingresos del Mes</h3>
-                  <p class="stat-number">{{ formatCurrency(monthlyRevenue) }}</p>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-
-          <mat-card class="stat-card">
-            <mat-card-content>
-              <div class="stat-item">
-                <mat-icon class="stat-icon warning">people</mat-icon>
-                <div class="stat-info">
-                  <h3>Usuarios Únicos</h3>
-                  <p class="stat-number">{{ uniqueUsers }}</p>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </div>
-
-        <div class="quick-actions">
-          <h2>Acciones Rápidas</h2>
-          <div class="actions-grid">
-            <mat-card class="action-card" routerLink="/parkings/new">
-              <mat-card-content>
-                <mat-icon>add_location</mat-icon>
-                <h3>Nuevo Parking</h3>
-                <p>Registra un nuevo parking</p>
-              </mat-card-content>
-            </mat-card>
-
-            <mat-card class="action-card" routerLink="/parkings">
-              <mat-card-content>
-                <mat-icon>list</mat-icon>
-                <h3>Mis Parkings</h3>
-                <p>Ver todos mis parkings</p>
-              </mat-card-content>
-            </mat-card>
-
-            <mat-card class="action-card" routerLink="/me/profile">
-              <mat-card-content>
-                <mat-icon>account_circle</mat-icon>
-                <h3>Mi Perfil</h3>
-                <p>Actualizar información</p>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-      </div>
-    </div>
-  `,
-  styles: [`
-    :host {
-      --card: #fff;
-      --bg: #F9FAFB;
-      --border: #E5E7EB;
-      --text: #111827;
-      --muted: #6B7280;
-      --primary: #6D5AE6;
-      --accent: #F59E0B;
-      --success: #10B981;
-      --warning: #F59E0B;
-      --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.03);
-    }
-
-    .dashboard-container {
-      padding: 24px;
-      background: var(--bg);
-      min-height: 100vh;
-    }
-
-    .dashboard-header h1 {
-      color: var(--text);
-      font-size: 32px;
-      font-weight: 700;
-      margin: 0 0 8px 0;
-    }
-
-    .dashboard-header p {
-      color: var(--muted);
-      font-size: 16px;
-      margin: 0;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-bottom: 32px;
-    }
-
-    .stat-card {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-      transition: transform 0.2s ease;
-    }
-
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .stat-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-    }
-
-    .stat-icon.primary { background: var(--primary); color: white; }
-    .stat-icon.success { background: var(--success); color: white; }
-    .stat-icon.accent { background: var(--accent); color: white; }
-    .stat-icon.warning { background: var(--warning); color: white; }
-
-    .stat-number {
-      color: var(--text);
-      font-size: 24px;
-      font-weight: 700;
-      margin: 0;
-    }
-
-    .actions-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-    }
-
-    .action-card {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .action-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--primary);
-    }
-  `]
+  templateUrl: './home-page.html',
+  styleUrl: './home-page.css'
 })
 export class HomePage implements OnInit {
-  totalParkings = 0;
-  avgOccupation = 0;
-  monthlyRevenue = 0;
-  uniqueUsers = 0;
+  private analyticsService = inject(AnalyticsPort);
+  private router = inject(Router);
 
-  constructor(private authService: AuthService) {}
+  // Loading state
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  loading = this.loadingSubject.asObservable();
 
-  ngOnInit(): void {
-    this.totalParkings = 6;
-    this.avgOccupation = 78;
-    this.monthlyRevenue = 24500;
-    this.uniqueUsers = 1250;
+  // Signals for reactive data
+  private totalsKpi = signal<TotalsKpiDTO | null>(null);
+  revenueByMonth = signal<RevenueByMonthDTO[]>([]);
+  occupancyByHour = signal<OccupancyByHourDTO[]>([]);
+  recentActivity = signal<ActivityItemDTO[]>([]);
+  topParkings = signal<TopParkingDTO[]>([]);
+
+  // Computed KPI cards from the totals data
+  kpiCards = computed<KpiCard[]>(() => {
+    const totals = this.totalsKpi();
+    if (!totals) {
+      // Return default placeholder cards when no data
+      return [
+        {
+          id: 'revenue',
+          title: 'Ingresos Totales',
+          value: '$0',
+          delta: '+0%',
+          deltaType: 'neutral',
+          icon: 'attach_money',
+          color: '#16A34A',
+          loading: true
+        },
+        {
+          id: 'occupancy',
+          title: 'Espacios Ocupados',
+          value: '0/0',
+          delta: '0%',
+          deltaType: 'neutral',
+          icon: 'local_parking',
+          color: '#6D5AE6',
+          loading: true
+        },
+        {
+          id: 'users',
+          title: 'Usuarios Activos',
+          value: '0',
+          delta: '+0%',
+          deltaType: 'neutral',
+          icon: 'people',
+          color: '#F59E0B',
+          loading: true
+        },
+        {
+          id: 'parkings',
+          title: 'Parkings Registrados',
+          value: '0',
+          delta: '+0 este mes',
+          deltaType: 'neutral',
+          icon: 'business',
+          color: '#EF4444',
+          loading: true
+        }
+      ];
+    }
+
+    return [
+      {
+        id: 'revenue',
+        title: 'Ingresos Totales',
+        value: `${totals.totalRevenue.currency}${totals.totalRevenue.value.toLocaleString()}`,
+        delta: totals.totalRevenue.deltaText,
+        deltaType: totals.totalRevenue.deltaPercentage >= 0 ? 'positive' : 'negative',
+        icon: 'attach_money',
+        color: '#16A34A'
+      },
+      {
+        id: 'occupancy',
+        title: 'Espacios Ocupados',
+        value: `${totals.occupiedSpaces.occupied}/${totals.occupiedSpaces.total}`,
+        delta: `${totals.occupiedSpaces.percentage}%`,
+        deltaType: totals.occupiedSpaces.percentage >= 70 ? 'positive' : 'neutral',
+        icon: 'local_parking',
+        color: '#6D5AE6'
+      },
+      {
+        id: 'users',
+        title: 'Usuarios Activos',
+        value: totals.activeUsers.count.toLocaleString(),
+        delta: totals.activeUsers.deltaText,
+        deltaType: totals.activeUsers.deltaPercentage >= 0 ? 'positive' : 'negative',
+        icon: 'people',
+        color: '#F59E0B'
+      },
+      {
+        id: 'parkings',
+        title: 'Parkings Registrados',
+        value: totals.registeredParkings.total.toString(),
+        delta: totals.registeredParkings.deltaText,
+        deltaType: totals.registeredParkings.newThisMonth > 0 ? 'positive' : 'neutral',
+        icon: 'business',
+        color: '#EF4444'
+      }
+    ];
+  });
+
+  ngOnInit() {
+    console.log('🏠 HomePage initialized - Loading dashboard data...');
+    this.initializeDashboard();
   }
 
-  getUserFirstName(): string {
-    const user = this.authService.user();
-    return user?.firstName || 'Usuario';
+  /**
+   * Initialize dashboard with default data and then load real data
+   */
+  private initializeDashboard() {
+    // Set default empty arrays for components
+    this.revenueByMonth.set([]);
+    this.occupancyByHour.set([]);
+    this.recentActivity.set([]);
+    this.topParkings.set([]);
+
+    // Load real data
+    this.loadDashboardData();
   }
 
-  formatCurrency(amount: number): string {
-    return `$${amount.toLocaleString()}`;
+  /**
+   * Loads all dashboard data from the analytics service
+   */
+  private async loadDashboardData() {
+    this.loadingSubject.next(true);
+
+    try {
+      console.log('🔄 Loading dashboard data...');
+
+      // Load all dashboard data in parallel
+      await Promise.allSettled([
+        this.loadTotalsKpi(),
+        this.loadRevenueByMonth(),
+        this.loadOccupancyByHour(),
+        this.loadRecentActivity(),
+        this.loadTopParkings()
+      ]);
+
+      console.log('✅ Dashboard data loading completed');
+    } catch (error) {
+      console.error('❌ Critical error loading dashboard data:', error);
+    } finally {
+      this.loadingSubject.next(false);
+    }
+  }
+
+  /**
+   * Load totals KPI data
+   */
+  private async loadTotalsKpi(): Promise<void> {
+    try {
+      this.analyticsService.getTotalsKpis().subscribe({
+        next: (data: TotalsKpiDTO) => {
+          console.log('📊 Totals KPI loaded:', data);
+          this.totalsKpi.set(data);
+        },
+        error: (error: any) => {
+          console.error('❌ Error loading totals KPI:', error);
+        }
+      });
+    } catch (error) {
+      console.error('❌ Failed to subscribe to totals KPI:', error);
+    }
+  }
+
+  /**
+   * Load revenue by month data
+   */
+  private async loadRevenueByMonth(): Promise<void> {
+    try {
+      this.analyticsService.getRevenueByMonth().subscribe({
+        next: (data: RevenueByMonthDTO[]) => {
+          console.log('💰 Revenue by month loaded:', data);
+          this.revenueByMonth.set(data);
+        },
+        error: (error: any) => {
+          console.error('❌ Error loading revenue data:', error);
+          this.revenueByMonth.set([]);
+        }
+      });
+    } catch (error) {
+      console.error('❌ Failed to subscribe to revenue data:', error);
+    }
+  }
+
+  /**
+   * Load occupancy by hour data
+   */
+  private async loadOccupancyByHour(): Promise<void> {
+    try {
+      this.analyticsService.getOccupancyByHour().subscribe({
+        next: (data: OccupancyByHourDTO[]) => {
+          console.log('⏰ Occupancy by hour loaded:', data);
+          this.occupancyByHour.set(data);
+        },
+        error: (error: any) => {
+          console.error('❌ Error loading occupancy data:', error);
+          this.occupancyByHour.set([]);
+        }
+      });
+    } catch (error) {
+      console.error('❌ Failed to subscribe to occupancy data:', error);
+    }
+  }
+
+  /**
+   * Load recent activity data
+   */
+  private async loadRecentActivity(): Promise<void> {
+    try {
+      this.analyticsService.getRecentActivity().subscribe({
+        next: (data: ActivityItemDTO[]) => {
+          console.log('📋 Recent activity loaded:', data);
+          this.recentActivity.set(data);
+        },
+        error: (error: any) => {
+          console.error('❌ Error loading recent activity:', error);
+          this.recentActivity.set([]);
+        }
+      });
+    } catch (error) {
+      console.error('❌ Failed to subscribe to recent activity:', error);
+    }
+  }
+
+  /**
+   * Load top parkings data
+   */
+  private async loadTopParkings(): Promise<void> {
+    try {
+      this.analyticsService.getTopParkings().subscribe({
+        next: (data: TopParkingDTO[]) => {
+          console.log('🏆 Top parkings loaded:', data);
+          this.topParkings.set(data);
+        },
+        error: (error: any) => {
+          console.error('❌ Error loading top parkings:', error);
+          this.topParkings.set([]);
+        }
+      });
+    } catch (error) {
+      console.error('❌ Failed to subscribe to top parkings:', error);
+    }
+  }
+
+  // ========================================
+  // HEADER BUTTON HANDLERS FOR THE HTML
+  // ========================================
+
+  /**
+   * Refresh all dashboard data - Handler for refresh button in HTML
+   */
+  onRefreshData() {
+    console.log('🔄 Refreshing dashboard data...');
+    this.loadDashboardData();
+  }
+
+  /**
+   * Handle search action - Handler for search button in HTML
+   */
+  onSearch() {
+    console.log('🔍 Search functionality triggered');
+    // TODO: Implement search functionality
+    alert('Funcionalidad de búsqueda próximamente');
+  }
+
+  /**
+   * Handle notifications action - Handler for notifications button in HTML
+   */
+  onNotifications() {
+    console.log('🔔 Notifications panel triggered');
+    // TODO: Implement notifications panel
+    alert('Panel de notificaciones próximamente');
+  }
+
+  /**
+   * Handle profile action - Handler for profile button in HTML
+   */
+  onProfile() {
+    console.log('👤 Profile navigation triggered');
+    // Navigate to profile page
+    this.router.navigate(['/me/profile']);
+  }
+
+  // ========================================
+  // UTILITY METHODS FOR THE NEW HTML
+  // ========================================
+
+  /**
+   * Get revenue percentage for chart visualization
+   */
+  getRevenuePercentage(revenue: number): number {
+    const revenues = this.revenueByMonth();
+    if (revenues.length === 0) return 0;
+
+    const maxRevenue = Math.max(...revenues.map(r => r.revenue));
+    return maxRevenue > 0 ? (revenue / maxRevenue) * 100 : 0;
+  }
+
+  /**
+   * Get appropriate icon for activity type
+   */
+  getActivityIcon(type: string): string {
+    const iconMap: { [key: string]: string } = {
+      'reservation_confirmed': 'check_circle',
+      'payment_processed': 'payment',
+      'reservation_cancelled': 'cancel',
+      'parking_created': 'add_location',
+      'review_added': 'star'
+    };
+
+    return iconMap[type] || 'info';
+  }
+
+  /**
+   * Get human readable status text
+   */
+  getStatusText(status: string): string {
+    const statusMap: { [key: string]: string } = {
+      'confirmed': 'Confirmado',
+      'paid': 'Pagado',
+      'cancelled': 'Cancelado',
+      'created': 'Creado',
+      'pending': 'Pendiente',
+      'active': 'Activo',
+      'maintenance': 'Mantenimiento',
+      'inactive': 'Inactivo'
+    };
+
+    return statusMap[status] || status;
   }
 }

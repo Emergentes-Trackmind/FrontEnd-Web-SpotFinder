@@ -33,9 +33,25 @@ export const environment = {
       toggle2fa: '/2fa/toggle'
     }
   },
+  reservations: {
+    base: 'http://localhost:3001/api/reservations'
+  },
+  payments: {
+    base: 'http://localhost:3001/api/reservationPayments'
+  },
   featureFlags: {
     useMockApi: true,
     logHttp: true,
     enableOfflineMode: false
+  },
+  analytics: {
+    base: 'http://localhost:3001/api/analytics',
+    endpoints: {
+      totals: '/totals',
+      revenueByMonth: '/revenue',
+      occupancyByHour: '/occupancy',
+      recentActivity: '/activity',
+      topParkings: '/top-parkings'
+    }
   }
 };

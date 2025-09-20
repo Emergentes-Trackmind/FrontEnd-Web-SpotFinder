@@ -1,0 +1,401 @@
+:host {
+  --primary: #6D5AE6;
+  --success: #16A34A;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --info: #8B5CF6;
+  --text: #111827;
+  --text-light: #6B7280;
+  --text-muted: #9CA3AF;
+  --bg: #FFFFFF;
+  --border: #E5E7EB;
+  --border-light: #F3F4F6;
+  --gold: #FFD700;
+  --silver: #C0C0C0;
+  --bronze: #CD7F32;
+}
+
+.top-parkings-card {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24px 24px 16px 24px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.title-section {
+  flex: 1;
+}
+
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 4px 0;
+}
+
+.card-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.actions button {
+  color: var(--text-light);
+}
+
+/* Parkings Content */
+.parkings-content {
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+.parkings-list {
+  padding: 8px 0;
+}
+
+.parking-item {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-light);
+  transition: all 0.2s ease;
+}
+
+.parking-item:hover {
+  background-color: #FAFBFC;
+  transform: translateY(-1px);
+}
+
+.parking-item.last {
+  border-bottom: none;
+}
+
+/* Parking Rank */
+.parking-rank {
+  flex-shrink: 0;
+  margin-right: 16px;
+}
+
+.rank-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.rank-badge.rank-first {
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+}
+
+.rank-badge.rank-second {
+  background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+  box-shadow: 0 4px 8px rgba(192, 192, 192, 0.3);
+}
+
+.rank-badge.rank-third {
+  background: linear-gradient(135deg, #CD7F32, #B8730A);
+  box-shadow: 0 4px 8px rgba(205, 127, 50, 0.3);
+}
+
+.rank-badge.rank-other {
+  background: linear-gradient(135deg, var(--text-light), var(--text-muted));
+}
+
+.rank-number {
+  font-weight: 700;
+}
+
+/* Parking Details */
+.parking-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.parking-main {
+  margin-bottom: 12px;
+}
+
+.parking-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.parking-address {
+  display: flex;
+  align-items: center;
+  font-size: 0.8125rem;
+  color: var(--text-light);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.address-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+
+/* Parking Metrics */
+.parking-metrics {
+  display: flex;
+  gap: 16px;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 60px;
+}
+
+.metric-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--text-light);
+  margin-bottom: 2px;
+}
+
+.metric-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  margin-top: 2px;
+}
+
+/* Specific metric colors */
+.metric:nth-child(1) .metric-value {
+  color: var(--primary);
+}
+
+.metric:nth-child(2) .metric-value {
+  color: var(--warning);
+}
+
+.metric:nth-child(3) .metric-value {
+  color: var(--success);
+}
+
+/* Parking Status */
+.parking-status {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+.status-indicator.status-active {
+  background-color: var(--success);
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+}
+
+.status-indicator.status-maintenance {
+  background-color: var(--warning);
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+}
+
+.status-indicator.status-inactive {
+  background-color: var(--danger);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+.status-text {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.empty-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text);
+  margin: 0 0 8px 0;
+}
+
+.empty-message {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  margin: 0;
+}
+
+/* Loading State */
+.loading-state {
+  padding: 24px;
+  text-align: center;
+}
+
+.loading-text {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  margin: 16px 0 0 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .parking-item {
+    padding: 12px 16px;
+  }
+
+  .card-header {
+    padding: 16px;
+  }
+
+  .parking-rank {
+    margin-right: 12px;
+  }
+
+  .rank-badge {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
+
+  .parking-metrics {
+    gap: 12px;
+  }
+
+  .metric {
+    min-width: 50px;
+  }
+
+  .metric-value {
+    font-size: 0.8125rem;
+  }
+
+  .metric-label {
+    font-size: 0.6875rem;
+  }
+
+  .parking-status {
+    margin-left: 12px;
+  }
+
+  .status-text {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .parking-metrics {
+    gap: 8px;
+  }
+
+  .metric {
+    min-width: 40px;
+  }
+
+  .parking-name {
+    font-size: 0.875rem;
+  }
+
+  .parking-address {
+    font-size: 0.75rem;
+  }
+}
+
+/* Custom scrollbar */
+.parkings-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.parkings-content::-webkit-scrollbar-track {
+  background: var(--border-light);
+}
+
+.parkings-content::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.parkings-content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Animation for rank badges */
+@keyframes rankGlow {
+  0%, 100% {
+    box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 12px rgba(255, 215, 0, 0.4);
+  }
+}
+
+.rank-badge.rank-first {
+  animation: rankGlow 2s ease-in-out infinite;
+}
+
+/* Hover effects */
+.parking-item:hover .rank-badge.rank-first {
+  animation-duration: 1s;
+}
+
+.parking-item:hover .parking-name {
+  color: var(--primary);
+}
+
+.parking-item:hover .metric-value {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}

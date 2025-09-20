@@ -11,6 +11,8 @@ import { HttpErrorInterceptor } from './core/http/http-error.interceptor';
 import { AuthInterceptor } from './iam/infrastructure/http/auth.interceptor';
 import { AuthRepository } from './iam/infrastructure/repositories/auth.repo';
 import { ProfileRepositoryImpl } from './Profile/infrastructure/repositories/profile.repo';
+import { DASHBOARD_PROVIDERS } from './dashboard/dashboard.providers';
+import { REVIEWS_PROVIDERS } from './reviews/reviews.providers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -68,6 +70,12 @@ export const appConfig: ApplicationConfig = {
     {
       provide: 'UpdateProfileRepository',
       useClass: ProfileRepositoryImpl
-    }
+    },
+
+    // Dashboard Analytics providers
+    ...DASHBOARD_PROVIDERS,
+
+    // Reviews providers
+    ...REVIEWS_PROVIDERS
   ]
 };

@@ -12,7 +12,7 @@
       ],
       "isEmailVerified": true,
       "createdAt": "2023-12-01T10:00:00.000Z",
-      "lastLoginAt": "2025-09-18T03:44:39.717Z"
+      "lastLoginAt": "2025-09-20T08:07:55.978Z"
     },
     {
       "id": "2",
@@ -64,7 +64,7 @@
       ],
       "isEmailVerified": false,
       "createdAt": "2025-09-18T04:36:21.625Z",
-      "lastLoginAt": "2025-09-18T05:43:47.602Z"
+      "lastLoginAt": "2025-09-20T08:05:26.438Z"
     },
     {
       "id": "1758172768732",
@@ -77,7 +77,7 @@
       ],
       "isEmailVerified": false,
       "createdAt": "2025-09-18T05:19:28.732Z",
-      "lastLoginAt": "2025-09-18T05:44:10.250Z"
+      "lastLoginAt": "2025-09-20T02:42:24.934Z"
     }
   ],
   "tokens": [
@@ -356,465 +356,364 @@
       "status": "Activo"
     }
   ],
-  "analytics": [
-    {
-      "id": "1",
-      "profileId": "1",
-      "kpis": {
-        "avgOccupation": {
-          "value": 78.5,
-          "trend": 5.2
-        },
-        "monthlyRevenue": {
-          "value": 18500,
-          "trend": 12.8
-        },
-        "uniqueUsers": {
-          "value": 342,
-          "trend": -2.1
-        },
-        "avgTime": {
-          "value": 3.2,
-          "trend": 0.8
-        }
+  "analytics": {
+    "totals": {
+      "totalRevenue": {
+        "value": 24580,
+        "currency": "USD",
+        "deltaPercentage": 12.3,
+        "deltaText": "vs mes anterior"
       },
-      "hourlyOccupation": [
-        {
-          "hour": "06:00",
-          "percentage": 25
-        },
-        {
-          "hour": "07:00",
-          "percentage": 45
-        },
-        {
-          "hour": "08:00",
-          "percentage": 78
-        },
-        {
-          "hour": "09:00",
-          "percentage": 89
-        },
-        {
-          "hour": "10:00",
-          "percentage": 95
-        },
-        {
-          "hour": "11:00",
-          "percentage": 92
-        },
-        {
-          "hour": "12:00",
-          "percentage": 88
-        },
-        {
-          "hour": "13:00",
-          "percentage": 85
-        },
-        {
-          "hour": "14:00",
-          "percentage": 82
-        },
-        {
-          "hour": "15:00",
-          "percentage": 86
-        },
-        {
-          "hour": "16:00",
-          "percentage": 90
-        },
-        {
-          "hour": "17:00",
-          "percentage": 94
-        },
-        {
-          "hour": "18:00",
-          "percentage": 91
-        },
-        {
-          "hour": "19:00",
-          "percentage": 87
-        },
-        {
-          "hour": "20:00",
-          "percentage": 75
-        },
-        {
-          "hour": "21:00",
-          "percentage": 62
-        },
-        {
-          "hour": "22:00",
-          "percentage": 45
-        },
-        {
-          "hour": "23:00",
-          "percentage": 32
-        }
-      ],
-      "recentActivity": [
-        {
-          "action": "Nueva reserva",
-          "details": "Cliente VIP - Plaza premium por 1 mes",
-          "timeAgo": "hace 5 min"
-        },
-        {
-          "action": "Pago completado",
-          "details": "Tarjeta **** 1234 - €125.00",
-          "timeAgo": "hace 12 min"
-        },
-        {
-          "action": "Usuario registrado",
-          "details": "Nuevo cliente desde app móvil",
-          "timeAgo": "hace 25 min"
-        },
-        {
-          "action": "Mantenimiento programado",
-          "details": "Revisión sistema ventilación - Zona B",
-          "timeAgo": "hace 1 hora"
-        },
-        {
-          "action": "Incidencia resuelta",
-          "details": "Problema de iluminación sector 3 solucionado",
-          "timeAgo": "hace 2 horas"
-        }
-      ]
+      "occupiedSpaces": {
+        "occupied": 847,
+        "total": 1200,
+        "percentage": 70.6,
+        "text": "de 1,200 totales"
+      },
+      "activeUsers": {
+        "count": 2341,
+        "deltaPercentage": 8.2,
+        "deltaText": "últimos 30 días"
+      },
+      "registeredParkings": {
+        "total": 48,
+        "newThisMonth": 3,
+        "deltaText": "3 nuevos este mes"
+      }
     },
-    {
-      "id": "2",
-      "profileId": "2",
-      "kpis": {
-        "avgOccupation": {
-          "value": 65.3,
-          "trend": -3.1
-        },
-        "monthlyRevenue": {
-          "value": 22300,
-          "trend": 8.4
-        },
-        "uniqueUsers": {
-          "value": 428,
-          "trend": 6.7
-        },
-        "avgTime": {
-          "value": 2.8,
-          "trend": -1.2
+    "revenue": [
+      {
+        "month": "2024-10",
+        "revenue": 18500,
+        "currency": "USD"
+      },
+      {
+        "month": "2024-11",
+        "revenue": 19200,
+        "currency": "USD"
+      },
+      {
+        "month": "2024-12",
+        "revenue": 21800,
+        "currency": "USD"
+      },
+      {
+        "month": "2025-01",
+        "revenue": 20100,
+        "currency": "USD"
+      },
+      {
+        "month": "2025-02",
+        "revenue": 22400,
+        "currency": "USD"
+      },
+      {
+        "month": "2025-03",
+        "revenue": 23900,
+        "currency": "USD"
+      },
+      {
+        "month": "2025-04",
+        "revenue": 22100,
+        "currency": "USD"
+      },
+      {
+        "month": "2025-05",
+        "revenue": 24800,
+        "currency": "USD"
+      },
+      {
+        "month": "2025-06",
+        "revenue": 26200,
+        "currency": "USD"
+      },
+      {
+        "month": "2025-07",
+        "revenue": 25100,
+        "currency": "USD"
+      },
+      {
+        "month": "2025-08",
+        "revenue": 27300,
+        "currency": "USD"
+      },
+      {
+        "month": "2025-09",
+        "revenue": 24580,
+        "currency": "USD"
+      }
+    ],
+    "occupancy": [
+      {
+        "hour": 0,
+        "percentage": 15,
+        "occupied": 180,
+        "total": 1200
+      },
+      {
+        "hour": 1,
+        "percentage": 12,
+        "occupied": 144,
+        "total": 1200
+      },
+      {
+        "hour": 2,
+        "percentage": 10,
+        "occupied": 120,
+        "total": 1200
+      },
+      {
+        "hour": 3,
+        "percentage": 8,
+        "occupied": 96,
+        "total": 1200
+      },
+      {
+        "hour": 4,
+        "percentage": 12,
+        "occupied": 144,
+        "total": 1200
+      },
+      {
+        "hour": 5,
+        "percentage": 25,
+        "occupied": 300,
+        "total": 1200
+      },
+      {
+        "hour": 6,
+        "percentage": 45,
+        "occupied": 540,
+        "total": 1200
+      },
+      {
+        "hour": 7,
+        "percentage": 68,
+        "occupied": 816,
+        "total": 1200
+      },
+      {
+        "hour": 8,
+        "percentage": 85,
+        "occupied": 1020,
+        "total": 1200
+      },
+      {
+        "hour": 9,
+        "percentage": 92,
+        "occupied": 1104,
+        "total": 1200
+      },
+      {
+        "hour": 10,
+        "percentage": 88,
+        "occupied": 1056,
+        "total": 1200
+      },
+      {
+        "hour": 11,
+        "percentage": 85,
+        "occupied": 1020,
+        "total": 1200
+      },
+      {
+        "hour": 12,
+        "percentage": 82,
+        "occupied": 984,
+        "total": 1200
+      },
+      {
+        "hour": 13,
+        "percentage": 79,
+        "occupied": 948,
+        "total": 1200
+      },
+      {
+        "hour": 14,
+        "percentage": 75,
+        "occupied": 900,
+        "total": 1200
+      },
+      {
+        "hour": 15,
+        "percentage": 78,
+        "occupied": 936,
+        "total": 1200
+      },
+      {
+        "hour": 16,
+        "percentage": 83,
+        "occupied": 996,
+        "total": 1200
+      },
+      {
+        "hour": 17,
+        "percentage": 89,
+        "occupied": 1068,
+        "total": 1200
+      },
+      {
+        "hour": 18,
+        "percentage": 85,
+        "occupied": 1020,
+        "total": 1200
+      },
+      {
+        "hour": 19,
+        "percentage": 75,
+        "occupied": 900,
+        "total": 1200
+      },
+      {
+        "hour": 20,
+        "percentage": 65,
+        "occupied": 780,
+        "total": 1200
+      },
+      {
+        "hour": 21,
+        "percentage": 55,
+        "occupied": 660,
+        "total": 1200
+      },
+      {
+        "hour": 22,
+        "percentage": 42,
+        "occupied": 504,
+        "total": 1200
+      },
+      {
+        "hour": 23,
+        "percentage": 28,
+        "occupied": 336,
+        "total": 1200
+      }
+    ],
+    "activity": [
+      {
+        "id": "act1",
+        "type": "reservation_confirmed",
+        "title": "Reserva confirmada",
+        "description": "Reserva confirmada",
+        "userName": "María González",
+        "status": "confirmed",
+        "createdAt": "2025-09-19T14:25:00.000Z",
+        "relatedEntity": {
+          "id": "1000",
+          "name": "Parking Centro Comercial",
+          "type": "parking"
         }
       },
-      "hourlyOccupation": [
-        {
-          "hour": "06:00",
-          "percentage": 15
-        },
-        {
-          "hour": "07:00",
-          "percentage": 35
-        },
-        {
-          "hour": "08:00",
-          "percentage": 68
-        },
-        {
-          "hour": "09:00",
-          "percentage": 82
-        },
-        {
-          "hour": "10:00",
-          "percentage": 88
-        },
-        {
-          "hour": "11:00",
-          "percentage": 85
-        },
-        {
-          "hour": "12:00",
-          "percentage": 79
-        },
-        {
-          "hour": "13:00",
-          "percentage": 75
-        },
-        {
-          "hour": "14:00",
-          "percentage": 71
-        },
-        {
-          "hour": "15:00",
-          "percentage": 76
-        },
-        {
-          "hour": "16:00",
-          "percentage": 83
-        },
-        {
-          "hour": "17:00",
-          "percentage": 89
-        },
-        {
-          "hour": "18:00",
-          "percentage": 86
-        },
-        {
-          "hour": "19:00",
-          "percentage": 81
-        },
-        {
-          "hour": "20:00",
-          "percentage": 69
-        },
-        {
-          "hour": "21:00",
-          "percentage": 55
-        },
-        {
-          "hour": "22:00",
-          "percentage": 38
-        },
-        {
-          "hour": "23:00",
-          "percentage": 22
-        }
-      ],
-      "recentActivity": [
-        {
-          "action": "Promoción activada",
-          "details": "Descuento 20% fines de semana",
-          "timeAgo": "hace 8 min"
-        },
-        {
-          "action": "Reserva cancelada",
-          "details": "Cliente solicitó reembolso",
-          "timeAgo": "hace 15 min"
-        },
-        {
-          "action": "Actualización tarifas",
-          "details": "Nuevas tarifas nocturnas aplicadas",
-          "timeAgo": "hace 45 min"
-        }
-      ]
-    },
-    {
-      "id": "3",
-      "profileId": "3",
-      "kpis": {
-        "avgOccupation": {
-          "value": 92.1,
-          "trend": 15.6
-        },
-        "monthlyRevenue": {
-          "value": 45200,
-          "trend": 22.3
-        },
-        "uniqueUsers": {
-          "value": 1284,
-          "trend": 18.9
-        },
-        "avgTime": {
-          "value": 7.5,
-          "trend": 4.2
+      {
+        "id": "act2",
+        "type": "payment_processed",
+        "title": "Pago procesado",
+        "description": "Pago procesado",
+        "userName": "Carlos Ruiz",
+        "status": "paid",
+        "createdAt": "2025-09-19T14:12:00.000Z",
+        "relatedEntity": {
+          "id": "1001",
+          "name": "Parking Plaza Mayor",
+          "type": "parking"
         }
       },
-      "hourlyOccupation": [
-        {
-          "hour": "06:00",
-          "percentage": 85
-        },
-        {
-          "hour": "07:00",
-          "percentage": 88
-        },
-        {
-          "hour": "08:00",
-          "percentage": 92
-        },
-        {
-          "hour": "09:00",
-          "percentage": 95
-        },
-        {
-          "hour": "10:00",
-          "percentage": 97
-        },
-        {
-          "hour": "11:00",
-          "percentage": 96
-        },
-        {
-          "hour": "12:00",
-          "percentage": 94
-        },
-        {
-          "hour": "13:00",
-          "percentage": 93
-        },
-        {
-          "hour": "14:00",
-          "percentage": 95
-        },
-        {
-          "hour": "15:00",
-          "percentage": 96
-        },
-        {
-          "hour": "16:00",
-          "percentage": 98
-        },
-        {
-          "hour": "17:00",
-          "percentage": 99
-        },
-        {
-          "hour": "18:00",
-          "percentage": 97
-        },
-        {
-          "hour": "19:00",
-          "percentage": 94
-        },
-        {
-          "hour": "20:00",
-          "percentage": 91
-        },
-        {
-          "hour": "21:00",
-          "percentage": 89
-        },
-        {
-          "hour": "22:00",
-          "percentage": 87
-        },
-        {
-          "hour": "23:00",
-          "percentage": 86
-        }
-      ],
-      "recentActivity": [
-        {
-          "action": "Capacidad máxima",
-          "details": "Parking completo - activada lista de espera",
-          "timeAgo": "hace 2 min"
-        },
-        {
-          "action": "Reserva larga estancia",
-          "details": "Viaje internacional - 15 días",
-          "timeAgo": "hace 18 min"
-        },
-        {
-          "action": "Servicio shuttle",
-          "details": "Traslado completado - Terminal T1",
-          "timeAgo": "hace 22 min"
-        }
-      ]
-    },
-    {
-      "id": "4",
-      "profileId": "4",
-      "kpis": {
-        "avgOccupation": {
-          "value": 58.9,
-          "trend": 2.8
-        },
-        "monthlyRevenue": {
-          "value": 14800,
-          "trend": 5.1
-        },
-        "uniqueUsers": {
-          "value": 267,
-          "trend": 4.3
-        },
-        "avgTime": {
-          "value": 4.1,
-          "trend": 1.5
+      {
+        "id": "act3",
+        "type": "parking_created",
+        "title": "Nuevo parking registrado",
+        "description": "Nuevo parking registrado",
+        "userName": "Ana Martín",
+        "status": "created",
+        "createdAt": "2025-09-19T13:45:00.000Z",
+        "relatedEntity": {
+          "id": "new1",
+          "name": "Parking Norte",
+          "type": "parking"
         }
       },
-      "hourlyOccupation": [
-        {
-          "hour": "06:00",
-          "percentage": 20
-        },
-        {
-          "hour": "07:00",
-          "percentage": 30
-        },
-        {
-          "hour": "08:00",
-          "percentage": 45
-        },
-        {
-          "hour": "09:00",
-          "percentage": 55
-        },
-        {
-          "hour": "10:00",
-          "percentage": 65
-        },
-        {
-          "hour": "11:00",
-          "percentage": 70
-        },
-        {
-          "hour": "12:00",
-          "percentage": 75
-        },
-        {
-          "hour": "13:00",
-          "percentage": 72
-        },
-        {
-          "hour": "14:00",
-          "percentage": 68
-        },
-        {
-          "hour": "15:00",
-          "percentage": 71
-        },
-        {
-          "hour": "16:00",
-          "percentage": 76
-        },
-        {
-          "hour": "17:00",
-          "percentage": 78
-        },
-        {
-          "hour": "18:00",
-          "percentage": 74
-        },
-        {
-          "hour": "19:00",
-          "percentage": 69
-        },
-        {
-          "hour": "20:00",
-          "percentage": 62
-        },
-        {
-          "hour": "21:00",
-          "percentage": 48
-        },
-        {
-          "hour": "22:00",
-          "percentage": 35
-        },
-        {
-          "hour": "23:00",
-          "percentage": 25
+      {
+        "id": "act4",
+        "type": "reservation_cancelled",
+        "title": "Reserva cancelada",
+        "description": "Reserva cancelada",
+        "userName": "Luis Fernández",
+        "status": "cancelled",
+        "createdAt": "2025-09-19T13:30:00.000Z",
+        "relatedEntity": {
+          "id": "1003",
+          "name": "Parking Aeropuerto",
+          "type": "parking"
         }
-      ],
-      "recentActivity": [
-        {
-          "action": "Carga eléctrica",
-          "details": "Nuevo punto de carga instalado",
-          "timeAgo": "hace 30 min"
-        },
-        {
-          "action": "Evento especial",
-          "details": "Descuento visitantes museo del Prado",
-          "timeAgo": "hace 1 hora"
+      },
+      {
+        "id": "act5",
+        "type": "payment_processed",
+        "title": "Pago procesado",
+        "description": "Pago procesado",
+        "userName": "Elena Vega",
+        "status": "paid",
+        "createdAt": "2025-09-19T13:15:00.000Z",
+        "relatedEntity": {
+          "id": "1005",
+          "name": "Parking Hospital Central",
+          "type": "parking"
         }
-      ]
-    }
-  ],
+      }
+    ],
+    "topParkings": [
+      {
+        "id": "1",
+        "name": "Parking Centro Comercial",
+        "occupancyPercentage": 92,
+        "rating": 4.8,
+        "monthlyRevenue": 8340,
+        "currency": "USD",
+        "address": "Mall Central",
+        "status": "active"
+      },
+      {
+        "id": "2",
+        "name": "Parking Plaza Mayor",
+        "occupancyPercentage": 87,
+        "rating": 4.5,
+        "monthlyRevenue": 7260,
+        "currency": "USD",
+        "address": "Plaza Mayor",
+        "status": "active"
+      },
+      {
+        "id": "3",
+        "name": "Parking Estación Norte",
+        "occupancyPercentage": 78,
+        "rating": 4.2,
+        "monthlyRevenue": 6180,
+        "currency": "USD",
+        "address": "Estación Norte",
+        "status": "active"
+      },
+      {
+        "id": "4",
+        "name": "Parking Aeropuerto",
+        "occupancyPercentage": 95,
+        "rating": 4.7,
+        "monthlyRevenue": 12500,
+        "currency": "USD",
+        "address": "Terminal T1",
+        "status": "active"
+      },
+      {
+        "id": "5",
+        "name": "Parking Hospital Central",
+        "occupancyPercentage": 65,
+        "rating": 4,
+        "monthlyRevenue": 4200,
+        "currency": "USD",
+        "address": "Zona Hospitalaria",
+        "status": "maintenance"
+      }
+    ]
+  },
   "locations": [
     {
       "id": "1",
@@ -1370,5 +1269,387 @@
       "id": "SopYy7v"
     }
   ],
-  "uploads": []
+  "uploads": [],
+  "reservations": [
+    {
+      "id": "1000",
+      "userId": "1",
+      "userName": "Usuario 1",
+      "userEmail": "admin@quadrapp.com",
+      "vehiclePlate": "ABC123",
+      "parkingId": "1",
+      "parkingName": "Parking Central Plaza",
+      "parkingSpotId": "spot-a1",
+      "space": "A-1",
+      "startTime": "2025-09-10T14:30:00.000Z",
+      "endTime": "2025-09-10T16:30:00.000Z",
+      "totalPrice": 15,
+      "currency": "USD",
+      "status": "PENDING",
+      "createdAt": "2025-09-01T10:00:00.000Z",
+      "updatedAt": "2025-09-01T10:00:00.000Z"
+    },
+    {
+      "id": "1001",
+      "userId": "2",
+      "userName": "Usuario 2",
+      "userEmail": "user@quadrapp.com",
+      "vehiclePlate": "DEF456",
+      "parkingId": "1",
+      "parkingName": "Parking Central Plaza",
+      "parkingSpotId": "spot-a2",
+      "space": "A-2",
+      "startTime": "2025-09-10T14:30:00.000Z",
+      "endTime": "2025-09-10T16:30:00.000Z",
+      "totalPrice": 17,
+      "currency": "USD",
+      "status": "CONFIRMED",
+      "createdAt": "2025-09-02T11:00:00.000Z",
+      "updatedAt": "2025-09-02T12:00:00.000Z"
+    },
+    {
+      "id": "1002",
+      "userId": "1758166617803",
+      "userName": "Usuario 3",
+      "userEmail": "luis.eduardo.200325@gmail.com",
+      "vehiclePlate": "GHI789",
+      "parkingId": "2",
+      "parkingName": "Parking Norte",
+      "parkingSpotId": "spot-b3",
+      "space": "A-3",
+      "startTime": "2025-09-10T14:30:00.000Z",
+      "endTime": "2025-09-10T16:30:00.000Z",
+      "totalPrice": 19,
+      "currency": "USD",
+      "status": "PAID",
+      "createdAt": "2025-09-03T12:00:00.000Z",
+      "updatedAt": "2025-09-03T13:00:00.000Z"
+    },
+    {
+      "id": "1003",
+      "userId": "1758167131165",
+      "userName": "Usuario 4",
+      "userEmail": "luis.eduardo@gmail.com",
+      "vehiclePlate": "JKL012",
+      "parkingId": "3",
+      "parkingName": "Parking Sur",
+      "parkingSpotId": "spot-c4",
+      "space": "B-1",
+      "startTime": "2025-09-10T14:30:00.000Z",
+      "endTime": "2025-09-10T16:30:00.000Z",
+      "totalPrice": 21,
+      "currency": "USD",
+      "status": "CANCELLED",
+      "createdAt": "2025-09-04T13:00:00.000Z",
+      "updatedAt": "2025-09-04T14:00:00.000Z"
+    },
+    {
+      "id": "1004",
+      "userId": "1758170181625",
+      "userName": "Usuario 5",
+      "userEmail": "pedro@gmail.com",
+      "vehiclePlate": "MNO345",
+      "parkingId": "1",
+      "parkingName": "Parking Central Plaza",
+      "parkingSpotId": "spot-a5",
+      "space": "A-5",
+      "startTime": "2025-09-10T14:30:00.000Z",
+      "endTime": "2025-09-10T16:30:00.000Z",
+      "totalPrice": 23,
+      "currency": "USD",
+      "status": "CONFIRMED",
+      "createdAt": "2025-09-05T14:00:00.000Z",
+      "updatedAt": "2025-09-20T04:00:16.023Z"
+    },
+    {
+      "id": "1005",
+      "userId": "1758172768732",
+      "userName": "Usuario 6",
+      "userEmail": "lalito@gmail.com",
+      "vehiclePlate": "PQR678",
+      "parkingId": "2",
+      "parkingName": "Parking Norte",
+      "parkingSpotId": "spot-b6",
+      "space": "B-2",
+      "startTime": "2025-09-10T14:30:00.000Z",
+      "endTime": "2025-09-10T16:30:00.000Z",
+      "totalPrice": 25,
+      "currency": "USD",
+      "status": "CANCELLED",
+      "createdAt": "2025-09-06T15:00:00.000Z",
+      "updatedAt": "2025-09-20T04:00:08.662Z"
+    },
+    {
+      "id": "1006",
+      "userId": "1",
+      "userName": "Usuario 7",
+      "userEmail": "admin@quadrapp.com",
+      "vehiclePlate": "STU901",
+      "parkingId": "3",
+      "parkingName": "Parking Sur",
+      "parkingSpotId": "spot-c7",
+      "space": "C-1",
+      "startTime": "2025-09-10T14:30:00.000Z",
+      "endTime": "2025-09-10T16:30:00.000Z",
+      "totalPrice": 27,
+      "currency": "USD",
+      "status": "PAID",
+      "createdAt": "2025-09-07T16:00:00.000Z",
+      "updatedAt": "2025-09-07T17:00:00.000Z"
+    },
+    {
+      "id": "1007",
+      "userId": "2",
+      "userName": "Usuario 8",
+      "userEmail": "user@quadrapp.com",
+      "vehiclePlate": "VWX234",
+      "parkingId": "1",
+      "parkingName": "Parking Central Plaza",
+      "parkingSpotId": "spot-a8",
+      "space": "A-8",
+      "startTime": "2025-09-10T14:30:00.000Z",
+      "endTime": "2025-09-10T16:30:00.000Z",
+      "totalPrice": 29,
+      "currency": "USD",
+      "status": "CANCELLED",
+      "createdAt": "2025-09-08T17:00:00.000Z",
+      "updatedAt": "2025-09-08T18:00:00.000Z"
+    }
+  ],
+  "reservationPayments": [
+    {
+      "id": "1",
+      "reservationId": "1000",
+      "amount": 15,
+      "paidAt": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "2",
+      "reservationId": "1001",
+      "amount": 17,
+      "paidAt": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "3",
+      "reservationId": "1002",
+      "amount": 19,
+      "paidAt": "2025-09-03T13:00:00.000Z",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "4",
+      "reservationId": "1003",
+      "amount": 21,
+      "paidAt": null,
+      "status": "CANCELLED"
+    },
+    {
+      "id": "5",
+      "reservationId": "1004",
+      "amount": 23,
+      "paidAt": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "6",
+      "reservationId": "1005",
+      "amount": 25,
+      "paidAt": null,
+      "status": "PENDING"
+    },
+    {
+      "id": "7",
+      "reservationId": "1006",
+      "amount": 27,
+      "paidAt": "2025-09-07T17:00:00.000Z",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "8",
+      "reservationId": "1007",
+      "amount": 29,
+      "paidAt": null,
+      "status": "CANCELLED"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "1",
+      "drivers_id": "1",
+      "parkings_id": "1",
+      "rating": 5,
+      "comment": "Excelente servicio, muy fácil de usar la app y el estacionamiento estaba limpio y seguro. Definitivamente lo recomiendo.",
+      "created_at": "2024-01-15T10:30:00.000Z",
+      "updated_at": "2024-01-15T10:30:00.000Z",
+      "responded": true,
+      "response_text": "Muchas gracias por tu comentario María. Nos alegra saber que tuviste una buena experiencia.",
+      "response_at": "2024-01-15T14:20:00.000Z",
+      "read_at": null
+    },
+    {
+      "id": "2",
+      "drivers_id": "2",
+      "parkings_id": "2",
+      "rating": 3,
+      "comment": "Buen servicio en general, aunque el precio podría ser un poco más competitivo. La ubicación es muy conveniente.",
+      "created_at": "2024-01-14T16:45:00.000Z",
+      "updated_at": "2024-01-14T16:45:00.000Z",
+      "responded": false,
+      "response_text": null,
+      "response_at": null,
+      "read_at": null
+    },
+    {
+      "id": "3",
+      "drivers_id": "3",
+      "parkings_id": "3",
+      "rating": 5,
+      "comment": "Perfecto! Reservé desde la app y todo funcionó sin problemas. El personal fue muy amable y el lugar está bien ubicado.",
+      "created_at": "2024-01-13T09:15:00.000Z",
+      "updated_at": "2024-01-13T09:15:00.000Z",
+      "responded": true,
+      "response_text": "Gracias Ana por tomarte el tiempo de dejarnos esta reseña. ¡Esperamos verte pronto!",
+      "response_at": "2024-01-13T11:30:00.000Z",
+      "read_at": "2024-01-13T11:30:00.000Z"
+    },
+    {
+      "id": "4",
+      "drivers_id": "4",
+      "parkings_id": "4",
+      "rating": 2,
+      "comment": "El servicio está bien pero tuve algunos problemas con la app al momento de pagar. Espero que mejoren la experiencia digital.",
+      "created_at": "2024-01-12T14:22:00.000Z",
+      "updated_at": "2024-01-12T14:22:00.000Z",
+      "responded": false,
+      "response_text": null,
+      "response_at": null,
+      "read_at": null
+    }
+  ],
+  "drivers": [
+    {
+      "id": "1",
+      "users_id": "10",
+      "full_name": "María González",
+      "city": "Centro Comercial",
+      "country": "Colombia",
+      "phone": "+57 300 123 4567",
+      "dni": "12345678",
+      "created_at": "2023-12-01T08:00:00.000Z",
+      "updated_at": "2023-12-01T08:00:00.000Z",
+      "avatar": "https://api.dicebear.com/7.x/personas/svg?seed=maria"
+    },
+    {
+      "id": "2",
+      "users_id": "11",
+      "full_name": "Carlos Ruiz",
+      "city": "Estacionamiento Norte",
+      "country": "Colombia",
+      "phone": "+57 310 987 6543",
+      "dni": "87654321",
+      "created_at": "2023-11-15T09:30:00.000Z",
+      "updated_at": "2023-11-15T09:30:00.000Z",
+      "avatar": "https://api.dicebear.com/7.x/personas/svg?seed=carlos"
+    },
+    {
+      "id": "3",
+      "users_id": "12",
+      "full_name": "Ana Martínez",
+      "city": "Plaza Central",
+      "country": "Colombia",
+      "phone": "+57 320 456 7890",
+      "dni": "45678912",
+      "created_at": "2023-10-20T11:15:00.000Z",
+      "updated_at": "2023-10-20T11:15:00.000Z",
+      "avatar": "https://api.dicebear.com/7.x/personas/svg?seed=ana"
+    },
+    {
+      "id": "4",
+      "users_id": "13",
+      "full_name": "Roberto Silva",
+      "city": "Estacionamiento Sur",
+      "country": "Colombia",
+      "phone": "+57 315 789 0123",
+      "dni": "78912345",
+      "created_at": "2023-09-10T07:45:00.000Z",
+      "updated_at": "2023-09-10T07:45:00.000Z",
+      "avatar": "https://api.dicebear.com/7.x/personas/svg?seed=roberto"
+    }
+  ],
+  "parkings": [
+    {
+      "id": "1",
+      "owners_id": "1",
+      "name": "Centro Comercial Plaza",
+      "description": "Estacionamiento seguro en el centro comercial",
+      "address": "Calle 123 #45-67, Centro, Bogotá",
+      "lat": 4.6097,
+      "lng": -74.0817,
+      "rate_per_hour": 3500,
+      "rating": 4.8,
+      "total_spots": 200,
+      "available_spots": 45,
+      "total_rows": 10,
+      "total_columns": 20,
+      "image_url": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500",
+      "created_at": "2023-08-01T10:00:00.000Z",
+      "updated_at": "2024-01-15T15:30:00.000Z"
+    },
+    {
+      "id": "2",
+      "owners_id": "1",
+      "name": "Estacionamiento Norte",
+      "description": "Parking conveniente zona norte",
+      "address": "Carrera 15 #89-12, Zona Rosa, Bogotá",
+      "lat": 4.6486,
+      "lng": -74.0764,
+      "rate_per_hour": 4000,
+      "rating": 4.2,
+      "total_spots": 150,
+      "available_spots": 32,
+      "total_rows": 8,
+      "total_columns": 19,
+      "image_url": "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=500",
+      "created_at": "2023-09-15T09:00:00.000Z",
+      "updated_at": "2024-01-14T18:45:00.000Z"
+    },
+    {
+      "id": "3",
+      "owners_id": "2",
+      "name": "Plaza Central",
+      "description": "Estacionamiento en el corazón de la ciudad",
+      "address": "Avenida 68 #25-30, Centro, Bogotá",
+      "lat": 4.5981,
+      "lng": -74.0758,
+      "rate_per_hour": 3000,
+      "rating": 4.9,
+      "total_spots": 180,
+      "available_spots": 67,
+      "total_rows": 12,
+      "total_columns": 15,
+      "image_url": "https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=500",
+      "created_at": "2023-07-20T14:30:00.000Z",
+      "updated_at": "2024-01-13T12:15:00.000Z"
+    },
+    {
+      "id": "4",
+      "owners_id": "2",
+      "name": "Estacionamiento Sur",
+      "description": "Parking económico zona sur",
+      "address": "Calle 40 Sur #78-90, Sur, Bogotá",
+      "lat": 4.5709,
+      "lng": -74.102,
+      "rate_per_hour": 2800,
+      "rating": 3.8,
+      "total_spots": 120,
+      "available_spots": 28,
+      "total_rows": 6,
+      "total_columns": 20,
+      "image_url": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500",
+      "created_at": "2023-06-10T11:20:00.000Z",
+      "updated_at": "2024-01-12T16:40:00.000Z"
+    }
+  ]
 }

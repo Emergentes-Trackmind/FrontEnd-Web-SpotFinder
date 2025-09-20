@@ -1,0 +1,57 @@
+.kpis-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.kpi-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.kpi-icon {
+  color: #1976d2;
+  margin-right: 8px;
+}
+
+.kpi-label {
+  font-weight: 500;
+  color: #666;
+}
+
+.kpi-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.kpi-delta {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.kpi-delta.positive {
+  color: #4caf50;
+}
+
+.kpi-delta.negative {
+  color: #f44336;
+}
+
+.kpi-delta mat-icon {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  margin-right: 4px;
+}

@@ -45,33 +45,27 @@
               <span matListItemTitle>Nuevo Parking</span>
             </mat-list-item>
 
-            <mat-list-item class="coming-soon">
+            <!-- ✅ RESERVAS HABILITADAS - SIN BADGE PRÓXIMAMENTE -->
+            <mat-list-item routerLink="/reservations" routerLinkActive="active">
               <mat-icon matListItemIcon>event_available</mat-icon>
-              <span matListItemTitle>Reservaciones</span>
-              <span matListItemMeta class="coming-soon-badge">Próximamente</span>
+              <span matListItemTitle>Reservas</span>
             </mat-list-item>
 
-            <mat-list-item class="coming-soon">
-              <mat-icon matListItemIcon>star_rate</mat-icon>
+            <!-- Reseñas - Sigue como próximamente -->
+            <mat-list-item routerLink="/reviews" routerLinkActive="active">
+              <mat-icon matListItemIcon>event_available</mat-icon>
               <span matListItemTitle>Reseñas</span>
-              <span matListItemMeta class="coming-soon-badge">Próximamente</span>
             </mat-list-item>
           </mat-nav-list>
         </div>
 
-        <!-- Configuración -->
+
         <div class="config-section">
           <h4 class="section-title">Configuración</h4>
           <mat-nav-list>
             <mat-list-item routerLink="/me/profile" routerLinkActive="active">
               <mat-icon matListItemIcon>account_circle</mat-icon>
               <span matListItemTitle>Mi Perfil</span>
-            </mat-list-item>
-
-            <mat-list-item class="coming-soon">
-              <mat-icon matListItemIcon>settings</mat-icon>
-              <span matListItemTitle>Configuración</span>
-              <span matListItemMeta class="coming-soon-badge">Próximamente</span>
             </mat-list-item>
           </mat-nav-list>
         </div>

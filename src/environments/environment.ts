@@ -41,9 +41,39 @@ export const environment = {
       reverseUrl: 'https://nominatim.openstreetmap.org/reverse'
     }
   },
+  reservations: {
+    base: 'http://localhost:3001/api/reservations'
+  },
+  payments: {
+    base: 'http://localhost:3001/api/reservationPayments'
+  },
   featureFlags: {
     useMockApi: true,
     logHttp: true,
     enableOfflineMode: false
+  },
+  analytics: {
+    base: 'http://localhost:3001/api/analytics',
+    endpoints: {
+      totals: '/totals',
+      revenueByMonth: '/revenue',
+      occupancyByHour: '/occupancy',
+      recentActivity: '/activity',
+      topParkings: '/top-parkings'
+    }
+  },
+  api: {
+    base: 'http://localhost:3000/api',
+    reviews: {
+      base: 'http://localhost:3000/api/reviews',
+      endpoints: {
+        list: '/',
+        kpis: '/kpis',
+        respond: '/:id/respond',
+        markRead: '/:id/read'
+      }
+    },
+    drivers: { base: 'http://localhost:3000/api/drivers' },
+    parkings: { base: 'http://localhost:3000/api/parkings' }
   }
 };
