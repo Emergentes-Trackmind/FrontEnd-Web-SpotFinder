@@ -216,6 +216,7 @@ export class AuthService {
     return this.authState().user;
   }
 
+  //hola
   // Método de debug para desarrollo
   debugAuthState(): void {
     const state = this.authState();
@@ -247,7 +248,6 @@ export class AuthService {
       refreshTokenLength: state.refreshToken?.length || 0,
       tokenStarts: state.accessToken ? state.accessToken.substring(0, 20) + '...' : 'none'
     });
-
     console.groupEnd();
   }
 }

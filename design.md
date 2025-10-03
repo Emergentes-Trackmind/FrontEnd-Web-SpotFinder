@@ -2,7 +2,7 @@
 
 ## Base URL
 - **Development**: `http://localhost:3001/api`
-- **Production**: `https://api.quadrapp.com/api`
+- **Production**: `https://api.spotfinder.com/api`
 
 ## Parking Profiles Endpoints
 

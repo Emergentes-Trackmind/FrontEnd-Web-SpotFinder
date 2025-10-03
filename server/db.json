@@ -2,7 +2,7 @@
   "users": [
     {
       "id": "1",
-      "email": "admin@quadrapp.com",
+      "email": "admin@spotfinder.com",
       "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
       "firstName": "Admin",
       "lastName": "Usuario",
@@ -16,7 +16,7 @@
     },
     {
       "id": "2",
-      "email": "user@quadrapp.com",
+      "email": "user@spotfinder.com",
       "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
       "firstName": "Usuario",
       "lastName": "Demo",
@@ -78,6 +78,19 @@
       "isEmailVerified": false,
       "createdAt": "2025-09-18T05:19:28.732Z",
       "lastLoginAt": "2025-09-20T02:42:24.934Z"
+    },
+    {
+      "id": "1759484199108",
+      "email": "Patata123@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-10-03T09:36:39.108Z",
+      "lastLoginAt": "2025-10-03T09:37:41.383Z"
     }
   ],
   "tokens": [
@@ -96,7 +109,7 @@
       "userId": "1",
       "firstName": "Admin",
       "lastName": "Usuario",
-      "email": "admin@quadrapp.com",
+      "email": "admin@spotfinder.com",
       "phone": "+52 55 1234 5678",
       "avatar": null,
       "bio": "Administrador de la plataforma QuadrApp",
@@ -121,7 +134,7 @@
       "userId": "2",
       "firstName": "Usuario",
       "lastName": "Demo",
-      "email": "user@quadrapp.com",
+      "email": "user@spotfinder.com",
       "phone": "+52 55 9876 5432",
       "avatar": null,
       "bio": "Usuario demo de QuadrApp",
@@ -240,6 +253,31 @@
         "theme": "light"
       },
       "updatedAt": "2025-09-18T05:19:28.736Z"
+    },
+    {
+      "id": "1759484199108",
+      "userId": "1759484199108",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "email": "Patata123@gmail.com",
+      "phone": null,
+      "avatar": null,
+      "bio": "",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2025-10-03T09:36:39.108Z"
     }
   ],
   "sessions": [
@@ -269,7 +307,7 @@
   "passwordResets": [
     {
       "id": "1",
-      "email": "admin@quadrapp.com",
+      "email": "admin@spotfinder.com",
       "token": "reset_token_123456",
       "expiresAt": "2024-01-16T14:30:00.000Z",
       "used": false,
@@ -1275,7 +1313,7 @@
       "id": "1000",
       "userId": "1",
       "userName": "Usuario 1",
-      "userEmail": "admin@quadrapp.com",
+      "userEmail": "admin@spotfinder.com",
       "vehiclePlate": "ABC123",
       "parkingId": "1",
       "parkingName": "Parking Central Plaza",
@@ -1293,7 +1331,7 @@
       "id": "1001",
       "userId": "2",
       "userName": "Usuario 2",
-      "userEmail": "user@quadrapp.com",
+      "userEmail": "user@spotfinder.com",
       "vehiclePlate": "DEF456",
       "parkingId": "1",
       "parkingName": "Parking Central Plaza",
@@ -1383,7 +1421,7 @@
       "id": "1006",
       "userId": "1",
       "userName": "Usuario 7",
-      "userEmail": "admin@quadrapp.com",
+      "userEmail": "admin@spotfinder.com",
       "vehiclePlate": "STU901",
       "parkingId": "3",
       "parkingName": "Parking Sur",
@@ -1401,7 +1439,7 @@
       "id": "1007",
       "userId": "2",
       "userName": "Usuario 8",
-      "userEmail": "user@quadrapp.com",
+      "userEmail": "user@spotfinder.com",
       "vehiclePlate": "VWX234",
       "parkingId": "1",
       "parkingName": "Parking Central Plaza",

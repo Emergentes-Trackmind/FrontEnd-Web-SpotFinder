@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 // Clave secreta para JWT (en producción esto debería ser una variable de entorno)
-const JWT_SECRET = 'quadrapp_secret_key_2024';
+const JWT_SECRET = 'spotfinder_secret_key_2024';
 
 // Función para extraer token del header Authorization
 function extractToken(req) {

@@ -27,7 +27,7 @@ import { AuthService } from './iam/services/auth.service';
   ]
 })
 export class AppComponent {
-  protected readonly title = signal('quadrapp-frontend-web');
+  protected readonly title = signal('spotfinder-frontend-web');
 
   // Signal para la ruta actual
   private currentRoute = signal<string>('');

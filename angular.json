@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "quadrapp-frontend-web": {
+    "spotfinder-frontend-web": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -56,10 +56,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "quadrapp-frontend-web:build:production"
+              "buildTarget": "spotfinder-frontend-web:build:production"
             },
             "development": {
-              "buildTarget": "quadrapp-frontend-web:build:development"
+              "buildTarget": "spotfinder-frontend-web:build:development"
             }
           },
           "defaultConfiguration": "development"

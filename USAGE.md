@@ -53,7 +53,7 @@ Esto iniciará tanto Angular (`http://localhost:4200`) como JSON Server (`http:/
 - JSON Server: Puerto 3001
 
 ### Production (useMockApi: false)
-- API Base: `https://api.quadrapp.com/api`
+- API Base: `https://api.spotfinder.com/api`
 - Logs HTTP: Desactivados
 - API Real: Configurada
 
