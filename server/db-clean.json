@@ -1,0 +1,54 @@
+{
+  "users": [
+    {
+      "id": "1761825474560",
+      "email": "fedro@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": ["user"],
+      "isEmailVerified": false,
+      "createdAt": "2025-10-30T11:17:28.560Z",
+      "lastLoginAt": "2025-10-30T11:17:28.560Z"
+    }
+  ],
+  "parkings": [],
+  "locations": [],
+  "pricing": [],
+  "features": [],
+  "devices": [],
+  "reservations": [],
+  "reviews": [],
+  "payments": [],
+  "analytics": {
+    "totals": {
+      "totalRevenue": {
+        "value": 0,
+        "currency": "EUR",
+        "deltaPercentage": 0,
+        "deltaText": "+0% vs mes anterior"
+      },
+      "occupiedSpaces": {
+        "occupied": 0,
+        "total": 0,
+        "percentage": 0,
+        "text": "0 de 0 ocupadas"
+      },
+      "activeUsers": {
+        "count": 0,
+        "deltaPercentage": 0,
+        "deltaText": "+0 nuevos usuarios"
+      },
+      "registeredParkings": {
+        "total": 0,
+        "newThisMonth": 0,
+        "deltaText": "+0 este mes"
+      }
+    },
+    "revenue": [],
+    "occupancy": [],
+    "activity": [],
+    "topParkings": []
+  }
+}
+

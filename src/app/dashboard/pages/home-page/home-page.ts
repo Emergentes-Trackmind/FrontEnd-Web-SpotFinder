@@ -21,6 +21,13 @@ import {
   TopParkingDTO
 } from '../../domain/dtos/metrics.dto';
 
+// Presentation Components
+import { KpiCardComponent, KpiData } from '../../presentation/components/kpi-card/kpi-card.component';
+import { RevenueChartComponent } from '../../presentation/components/revenue-chart/revenue-chart.component';
+import { OccupancyChartComponent } from '../../presentation/components/occupancy-chart/occupancy-chart.component';
+import { RecentActivityComponent } from '../../presentation/components/recent-activity/recent-activity.component';
+import { TopParkingsComponent } from '../../presentation/components/top-parkings/top-parkings.component';
+
 interface KpiCard {
   id: string;
   title: string;
@@ -42,7 +49,12 @@ interface KpiCard {
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
-    MatBadgeModule
+    MatBadgeModule,
+    KpiCardComponent,
+    RevenueChartComponent,
+    OccupancyChartComponent,
+    RecentActivityComponent,
+    TopParkingsComponent
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css'

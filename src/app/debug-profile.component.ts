@@ -76,8 +76,8 @@ export class DebugProfileComponent implements OnInit {
     console.log('🧪 Testing profile API with token:', !!token);
 
     if (token) {
-      // Test directo al API
-      this.http.get('http://localhost:3001/api/profile', {
+      // Test directo al API - usar ruta relativa
+      this.http.get('/profile', {
         headers: { 'Authorization': `Bearer ${token}` }
       }).subscribe({
         next: (result) => {

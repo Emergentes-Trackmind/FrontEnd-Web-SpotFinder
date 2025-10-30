@@ -7,12 +7,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
-import { takeUntil, startWith, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { takeUntil, startWith, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 
-import { ParkingProfileService } from '../../services/parking-profile.service';
-import {ParkingCardComponent} from '../../components/parking-card/parking-card.component';
-import {ProfileParking} from '../../model/profileparking.entity';
+import { ParkingsFacade } from '../../../iot/services/parkings.facade';
+import { ParkingCardComponent } from '../../components/parking-card/parking-card.component';
+import { Parking } from '../../../iot/domain/entities/parking.entity';
 
 export interface ParkingCardData {
   id: string;
@@ -39,6 +41,8 @@ export interface ParkingCardData {
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
+    MatSnackBarModule,
     ParkingCardComponent
   ],
   templateUrl: './parking-list.page.html',
@@ -55,8 +59,10 @@ export class ParkingListPage implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private parkingService: ParkingProfileService,
-    private router: Router
+    private parkingsFacade: ParkingsFacade,
+    private router: Router,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -73,15 +79,15 @@ export class ParkingListPage implements OnInit, OnDestroy {
     this.isLoading = true;
     this.hasError = false;
 
-    this.parkingService.getProfiles()
+    this.parkingsFacade.getUserParkings()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (profiles: ProfileParking[]) => {
-          this.parkings = this.mapProfilesToCards(profiles);
+        next: (parkings: Parking[]) => {
+          this.parkings = this.mapProfilesToCards(parkings);
           this.filteredParkings = [...this.parkings];
           this.isLoading = false;
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error loading parkings:', error);
           this.hasError = true;
           this.isLoading = false;
@@ -115,43 +121,26 @@ export class ParkingListPage implements OnInit, OnDestroy {
     );
   }
 
-  private mapProfilesToCards(profiles: ProfileParking[]): ParkingCardData[] {
-    return profiles.map((profile, index) => ({
-      id: `${index + 1}`,
-      name: profile.name || `Parking ${index + 1}`,
-      address: this.getMockAddress(index),
-      status: this.mapParkingStatusToCardStatus(profile.status),
-      rating: this.getRandomRating(),
-      reviewsCount: Math.floor(Math.random() * 500),
-      pricePerMonth: Math.floor(Math.random() * 200) + 100,
-      available: Math.floor(Math.random() * profile.totalSpaces),
-      total: profile.totalSpaces || 50,
-      imageUrl: undefined
-    }));
-  }
+  private mapProfilesToCards(parkings: Parking[]): ParkingCardData[] {
+    return parkings.map((parking, index) => {
+      const monthlyPrice = parking.pricing?.monthlyRate || 0;
 
-  private mapParkingStatusToCardStatus(status: any): 'Activo' | 'Mantenimiento' | 'Inactivo' {
-    if (typeof status === 'string') {
-      return status as 'Activo' | 'Mantenimiento' | 'Inactivo';
-    }
-    // Si es enum, convertir a string
-    return status?.toString() || 'Activo';
-  }
+      // Asegurar que status tenga un valor por defecto válido
+      const status = parking.status || 'Activo';
 
-  private getMockAddress(index: number): string {
-    const addresses = [
-      'Calle Gran Vía, 25, Madrid',
-      'Plaza Mayor, 15, Madrid',
-      'Terminal T1, Barajas, Madrid',
-      'Calle Alfonso XII, 62, Madrid',
-      'Complejo Las Flores, Madrid',
-      'Gran Vía, 50, Madrid'
-    ];
-    return addresses[index] || 'Calle Gran Vía, 25, Madrid';
-  }
-
-  private getRandomRating(): number {
-    return Number((Math.random() * 2 + 3).toFixed(1));
+      return {
+        id: parking.id || `${index + 1}`,
+        name: parking.name || `Parking ${index + 1}`,
+        address: parking.location?.addressLine || parking.location?.city || 'Dirección no disponible',
+        status: status as 'Activo' | 'Mantenimiento' | 'Inactivo',
+        rating: 0, // TODO: integrar con sistema de reviews
+        reviewsCount: 0,
+        pricePerMonth: Math.round(monthlyPrice),
+        available: 0, // TODO: integrar con IoT devices
+        total: parking.totalSpaces || 0,
+        imageUrl: undefined
+      };
+    });
   }
 
   onNewParking() {
@@ -162,7 +151,49 @@ export class ParkingListPage implements OnInit, OnDestroy {
     this.loadParkings();
   }
 
+  /**
+   * TrackBy function para optimizar el renderizado de la lista
+   */
   trackByParkingId(index: number, parking: ParkingCardData): string {
     return parking.id;
+  }
+
+  onDeleteParking(parkingId: string): void {
+    const parking = this.parkings.find(p => p.id === parkingId);
+    if (!parking) return;
+
+    const confirmMessage = `¿Estás seguro de que deseas eliminar "${parking.name}"?\n\nEsta acción no se puede deshacer.`;
+
+    if (confirm(confirmMessage)) {
+      this.deleteParking(parkingId);
+    }
+  }
+
+  private deleteParking(parkingId: string): void {
+    this.isLoading = true;
+
+    this.parkingsFacade.deleteParking(parkingId)
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => this.isLoading = false)
+      )
+      .subscribe({
+        next: () => {
+          this.parkings = this.parkings.filter(p => p.id !== parkingId);
+          this.filteredParkings = this.filteredParkings.filter(p => p.id !== parkingId);
+
+          this.snackBar.open('Parking eliminado correctamente', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
+        },
+        error: (error: any) => {
+          console.error('Error deleting parking:', error);
+          this.snackBar.open('Error al eliminar el parking. Por favor, intenta de nuevo.', 'Cerrar', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
+        }
+      });
   }
 }

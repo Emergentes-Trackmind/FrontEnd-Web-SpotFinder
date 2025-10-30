@@ -1,0 +1,111 @@
+.step-card {
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  box-shadow: var(--shadow);
+  background: white;
+  margin-bottom: 24px;
+}
+
+.step-header {
+  padding: 24px 24px 16px 24px;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.step-header mat-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--app-text);
+  margin-bottom: 8px;
+}
+
+.step-header mat-card-subtitle {
+  font-size: 14px;
+  color: var(--app-muted);
+  margin: 0;
+}
+
+.step-content {
+  padding: 24px;
+}
+
+.basic-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.form-row.full-width {
+  grid-template-columns: 1fr;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.form-field.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Estilos personalizados para Material */
+:host ::ng-deep .mat-mdc-form-field {
+  font-family: inherit;
+}
+
+:host ::ng-deep .mat-mdc-form-field-outline {
+  border-radius: 8px;
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-form-field-outline {
+  border-color: var(--primary-color);
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: var(--primary-color);
+}
+
+:host ::ng-deep .mat-mdc-form-field-icon-suffix {
+  color: var(--app-muted);
+}
+
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-form-field-icon-suffix {
+  color: var(--primary-color);
+}
+
+/* Estilos para textarea */
+:host ::ng-deep .mat-mdc-input-element {
+  font-family: inherit;
+}
+
+:host ::ng-deep textarea.mat-mdc-input-element {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Estilos para select */
+:host ::ng-deep .mat-mdc-select-value {
+  color: var(--app-text);
+}
+
+:host ::ng-deep .mat-mdc-select-placeholder {
+  color: var(--app-muted);
+}
+
+/* Estados de error */
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-invalid .mat-mdc-form-field-outline {
+  border-color: #EF4444;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+

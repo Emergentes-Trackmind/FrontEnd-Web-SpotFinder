@@ -5,63 +5,94 @@ import { AuthService } from '../../services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  // Rutas públicas que NO requieren token (expresiones regulares)
+  private readonly publicRoutes = [
+    /\/auth\/login$/,
+    /\/auth\/register$/,
+    /\/auth\/refresh$/,
+    /\/auth\/forgot-password$/,
+    /\/auth\/reset-password$/
+  ];
+
   constructor(private authService: AuthService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.accessToken();
+    const token = this.authService.getAccessToken();
+    const shouldSkip = this.isPublicRoute(req.url);
 
     console.log('🔍 AuthInterceptor:', {
       url: req.url,
+      method: req.method,
       hasToken: !!token,
-      shouldAddToken: this.shouldAddToken(req.url)
+      isPublicRoute: shouldSkip,
+      willAddToken: !shouldSkip && !!token
     });
 
-    // Solo agregar token si existe y la URL requiere autenticación
-    if (token && this.shouldAddToken(req.url)) {
-      console.log('✅ Agregando token Bearer a la petición');
+    // Solo agregar token si NO es ruta pública Y existe token
+    if (!shouldSkip && token) {
+      console.log('✅ Agregando token Bearer a la petición:', req.url);
       const authReq = req.clone({
         headers: req.headers.set('Authorization', `Bearer ${token}`)
       });
 
       return next.handle(authReq).pipe(
         catchError(error => {
-          console.error('❌ Error en petición con token:', error);
+          console.error('❌ Error en petición con token:', {
+            url: req.url,
+            status: error.status,
+            message: error.message
+          });
+
           // Si el token expiró (401), intentar refresh
           if (error.status === 401 && !req.url.includes('/auth/refresh')) {
+            console.log('🔄 Token expirado, intentando refresh...');
             return this.handleTokenExpiry(req, next);
           }
+
           return throwError(() => error);
         })
       );
-    } else {
-      console.log('⚠️ No se agrega token:', { hasToken: !!token, shouldAdd: this.shouldAddToken(req.url) });
+    }
+
+    if (shouldSkip) {
+      console.log('⚪ Ruta pública, no se agrega token:', req.url);
+    } else if (!token) {
+      console.warn('⚠️ No se agrega token: token no disponible para', req.url);
     }
 
     return next.handle(req);
   }
 
-  private shouldAddToken(url: string): boolean {
-    // No agregar token a rutas de autenticación públicas
-    const publicRoutes = ['/auth/login', '/auth/register', '/auth/forgot-password'];
-    return !publicRoutes.some(route => url.includes(route));
+  /**
+   * Verifica si la URL es una ruta pública
+   */
+  private isPublicRoute(url: string): boolean {
+    return this.publicRoutes.some(pattern => pattern.test(url));
   }
 
+  /**
+   * Maneja la expiración del token intentando refreshear
+   */
   private handleTokenExpiry(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return this.authService.refreshToken().pipe(
       switchMap(success => {
         if (success) {
-          const newToken = this.authService.accessToken();
+          const newToken = this.authService.getAccessToken();
+          console.log('✅ Token refrescado exitosamente');
+
           const authReq = req.clone({
             headers: req.headers.set('Authorization', `Bearer ${newToken}`)
           });
           return next.handle(authReq);
         } else {
           // Si el refresh falló, logout
+          console.error('❌ Refresh token falló, cerrando sesión');
           this.authService.logout();
           return throwError(() => new Error('Sesión expirada'));
         }
       }),
       catchError(error => {
+        console.error('❌ Error en refresh token:', error);
         this.authService.logout();
         return throwError(() => error);
       })

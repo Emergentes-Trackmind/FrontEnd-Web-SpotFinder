@@ -2,7 +2,7 @@ export const environment = {
   production: false,
   apiBase: 'http://localhost:3001/api',
   endpoints: {
-    parkingProfiles: '/parkingProfiles',
+    parkings: '/parkings',
     analytics: '/analytics',
     locations: '/locations',
     pricing: '/pricing',
@@ -10,7 +10,7 @@ export const environment = {
     uploads: '/uploads'
   },
   auth: {
-    base: 'http://localhost:3001/api/auth',
+    base: '/auth',
     endpoints: {
       login: '/login',
       register: '/register',
@@ -20,10 +20,10 @@ export const environment = {
     }
   },
   profile: {
-    base: 'http://localhost:3001/api/profile'
+    base: '/profile'
   },
   account: {
-    base: 'http://localhost:3001/api/account',
+    base: '/account',
     endpoints: {
       changePassword: '/change-password',
       sessions: '/sessions',
@@ -34,10 +34,10 @@ export const environment = {
     }
   },
   reservations: {
-    base: 'http://localhost:3001/api/reservations'
+    base: '/reservations'
   },
   payments: {
-    base: 'http://localhost:3001/api/reservationPayments'
+    base: '/reservationPayments'
   },
   featureFlags: {
     useMockApi: true,
@@ -45,7 +45,7 @@ export const environment = {
     enableOfflineMode: false
   },
   analytics: {
-    base: 'http://localhost:3001/api/analytics',
+    base: '/analytics',
     endpoints: {
       totals: '/totals',
       revenueByMonth: '/revenue',

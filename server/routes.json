@@ -12,11 +12,12 @@
   "/api/account/download": "/account/download",
   "/api/account/delete": "/account/delete",
   "/api/account/2fa/toggle": "/account/2fa-toggle",
-  "/api/parkingProfiles": "/parkingProfiles",
+  "/api/parkings": "/parkings",
   "/api/analytics": "/analytics",
   "/api/locations": "/locations",
   "/api/pricing": "/pricing",
   "/api/features": "/features",
-  "/api/uploads": "/uploads"
+  "/api/uploads": "/uploads",
+  "/api/iot/devices": "/iotDevices",
+  "/api/parkingSpots": "/parkingSpots"
 }
-

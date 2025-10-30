@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
 import { PricingData } from '../../../model/profileparking.entity';
 import { ParkingProfileService } from '../../../services/parking-profile.service';
 import { finalize } from 'rxjs/operators';
@@ -25,7 +26,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatButtonModule,
     MatIconModule,
     MatCheckboxModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSelectModule
   ],
   templateUrl: './pricing-tab.html',
   styleUrls: ['./pricing-tab.css']
@@ -43,7 +45,13 @@ export class PricingTabComponent implements OnInit, OnChanges {
       hourlyRate: [0, [Validators.required, Validators.min(0)]],
       dailyRate: [0, [Validators.required, Validators.min(0)]],
       monthlyRate: [0, [Validators.required, Validators.min(0)]],
+      currency: ['EUR', [Validators.required]],
+      minimumStay: ['SinLimite', [Validators.required]],
       open24h: [false],
+      operatingHours: this.fb.group({
+        openTime: ['08:00', [Validators.required]],
+        closeTime: ['22:00', [Validators.required]]
+      }),
       operatingDays: this.fb.group({
         monday: [false],
         tuesday: [false],
@@ -74,12 +82,14 @@ export class PricingTabComponent implements OnInit, OnChanges {
     this.isLoading = true;
     this.service.getPricing(id).pipe(finalize(() => (this.isLoading = false))).subscribe({
       next: (pricing: PricingData) => {
-        // convertir operatingDays back a group
         this.pricingForm.patchValue({
           hourlyRate: pricing.hourlyRate,
           dailyRate: pricing.dailyRate,
           monthlyRate: pricing.monthlyRate,
+          currency: pricing.currency,
+          minimumStay: pricing.minimumStay,
           open24h: pricing.open24h,
+          operatingHours: pricing.operatingHours,
           operatingDays: pricing.operatingDays,
           promotions: pricing.promotions
         });
@@ -99,7 +109,10 @@ export class PricingTabComponent implements OnInit, OnChanges {
         hourlyRate: formValue.hourlyRate,
         dailyRate: formValue.dailyRate,
         monthlyRate: formValue.monthlyRate,
+        currency: formValue.currency,
+        minimumStay: formValue.minimumStay,
         open24h: formValue.open24h,
+        operatingHours: formValue.operatingHours,
         operatingDays: formValue.operatingDays,
         promotions: formValue.promotions
       };
@@ -122,3 +135,4 @@ export class PricingTabComponent implements OnInit, OnChanges {
     });
   }
 }
+

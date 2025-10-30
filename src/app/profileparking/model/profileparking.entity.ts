@@ -13,6 +13,7 @@ export enum ParkingType {
 
   export interface ProfileParking {
     id?: string;
+    ownerId?: string;  // ID del propietario del parking
     name: string;
     type: ParkingType;
     description: string;
@@ -39,7 +40,13 @@ export enum ParkingType {
     hourlyRate: number;
     dailyRate: number;
     monthlyRate: number;
+    currency: string;
+    minimumStay: string;
     open24h: boolean;
+    operatingHours?: {
+      openTime: string;
+      closeTime: string;
+    };
     operatingDays: {
       monday: boolean;
       tuesday: boolean;

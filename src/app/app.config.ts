@@ -13,6 +13,7 @@ import { AuthRepository } from './iam/infrastructure/repositories/auth.repo';
 import { ProfileRepositoryImpl } from './Profile/infrastructure/repositories/profile.repo';
 import { DASHBOARD_PROVIDERS } from './dashboard/dashboard.providers';
 import { REVIEWS_PROVIDERS } from './reviews/reviews.providers';
+import { IOT_PROVIDERS } from './iot/iot.providers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -76,6 +77,9 @@ export const appConfig: ApplicationConfig = {
     ...DASHBOARD_PROVIDERS,
 
     // Reviews providers
-    ...REVIEWS_PROVIDERS
+    ...REVIEWS_PROVIDERS,
+
+    // IoT Devices providers
+    ...IOT_PROVIDERS
   ]
 };

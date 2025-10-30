@@ -72,7 +72,10 @@ export function applyPricingDefaults(apiData: Partial<PricingDto>): PricingData 
     hourlyRate: sanitizeNumber(apiData.hourlyRate),
     dailyRate: sanitizeNumber(apiData.dailyRate),
     monthlyRate: sanitizeNumber(apiData.monthlyRate),
+    currency: sanitizeString((apiData as any).currency) || 'EUR',
+    minimumStay: sanitizeString((apiData as any).minimumStay) || 'SinLimite',
     open24h: sanitizeBoolean(apiData.open24h),
+    operatingHours: (apiData as any).operatingHours || { openTime: '08:00', closeTime: '22:00' },
     operatingDays: {
       monday: operatingDaysArray.includes('monday'),
       tuesday: operatingDaysArray.includes('tuesday'),
@@ -211,10 +214,13 @@ export function mapPricingToApi(pricing: PricingData): PricingDto {
     hourlyRate: pricing.hourlyRate,
     dailyRate: pricing.dailyRate,
     monthlyRate: pricing.monthlyRate,
+    currency: pricing.currency,
+    minimumStay: pricing.minimumStay,
     open24h: pricing.open24h,
+    operatingHours: pricing.operatingHours,
     operatingDays,
     promotions: pricing.promotions
-  };
+  } as any;
 }
 
 export function mapFeaturesToApi(features: FeaturesData): FeaturesDto {
@@ -249,3 +255,4 @@ export function mapFeaturesToApi(features: FeaturesData): FeaturesDto {
 
   return { security, amenities, services, payments };
 }
+

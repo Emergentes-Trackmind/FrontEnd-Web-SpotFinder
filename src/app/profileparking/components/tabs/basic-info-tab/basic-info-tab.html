@@ -8,7 +8,9 @@
 
     <!-- Nombre del Parking -->
     <mat-form-field appearance="outline">
-      <mat-label>Nombre del Parking</mat-label>
+    <div class="spinner-wrapper">
+      <div class="custom-spinner"></div>
+    </div>
       <input matInput formControlName="name" placeholder="Ingrese el nombre">
       <mat-error *ngIf="basicInfoForm.get('name')?.hasError('required')">
         El nombre es requerido
@@ -145,3 +147,4 @@
     </button>
   </div>
 </mat-card>
+

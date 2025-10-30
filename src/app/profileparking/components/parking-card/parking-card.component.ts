@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -37,6 +37,7 @@ export interface ParkingCardData {
 })
 export class ParkingCardComponent {
   @Input() parking!: ParkingCardData;
+  @Output() deleteParking = new EventEmitter<string>();
 
   get statusColor(): string {
     switch (this.parking.status) {
@@ -65,5 +66,10 @@ export class ParkingCardComponent {
     if (percentage > 50) return 'success';
     if (percentage > 20) return 'warning';
     return 'error';
+  }
+
+  onDelete(event: Event): void {
+    event.stopPropagation();
+    this.deleteParking.emit(this.parking.id);
   }
 }

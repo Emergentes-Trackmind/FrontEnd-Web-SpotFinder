@@ -22,6 +22,15 @@ export interface AuthState {
   isLoading: boolean;
 }
 
+interface JwtPayload {
+  sub?: string;
+  userId?: string;
+  email?: string;
+  roles?: string[];
+  exp?: number;
+  iat?: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -206,6 +215,59 @@ export class AuthService {
     return this.authSubject.asObservable();
   }
 
+  /**
+   * Obtener el access token actual
+   */
+  getAccessToken(): string | null {
+    return this.authState().accessToken;
+  }
+
+  /**
+   * Decodificar y obtener el userId del JWT
+   * @returns userId del token o null si no existe/no es válido
+   */
+  getUserIdFromToken(): string | null {
+    const token = this.getAccessToken();
+    if (!token) {
+      console.warn('⚠️ No hay token disponible para decodificar');
+      return null;
+    }
+
+    try {
+      const payload = this.decodeJwt(token);
+      const userId = payload.sub || payload.userId;
+
+      if (!userId) {
+        console.error('❌ Token no contiene userId o sub claim');
+        return null;
+      }
+
+      return userId;
+    } catch (error) {
+      console.error('❌ Error decodificando JWT:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Decodificar JWT (solo lectura, NO validación)
+   */
+  private decodeJwt(token: string): JwtPayload {
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        throw new Error('Token JWT inválido');
+      }
+
+      const payload = parts[1];
+      const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+      return JSON.parse(decoded) as JwtPayload;
+    } catch (error) {
+      console.error('Error decodificando JWT:', error);
+      throw error;
+    }
+  }
+
   // Método para obtener el token actual
   getCurrentToken(): string | null {
     return this.authState().accessToken;
@@ -246,7 +308,8 @@ export class AuthService {
     console.log('🔑 Token Info:', {
       accessTokenLength: state.accessToken?.length || 0,
       refreshTokenLength: state.refreshToken?.length || 0,
-      tokenStarts: state.accessToken ? state.accessToken.substring(0, 20) + '...' : 'none'
+      tokenStarts: state.accessToken ? state.accessToken.substring(0, 20) + '...' : 'none',
+      userId: this.getUserIdFromToken()
     });
     console.groupEnd();
   }

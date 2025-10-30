@@ -10,7 +10,8 @@ import { environment } from '../../../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class ReviewsApi {
   private http = inject(HttpClient);
-  private baseUrl = environment.api?.reviews?.base || `${environment.api?.base || 'http://localhost:3000/api'}/reviews`;
+  // Usar ruta relativa - el ApiPrefixInterceptor agregará el baseUrl
+  private baseUrl = '/reviews';
 
   getReviews(filters?: ReviewFilters): Observable<ReviewsListResponse> {
     let params = new HttpParams();

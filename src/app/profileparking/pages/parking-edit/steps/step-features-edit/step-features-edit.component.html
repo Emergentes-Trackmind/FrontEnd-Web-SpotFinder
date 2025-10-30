@@ -1,0 +1,167 @@
+<mat-card class="step-card">
+  <mat-card-header class="step-header">
+    <mat-card-title>Características y Servicios</mat-card-title>
+    <mat-card-subtitle>Selecciona las características y servicios que ofrece tu parking</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content class="step-content">
+    <form [formGroup]="featuresForm" class="features-form">
+
+      <!-- Resumen de selección -->
+      <div class="selection-summary" *ngIf="getTotalSelectedFeatures() > 0">
+        <mat-icon>check_circle</mat-icon>
+        <span>{{ getTotalSelectedFeatures() }} características seleccionadas</span>
+      </div>
+
+      <!-- Categorías de características -->
+      <div class="categories-grid">
+
+        <!-- Seguridad -->
+        <div class="category-section" formGroupName="security">
+          <div class="category-header">
+            <div class="category-title">
+              <mat-icon class="category-icon security">{{ featureCategories.security.icon }}</mat-icon>
+              <h3>{{ featureCategories.security.title }}</h3>
+            </div>
+
+            <div class="category-actions">
+              <span class="selection-count" *ngIf="getSelectedFeaturesCount('security') > 0">
+                {{ getSelectedFeaturesCount('security') }} seleccionados
+              </span>
+              <button
+                mat-button
+                type="button"
+                (click)="selectAllInCategory('security')"
+                class="select-all-btn">
+                Seleccionar todos
+              </button>
+            </div>
+          </div>
+
+          <div class="features-list">
+            <div *ngFor="let feature of featureCategories.security.features" class="feature-item">
+              <mat-checkbox [formControlName]="feature.key" class="feature-checkbox">
+                <div class="feature-content">
+                  <span class="feature-label">{{ feature.label }}</span>
+                  <span class="feature-description">{{ feature.description }}</span>
+                </div>
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comodidades -->
+        <div class="category-section" formGroupName="amenities">
+          <div class="category-header">
+            <div class="category-title">
+              <mat-icon class="category-icon amenities">{{ featureCategories.amenities.icon }}</mat-icon>
+              <h3>{{ featureCategories.amenities.title }}</h3>
+            </div>
+
+            <div class="category-actions">
+              <span class="selection-count" *ngIf="getSelectedFeaturesCount('amenities') > 0">
+                {{ getSelectedFeaturesCount('amenities') }} seleccionados
+              </span>
+              <button
+                mat-button
+                type="button"
+                (click)="selectAllInCategory('amenities')"
+                class="select-all-btn">
+                Seleccionar todos
+              </button>
+            </div>
+          </div>
+
+          <div class="features-list">
+            <div *ngFor="let feature of featureCategories.amenities.features" class="feature-item">
+              <mat-checkbox [formControlName]="feature.key" class="feature-checkbox">
+                <div class="feature-content">
+                  <span class="feature-label">{{ feature.label }}</span>
+                  <span class="feature-description">{{ feature.description }}</span>
+                </div>
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+
+        <!-- Servicios -->
+        <div class="category-section" formGroupName="services">
+          <div class="category-header">
+            <div class="category-title">
+              <mat-icon class="category-icon services">{{ featureCategories.services.icon }}</mat-icon>
+              <h3>{{ featureCategories.services.title }}</h3>
+            </div>
+
+            <div class="category-actions">
+              <span class="selection-count" *ngIf="getSelectedFeaturesCount('services') > 0">
+                {{ getSelectedFeaturesCount('services') }} seleccionados
+              </span>
+              <button
+                mat-button
+                type="button"
+                (click)="selectAllInCategory('services')"
+                class="select-all-btn">
+                Seleccionar todos
+              </button>
+            </div>
+          </div>
+
+          <div class="features-list">
+            <div *ngFor="let feature of featureCategories.services.features" class="feature-item">
+              <mat-checkbox [formControlName]="feature.key" class="feature-checkbox">
+                <div class="feature-content">
+                  <span class="feature-label">{{ feature.label }}</span>
+                  <span class="feature-description">{{ feature.description }}</span>
+                </div>
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagos -->
+        <div class="category-section" formGroupName="payments">
+          <div class="category-header">
+            <div class="category-title">
+              <mat-icon class="category-icon payments">{{ featureCategories.payments.icon }}</mat-icon>
+              <h3>{{ featureCategories.payments.title }}</h3>
+            </div>
+
+            <div class="category-actions">
+              <span class="selection-count" *ngIf="getSelectedFeaturesCount('payments') > 0">
+                {{ getSelectedFeaturesCount('payments') }} seleccionados
+              </span>
+              <button
+                mat-button
+                type="button"
+                (click)="selectAllInCategory('payments')"
+                class="select-all-btn">
+                Seleccionar todos
+              </button>
+            </div>
+          </div>
+
+          <div class="features-list">
+            <div *ngFor="let feature of featureCategories.payments.features" class="feature-item">
+              <mat-checkbox [formControlName]="feature.key" class="feature-checkbox">
+                <div class="feature-content">
+                  <span class="feature-label">{{ feature.label }}</span>
+                  <span class="feature-description">{{ feature.description }}</span>
+                </div>
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Mensaje cuando no hay características seleccionadas -->
+      <div class="no-selection-message" *ngIf="getTotalSelectedFeatures() === 0">
+        <mat-icon>info</mat-icon>
+        <p>No se han seleccionado características</p>
+        <small>Las características son opcionales, pero ayudan a los usuarios a encontrar tu parking</small>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>
+

@@ -60,7 +60,8 @@
   <div *ngIf="!isLoading && !hasError && filteredParkings.length > 0" class="parking-grid">
     <app-parking-card
       *ngFor="let parking of filteredParkings; trackBy: trackByParkingId"
-      [parking]="parking">
+      [parking]="parking"
+      (deleteParking)="onDeleteParking($event)">
     </app-parking-card>
   </div>
 </div>

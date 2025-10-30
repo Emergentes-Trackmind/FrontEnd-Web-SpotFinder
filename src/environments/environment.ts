@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   apiBase: 'http://localhost:3001/api',
   endpoints: {
-    parkingProfiles: '/parkingProfiles',
+    parkings: '/parkings',
     analytics: '/analytics',
     locations: '/locations',
     pricing: '/pricing',
@@ -10,7 +10,7 @@ export const environment = {
     uploads: '/uploads'
   },
   auth: {
-    base: 'http://localhost:3001/api/auth',
+    base: '/auth',
     endpoints: {
       login: '/login',
       register: '/register',
@@ -20,10 +20,10 @@ export const environment = {
     }
   },
   profile: {
-    base: 'http://localhost:3001/api/profile'
+    base: '/profile'
   },
   account: {
-    base: 'http://localhost:3001/api/account',
+    base: '/account',
     endpoints: {
       changePassword: '/change-password',
       sessions: '/sessions',
@@ -42,10 +42,10 @@ export const environment = {
     }
   },
   reservations: {
-    base: 'http://localhost:3001/api/reservations'
+    base: '/reservations'
   },
   payments: {
-    base: 'http://localhost:3001/api/reservationPayments'
+    base: '/reservationPayments'
   },
   featureFlags: {
     useMockApi: true,
@@ -53,7 +53,7 @@ export const environment = {
     enableOfflineMode: false
   },
   analytics: {
-    base: 'http://localhost:3001/api/analytics',
+    base: '/analytics',
     endpoints: {
       totals: '/totals',
       revenueByMonth: '/revenue',
@@ -61,19 +61,5 @@ export const environment = {
       recentActivity: '/activity',
       topParkings: '/top-parkings'
     }
-  },
-  api: {
-    base: 'http://localhost:3000/api',
-    reviews: {
-      base: 'http://localhost:3000/api/reviews',
-      endpoints: {
-        list: '/',
-        kpis: '/kpis',
-        respond: '/:id/respond',
-        markRead: '/:id/read'
-      }
-    },
-    drivers: { base: 'http://localhost:3000/api/drivers' },
-    parkings: { base: 'http://localhost:3000/api/parkings' }
   }
 };

@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { HomePage } from './dashboard/pages/home-page/home-page';
-import { ParkingProfileComponent } from './profileparking/components/parking-profile/parking-profile';
 import { ParkingListPage } from './profileparking/pages/parking-list/parking-list.page';
 import { ParkingAnalyticsPage } from './profileparking/pages/parking-analytics/parking-analytics.page';
 import { ParkingCreatedPageComponent } from './profileparking/pages/parking-created/parking-created.page';
+import { ParkingEditPageComponent } from './profileparking/pages/parking-edit/parking-edit.page';
 import { AuthGuard } from './iam/guards/auth.guard';
 
 export const routes: Routes = [
@@ -50,6 +50,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'iot',
+    loadChildren: () => import('./iot/iot.routes').then(m => m.IOT_ROUTES),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'parkings',
     component: ParkingListPage,
     title: 'Mis Parkings',
@@ -63,7 +68,7 @@ export const routes: Routes = [
   },
   {
     path: 'parkings/:id/edit',
-    component: ParkingProfileComponent,
+    component: ParkingEditPageComponent,
     title: 'Editar Parking',
     canActivate: [AuthGuard]
   },

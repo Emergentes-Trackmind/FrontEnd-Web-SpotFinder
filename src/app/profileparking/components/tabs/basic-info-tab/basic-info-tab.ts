@@ -102,7 +102,7 @@ export class BasicInfoTabComponent implements OnInit, OnChanges {
   private uploadImage(file: File): void {
     if (!this.profileId) return;
     this.parkingService.uploadImage(this.profileId, file).subscribe({
-      next: (imageUrl: string) => {
+      next: (_imageUrl: string) => {
         this.snackBar.open('Imagen subida correctamente', 'Cerrar', { duration: 2000 });
       },
       error: (err: any) => {
@@ -110,6 +110,10 @@ export class BasicInfoTabComponent implements OnInit, OnChanges {
         this.snackBar.open('Error al subir la imagen', 'Cerrar', { duration: 3000 });
       }
     });
+  }
+
+  triggerFileInput(fileInput: HTMLInputElement): void {
+    fileInput.click();
   }
 
   onSave(): void {

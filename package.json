@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "mock:server": "json-server --watch server/db.json --routes server/routes.json --middlewares server/middleware.js --port 3001 --delay 300",
+    "mock:server": "json-server --watch server/db.json --routes server/routes.json --middlewares server/middleware.js server/iot.middleware.js --port 3001 --delay 300",
     "dev": "concurrently \"npm run mock:server\" \"ng serve\"",
     "dev:mock": "npm run mock:server"
   },

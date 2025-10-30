@@ -47,7 +47,8 @@ interface AnalyticsJson {
 })
 export class AnalyticsService {
 
-  private readonly baseUrl = 'http://localhost:3000/analytics';
+  // Usar ruta relativa - el ApiPrefixInterceptor agregará el baseUrl
+  private readonly baseUrl = '/analytics';
   private cache = new Map<string, Observable<AnalyticsData>>();
 
   constructor(private http: HttpClient) {}

@@ -12,8 +12,8 @@
     <!-- Header with title and status -->
     <div class="card-header">
       <h3 class="parking-title">{{ parking.name }}</h3>
-      <div class="status-badge" [class]="'status-' + parking.status.toLowerCase()">
-        {{ parking.status }}
+      <div class="status-badge" [class]="'status-' + (parking.status || 'activo').toLowerCase()">
+        {{ parking.status || 'Activo' }}
       </div>
     </div>
 

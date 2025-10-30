@@ -61,7 +61,10 @@ export function mapCreatePricingToPricingData(pricing: CreatePricingDto): Pricin
     hourlyRate: pricing.hourlyRate,
     dailyRate: pricing.dailyRate,
     monthlyRate: pricing.monthlyRate,
+    currency: pricing.currency,
+    minimumStay: pricing.minimumStay,
     open24h: pricing.open24h,
+    operatingHours: pricing.operatingHours,
     operatingDays: pricing.operatingDays,
     promotions: pricing.promotions
   };
