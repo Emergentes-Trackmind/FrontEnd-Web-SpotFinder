@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -9,12 +9,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subject } from 'rxjs';
 import { takeUntil, startWith, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 
 import { ParkingsFacade } from '../../../iot/services/parkings.facade';
+import { LimitsService } from '../../../billing/services/limits.service';
+import { CreationLimitGuard } from '../../../billing/guards/creation-limit.guard';
 import { ParkingCardComponent } from '../../components/parking-card/parking-card.component';
 import { Parking } from '../../../iot/domain/entities/parking.entity';
+import { DeleteConfirmDialogComponent } from '../../components/delete-confirm-dialog/delete-confirm-dialog.component';
 
 export interface ParkingCardData {
   id: string;
@@ -43,6 +47,7 @@ export interface ParkingCardData {
     MatProgressSpinnerModule,
     MatDialogModule,
     MatSnackBarModule,
+    MatTooltipModule,
     ParkingCardComponent
   ],
   templateUrl: './parking-list.page.html',
@@ -56,23 +61,57 @@ export class ParkingListPage implements OnInit, OnDestroy {
   isLoading = true;
   hasError = false;
 
-  private destroy$ = new Subject<void>();
+  // Modo selección múltiple
+  isSelectionMode = false;
+  selectedParkingIds = new Set<string>();
 
-  constructor(
-    private parkingsFacade: ParkingsFacade,
-    private router: Router,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar
-  ) {}
+  private destroy$ = new Subject<void>();
+  private longPressTimeout: any;
+  private readonly LONG_PRESS_DURATION = 600; // ms
+
+  // Inyección de dependencias usando inject()
+  private parkingsFacade = inject(ParkingsFacade);
+  private limitsService = inject(LimitsService);
+  private limitGuard = inject(CreationLimitGuard);
+  private router = inject(Router);
+  private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
+
+  @HostListener('document:keydown.escape')
+  onEscapeKey() {
+    if (this.isSelectionMode) {
+      this.exitSelectionMode();
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onKeydown(event: KeyboardEvent) {
+    // Solo si no estamos escribiendo en un input
+    if (event.target instanceof HTMLInputElement) return;
+
+    // Tecla S para toggle modo selección
+    if (event.key === 's' || event.key === 'S') {
+      event.preventDefault();
+      this.toggleSelectionMode();
+    }
+  }
 
   ngOnInit() {
     this.loadParkings();
     this.setupSearch();
+
+    // Cargar información de límites
+    this.limitsService.load().subscribe({
+      error: (error) => {
+        console.error('Error cargando límites:', error);
+      }
+    });
   }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    this.clearLongPressTimeout();
   }
 
   private loadParkings() {
@@ -86,6 +125,9 @@ export class ParkingListPage implements OnInit, OnDestroy {
           this.parkings = this.mapProfilesToCards(parkings);
           this.filteredParkings = [...this.parkings];
           this.isLoading = false;
+
+          // Actualizar el conteo de parkings en el servicio de límites
+          this.limitsService.updateParkingsCount(parkings.length);
         },
         error: (error: any) => {
           console.error('Error loading parkings:', error);
@@ -124,8 +166,6 @@ export class ParkingListPage implements OnInit, OnDestroy {
   private mapProfilesToCards(parkings: Parking[]): ParkingCardData[] {
     return parkings.map((parking, index) => {
       const monthlyPrice = parking.pricing?.monthlyRate || 0;
-
-      // Asegurar que status tenga un valor por defecto válido
       const status = parking.status || 'Activo';
 
       return {
@@ -133,10 +173,10 @@ export class ParkingListPage implements OnInit, OnDestroy {
         name: parking.name || `Parking ${index + 1}`,
         address: parking.location?.addressLine || parking.location?.city || 'Dirección no disponible',
         status: status as 'Activo' | 'Mantenimiento' | 'Inactivo',
-        rating: 0, // TODO: integrar con sistema de reviews
+        rating: 0,
         reviewsCount: 0,
         pricePerMonth: Math.round(monthlyPrice),
-        available: 0, // TODO: integrar con IoT devices
+        available: 0,
         total: parking.totalSpaces || 0,
         imageUrl: undefined
       };
@@ -144,19 +184,188 @@ export class ParkingListPage implements OnInit, OnDestroy {
   }
 
   onNewParking() {
-    this.router.navigate(['/parkings/new']);
+    // Verificar límites antes de navegar
+    if (this.limitGuard.canCreateParking()) {
+      this.router.navigate(['/parkings/new']);
+    }
+  }
+
+  /**
+   * Verifica si se puede crear un nuevo parking
+   */
+  get canCreateParking(): boolean {
+    return this.limitsService.canCreateParking();
+  }
+
+  /**
+   * Obtiene el tooltip para el botón de nuevo parking
+   */
+  get newParkingTooltip(): string {
+    if (this.canCreateParking) {
+      return 'Crear un nuevo parking';
+    }
+
+    const limits = this.limitsService.limitsInfo();
+    return `Has alcanzado el límite de ${limits.parkings.limit} parkings. Actualiza tu plan para crear más.`;
   }
 
   onRetry() {
     this.loadParkings();
   }
 
-  /**
-   * TrackBy function para optimizar el renderizado de la lista
-   */
   trackByParkingId(index: number, parking: ParkingCardData): string {
     return parking.id;
   }
+
+  // ============ MODO SELECCIÓN MÚLTIPLE ============
+
+  onParkingPressStart(parkingId: string, event: MouseEvent | TouchEvent) {
+    if (this.isSelectionMode) return;
+
+    event.preventDefault();
+
+    this.longPressTimeout = setTimeout(() => {
+      this.enterSelectionMode(parkingId);
+    }, this.LONG_PRESS_DURATION);
+  }
+
+  onParkingPressEnd() {
+    this.clearLongPressTimeout();
+  }
+
+  onParkingClick(parkingId: string, event: Event) {
+    if (this.isSelectionMode) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.toggleParkingSelection(parkingId);
+    }
+  }
+
+  onParkingKeydown(parkingId: string, event: KeyboardEvent) {
+    if (!this.isSelectionMode) return;
+
+    if (event.key === ' ' || event.key === 'Enter') {
+      event.preventDefault();
+      this.toggleParkingSelection(parkingId);
+    }
+  }
+
+  private enterSelectionMode(initialParkingId?: string) {
+    this.isSelectionMode = true;
+
+    if (initialParkingId) {
+      this.selectedParkingIds.add(initialParkingId);
+    }
+
+    this.announceSelectionChange();
+  }
+
+  exitSelectionMode() {
+    this.isSelectionMode = false;
+    this.selectedParkingIds.clear();
+  }
+
+  private toggleSelectionMode() {
+    if (this.isSelectionMode) {
+      this.exitSelectionMode();
+    } else {
+      this.enterSelectionMode();
+    }
+  }
+
+  toggleParkingSelection(parkingId: string) {
+    if (this.selectedParkingIds.has(parkingId)) {
+      this.selectedParkingIds.delete(parkingId);
+    } else {
+      this.selectedParkingIds.add(parkingId);
+    }
+
+    this.announceSelectionChange();
+  }
+
+  isParkingSelected(parkingId: string): boolean {
+    return this.selectedParkingIds.has(parkingId);
+  }
+
+  get selectedCount(): number {
+    return this.selectedParkingIds.size;
+  }
+
+  get canDelete(): boolean {
+    return this.selectedCount > 0;
+  }
+
+  private announceSelectionChange() {
+    const announcement = `${this.selectedCount} parking${this.selectedCount !== 1 ? 's' : ''} seleccionado${this.selectedCount !== 1 ? 's' : ''}`;
+
+    const liveRegion = document.getElementById('selection-announcer');
+    if (liveRegion) {
+      liveRegion.textContent = announcement;
+    }
+  }
+
+  private clearLongPressTimeout() {
+    if (this.longPressTimeout) {
+      clearTimeout(this.longPressTimeout);
+      this.longPressTimeout = null;
+    }
+  }
+
+  // ============ BORRADO MÚLTIPLE ============
+
+  onDeleteSelected() {
+    if (this.selectedCount === 0) return;
+
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: '¿Eliminar parkings seleccionados?',
+        message: '¿Realmente deseas eliminar estos parkings?',
+        confirmText: 'Aceptar',
+        cancelText: 'Denegar',
+        parkingCount: this.selectedCount
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this.deleteSelectedParkings();
+      }
+    });
+  }
+
+  private deleteSelectedParkings() {
+    const idsToDelete = Array.from(this.selectedParkingIds);
+    this.isLoading = true;
+
+    this.parkingsFacade.deleteManyParkings(idsToDelete)
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => this.isLoading = false)
+      )
+      .subscribe({
+        next: () => {
+          this.parkings = this.parkings.filter(p => !this.selectedParkingIds.has(p.id));
+          this.filteredParkings = this.filteredParkings.filter(p => !this.selectedParkingIds.has(p.id));
+
+          this.exitSelectionMode();
+
+          this.snackBar.open('Los parkings se borraron exitosamente.', 'Cerrar', {
+            duration: 4000,
+            panelClass: ['success-snackbar']
+          });
+        },
+        error: (error: any) => {
+          console.error('Error deleting parkings:', error);
+          this.snackBar.open('Error al eliminar los parkings. Por favor, intenta de nuevo.', 'Cerrar', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
+        }
+      });
+  }
+
+  // ============ BORRADO INDIVIDUAL ============
 
   onDeleteParking(parkingId: string): void {
     const parking = this.parkings.find(p => p.id === parkingId);

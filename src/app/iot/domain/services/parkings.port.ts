@@ -14,5 +14,5 @@ export abstract class ParkingsPort {
   abstract createParking(parking: CreateParkingDto): Observable<Parking>;
   abstract updateParking(id: string, parking: UpdateParkingDto): Observable<Parking>;
   abstract deleteParking(id: string): Observable<void>;
+  abstract deleteManyParkings(ids: string[]): Observable<void>;
 }
-

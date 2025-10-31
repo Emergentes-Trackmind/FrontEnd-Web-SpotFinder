@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { ParkingCreateService } from '../../services/parking-create.service';
+import { CreationLimitGuard } from '../../../billing/guards/creation-limit.guard';
 import { WizardState } from '../../services/create-types';
 import { StepBasicComponent } from './steps/step-basic/step-basic.component';
 import { StepLocationComponent } from './steps/step-location/step-location.component';
@@ -50,13 +51,20 @@ export class ParkingCreatedPageComponent implements OnInit, OnDestroy {
     { number: 5, title: 'Revisión', subtitle: 'Confirma la información antes de registrar' }
   ];
 
-  constructor(
-    private createService: ParkingCreateService,
-    private router: Router,
-    private snackBar: MatSnackBar
-  ) {}
+  // Inyección de dependencias usando inject()
+  private createService = inject(ParkingCreateService);
+  private limitGuard = inject(CreationLimitGuard);
+  private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
+    // Verificar límites al iniciar
+    if (!this.limitGuard.canCreateParking()) {
+      // El guard muestra el diálogo automáticamente
+      this.router.navigate(['/parkings']);
+      return;
+    }
+
     this.createService.wizardState$
       .pipe(takeUntil(this.destroy$))
       .subscribe(state => {

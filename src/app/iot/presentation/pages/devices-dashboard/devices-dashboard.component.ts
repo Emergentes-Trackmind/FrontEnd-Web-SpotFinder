@@ -8,8 +8,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { DevicesFacade } from '../../../services/devices.facade';
+import { LimitsService } from '../../../../billing/services/limits.service';
+import { CreationLimitGuard } from '../../../../billing/guards/creation-limit.guard';
 import { DeviceKpisComponent } from '../../components/device-kpis/device-kpis.component';
 import { DeviceTableComponent } from '../../components/device-table/device-table.component';
 import { IotDevice } from '../../../domain/entities/iot-device.entity';
@@ -32,6 +35,7 @@ import { DeviceFiltersDto } from '../../../domain/dtos/device-filters.dto';
     MatSelectModule,
     MatFormFieldModule,
     MatSnackBarModule,
+    MatTooltipModule,
     DeviceKpisComponent,
     DeviceTableComponent
   ],
@@ -43,7 +47,12 @@ import { DeviceFiltersDto } from '../../../domain/dtos/device-filters.dto';
           <h1>Dispositivos IoT</h1>
           <p>Gestiona tus sensores, cámaras y barreras</p>
         </div>
-        <button mat-raised-button color="primary" (click)="onAddDevice()">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onAddDevice()"
+          [disabled]="!canCreateDevice"
+          [matTooltip]="addDeviceTooltip">
           <mat-icon>add</mat-icon>
           Añadir Dispositivo
         </button>
@@ -204,6 +213,8 @@ export class DevicesDashboardComponent implements OnInit {
   facade = inject(DevicesFacade);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
+  private limitsService = inject(LimitsService);
+  private limitGuard = inject(CreationLimitGuard);
 
   searchQuery = '';
   selectedType: any = 'all';
@@ -212,6 +223,13 @@ export class DevicesDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
+
+    // Cargar información de límites
+    this.limitsService.load().subscribe({
+      error: (error) => {
+        console.error('Error cargando límites:', error);
+      }
+    });
   }
 
   loadData(): void {
@@ -222,6 +240,10 @@ export class DevicesDashboardComponent implements OnInit {
     });
 
     this.facade.loadDevices().subscribe({
+      next: (paginatedDevices) => {
+        // Actualizar el conteo de dispositivos IoT en el servicio de límites
+        this.limitsService.updateIotCount(paginatedDevices.total);
+      },
       error: (err) => {
         this.snackBar.open('Error al cargar dispositivos', 'Cerrar', { duration: 3000 });
       }
@@ -250,7 +272,29 @@ export class DevicesDashboardComponent implements OnInit {
   }
 
   onAddDevice(): void {
-    this.router.navigate(['/iot/devices/new']);
+    // Verificar límites antes de navegar
+    if (this.limitGuard.canCreateDevice()) {
+      this.router.navigate(['/iot/devices/new']);
+    }
+  }
+
+  /**
+   * Verifica si se puede crear un nuevo dispositivo
+   */
+  get canCreateDevice(): boolean {
+    return this.limitsService.canCreateDevice();
+  }
+
+  /**
+   * Obtiene el tooltip para el botón de añadir dispositivo
+   */
+  get addDeviceTooltip(): string {
+    if (this.canCreateDevice) {
+      return 'Añadir un nuevo dispositivo IoT';
+    }
+
+    const limits = this.limitsService.limitsInfo();
+    return `Has alcanzado el límite de ${limits.iot.limit} dispositivos IoT. Actualiza tu plan para añadir más.`;
   }
 
   onViewDevice(device: IotDevice): void {
@@ -297,4 +341,3 @@ export class DevicesDashboardComponent implements OnInit {
     }
   }
 }
-

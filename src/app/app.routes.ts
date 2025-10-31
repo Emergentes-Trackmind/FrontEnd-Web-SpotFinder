@@ -102,21 +102,15 @@ export const routes: Routes = [
     loadComponent: () => import('./reservations/presentation/pages/reservation-detail/reservation-detail.page').then(m => m.ReservationDetailPage),
     title: 'Detalle de Reserva'
   },
+  // Billing - Planes y Suscripción
   {
-    path: 'reviews',
-    loadComponent: () => import('./shared/pages/reviews/reviews.page').then(m => m.ReviewsPage),
-    title: 'Reseñas',
-    canActivate: [AuthGuard]
+    path: 'billing',
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./billing/pages/subscription-page/subscription-page.component').then(m => m.SubscriptionPageComponent),
+    title: 'Planes y Suscripción'
   },
   {
-    path: 'settings',
-    loadComponent: () => import('./shared/pages/settings/settings.page').then(m => m.SettingsPage),
-    title: 'Configuración',
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'unauthorized',
-    loadComponent: () => import('./shared/pages/unauthorized/unauthorized.page').then(m => m.UnauthorizedPage),
-    title: 'Acceso Denegado'
+    path: '**',
+    redirectTo: '/dashboard'
   }
 ];

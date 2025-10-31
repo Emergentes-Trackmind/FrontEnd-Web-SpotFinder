@@ -1,0 +1,240 @@
+<mat-card class="step-card">
+  <mat-card-header class="step-header">
+    <mat-card-title>Revisión Final</mat-card-title>
+    <mat-card-subtitle>Revisa toda la información antes de registrar tu parking</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content class="step-content">
+
+    <!-- Información Básica -->
+    <div class="review-section">
+      <div class="section-header" (click)="goToStep(1)">
+        <div class="section-title">
+          <mat-icon class="section-icon" [class.complete]="isBasicInfoComplete()">
+            {{ isBasicInfoComplete() ? 'check_circle' : 'info' }}
+          </mat-icon>
+          <h3>Información Básica</h3>
+        </div>
+        <button mat-icon-button class="edit-btn" title="Editar información básica">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+
+      <div class="section-content">
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Nombre:</span>
+            <span class="value">{{ basicInfo.name || 'No especificado' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Tipo:</span>
+            <span class="value">{{ basicInfo.type || 'No especificado' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Total de Plazas:</span>
+            <span class="value">{{ basicInfo.totalSpaces || 'No especificado' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Plazas Accesibles:</span>
+            <span class="value">{{ basicInfo.accessibleSpaces || 0 }}</span>
+          </div>
+        </div>
+
+        <div class="description-section" *ngIf="basicInfo.description">
+          <span class="label">Descripción:</span>
+          <p class="description">{{ basicInfo.description }}</p>
+        </div>
+
+        <div class="contact-section">
+          <h4>Información de Contacto</h4>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Teléfono:</span>
+              <span class="value">{{ basicInfo.phone || 'No especificado' }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Email:</span>
+              <span class="value">{{ basicInfo.email || 'No especificado' }}</span>
+            </div>
+            <div class="info-item" *ngIf="basicInfo.website">
+              <span class="label">Sitio Web:</span>
+              <span class="value">{{ basicInfo.website }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ubicación -->
+    <div class="review-section">
+      <div class="section-header" (click)="goToStep(2)">
+        <div class="section-title">
+          <mat-icon class="section-icon" [class.complete]="isLocationComplete()">
+            {{ isLocationComplete() ? 'check_circle' : 'location_on' }}
+          </mat-icon>
+          <h3>Ubicación</h3>
+        </div>
+        <button mat-icon-button class="edit-btn" title="Editar ubicación">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+
+      <div class="section-content">
+        <div class="location-info">
+          <div class="address-display">
+            <mat-icon>place</mat-icon>
+            <span>{{ formattedAddress }}</span>
+          </div>
+
+          <div class="coordinates" *ngIf="location.latitude && location.longitude">
+            <small>Coordenadas: {{ location.latitude | number:'1.6-6' }}, {{ location.longitude | number:'1.6-6' }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Características -->
+    <div class="review-section">
+      <div class="section-header" (click)="goToStep(3)">
+        <div class="section-title">
+          <mat-icon class="section-icon" [class.complete]="isFeaturesComplete()">
+            {{ isFeaturesComplete() ? 'check_circle' : 'featured_play_list' }}
+          </mat-icon>
+          <h3>Características</h3>
+        </div>
+        <button mat-icon-button class="edit-btn" title="Editar características">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+
+      <div class="section-content">
+        <div *ngIf="selectedFeatures.length > 0; else noFeatures" class="features-display">
+          <mat-chip-set>
+            <mat-chip *ngFor="let feature of selectedFeatures" class="feature-chip">
+              {{ feature }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+
+        <ng-template #noFeatures>
+          <p class="no-data">No se han seleccionado características</p>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Precios y Horarios -->
+    <div class="review-section">
+      <div class="section-header" (click)="goToStep(4)">
+        <div class="section-title">
+          <mat-icon class="section-icon" [class.complete]="isPricingComplete()">
+            {{ isPricingComplete() ? 'check_circle' : 'euro' }}
+          </mat-icon>
+          <h3>Precios y Horarios</h3>
+        </div>
+        <button mat-icon-button class="edit-btn" title="Editar precios">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+
+      <div class="section-content">
+        <!-- Tarifas -->
+        <div class="pricing-display">
+          <h4>Tarifas</h4>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Tarifa por Hora:</span>
+              <span class="value price">
+                {{ (pricing.hourlyRate || 'No especificado') }}
+                <span *ngIf="pricing.hourlyRate">{{ currencySymbol }}</span>
+              </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Tarifa Diaria:</span>
+              <span class="value price">
+                {{ (pricing.dailyRate || 'No especificado') }}
+                <span *ngIf="pricing.dailyRate">{{ currencySymbol }}</span>
+              </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Tarifa Mensual:</span>
+              <span class="value price">
+                {{ (pricing.monthlyRate || 'No especificado') }}
+                <span *ngIf="pricing.monthlyRate">{{ currencySymbol }}</span>
+              </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Estancia Mínima:</span>
+              <span class="value">{{ minimumStayLabel }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Horarios -->
+        <div class="schedule-display">
+          <h4>Horarios</h4>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Horario:</span>
+              <span class="value">{{ operatingHours }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Días:</span>
+              <span class="value">{{ operatingSchedule }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Promociones -->
+        <div class="promotions-display" *ngIf="selectedPromotions.length > 0">
+          <h4>Promociones Activas</h4>
+          <mat-chip-set>
+            <mat-chip *ngFor="let promotion of selectedPromotions" class="promotion-chip">
+              <mat-icon matChipAvatar>local_offer</mat-icon>
+              {{ promotion }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estado de completitud -->
+    <div class="completion-status">
+      <div class="status-header">
+        <mat-icon class="status-icon">assignment_turned_in</mat-icon>
+        <h3>Estado de la Edición</h3>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-item" [class.complete]="isBasicInfoComplete()">
+          <mat-icon>{{ isBasicInfoComplete() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+          <span>Información Básica</span>
+        </div>
+        <div class="status-item" [class.complete]="isLocationComplete()">
+          <mat-icon>{{ isLocationComplete() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+          <span>Ubicación</span>
+        </div>
+        <div class="status-item" [class.complete]="isFeaturesComplete()">
+          <mat-icon>{{ isFeaturesComplete() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+          <span>Características</span>
+        </div>
+        <div class="status-item" [class.complete]="isPricingComplete()">
+          <mat-icon>{{ isPricingComplete() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+          <span>Precios y Horarios</span>
+        </div>
+      </div>
+
+      <div class="completion-message"
+           *ngIf="isBasicInfoComplete() && isLocationComplete() && isPricingComplete()">
+        <mat-icon>thumb_up</mat-icon>
+        <p>¡Los cambios están listos para ser guardados!</p>
+      </div>
+
+      <div class="incomplete-message"
+           *ngIf="!(isBasicInfoComplete() && isLocationComplete() && isPricingComplete())">
+        <mat-icon>warning</mat-icon>
+        <p>Completa las secciones faltantes para guardar los cambios.</p>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

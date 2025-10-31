@@ -5,6 +5,42 @@
       <h1 class="page-title">Mis Parkings</h1>
       <p class="page-subtitle">Selecciona un parking para editar su información</p>
     </div>
+
+    <!-- Acciones -->
+    <div class="actions-section">
+      <!-- Botón Nuevo Parking con límites -->
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onNewParking()"
+        [matTooltip]="newParkingTooltip"
+        [disabled]="!canCreateParking"
+        class="new-parking-btn">
+        <mat-icon>add</mat-icon>
+        Nuevo Parking
+      </button>
+
+      <!-- Botón de eliminar múltiple -->
+      <button
+        mat-raised-button
+        color="warn"
+        [disabled]="!canDelete"
+        (click)="onDeleteSelected()"
+        class="delete-multiple-btn"
+        [attr.aria-label]="'Eliminar ' + selectedCount + ' parkings seleccionados'">
+        <mat-icon>delete</mat-icon>
+        Eliminar parking{{ selectedCount > 1 ? 's' : '' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- ARIA Live region para anuncios -->
+  <div
+    id="selection-announcer"
+    class="sr-only"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true">
   </div>
 
   <!-- Search Bar -->
@@ -15,6 +51,16 @@
              placeholder="Buscar parking..."
              [formControl]="searchControl">
     </mat-form-field>
+  </div>
+
+  <!-- Modo selección indicator -->
+  <div *ngIf="isSelectionMode" class="selection-mode-banner">
+    <mat-icon>check_circle</mat-icon>
+    <span>Modo selección activo - {{ selectedCount }} seleccionado{{ selectedCount !== 1 ? 's' : '' }}</span>
+    <button mat-button (click)="exitSelectionMode()">
+      <mat-icon>close</mat-icon>
+      Salir
+    </button>
   </div>
 
   <!-- Loading State -->
@@ -58,10 +104,32 @@
 
   <!-- Parking Grid -->
   <div *ngIf="!isLoading && !hasError && filteredParkings.length > 0" class="parking-grid">
-    <app-parking-card
+    <div
       *ngFor="let parking of filteredParkings; trackBy: trackByParkingId"
-      [parking]="parking"
-      (deleteParking)="onDeleteParking($event)">
-    </app-parking-card>
+      class="parking-card-wrapper"
+      [class.selected]="isParkingSelected(parking.id)"
+      (mousedown)="onParkingPressStart(parking.id, $event)"
+      (mouseup)="onParkingPressEnd()"
+      (mouseleave)="onParkingPressEnd()"
+      (touchstart)="onParkingPressStart(parking.id, $event)"
+      (touchend)="onParkingPressEnd()"
+      (touchcancel)="onParkingPressEnd()"
+      (click)="onParkingClick(parking.id, $event)"
+      (keydown)="onParkingKeydown(parking.id, $event)"
+      [attr.tabindex]="isSelectionMode ? 0 : -1"
+      [attr.role]="isSelectionMode ? 'checkbox' : null"
+      [attr.aria-checked]="isSelectionMode ? isParkingSelected(parking.id) : null"
+      [attr.aria-label]="parking.name + (isSelectionMode ? (isParkingSelected(parking.id) ? ' - seleccionado' : ' - no seleccionado') : '')">
+
+      <app-parking-card
+        [parking]="parking"
+        (deleteParking)="onDeleteParking($event)">
+      </app-parking-card>
+
+      <!-- Indicador de selección -->
+      <div *ngIf="isSelectionMode && isParkingSelected(parking.id)" class="selection-indicator">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+    </div>
   </div>
 </div>

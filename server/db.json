@@ -24,47 +24,130 @@
       ],
       "isEmailVerified": false,
       "createdAt": "2025-10-30T12:09:23.261Z",
-      "lastLoginAt": "2025-10-30T12:09:23.261Z"
+      "lastLoginAt": "2025-10-31T10:23:04.019Z"
+    },
+    {
+      "id": "1761857990792",
+      "email": "Prueba2@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-10-30T20:59:50.792Z",
+      "lastLoginAt": "2025-10-30T20:59:50.792Z"
+    },
+    {
+      "id": "1761906575946",
+      "email": "luis.eduardo.200325@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis Eduardo",
+      "lastName": "Lagos Aguilar",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-10-31T10:29:35.946Z",
+      "lastLoginAt": "2025-10-31T10:29:35.946Z"
+    },
+    {
+      "id": "1761906958534",
+      "email": "luis.eduardo@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-10-31T10:35:58.534Z",
+      "lastLoginAt": "2025-10-31T10:35:58.534Z"
+    },
+    {
+      "id": "1761908065690",
+      "email": "patata@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "eunha",
+      "lastName": "jung097",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-10-31T10:54:25.690Z",
+      "lastLoginAt": "2025-10-31T10:54:25.690Z"
+    },
+    {
+      "id": "1761909139636",
+      "email": "lola@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "eunha",
+      "lastName": "jung097",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-10-31T11:12:19.636Z",
+      "lastLoginAt": "2025-10-31T11:12:19.636Z"
     }
   ],
   "parkings": [
     {
-      "name": "Prueba7",
-      "type": "Público",
-      "description": "Prueba numero 7 a ver si ahora ",
-      "totalSpaces": 5,
-      "accessibleSpaces": 3,
-      "phone": "+51944329232",
-      "email": "a@gmail.com",
-      "website": "",
-      "status": "Activo",
-      "id": 1
-    },
-    {
-      "ownerId": "1761826163261",
-      "name": "Prueba8",
-      "type": "Privado",
-      "description": "Prueba numero 8",
+      "ownerId": "1761857990792",
+      "name": "Prueba1",
+      "type": "Comercial",
+      "description": "Prueba numero 1 ahoras",
       "totalSpaces": 4,
       "accessibleSpaces": 2,
-      "phone": "+51 944320872",
+      "phone": "+321312312",
       "email": "l@gmail.com",
       "website": "",
       "status": "Activo",
-      "id": 2
+      "id": 4
     },
     {
-      "ownerId": "1761826163261",
-      "name": "patata",
+      "ownerId": "1761909139636",
+      "name": "Parking1",
       "type": "Comercial",
-      "description": "comercio pe causa",
-      "totalSpaces": 2,
-      "accessibleSpaces": 1,
-      "phone": "12342312421",
-      "email": "pa@gmail.com",
+      "description": "hola como estas",
+      "totalSpaces": 3,
+      "accessibleSpaces": 2,
+      "phone": "1234567890",
+      "email": "parking@gmial.com",
       "website": "",
       "status": "Activo",
-      "id": 3
+      "id": 5
+    },
+    {
+      "id": "1761909801396",
+      "ownerId": "1761906958534",
+      "name": "parking2",
+      "type": "Comercial",
+      "description": "hola que tal me llamo luis",
+      "totalSpaces": 4,
+      "accessibleSpaces": 2,
+      "phone": "1234353443",
+      "email": "321312312@gmail.com",
+      "website": "",
+      "status": "Activo",
+      "createdAt": "2025-10-31T11:23:21.396Z",
+      "updatedAt": "2025-10-31T11:23:21.396Z"
+    },
+    {
+      "id": "1761909873390",
+      "ownerId": "1761906958534",
+      "name": "Parking123",
+      "type": "Comercial",
+      "description": "1234345555555687",
+      "totalSpaces": 12,
+      "accessibleSpaces": 2,
+      "phone": "12343454563463",
+      "email": "pata@gmail.com",
+      "website": "",
+      "status": "Activo",
+      "createdAt": "2025-10-31T11:24:33.390Z",
+      "updatedAt": "2025-10-31T11:24:33.390Z"
     }
   ],
   "locations": [
@@ -74,21 +157,10 @@
       "postalCode": "15804",
       "state": "Lima",
       "country": "Peru",
-      "latitude": -12.1360151,
-      "longitude": -76.9615813,
-      "profileId": 1,
-      "id": 1
-    },
-    {
-      "addressLine": "Av central",
-      "city": "Lima",
-      "postalCode": "15804",
-      "state": "Lima",
-      "country": "Peru",
       "latitude": -12.1360027,
       "longitude": -76.9616106,
-      "profileId": 2,
-      "id": 2
+      "profileId": 4,
+      "id": 4
     },
     {
       "addressLine": "Avenida Central",
@@ -96,19 +168,100 @@
       "postalCode": "15804",
       "state": "Lima",
       "country": "Peru",
-      "latitude": -12.1360027,
-      "longitude": -76.9616106,
-      "profileId": 3,
-      "id": 3
+      "latitude": -12.1360018,
+      "longitude": -76.9616449,
+      "profileId": 5,
+      "id": 5
+    },
+    {
+      "id": 1761909801416,
+      "addressLine": "Avenida Central 1035",
+      "city": "San Juan de Miraflores",
+      "postalCode": "15806",
+      "state": "Gobierno Regional de Lima",
+      "country": "Perú",
+      "latitude": -12.1360003,
+      "longitude": -76.961627,
+      "profileId": "1761909801396",
+      "createdAt": "2025-10-31T11:23:21.416Z"
+    },
+    {
+      "id": 1761909873409,
+      "addressLine": "Avenida Central",
+      "city": "Lima",
+      "postalCode": "15804",
+      "state": "Lima",
+      "country": "España",
+      "latitude": -12.144004762947883,
+      "longitude": -76.97389703935816,
+      "profileId": "1761909873390",
+      "createdAt": "2025-10-31T11:24:33.409Z"
     }
   ],
   "pricing": [
     {
       "hourlyRate": 2,
       "dailyRate": 3,
+      "monthlyRate": 10,
+      "currency": "USD",
+      "minimumStay": "1h",
+      "open24h": true,
+      "operatingHours": {
+        "openTime": "08:00",
+        "closeTime": "22:00"
+      },
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": true
+      },
+      "promotions": {
+        "earlyBird": false,
+        "weekend": true,
+        "longStay": false
+      },
+      "profileId": 4,
+      "id": 4
+    },
+    {
+      "hourlyRate": 2,
+      "dailyRate": 3,
       "monthlyRate": 4,
       "currency": "EUR",
-      "minimumStay": "2h",
+      "minimumStay": "SinLimite",
+      "open24h": false,
+      "operatingHours": {
+        "openTime": "08:00",
+        "closeTime": "22:00"
+      },
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": false
+      },
+      "promotions": {
+        "earlyBird": false,
+        "weekend": false,
+        "longStay": true
+      },
+      "profileId": 5,
+      "id": 5
+    },
+    {
+      "id": 1761909801418,
+      "hourlyRate": 3,
+      "dailyRate": 432,
+      "monthlyRate": 2123,
+      "currency": "EUR",
+      "minimumStay": "SinLimite",
       "open24h": true,
       "operatingHours": {
         "openTime": "08:00",
@@ -128,42 +281,15 @@
         "weekend": false,
         "longStay": true
       },
-      "profileId": 1,
-      "id": 1
+      "profileId": "1761909801396",
+      "createdAt": "2025-10-31T11:23:21.418Z"
     },
     {
+      "id": 1761909873412,
       "hourlyRate": 2,
       "dailyRate": 3,
-      "monthlyRate": 6,
-      "currency": "USD",
-      "minimumStay": "1h",
-      "open24h": true,
-      "operatingHours": {
-        "openTime": "08:00",
-        "closeTime": "22:00"
-      },
-      "operatingDays": {
-        "monday": true,
-        "tuesday": true,
-        "wednesday": true,
-        "thursday": true,
-        "friday": true,
-        "saturday": true,
-        "sunday": true
-      },
-      "promotions": {
-        "earlyBird": true,
-        "weekend": false,
-        "longStay": false
-      },
-      "profileId": 2,
-      "id": 2
-    },
-    {
-      "hourlyRate": 2,
-      "dailyRate": 3,
-      "monthlyRate": 4,
-      "currency": "USD",
+      "monthlyRate": 412,
+      "currency": "EUR",
       "minimumStay": "SinLimite",
       "open24h": true,
       "operatingHours": {
@@ -184,67 +310,11 @@
         "weekend": false,
         "longStay": false
       },
-      "profileId": 3,
-      "id": 3
+      "profileId": "1761909873390",
+      "createdAt": "2025-10-31T11:24:33.412Z"
     }
   ],
   "features": [
-    {
-      "security": {
-        "security24h": false,
-        "cameras": false,
-        "lighting": false,
-        "accessControl": true
-      },
-      "amenities": {
-        "covered": false,
-        "elevator": false,
-        "bathrooms": false,
-        "carWash": true
-      },
-      "services": {
-        "electricCharging": false,
-        "freeWifi": true,
-        "valetService": false,
-        "maintenance": false
-      },
-      "payments": {
-        "cardPayment": false,
-        "mobilePayment": false,
-        "monthlyPasses": true,
-        "corporateRates": false
-      },
-      "profileId": 1,
-      "id": 1
-    },
-    {
-      "security": {
-        "security24h": false,
-        "cameras": false,
-        "lighting": true,
-        "accessControl": false
-      },
-      "amenities": {
-        "covered": false,
-        "elevator": false,
-        "bathrooms": true,
-        "carWash": false
-      },
-      "services": {
-        "electricCharging": false,
-        "freeWifi": true,
-        "valetService": false,
-        "maintenance": false
-      },
-      "payments": {
-        "cardPayment": false,
-        "mobilePayment": true,
-        "monthlyPasses": false,
-        "corporateRates": false
-      },
-      "profileId": 2,
-      "id": 2
-    },
     {
       "security": {
         "security24h": true,
@@ -265,13 +335,99 @@
         "maintenance": false
       },
       "payments": {
+        "cardPayment": false,
+        "mobilePayment": true,
+        "monthlyPasses": false,
+        "corporateRates": false
+      },
+      "profileId": 4,
+      "id": 4
+    },
+    {
+      "security": {
+        "security24h": false,
+        "cameras": true,
+        "lighting": false,
+        "accessControl": false
+      },
+      "amenities": {
+        "covered": false,
+        "elevator": false,
+        "bathrooms": false,
+        "carWash": false
+      },
+      "services": {
+        "electricCharging": false,
+        "freeWifi": true,
+        "valetService": false,
+        "maintenance": false
+      },
+      "payments": {
         "cardPayment": true,
         "mobilePayment": false,
         "monthlyPasses": false,
         "corporateRates": false
       },
-      "profileId": 3,
-      "id": 3
+      "profileId": 5,
+      "id": 5
+    },
+    {
+      "id": 1761909801421,
+      "security": {
+        "security24h": false,
+        "cameras": false,
+        "lighting": true,
+        "accessControl": false
+      },
+      "amenities": {
+        "covered": false,
+        "elevator": false,
+        "bathrooms": false,
+        "carWash": true
+      },
+      "services": {
+        "electricCharging": true,
+        "freeWifi": false,
+        "valetService": false,
+        "maintenance": false
+      },
+      "payments": {
+        "cardPayment": true,
+        "mobilePayment": false,
+        "monthlyPasses": false,
+        "corporateRates": false
+      },
+      "profileId": "1761909801396",
+      "createdAt": "2025-10-31T11:23:21.421Z"
+    },
+    {
+      "id": 1761909873414,
+      "security": {
+        "security24h": false,
+        "cameras": false,
+        "lighting": true,
+        "accessControl": false
+      },
+      "amenities": {
+        "covered": false,
+        "elevator": false,
+        "bathrooms": false,
+        "carWash": false
+      },
+      "services": {
+        "electricCharging": true,
+        "freeWifi": false,
+        "valetService": false,
+        "maintenance": false
+      },
+      "payments": {
+        "cardPayment": false,
+        "mobilePayment": true,
+        "monthlyPasses": false,
+        "corporateRates": false
+      },
+      "profileId": "1761909873390",
+      "createdAt": "2025-10-31T11:24:33.414Z"
     }
   ],
   "devices": [],
@@ -307,5 +463,239 @@
     "occupancy": [],
     "activity": [],
     "topParkings": []
-  }
+  },
+  "billingPlans": [
+    {
+      "id": "plan_basic",
+      "name": "Plan Básico",
+      "code": "BASIC",
+      "description": "Ideal para pequeños negocios",
+      "price": 29,
+      "currency": "EUR",
+      "interval": "month",
+      "parkingLimit": 3,
+      "iotLimit": 10,
+      "features": [
+        "Hasta 3 parkings",
+        "Hasta 10 dispositivos IoT",
+        "Dashboard básico",
+        "Soporte por email"
+      ],
+      "priceId": "price_basic_eur_monthly",
+      "isActive": true
+    },
+    {
+      "id": "plan_advanced",
+      "name": "Plan Avanzado",
+      "code": "ADVANCED",
+      "description": "Para negocios en crecimiento",
+      "price": 79,
+      "currency": "EUR",
+      "interval": "month",
+      "parkingLimit": 10,
+      "iotLimit": 50,
+      "features": [
+        "Hasta 10 parkings",
+        "Hasta 50 dispositivos IoT",
+        "Dashboard avanzado",
+        "Soporte prioritario",
+        "Analytics avanzados"
+      ],
+      "priceId": "price_advanced_eur_monthly",
+      "isActive": true,
+      "isPopular": true
+    }
+  ],
+  "billingSubscriptions": [
+    {
+      "userId": "1761826163261",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Ideal para pequeños negocios",
+        "price": 29,
+        "currency": "EUR",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [
+          "Hasta 3 parkings",
+          "Hasta 10 dispositivos IoT",
+          "Dashboard básico",
+          "Soporte por email"
+        ],
+        "priceId": "price_basic_eur_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-10-01T00:00:00.000Z",
+      "currentPeriodEnd": "2025-11-01T00:00:00.000Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_123",
+      "stripeSubscriptionId": "sub_mock_123"
+    },
+    {
+      "userId": "1761825474560",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Ideal para pequeños negocios",
+        "price": 29,
+        "currency": "EUR",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [
+          "Hasta 3 parkings",
+          "Hasta 10 dispositivos IoT",
+          "Dashboard básico",
+          "Soporte por email"
+        ],
+        "priceId": "price_basic_eur_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-10-01T00:00:00.000Z",
+      "currentPeriodEnd": "2025-11-01T00:00:00.000Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_456",
+      "stripeSubscriptionId": "sub_mock_456"
+    },
+    {
+      "userId": "1761857990792",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Ideal para pequeños negocios",
+        "price": 29,
+        "currency": "EUR",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [
+          "Hasta 3 parkings",
+          "Hasta 10 dispositivos IoT",
+          "Dashboard básico",
+          "Soporte por email"
+        ],
+        "priceId": "price_basic_eur_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-10-01T00:00:00.000Z",
+      "currentPeriodEnd": "2025-11-01T00:00:00.000Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_789",
+      "stripeSubscriptionId": "sub_mock_789"
+    },
+    {
+      "userId": "1761908065690",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Ideal para pequeños negocios",
+        "price": 29,
+        "currency": "EUR",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [
+          "Hasta 3 parkings",
+          "Hasta 10 dispositivos IoT",
+          "Dashboard básico",
+          "Soporte por email"
+        ],
+        "priceId": "price_basic_eur_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-10-31T10:54:25.691Z",
+      "currentPeriodEnd": "2025-11-30T10:54:25.691Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_1761908065690",
+      "stripeSubscriptionId": "sub_mock_1761908065690"
+    },
+    {
+      "userId": "1761909139636",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Ideal para pequeños negocios",
+        "price": 29,
+        "currency": "EUR",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [
+          "Hasta 3 parkings",
+          "Hasta 10 dispositivos IoT",
+          "Dashboard básico",
+          "Soporte por email"
+        ],
+        "priceId": "price_basic_eur_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-10-31T11:12:19.636Z",
+      "currentPeriodEnd": "2025-11-30T11:12:19.636Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_1761909139636",
+      "stripeSubscriptionId": "sub_mock_1761909139636"
+    },
+    {
+      "userId": "1761906958534",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Ideal para pequeños negocios",
+        "price": 29,
+        "currency": "EUR",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [
+          "Hasta 3 parkings",
+          "Hasta 10 dispositivos IoT",
+          "Dashboard básico",
+          "Soporte por email"
+        ],
+        "priceId": "price_basic_eur_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-10-31T11:20:45.825Z",
+      "currentPeriodEnd": "2025-11-30T11:20:45.825Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_1761906958534",
+      "stripeSubscriptionId": "sub_mock_1761906958534"
+    }
+  ],
+  "billingPayments": [
+    {
+      "id": "pay_1",
+      "userId": "1761826163261",
+      "date": "2025-10-01T10:00:00.000Z",
+      "amount": 29,
+      "currency": "EUR",
+      "status": "succeeded",
+      "description": "Plan Básico - Octubre 2025",
+      "invoiceUrl": "https://invoice.stripe.com/mock_invoice_1"
+    },
+    {
+      "id": "pay_2",
+      "userId": "1761826163261",
+      "date": "2025-09-01T10:00:00.000Z",
+      "amount": 29,
+      "currency": "EUR",
+      "status": "succeeded",
+      "description": "Plan Básico - Septiembre 2025",
+      "invoiceUrl": "https://invoice.stripe.com/mock_invoice_2"
+    }
+  ]
 }

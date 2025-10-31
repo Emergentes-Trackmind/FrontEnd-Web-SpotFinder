@@ -67,6 +67,16 @@ export class ParkingsFacade {
   }
 
   /**
+   * Elimina múltiples parkings
+   */
+  deleteManyParkings(ids: string[]): Observable<void> {
+    console.log('🏢 [ParkingsFacade] Eliminando múltiples parkings', { count: ids.length, ids });
+    return this.parkingsPort.deleteManyParkings(ids).pipe(
+      tap(() => console.log('✅ [ParkingsFacade] Parkings eliminados:', ids.length))
+    );
+  }
+
+  /**
    * Obtiene los parkings del usuario autenticado
    */
   getUserParkings(): Observable<Parking[]> {

@@ -1,0 +1,168 @@
+:host {
+  --primary: #6D5AE6;
+  --bg: #F9FAFB;
+  --card: #fff;
+  --text: #111827;
+  --muted: #6B7280;
+  --border: #E5E7EB;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.03);
+}
+
+.subscription-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  background-color: var(--bg);
+  min-height: 100vh;
+}
+
+/* Header */
+.page-header {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: var(--primary);
+}
+
+.header-content h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.header-content p {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 4px 0 0 0;
+}
+
+/* Loading */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.loading-container p {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+/* Content */
+.page-content {
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* Tabs */
+.billing-tabs {
+  width: 100%;
+}
+
+.billing-tabs ::ng-deep .mat-mdc-tab-labels {
+  background: #F9FAFB;
+  border-bottom: 2px solid var(--border);
+}
+
+.billing-tabs ::ng-deep .mat-mdc-tab {
+  min-width: 160px;
+  font-weight: 600;
+}
+
+.billing-tabs ::ng-deep .mat-mdc-tab-label-active {
+  color: var(--primary);
+}
+
+.tab-content {
+  padding: 32px 24px;
+}
+
+/* Plans Grid */
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.plans-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: 8px;
+  color: #1E40AF;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.plans-info mat-icon {
+  color: #3B82F6;
+  flex-shrink: 0;
+}
+
+.plans-info p {
+  margin: 0;
+}
+
+/* Billing Section */
+.billing-section {
+  margin-bottom: 24px;
+}
+
+.billing-section:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .subscription-page {
+    padding: 16px;
+  }
+
+  .page-header {
+    padding: 20px;
+  }
+
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .header-content h1 {
+    font-size: 24px;
+  }
+
+  .tab-content {
+    padding: 24px 16px;
+  }
+
+  .plans-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+

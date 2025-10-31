@@ -314,6 +314,22 @@ export class ParkingsApi {
     );
   }
 
+  /**
+   * Elimina múltiples parkings
+   */
+  deleteManyParkings(ids: string[]): Observable<void> {
+    if (ids.length === 0) {
+      return of(undefined);
+    }
+
+    // Eliminar cada parking secuencialmente para evitar problemas
+    const deleteOperations = ids.map(id => this.deleteParking(id));
+
+    return forkJoin(deleteOperations).pipe(
+      map(() => undefined)
+    );
+  }
+
   private getLocationsByParkingIds(parkingIds: string[]): Observable<Map<string, LocationJson>> {
     const requests = parkingIds.map(id =>
       this.http.get<LocationJson[]>(`${this.locationsUrl}?profileId=${id}`).pipe(

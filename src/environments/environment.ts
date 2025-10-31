@@ -61,5 +61,6 @@ export const environment = {
       recentActivity: '/activity',
       topParkings: '/top-parkings'
     }
-  }
+  },
+  stripePublicKey: 'pk_test_YOUR_STRIPE_PUBLIC_KEY_HERE'
 };

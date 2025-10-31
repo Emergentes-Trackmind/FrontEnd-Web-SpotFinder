@@ -145,6 +145,27 @@ module.exports = (req, res, next) => {
 
     db.get('profiles').push(newProfile).write();
 
+    // 🆕 Crear suscripción al Plan Básico automáticamente
+    const basicPlan = db.get('billingPlans').find({ code: 'BASIC' }).value();
+
+    if (basicPlan) {
+      const newSubscription = {
+        userId: newUser.id,
+        plan: basicPlan,
+        status: 'ACTIVE',
+        currentPeriodStart: new Date().toISOString(),
+        currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        cancelAtPeriodEnd: false,
+        stripeCustomerId: 'cus_mock_' + newUser.id,
+        stripeSubscriptionId: 'sub_mock_' + newUser.id
+      };
+
+      db.get('billingSubscriptions').push(newSubscription).write();
+      console.log('✅ [Auth] Suscripción al Plan Básico creada para nuevo usuario:', newUser.id);
+    } else {
+      console.warn('⚠️ [Auth] No se encontró el Plan Básico en la base de datos');
+    }
+
     const accessToken = generateToken(newUser);
     const refreshToken = `refresh_token_${newUser.id}_${Date.now()}`;
 
@@ -751,6 +772,94 @@ module.exports = (req, res, next) => {
     db.get('parkingProfiles').remove({ id: parkingId }).write();
 
     return res.status(204).send();
+  }
+
+  // POST /parkings - Crear nuevo parking (después del rewrite)
+  if (req.method === 'POST' && req.path === '/parkings') {
+    const token = extractToken(req);
+
+    if (!token) {
+      return res.status(401).json({
+        error: 'No autorizado',
+        message: 'Token de autenticación requerido'
+      });
+    }
+
+    const decoded = verifyToken(token);
+
+    if (!decoded) {
+      return res.status(401).json({
+        error: 'Token inválido',
+        message: 'El token de autenticación no es válido o ha expirado'
+      });
+    }
+
+    const db = req.app.db;
+    const parkingData = req.body;
+
+    const newParking = {
+      id: Date.now().toString(),
+      ...parkingData,
+      ownerId: decoded.userId.toString(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    db.get('parkings').push(newParking).write();
+
+    console.log('✅ [Parking] Parking creado:', newParking.id);
+    return res.status(201).json(newParking);
+  }
+
+  // POST /locations - Crear ubicación del parking
+  if (req.method === 'POST' && req.path === '/locations') {
+    const db = req.app.db;
+    const locationData = req.body;
+
+    const newLocation = {
+      id: Date.now(),
+      ...locationData,
+      createdAt: new Date().toISOString()
+    };
+
+    db.get('locations').push(newLocation).write();
+
+    console.log('✅ [Location] Ubicación creada:', newLocation.id);
+    return res.status(201).json(newLocation);
+  }
+
+  // POST /pricing - Crear pricing del parking
+  if (req.method === 'POST' && req.path === '/pricing') {
+    const db = req.app.db;
+    const pricingData = req.body;
+
+    const newPricing = {
+      id: Date.now(),
+      ...pricingData,
+      createdAt: new Date().toISOString()
+    };
+
+    db.get('pricing').push(newPricing).write();
+
+    console.log('✅ [Pricing] Pricing creado:', newPricing.id);
+    return res.status(201).json(newPricing);
+  }
+
+  // POST /features - Crear features del parking
+  if (req.method === 'POST' && req.path === '/features') {
+    const db = req.app.db;
+    const featuresData = req.body;
+
+    const newFeatures = {
+      id: Date.now(),
+      ...featuresData,
+      createdAt: new Date().toISOString()
+    };
+
+    db.get('features').push(newFeatures).write();
+
+    console.log('✅ [Features] Features creadas:', newFeatures.id);
+    return res.status(201).json(newFeatures);
   }
 
   next();

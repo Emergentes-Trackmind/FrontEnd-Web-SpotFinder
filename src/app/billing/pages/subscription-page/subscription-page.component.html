@@ -1,0 +1,68 @@
+<div class="subscription-page">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <mat-icon class="header-icon">credit_card</mat-icon>
+      <div>
+        <h1>Planes y Suscripción</h1>
+        <p>Gestiona tu plan y método de pago</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading()">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Cargando información...</p>
+  </div>
+
+  <!-- Content -->
+  <div class="page-content" *ngIf="!isLoading()">
+    <mat-tab-group class="billing-tabs" animationDuration="300ms">
+
+      <!-- Tab: Planes -->
+      <mat-tab label="Planes">
+        <div class="tab-content">
+          <div class="plans-grid">
+            <app-plan-card
+              *ngFor="let plan of plans()"
+              [plan]="plan"
+              [active]="isPlanActive(plan)"
+              [ctaLabel]="getCtaLabel(plan)"
+              (select)="onChoosePlan($event)">
+            </app-plan-card>
+          </div>
+
+          <!-- Info adicional -->
+          <div class="plans-info">
+            <mat-icon>info</mat-icon>
+            <p>Todos los planes incluyen acceso completo a las funcionalidades principales. Puedes cambiar de plan en cualquier momento.</p>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Tab: Facturación -->
+      <mat-tab label="Facturación">
+        <div class="tab-content">
+          <!-- Resumen de suscripción -->
+          <div class="billing-section">
+            <app-billing-summary
+              [info]="subscriptionInfo()"
+              (managePayment)="onManagePayment()"
+              (cancel)="onCancelSubscription()">
+            </app-billing-summary>
+          </div>
+
+          <!-- Historial de pagos -->
+          <div class="billing-section">
+            <app-payments-table
+              [rows]="payments()">
+            </app-payments-table>
+          </div>
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+  </div>
+</div>
+

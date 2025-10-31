@@ -31,5 +31,8 @@ export class ParkingsRepository extends ParkingsPort {
   deleteParking(id: string): Observable<void> {
     return this.api.deleteParking(id);
   }
-}
 
+  deleteManyParkings(ids: string[]): Observable<void> {
+    return this.api.deleteManyParkings(ids);
+  }
+}
