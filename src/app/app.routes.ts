@@ -5,6 +5,7 @@ import { ParkingAnalyticsPage } from './profileparking/pages/parking-analytics/p
 import { ParkingCreatedPageComponent } from './profileparking/pages/parking-created/parking-created.page';
 import { ParkingEditPageComponent } from './profileparking/pages/parking-edit/parking-edit.page';
 import { AuthGuard } from './iam/guards/auth.guard';
+import { NOTIFICATIONS_ROUTES } from './notifications/notifications.routes';
 
 export const routes: Routes = [
   {
@@ -109,6 +110,8 @@ export const routes: Routes = [
     loadComponent: () => import('./billing/pages/subscription-page/subscription-page.component').then(m => m.SubscriptionPageComponent),
     title: 'Planes y Suscripción'
   },
+  // Notificaciones
+  ...NOTIFICATIONS_ROUTES,
   {
     path: '**',
     redirectTo: '/dashboard'

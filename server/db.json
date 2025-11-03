@@ -90,6 +90,19 @@
       "isEmailVerified": false,
       "createdAt": "2025-10-31T11:12:19.636Z",
       "lastLoginAt": "2025-10-31T11:12:19.636Z"
+    },
+    {
+      "id": "1762151496640",
+      "email": "patata123@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-11-03T06:31:36.640Z",
+      "lastLoginAt": "2025-11-03T07:06:51.399Z"
     }
   ],
   "parkings": [
@@ -674,6 +687,34 @@
       "cancelAtPeriodEnd": false,
       "stripeCustomerId": "cus_mock_1761906958534",
       "stripeSubscriptionId": "sub_mock_1761906958534"
+    },
+    {
+      "userId": "1762151496640",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Ideal para pequeños negocios",
+        "price": 29,
+        "currency": "EUR",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [
+          "Hasta 3 parkings",
+          "Hasta 10 dispositivos IoT",
+          "Dashboard básico",
+          "Soporte por email"
+        ],
+        "priceId": "price_basic_eur_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-11-03T06:31:36.640Z",
+      "currentPeriodEnd": "2025-12-03T06:31:36.640Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_1762151496640",
+      "stripeSubscriptionId": "sub_mock_1762151496640"
     }
   ],
   "billingPayments": [
@@ -694,8 +735,61 @@
       "amount": 29,
       "currency": "EUR",
       "status": "succeeded",
-      "description": "Plan Básico - Septiembre 2025",
+      "description": "Plan Bsico - Septiembre 2025",
       "invoiceUrl": "https://invoice.stripe.com/mock_invoice_2"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "notif_1",
+      "userId": "1761826163261",
+      "title": "Nueva reserva confirmada",
+      "body": "Tu reserva para el Parking Centro ha sido confirmada para el 15 de noviembre.",
+      "kind": "success",
+      "createdAt": "2025-11-03T10:30:00.000Z",
+      "read": false,
+      "actionLabel": "Ver detalles",
+      "actionUrl": "/reservations/123"
+    },
+    {
+      "id": "notif_2",
+      "userId": "1761826163261",
+      "title": "Pago procesado",
+      "body": "Tu pago mensual de 29€ ha sido procesado correctamente.",
+      "kind": "info",
+      "createdAt": "2025-11-02T09:15:00.000Z",
+      "read": false
+    },
+    {
+      "id": "notif_3",
+      "userId": "1761826163261",
+      "title": "Dispositivo IoT desconectado",
+      "body": "El sensor de ocupación en Parking Centro está desconectado. Por favor, verifica la conexión.",
+      "kind": "warning",
+      "createdAt": "2025-11-01T14:20:00.000Z",
+      "read": true,
+      "actionLabel": "Ir a dispositivos",
+      "actionUrl": "/iot/devices"
+    },
+    {
+      "id": "notif_4",
+      "userId": "1761826163261",
+      "title": "Bienvenido a SpotFinder",
+      "body": "¡Gracias por registrarte! Comienza configurando tu primer parking.",
+      "kind": "system",
+      "createdAt": "2025-10-31T10:23:00.000Z",
+      "read": true,
+      "actionLabel": "Crear parking",
+      "actionUrl": "/parkings/new"
+    },
+    {
+      "id": "notif_5",
+      "userId": "1761906958534",
+      "title": "Reserva cancelada",
+      "body": "La reserva #456 ha sido cancelada por el usuario.",
+      "kind": "info",
+      "createdAt": "2025-11-03T11:45:00.000Z",
+      "read": false
     }
   ]
 }

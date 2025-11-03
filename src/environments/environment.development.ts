@@ -1,4 +1,6 @@
-export const environment = {
+import { Environment } from './environment.interface';
+
+export const environment: Environment = {
   production: false,
   apiBase: 'http://localhost:3001/api',
   endpoints: {
@@ -33,6 +35,14 @@ export const environment = {
       toggle2fa: '/2fa/toggle'
     }
   },
+  maps: {
+    tileUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    tileAttribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    nominatim: {
+      geocodeUrl: 'https://nominatim.openstreetmap.org/search',
+      reverseUrl: 'https://nominatim.openstreetmap.org/reverse'
+    }
+  },
   reservations: {
     base: '/reservations'
   },
@@ -54,5 +64,15 @@ export const environment = {
       topParkings: '/top-parkings'
     }
   },
-  stripePublicKey: 'pk_test_YOUR_STRIPE_PUBLIC_KEY_HERE'
+  stripePublicKey: 'pk_test_YOUR_STRIPE_PUBLIC_KEY_HERE',
+  firebase: {
+    apiKey: 'TU_API_KEY',
+    authDomain: 'TU_PROJECT_ID.firebaseapp.com',
+    projectId: 'TU_PROJECT_ID',
+    storageBucket: 'TU_PROJECT_ID.appspot.com',
+    messagingSenderId: 'TU_SENDER_ID',
+    appId: 'TU_APP_ID',
+    vapidKey: 'TU_WEB_PUSH_CERTIFICATE_KEY'
+  }
 };
+

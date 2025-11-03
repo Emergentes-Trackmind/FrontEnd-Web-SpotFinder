@@ -1,4 +1,6 @@
-export const environment = {
+import { Environment } from './environment.interface';
+
+export const environment: Environment = {
   production: true,
   apiBase: 'http://localhost:3001/api',
   endpoints: {
@@ -62,5 +64,16 @@ export const environment = {
       topParkings: '/top-parkings'
     }
   },
-  stripePublicKey: 'pk_test_YOUR_STRIPE_PUBLIC_KEY_HERE'
+  stripePublicKey: 'pk_test_YOUR_STRIPE_PUBLIC_KEY_HERE',
+  // Configuración de Firebase Cloud Messaging
+  // IMPORTANTE: Reemplazar con tus credenciales reales de Firebase
+  firebase: {
+    apiKey: 'TU_API_KEY',
+    authDomain: 'TU_PROJECT_ID.firebaseapp.com',
+    projectId: 'TU_PROJECT_ID',
+    storageBucket: 'TU_PROJECT_ID.appspot.com',
+    messagingSenderId: 'TU_SENDER_ID',
+    appId: 'TU_APP_ID',
+    vapidKey: 'TU_WEB_PUSH_CERTIFICATE_KEY' // Clave pública para Web Push
+  }
 };

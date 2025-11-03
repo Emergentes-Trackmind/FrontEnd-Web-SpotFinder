@@ -1,6 +1,15 @@
 @if (showSidebar()) {
-  <mat-sidenav-container class="app-container">
-    <mat-sidenav #sidenav class="app-sidebar" mode="side" opened="true">
+  <div class="app-layout">
+    <!-- Botón hamburguesa para móvil -->
+    <button mat-icon-button class="menu-toggle" (click)="toggleSidebar()" aria-label="Toggle menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <!-- Overlay para cerrar sidebar en móvil -->
+    <div class="sidebar-overlay" [class.show]="sidebarOpen()" (click)="closeSidebar()"></div>
+
+    <!-- Sidebar -->
+    <div class="app-sidebar" [class.open]="sidebarOpen()">
       <div class="sidebar-content">
         <!-- Header del Sidebar -->
         <div class="sidebar-header">
@@ -11,6 +20,9 @@
               <p>Gestión de Parkings</p>
             </div>
           </div>
+          <button mat-icon-button class="close-sidebar-btn" (click)="closeSidebar()" aria-label="Cerrar menú">
+            <mat-icon>close</mat-icon>
+          </button>
         </div>
 
         <!-- Información del Usuario -->
@@ -45,19 +57,26 @@
               <span matListItemTitle>Nuevo Parking</span>
             </mat-list-item>
 
-            <!-- ✅ RESERVAS HABILITADAS - SIN BADGE PRÓXIMAMENTE -->
             <mat-list-item routerLink="/reservations" routerLinkActive="active">
               <mat-icon matListItemIcon>event_available</mat-icon>
               <span matListItemTitle>Reservas</span>
             </mat-list-item>
 
-            <!-- Reseñas - Sigue como próximamente -->
             <mat-list-item routerLink="/reviews" routerLinkActive="active">
-              <mat-icon matListItemIcon>event_available</mat-icon>
+              <mat-icon matListItemIcon>star_rate</mat-icon>
               <span matListItemTitle>Reseñas</span>
             </mat-list-item>
 
-            <!-- ✅ DISPOSITIVOS IoT - Gestión de sensores, cámaras y barreras -->
+            <mat-list-item routerLink="/notificaciones" routerLinkActive="active">
+              <mat-icon matListItemIcon [matBadge]="notificationsService.unreadCount()"
+                        [matBadgeHidden]="notificationsService.unreadCount() === 0"
+                        matBadgeColor="warn"
+                        matBadgeSize="small">
+                notifications
+              </mat-icon>
+              <span matListItemTitle>Notificaciones</span>
+            </mat-list-item>
+
             <mat-list-item routerLink="/iot/devices" routerLinkActive="active">
               <mat-icon matListItemIcon>sensors</mat-icon>
               <span matListItemTitle>Dispositivos IoT</span>
@@ -88,13 +107,20 @@
             <span matListItemTitle>Cerrar Sesión</span>
           </button>
         </div>
-      </div>
-    </mat-sidenav>
 
-    <mat-sidenav-content class="main-content">
+      </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
       <router-outlet />
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+    </div>
+  </div>
+
+  <!-- Toasts container -->
+  <app-toast-container />
 } @else {
   <router-outlet />
+  <!-- Toasts container -->
+  <app-toast-container />
 }

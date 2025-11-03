@@ -1,0 +1,90 @@
+<div class="notifications-container">
+  <!-- Header -->
+  <app-notifications-panel-header
+    (markAllRead)="markAllRead()"
+    (deleteAll)="confirmDeleteAll()"
+  />
+
+  <!-- Filtros y búsqueda -->
+  <div class="filters">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Buscar</mat-label>
+      <input
+        matInput
+        #searchInput
+        (input)="onSearch(searchInput.value)"
+        placeholder="Buscar por título o contenido"
+        aria-label="Buscar notificaciones"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="clearSearch(); searchInput.value = ''"
+        aria-label="Limpiar búsqueda"
+        *ngIf="searchQuery()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-icon matSuffix *ngIf="!searchQuery()">search</mat-icon>
+    </mat-form-field>
+
+    <mat-button-toggle-group
+      [value]="filter()"
+      (change)="onFilterChange($event.value)"
+      aria-label="Filtrar notificaciones"
+      class="filter-toggle"
+    >
+      <mat-button-toggle value="all">
+        Todas
+        <span class="count" *ngIf="safeNotifications.length > 0">
+          ({{ safeNotifications.length }})
+        </span>
+      </mat-button-toggle>
+      <mat-button-toggle value="unread">
+        No leídas
+        <span class="count" *ngIf="safeUnreadCount > 0">
+          ({{ safeUnreadCount }})
+        </span>
+      </mat-button-toggle>
+      <mat-button-toggle value="read">
+        Leídas
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <!-- Loading spinner -->
+  <div class="loading-container" *ngIf="loading()">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <!-- Lista de notificaciones -->
+  <div class="notifications-card" *ngIf="!loading() && safeNotifications.length > 0">
+    <div class="notifications-list" role="list">
+      <app-notification-item
+        *ngFor="let notification of safeNotifications; trackBy: trackById"
+        [notification]="notification"
+        (markRead)="markRead(notification.id)"
+        (remove)="remove(notification.id)"
+      />
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="!loading() && safeNotifications.length === 0">
+    <mat-icon class="empty-icon">notifications_none</mat-icon>
+    <h2>No hay notificaciones</h2>
+    <p *ngIf="filter() === 'unread'">
+      No tienes notificaciones sin leer en este momento.
+    </p>
+    <p *ngIf="filter() === 'read'">
+      No tienes notificaciones leídas.
+    </p>
+    <p *ngIf="filter() === 'all' && !searchQuery()">
+      Aquí aparecerán tus notificaciones cuando las recibas.
+    </p>
+    <p *ngIf="searchQuery()">
+      No se encontraron notificaciones que coincidan con "{{ searchQuery() }}".
+    </p>
+  </div>
+</div>
+

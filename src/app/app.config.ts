@@ -14,6 +14,7 @@ import { ProfileRepositoryImpl } from './Profile/infrastructure/repositories/pro
 import { DASHBOARD_PROVIDERS } from './dashboard/dashboard.providers';
 import { REVIEWS_PROVIDERS } from './reviews/reviews.providers';
 import { IOT_PROVIDERS } from './iot/iot.providers';
+import { NOTIFICATIONS_PROVIDERS } from './notifications/notifications.providers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -79,7 +80,9 @@ export const appConfig: ApplicationConfig = {
     // Reviews providers
     ...REVIEWS_PROVIDERS,
 
-    // IoT Devices providers
-    ...IOT_PROVIDERS
+    ...IOT_PROVIDERS,
+
+    // Notifications providers
+    ...NOTIFICATIONS_PROVIDERS
   ]
 };

@@ -1,0 +1,150 @@
+:host {
+  --primary: #6D5AE6;
+  --bg: #F9FAFB;
+  --card: #fff;
+  --text: #111827;
+  --muted: #6B7280;
+  --border: #E5E7EB;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.03);
+}
+
+.notifications-container {
+  padding: 24px 32px;
+  background-color: var(--bg);
+  min-height: 100vh;
+}
+
+/* Filters Section */
+.filters {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-field {
+  flex: 1;
+  min-width: 280px;
+}
+
+.filter-toggle {
+  border-radius: 8px;
+}
+
+.filter-toggle .count {
+  margin-left: 4px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* Loading */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.loading-container p {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+/* Notifications List */
+.notifications-card {
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Empty State */
+.empty-state {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 80px 24px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 400px;
+}
+
+.empty-icon {
+  font-size: 80px;
+  width: 80px;
+  height: 80px;
+  color: var(--muted);
+  opacity: 0.3;
+  margin-bottom: 24px;
+}
+
+.empty-state h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 12px 0;
+}
+
+.empty-state p {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .notifications-container {
+    padding: 16px;
+  }
+
+  .filters {
+    padding: 16px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-field {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .filter-toggle {
+    width: 100%;
+  }
+
+  .empty-state {
+    padding: 60px 16px;
+  }
+
+  .empty-icon {
+    font-size: 60px;
+    width: 60px;
+    height: 60px;
+  }
+
+  .empty-state h2 {
+    font-size: 20px;
+  }
+}
+

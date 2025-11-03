@@ -2,6 +2,7 @@ import { Component, computed, inject, signal, OnInit } from '@angular/core';
 import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,6 +23,7 @@ import { NotificationsService } from './notifications/services/notifications.ser
     RouterOutlet,
     CommonModule,
     RouterModule,
+    MatSidenavModule,
     MatListModule,
     MatIconModule,
     MatButtonModule,
@@ -87,13 +89,13 @@ export class AppComponent implements OnInit {
 
   private initializeNotifications(): void {
     // Inicializar FCM
-    this.fcmService.init().catch(err => {
+    this.fcmService.init().catch((err: any) => {
       console.error('Error al inicializar FCM:', err);
     });
 
     // Cargar notificaciones iniciales
     this.notificationsService.loadInitial().subscribe({
-      error: (err) => console.error('Error al cargar notificaciones:', err)
+      error: (err: any) => console.error('Error al cargar notificaciones:', err)
     });
   }
 
@@ -108,7 +110,7 @@ export class AppComponent implements OnInit {
     }
 
     // No mostrar sidebar en rutas de autenticación
-    const shouldHide = this.hideSidebarRoutes.some(route =>
+    const shouldHide = this.hideSidebarRoutes.some((route: string) =>
       currentUrl.startsWith(route)
     );
 
@@ -138,3 +140,4 @@ export class AppComponent implements OnInit {
     this.closeSidebar();
   }
 }
+
