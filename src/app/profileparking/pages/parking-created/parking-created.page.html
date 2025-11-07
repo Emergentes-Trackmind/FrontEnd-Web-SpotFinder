@@ -7,7 +7,7 @@
     <mat-card class="progress-card">
       <div class="progress-header">
         <h2 class="progress-title">Registro de Parking</h2>
-        <span class="step-indicator">Paso {{ currentStep }} de 5</span>
+        <span class="step-indicator">Paso {{ currentStep }} de 6</span>
       </div>
 
       <!-- Barra de progreso -->
@@ -55,27 +55,33 @@
       class="step-content">
     </app-step-basic>
 
-    <!-- Paso 2: Ubicación -->
-    <app-step-location
+    <!-- Paso 2: Visualización de Plazas (NUEVO) -->
+    <app-spots-visualizer-step
       *ngIf="currentStep === 2"
+      class="step-content">
+    </app-spots-visualizer-step>
+
+    <!-- Paso 3: Ubicación (antes Paso 2) -->
+    <app-step-location
+      *ngIf="currentStep === 3"
       class="step-content">
     </app-step-location>
 
-    <!-- Paso 3: Características -->
+    <!-- Paso 4: Características (antes Paso 3) -->
     <app-step-features
-      *ngIf="currentStep === 3"
+      *ngIf="currentStep === 4"
       class="step-content">
     </app-step-features>
 
-    <!-- Paso 4: Precios -->
+    <!-- Paso 5: Precios (antes Paso 4) -->
     <app-step-pricing
-      *ngIf="currentStep === 4"
+      *ngIf="currentStep === 5"
       class="step-content">
     </app-step-pricing>
 
-    <!-- Paso 5: Revisión -->
+    <!-- Paso 6: Revisión (antes Paso 5) -->
     <app-step-review
-      *ngIf="currentStep === 5"
+      *ngIf="currentStep === 6"
       class="step-content">
     </app-step-review>
 
@@ -113,8 +119,8 @@
         <button
           mat-raised-button
           type="button"
-          [disabled]="currentStep === 5 ? isSubmitting : !canGoNext"
-          (click)="currentStep === 5 ? onSubmitClick() : onNextClick()"
+          [disabled]="currentStep === 6 ? isSubmitting : !canGoNext"
+          (click)="currentStep === 6 ? onSubmitClick() : onNextClick()"
           class="next-btn">
 
           <!-- Loading spinner -->
@@ -128,10 +134,10 @@
           </mat-icon>
 
           <!-- Texto del botón -->
-          <span *ngIf="currentStep === 5">
+          <span *ngIf="currentStep === 6">
             {{ isSubmitting ? 'Registrando...' : 'Registrar Parking' }}
           </span>
-          <span *ngIf="currentStep < 5">
+          <span *ngIf="currentStep < 6">
             Siguiente
             <mat-icon>chevron_right</mat-icon>
           </span>

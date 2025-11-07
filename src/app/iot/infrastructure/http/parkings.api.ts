@@ -286,31 +286,18 @@ export class ParkingsApi {
   }
 
   deleteParking(id: string): Observable<void> {
-    // Eliminar datos relacionados primero
-    return forkJoin({
-      locations: this.http.get<LocationJson[]>(`${this.locationsUrl}?profileId=${id}`),
-      pricing: this.http.get<PricingJson[]>(`${this.pricingUrl}?profileId=${id}`),
-      features: this.http.get<FeaturesJson[]>(`${this.featuresUrl}?profileId=${id}`)
-    }).pipe(
-      switchMap(({ locations, pricing, features }) => {
-        const deletes: Observable<any>[] = [];
-
-        locations.forEach(loc => {
-          deletes.push(this.http.delete(`${this.locationsUrl}/${loc.id}`));
-        });
-        pricing.forEach(pr => {
-          deletes.push(this.http.delete(`${this.pricingUrl}/${pr.id}`));
-        });
-        features.forEach(feat => {
-          deletes.push(this.http.delete(`${this.featuresUrl}/${feat.id}`));
-        });
-
-        if (deletes.length > 0) {
-          return forkJoin(deletes);
-        }
-        return of([]);
+    console.log('🗑️ [ParkingsApi] Eliminando parking:', id);
+    // En json-server, simplemente eliminamos el parking principal
+    // Los datos relacionados (location, pricing, features) están dentro del objeto parking
+    return this.http.delete<void>(`${this.parkingsUrl}/${id}`).pipe(
+      map(() => {
+        console.log('✅ [ParkingsApi] Parking eliminado exitosamente:', id);
+        return undefined;
       }),
-      switchMap(() => this.http.delete<void>(`${this.parkingsUrl}/${id}`))
+      catchError(error => {
+        console.error('❌ [ParkingsApi] Error eliminando parking:', id, error);
+        throw error;
+      })
     );
   }
 

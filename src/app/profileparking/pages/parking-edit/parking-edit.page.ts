@@ -12,6 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ParkingEditService } from '../../services/parking-edit.service';
 import { WizardState } from '../../services/create-types';
 import { StepBasicEditComponent } from './steps/step-basic-edit/step-basic-edit.component';
+import { SpotsVisualizerStepComponent } from '../parking-created/steps/spots-visualizer-step/spots-visualizer-step.component';
 import { StepLocationEditComponent } from './steps/step-location-edit/step-location-edit.component';
 import { StepFeaturesEditComponent } from './steps/step-features-edit/step-features-edit.component';
 import { StepPricingEditComponent } from './steps/step-pricing-edit/step-pricing-edit.component';
@@ -28,6 +29,7 @@ import { StepReviewEditComponent } from './steps/step-review-edit/step-review-ed
     MatIconModule,
     MatSnackBarModule,
     StepBasicEditComponent,
+    SpotsVisualizerStepComponent,
     StepLocationEditComponent,
     StepFeaturesEditComponent,
     StepPricingEditComponent,
@@ -46,10 +48,11 @@ export class ParkingEditPageComponent implements OnInit, OnDestroy {
 
   readonly steps = [
     { number: 1, title: 'Información Básica', subtitle: 'Nombre y descripción del parking' },
-    { number: 2, title: 'Ubicación', subtitle: 'Dirección y localización en el mapa' },
-    { number: 3, title: 'Características', subtitle: 'Servicios y comodidades disponibles' },
-    { number: 4, title: 'Precios', subtitle: 'Tarifas y horarios de funcionamiento' },
-    { number: 5, title: 'Revisión', subtitle: 'Confirma la información antes de guardar' }
+    { number: 2, title: 'Visualización de Plazas', subtitle: 'Gestión de spots y dispositivos IoT' },
+    { number: 3, title: 'Ubicación', subtitle: 'Dirección y localización en el mapa' },
+    { number: 4, title: 'Características', subtitle: 'Servicios y comodidades disponibles' },
+    { number: 5, title: 'Precios', subtitle: 'Tarifas y horarios de funcionamiento' },
+    { number: 6, title: 'Revisión', subtitle: 'Confirma la información antes de guardar' }
   ];
 
   constructor(
@@ -60,7 +63,6 @@ export class ParkingEditPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Obtener ID del parking de la ruta
     this.route.params
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
@@ -70,7 +72,6 @@ export class ParkingEditPageComponent implements OnInit, OnDestroy {
         }
       });
 
-    // Suscribirse al estado del wizard
     this.editService.wizardState$
       .pipe(takeUntil(this.destroy$))
       .subscribe(state => {
@@ -109,7 +110,7 @@ export class ParkingEditPageComponent implements OnInit, OnDestroy {
 
   get canGoNext(): boolean {
     if (!this.wizardState) return false;
-    return this.editService.isCurrentStepValid && this.currentStep < 5;
+    return this.editService.isCurrentStepValid && this.currentStep < 6;
   }
 
   get canGoPrevious(): boolean {
@@ -117,7 +118,7 @@ export class ParkingEditPageComponent implements OnInit, OnDestroy {
   }
 
   get progressPercentage(): number {
-    return (this.currentStep / 5) * 100;
+    return (this.currentStep / 6) * 100;
   }
 
   get currentStepData() {
@@ -125,7 +126,6 @@ export class ParkingEditPageComponent implements OnInit, OnDestroy {
   }
 
   onStepClicked(stepNumber: number): void {
-    // Solo permitir navegar a pasos anteriores o al siguiente si es válido
     if (stepNumber < this.currentStep ||
         (stepNumber === this.currentStep + 1 && this.canGoNext)) {
       this.editService.goToStep(stepNumber);
@@ -145,7 +145,7 @@ export class ParkingEditPageComponent implements OnInit, OnDestroy {
   }
 
   async onSubmitClick(): Promise<void> {
-    if (this.currentStep !== 5 || this.isSubmitting) {
+    if (this.currentStep !== 6 || this.isSubmitting) {
       return;
     }
 
@@ -159,7 +159,6 @@ export class ParkingEditPageComponent implements OnInit, OnDestroy {
         panelClass: ['success-snackbar']
       });
 
-      // Redirigir al detalle del parking
       if (this.parkingId) {
         this.router.navigate(['/parkings', this.parkingId]);
       } else {
@@ -170,7 +169,7 @@ export class ParkingEditPageComponent implements OnInit, OnDestroy {
       console.error('Error actualizando parking:', error);
 
       this.snackBar.open('Error al actualizar el parking. Inténtalo de nuevo.', 'Cerrar', {
-        duration: 5000,
+        duration: 4000,
         panelClass: ['error-snackbar']
       });
     } finally {

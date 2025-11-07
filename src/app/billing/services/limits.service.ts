@@ -32,14 +32,23 @@ export class LimitsService {
     const parkingsCount = this.currentParkingsCount();
     const iotCount = this.currentIotCount();
 
+    console.log('🧮 [LimitsService] Calculando limitsInfo:', {
+      plan: plan?.name,
+      parkingLimit: plan?.parkingLimit,
+      iotLimit: plan?.iotLimit,
+      parkingsCount,
+      iotCount
+    });
+
     if (!plan) {
+      console.warn('⚠️ [LimitsService] No hay plan activo - límites en 0');
       return {
         parkings: { current: parkingsCount, limit: 0, canCreate: false },
         iot: { current: iotCount, limit: 0, canCreate: false }
       };
     }
 
-    return {
+    const result = {
       parkings: {
         current: parkingsCount,
         limit: plan.parkingLimit,
@@ -51,6 +60,9 @@ export class LimitsService {
         canCreate: iotCount < plan.iotLimit
       }
     };
+
+    console.log('✅ [LimitsService] Límites calculados:', result);
+    return result;
   });
 
   /**
@@ -82,7 +94,12 @@ export class LimitsService {
    * Actualiza el conteo actual de dispositivos IoT
    */
   updateIotCount(count: number) {
+    console.log('🔢 [LimitsService] Actualizando conteo IoT:', {
+      anterior: this.currentIotCount(),
+      nuevo: count
+    });
     this.currentIotCount.set(count);
+    console.log('✅ [LimitsService] Conteo IoT actualizado. Límites actuales:', this.limitsInfo());
   }
 
   /**

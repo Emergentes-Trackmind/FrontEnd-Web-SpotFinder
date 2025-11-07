@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 
 import { ParkingCreateService } from '../../../../services/parking-create.service';
+import { ParkingStateService } from '../../../../services/parking-state.service';
 import { CreateBasicInfoDto } from '../../../../services/create-types';
 import { ParkingType } from '../../../../model/profileparking.entity';
 
@@ -42,7 +43,8 @@ export class StepBasicComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private createService: ParkingCreateService
+    private createService: ParkingCreateService,
+    private parkingStateService: ParkingStateService
   ) {}
 
   ngOnInit(): void {
@@ -87,6 +89,8 @@ export class StepBasicComponent implements OnInit, OnDestroy {
       )
       .subscribe(value => {
         this.createService.updateBasicInfo(value);
+        // También actualizar el ParkingStateService para el nuevo Step 2
+        this.parkingStateService.setBasicInfo(value);
       });
 
     // Validación especial: plazas accesibles no pueden exceder el total

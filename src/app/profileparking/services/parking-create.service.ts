@@ -50,13 +50,13 @@ export class ParkingCreateService {
   }
 
   goToStep(step: number): void {
-    if (step >= 1 && step <= 5) {
+    if (step >= 1 && step <= 6) {
       this.updateWizardState({ currentStep: step });
     }
   }
 
   nextStep(): void {
-    if (this.currentStep < 5 && this.isCurrentStepValid) {
+    if (this.currentStep < 6 && this.isCurrentStepValid) {
       this.goToStep(this.currentStep + 1);
     }
   }
@@ -215,10 +215,11 @@ export class ParkingCreateService {
   private isStepValid(step: number): boolean {
     switch (step) {
       case 1: return this.isBasicInfoValid();
-      case 2: return this.isLocationValid();
-      case 3: return this.isFeaturesValid();
-      case 4: return this.isPricingValid();
-      case 5: return this.isAllDataValid();
+      case 2: return true; // Step 2 (Spots Visualizer) siempre es válido, solo visualización
+      case 3: return this.isLocationValid();
+      case 4: return this.isFeaturesValid();
+      case 5: return this.isPricingValid();
+      case 6: return this.isAllDataValid();
       default: return false;
     }
   }

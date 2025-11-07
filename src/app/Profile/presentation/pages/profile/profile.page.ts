@@ -99,13 +99,23 @@ export class ProfilePage implements OnInit {
       bio: profile.bio || ''
     });
 
-    this.preferencesForm.patchValue({
-      language: profile.preferences.language,
-      timezone: profile.preferences.timezone,
-      dateFormat: profile.preferences.dateFormat,
-      theme: profile.preferences.theme,
-      notifications: profile.preferences.notifications
-    });
+    // Validar que preferences exista antes de acceder a sus propiedades
+    if (profile.preferences) {
+      this.preferencesForm.patchValue({
+        language: profile.preferences.language || 'es',
+        timezone: profile.preferences.timezone || 'America/Mexico_City',
+        dateFormat: profile.preferences.dateFormat || 'DD/MM/YYYY',
+        theme: profile.preferences.theme || 'light',
+        notifications: profile.preferences.notifications || {
+          email: true,
+          push: true,
+          sms: false,
+          marketing: false,
+          parkingAlerts: true,
+          systemUpdates: true
+        }
+      });
+    }
   }
 
   onSavePersonalData(): void {

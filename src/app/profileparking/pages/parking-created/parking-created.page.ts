@@ -17,6 +17,7 @@ import { StepLocationComponent } from './steps/step-location/step-location.compo
 import { StepFeaturesComponent } from './steps/step-features/step-features.component';
 import { StepPricingComponent } from './steps/step-pricing/step-pricing.component';
 import { StepReviewComponent } from './steps/step-review/step-review.component';
+import {SpotsVisualizerStepComponent} from './steps/spots-visualizer-step/spots-visualizer-step.component';
 
 @Component({
   selector: 'app-parking-created',
@@ -32,7 +33,8 @@ import { StepReviewComponent } from './steps/step-review/step-review.component';
     StepLocationComponent,
     StepFeaturesComponent,
     StepPricingComponent,
-    StepReviewComponent
+    StepReviewComponent,
+    SpotsVisualizerStepComponent
   ],
   templateUrl: './parking-created.page.html',
   styleUrls: ['./parking-created.page.css']
@@ -45,10 +47,11 @@ export class ParkingCreatedPageComponent implements OnInit, OnDestroy {
 
   readonly steps = [
     { number: 1, title: 'Información Básica', subtitle: 'Nombre y descripción del parking' },
-    { number: 2, title: 'Ubicación', subtitle: 'Dirección y localización en el mapa' },
-    { number: 3, title: 'Características', subtitle: 'Servicios y comodidades disponibles' },
-    { number: 4, title: 'Precios', subtitle: 'Tarifas y horarios de funcionamiento' },
-    { number: 5, title: 'Revisión', subtitle: 'Confirma la información antes de registrar' }
+    { number: 2, title: 'Visualización de Plazas', subtitle: 'Vista de spots y estado en tiempo real' },
+    { number: 3, title: 'Ubicación', subtitle: 'Dirección y localización en el mapa' },
+    { number: 4, title: 'Características', subtitle: 'Servicios y comodidades disponibles' },
+    { number: 5, title: 'Precios', subtitle: 'Tarifas y horarios de funcionamiento' },
+    { number: 6, title: 'Revisión', subtitle: 'Confirma la información antes de registrar' }
   ];
 
   // Inyección de dependencias usando inject()
@@ -83,7 +86,7 @@ export class ParkingCreatedPageComponent implements OnInit, OnDestroy {
 
   get canGoNext(): boolean {
     if (!this.wizardState) return false;
-    return this.createService.isCurrentStepValid && this.currentStep < 5;
+    return this.createService.isCurrentStepValid && this.currentStep < 6;
   }
 
   get canGoPrevious(): boolean {
@@ -91,7 +94,7 @@ export class ParkingCreatedPageComponent implements OnInit, OnDestroy {
   }
 
   get progressPercentage(): number {
-    return (this.currentStep / 5) * 100;
+    return (this.currentStep / 6) * 100;
   }
 
   get currentStepData() {
@@ -119,7 +122,7 @@ export class ParkingCreatedPageComponent implements OnInit, OnDestroy {
   }
 
   async onSubmitClick(): Promise<void> {
-    if (this.currentStep !== 5 || this.isSubmitting) {
+    if (this.currentStep !== 6 || this.isSubmitting) {
       return;
     }
 

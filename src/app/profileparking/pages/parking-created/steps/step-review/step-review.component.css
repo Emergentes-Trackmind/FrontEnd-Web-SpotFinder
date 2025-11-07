@@ -375,29 +375,78 @@
   .completion-status {
     padding: 20px;
   }
+
+  .device-list {
+    grid-template-columns: 1fr;
+  }
 }
 
-@media (max-width: 480px) {
-  .section-header {
-    flex-direction: column;
-    gap: 12px;
-    align-items: stretch;
-  }
+/* Estilos para sección de dispositivos IoT */
+.devices-summary {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #E5E7EB;
+}
 
-  .address-display {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
+.devices-summary h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 12px 0;
+}
 
-  .coordinates {
-    margin-left: 0;
-  }
+.device-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 12px;
+}
 
-  .completion-message,
-  .incomplete-message {
-    flex-direction: column;
-    text-align: center;
-    gap: 8px;
-  }
+.device-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.device-icon {
+  color: #1976d2;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.device-info {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+}
+
+.warning-note {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background-color: #FEF3C7;
+  border: 1px solid #FDE68A;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.warning-note mat-icon {
+  color: #F59E0B;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.warning-note p {
+  margin: 0;
+  font-size: 14px;
+  color: #92400E;
+  line-height: 1.5;
 }

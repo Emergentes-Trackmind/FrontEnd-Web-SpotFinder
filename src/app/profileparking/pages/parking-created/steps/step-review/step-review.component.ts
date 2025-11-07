@@ -1,12 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatButtonModule } from '@angular/material/button';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { ParkingCreateService } from '../../../../services/parking-create.service';
+import { ParkingStateService, SpotData } from '../../../../services/parking-state.service';
 import { CreateBasicInfoDto, CreateLocationDto, CreateFeaturesDto, CreatePricingDto } from '../../../../services/create-types';
 
 @Component({
@@ -16,7 +18,8 @@ import { CreateBasicInfoDto, CreateLocationDto, CreateFeaturesDto, CreatePricing
     CommonModule,
     MatCardModule,
     MatIconModule,
-    MatChipsModule
+    MatChipsModule,
+    MatButtonModule
   ],
   templateUrl: './step-review.component.html',
   styleUrls: ['./step-review.component.css']
@@ -26,13 +29,15 @@ export class StepReviewComponent implements OnInit, OnDestroy {
   location: Partial<CreateLocationDto> = {};
   features: Partial<CreateFeaturesDto> = {};
   pricing: Partial<CreatePricingDto> = {};
+  spots: SpotData[] = [];
 
   private destroy$ = new Subject<void>();
-
-  constructor(private createService: ParkingCreateService) {}
+  private createService = inject(ParkingCreateService);
+  private parkingStateService = inject(ParkingStateService);
 
   ngOnInit(): void {
     this.loadAllData();
+    this.loadSpots();
   }
 
   ngOnDestroy(): void {
@@ -245,4 +250,31 @@ export class StepReviewComponent implements OnInit, OnDestroy {
   goToStep(step: number): void {
     this.createService.goToStep(step);
   }
+
+  // Métodos para dispositivos IoT
+  private loadSpots(): void {
+    const savedSpots = this.parkingStateService.getSpots();
+    this.spots = savedSpots || [];
+  }
+
+  getTotalSpots(): number {
+    return this.spots.length;
+  }
+
+  getAssignedDevicesCount(): number {
+    return this.spots.filter(spot => spot.deviceId).length;
+  }
+
+  getSpotsWithoutDevice(): number {
+    return this.spots.filter(spot => !spot.deviceId).length;
+  }
+
+  getSpotsWithDevices(): SpotData[] {
+    return this.spots.filter(spot => spot.deviceId);
+  }
+
+  hasIoTDevicesAssigned(): boolean {
+    return this.getAssignedDevicesCount() > 0;
+  }
 }
+

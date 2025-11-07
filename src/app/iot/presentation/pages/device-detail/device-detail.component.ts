@@ -41,53 +41,27 @@ import { DevicesFacade } from '../../../services/devices.facade';
         <form [formGroup]="deviceForm" (ngSubmit)="onSubmit()">
           <div class="form-grid">
             <mat-form-field>
+              <mat-label>Nombre del Dispositivo</mat-label>
+              <input matInput formControlName="name" placeholder="Ej: Sensor Plaza A">
+              <mat-hint>Nombre identificativo del sensor</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field>
               <mat-label>Número de Serie</mat-label>
-              <input matInput formControlName="serialNumber" [readonly]="!isNewMode">
+              <input matInput formControlName="serialNumber" placeholder="SN-2024-XXX">
+              <mat-hint>Ingresa el número de serie del dispositivo físico para vincularlo</mat-hint>
             </mat-form-field>
+          </div>
 
-            <mat-form-field>
-              <mat-label>Modelo</mat-label>
-              <input matInput formControlName="model">
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Tipo</mat-label>
-              <mat-select formControlName="type">
-                <mat-option value="sensor">Sensor</mat-option>
-                <mat-option value="camera">Cámara</mat-option>
-                <mat-option value="barrier">Barrera</mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Parking</mat-label>
-              <mat-select formControlName="parkingId">
-                <mat-option value="1">Parking Centro Comercial</mat-option>
-                <mat-option value="2">Parking Plaza Mayor</mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Spot (opcional)</mat-label>
-              <input matInput formControlName="parkingSpotId" placeholder="Dejar vacío si no aplica">
-            </mat-form-field>
-
-            @if (!isNewMode) {
-              <mat-form-field>
-                <mat-label>Estado</mat-label>
-                <mat-select formControlName="status">
-                  <mat-option value="online">Online</mat-option>
-                  <mat-option value="offline">Offline</mat-option>
-                  <mat-option value="maintenance">Mantenimiento</mat-option>
-                </mat-select>
-              </mat-form-field>
-            }
+          <div class="info-note">
+            <mat-icon>info</mat-icon>
+            <p>Este sensor detectará automáticamente si una plaza está ocupada o libre mediante detección de movimiento.</p>
           </div>
 
           <div class="actions">
             <button mat-button type="button" (click)="goBack()">Cancelar</button>
             <button mat-raised-button color="primary" type="submit" [disabled]="!deviceForm.valid || isSubmitting">
-              {{ isNewMode ? 'Crear' : 'Guardar' }}
+              {{ isNewMode ? 'Registrar Sensor' : 'Guardar Cambios' }}
             </button>
           </div>
         </form>
@@ -143,6 +117,31 @@ import { DevicesFacade } from '../../../services/devices.facade';
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1rem;
       padding: 1.5rem;
+    }
+
+    .info-note {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      margin: 0 1.5rem 1.5rem;
+      background-color: #e3f2fd;
+      border-radius: 8px;
+      border-left: 4px solid #1976d2;
+
+      mat-icon {
+        color: #1976d2;
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+      }
+
+      p {
+        margin: 0;
+        color: #1565c0;
+        font-size: 14px;
+        line-height: 1.5;
+      }
     }
 
     .actions {
@@ -219,12 +218,10 @@ export class DeviceDetailComponent implements OnInit {
 
   initForm(): void {
     this.deviceForm = this.fb.group({
-      serialNumber: ['', Validators.required],
-      model: ['', Validators.required],
-      type: ['sensor', Validators.required],
-      parkingId: ['', Validators.required],
-      parkingSpotId: [''],
-      status: ['offline']
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      serialNumber: ['', [Validators.required, Validators.minLength(5)]],
+      type: ['sensor'], // Siempre sensor de movimiento
+      status: ['available'] // Estado inicial siempre disponible
     });
 
     if (!this.isNewMode && !this.isEditMode) {
@@ -238,11 +235,9 @@ export class DeviceDetailComponent implements OnInit {
     this.facade.loadDeviceById(this.deviceId).subscribe({
       next: (device) => {
         this.deviceForm.patchValue({
+          name: device.model || '', // Compatibilidad
           serialNumber: device.serialNumber,
-          model: device.model,
           type: device.type,
-          parkingId: device.parkingId,
-          parkingSpotId: device.parkingSpotId || '',
           status: device.status
         });
       },
@@ -259,24 +254,52 @@ export class DeviceDetailComponent implements OnInit {
     const formValue = this.deviceForm.value;
 
     if (this.isNewMode) {
-      this.facade.createDevice(formValue).subscribe({
+      // Obtener userId del localStorage
+      const token = localStorage.getItem('token');
+      let userId = '1761826163261'; // Usuario por defecto
+
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          userId = payload.userId || payload.sub || userId;
+        } catch (e) {
+          console.warn('No se pudo decodificar el token, usando userId por defecto');
+        }
+      }
+
+      // Agregar campos adicionales requeridos
+      const deviceData = {
+        ...formValue,
+        ownerId: userId.toString(),
+        parkingId: null,
+        spotNumber: null,
+        status: 'available',
+        battery: 100,
+        signalStrength: 0,
+        firmware: 'v1.0.0',
+        lastSeen: new Date().toISOString(),
+        createdAt: new Date().toISOString()
+      };
+
+      this.facade.createDevice(deviceData).subscribe({
         next: () => {
-          this.snackBar.open('Dispositivo creado exitosamente', 'Cerrar', { duration: 3000 });
+          this.snackBar.open('✅ Dispositivo registrado exitosamente', 'Cerrar', { duration: 3000 });
           this.router.navigate(['/iot/devices']);
         },
-        error: () => {
-          this.snackBar.open('Error al crear dispositivo', 'Cerrar', { duration: 3000 });
+        error: (err) => {
+          console.error('Error al crear dispositivo:', err);
+          this.snackBar.open('❌ Error al registrar dispositivo', 'Cerrar', { duration: 3000 });
           this.isSubmitting = false;
         }
       });
     } else if (this.isEditMode && this.deviceId) {
       this.facade.updateDevice(this.deviceId, formValue).subscribe({
         next: () => {
-          this.snackBar.open('Dispositivo actualizado exitosamente', 'Cerrar', { duration: 3000 });
+          this.snackBar.open('✅ Dispositivo actualizado exitosamente', 'Cerrar', { duration: 3000 });
           this.router.navigate(['/iot/devices', this.deviceId]);
         },
         error: () => {
-          this.snackBar.open('Error al actualizar dispositivo', 'Cerrar', { duration: 3000 });
+          this.snackBar.open('❌ Error al actualizar dispositivo', 'Cerrar', { duration: 3000 });
           this.isSubmitting = false;
         }
       });

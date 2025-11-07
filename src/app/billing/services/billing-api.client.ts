@@ -57,5 +57,19 @@ export class BillingApiClient {
   getPayments(): Observable<PaymentRow[]> {
     return this.http.get<PaymentRow[]>(`${this.baseUrl}/payments`);
   }
+
+  /**
+   * Suscribe al usuario a un plan específico
+   */
+  subscribe(planCode: string): Observable<SubscriptionInfo> {
+    return this.http.post<SubscriptionInfo>(`${this.baseUrl}/subscribe`, { planCode });
+  }
+
+  /**
+   * Cancela la suscripción actual (vuelve a plan básico)
+   */
+  cancelSubscription(): Observable<SubscriptionInfo> {
+    return this.http.post<SubscriptionInfo>(`${this.baseUrl}/cancel`, {});
+  }
 }
 

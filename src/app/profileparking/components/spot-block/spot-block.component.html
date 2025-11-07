@@ -1,0 +1,48 @@
+<mat-card class="spot-card" [class]="getStatusColor()" [attr.aria-label]="ariaLabel">
+  <mat-card-content>
+    <!-- Número del spot -->
+    <div class="spot-number">{{ spotNumber }}</div>
+
+    <!-- Badge de estado -->
+    <div class="spot-status-badge">
+      <mat-icon [class]="getStatusColor()" [matTooltip]="getStatusText()">
+        {{ getStatusIcon() }}
+      </mat-icon>
+    </div>
+
+    <!-- Indicador de dispositivo -->
+    <div class="device-indicator" *ngIf="!hasDevice">
+      <mat-icon class="no-sensor-icon" matTooltip="Sin sensor IoT">sensors_off</mat-icon>
+    </div>
+
+    <!-- Menú de acciones -->
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      class="spot-menu-button"
+      aria-label="Acciones del spot"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu">
+      <button
+        mat-menu-item
+        (click)="onOpenDetails()"
+        [disabled]="!hasDevice"
+      >
+        <mat-icon>devices</mat-icon>
+        <span>Ver detalle de dispositivo IoT</span>
+      </button>
+
+      <button
+        mat-menu-item
+        (click)="onToggleMaintenance()"
+      >
+        <mat-icon>{{ inMaintenance ? 'check_circle' : 'engineering' }}</mat-icon>
+        <span>{{ inMaintenance ? 'Quitar de mantenimiento' : 'Marcar en mantenimiento' }}</span>
+      </button>
+    </mat-menu>
+  </mat-card-content>
+</mat-card>
+

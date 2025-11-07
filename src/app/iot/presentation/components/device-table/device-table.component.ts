@@ -25,7 +25,7 @@ import { IotDevice } from '../../../domain/entities/iot-device.entity';
   ],
   template: `
     <div class="table-container">
-      <table mat-table [dataSource]="devices()" class="devices-table">
+      <table mat-table [dataSource]="devices() || []" class="devices-table">
 
         <!-- Columna Dispositivo -->
         <ng-container matColumnDef="device">
@@ -130,7 +130,7 @@ import { IotDevice } from '../../../domain/entities/iot-device.entity';
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
 
-      @if (devices().length === 0) {
+      @if ((devices() || []).length === 0) {
         <div class="empty-state">
           <mat-icon>devices_other</mat-icon>
           <p>No se encontraron dispositivos</p>

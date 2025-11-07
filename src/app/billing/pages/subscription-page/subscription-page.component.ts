@@ -79,37 +79,29 @@ export class SubscriptionPageComponent implements OnInit {
   }
 
   async onChoosePlan(plan: Plan) {
-    if (!plan.priceId) {
-      this.snackBar.open('Este plan no está disponible actualmente.', 'Cerrar', {
-        duration: 3000
-      });
-      return;
-    }
-
     try {
-      console.log('🔄 Creando sesión de Checkout...', { plan: plan.name, priceId: plan.priceId });
+      console.log('🔄 Actualizando plan...', { plan: plan.name, code: plan.code });
 
-      const response = await this.billingApi.createCheckoutSession(plan.priceId).toPromise();
+      const response = await this.billingApi.subscribe(plan.code).toPromise();
 
       if (!response) {
         throw new Error('No se recibió respuesta del servidor');
       }
 
-      // Redirigir a Stripe Checkout usando la URL
-      if (response.url) {
-        console.log('✅ Redirigiendo a Stripe Checkout:', response.url);
-        window.location.href = response.url;
-      } else if (response.sessionId) {
-        console.log('⚠️ Recibido sessionId sin URL. El backend debe devolver la URL completa.');
-        throw new Error('El servidor debe devolver una URL de checkout');
-      } else {
-        throw new Error('No se recibió URL ni sessionId del servidor');
-      }
+      console.log('✅ Plan actualizado exitosamente:', response);
+
+      this.snackBar.open(`Plan actualizado a ${plan.name} exitosamente`, 'Cerrar', {
+        duration: 3000,
+        panelClass: ['success-snackbar']
+      });
+
+      // Recargar los datos
+      this.loadData();
 
     } catch (error: any) {
-      console.error('❌ Error al crear sesión de Checkout:', error);
+      console.error('❌ Error al actualizar plan:', error);
       this.snackBar.open(
-        error.message || 'Error al procesar el pago. Intenta de nuevo.',
+        error.message || 'Error al actualizar el plan. Intenta de nuevo.',
         'Cerrar',
         { duration: 5000, panelClass: ['error-snackbar'] }
       );
@@ -117,32 +109,42 @@ export class SubscriptionPageComponent implements OnInit {
   }
 
   async onManagePayment() {
+    // Por ahora solo mostrar mensaje, se puede implementar más adelante
+    this.snackBar.open('Gestión de pagos disponible próximamente', 'Cerrar', {
+      duration: 3000
+    });
+  }
+
+  async onCancelSubscription() {
     try {
-      console.log('🔄 Abriendo Customer Portal de Stripe...');
+      console.log('🔄 Cancelando suscripción...');
 
-      const response = await this.billingApi.createPortalSession().toPromise();
+      const response = await this.billingApi.cancelSubscription().toPromise();
 
-      if (!response || !response.url) {
-        throw new Error('No se recibió URL del portal');
+      if (!response) {
+        throw new Error('No se recibió respuesta del servidor');
       }
 
-      console.log('✅ Redirigiendo a Customer Portal:', response.url);
-      window.location.href = response.url;
+      console.log('✅ Suscripción cancelada exitosamente:', response);
+
+      this.snackBar.open('Suscripción cancelada. Ahora estás en el plan básico.', 'Cerrar', {
+        duration: 3000,
+        panelClass: ['success-snackbar']
+      });
+
+      // Recargar los datos
+      this.loadData();
 
     } catch (error: any) {
-      console.error('❌ Error al abrir Customer Portal:', error);
+      console.error('❌ Error al cancelar suscripción:', error);
       this.snackBar.open(
-        error.message || 'Error al abrir el portal de gestión. Intenta de nuevo.',
+        error.message || 'Error al cancelar la suscripción. Intenta de nuevo.',
         'Cerrar',
         { duration: 5000, panelClass: ['error-snackbar'] }
       );
     }
   }
 
-  onCancelSubscription() {
-    // La cancelación se hace a través del Customer Portal
-    this.onManagePayment();
-  }
 
   isPlanActive(plan: Plan): boolean {
     const currentPlan = this.subscriptionInfo()?.plan;

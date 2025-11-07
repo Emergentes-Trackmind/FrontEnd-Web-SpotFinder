@@ -11,7 +11,7 @@ import { DeviceFiltersDto, DeviceKpisDto, PaginatedDevicesDto } from '../../doma
 @Injectable()
 export class DevicesApi {
   private http = inject(HttpClient);
-  private baseUrl = '/api/iot/devices';
+  private baseUrl = '/iot/devices';  // Sin /api porque el interceptor lo agrega
 
   getDevices(filters: DeviceFiltersDto): Observable<PaginatedDevicesDto> {
     let params = new HttpParams();

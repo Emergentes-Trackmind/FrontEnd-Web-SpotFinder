@@ -65,9 +65,56 @@
       </div>
     </div>
 
-    <!-- Ubicación -->
+    <!-- Dispositivos IoT Asignados (Nuevo Step 2) -->
     <div class="review-section">
       <div class="section-header" (click)="goToStep(2)">
+        <div class="section-title">
+          <mat-icon class="section-icon" [class.complete]="hasIoTDevicesAssigned()">
+            {{ hasIoTDevicesAssigned() ? 'check_circle' : 'sensors' }}
+          </mat-icon>
+          <h3>Dispositivos IoT</h3>
+        </div>
+        <button mat-icon-button class="edit-btn" title="Editar asignaciones">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+
+      <div class="section-content">
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Total de Plazas:</span>
+            <span class="value">{{ getTotalSpots() }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Dispositivos Asignados:</span>
+            <span class="value">{{ getAssignedDevicesCount() }} sensores</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Plazas sin Sensor:</span>
+            <span class="value">{{ getSpotsWithoutDevice() }}</span>
+          </div>
+        </div>
+
+        <div class="devices-summary" *ngIf="getAssignedDevicesCount() > 0">
+          <h4>Sensores Asignados:</h4>
+          <div class="device-list">
+            <div class="device-item" *ngFor="let spot of getSpotsWithDevices()">
+              <mat-icon class="device-icon">sensors</mat-icon>
+              <span class="device-info">Spot {{ spot.spotNumber }} → Sensor {{ spot.deviceId }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="warning-note" *ngIf="getAssignedDevicesCount() === 0">
+          <mat-icon>info</mat-icon>
+          <p>No hay dispositivos IoT asignados. Puedes asignarlos después desde la edición del parking.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ubicación -->
+    <div class="review-section">
+      <div class="section-header" (click)="goToStep(3)">
         <div class="section-title">
           <mat-icon class="section-icon" [class.complete]="isLocationComplete()">
             {{ isLocationComplete() ? 'check_circle' : 'location_on' }}

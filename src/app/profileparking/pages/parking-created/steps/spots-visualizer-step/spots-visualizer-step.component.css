@@ -1,0 +1,511 @@
+.spots-visualizer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0;
+  background-color: #fafafa;
+  min-height: 500px;
+}
+
+/* Toolbar */
+.step-toolbar {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+.toolbar-title {
+  margin-left: 12px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.total-spots-badge {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 6px 16px;
+  border-radius: 16px;
+  font-weight: 600;
+}
+
+/* Panel de estadísticas */
+.statistics-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.stat-card {
+  cursor: default;
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+}
+
+.stat-card mat-card-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px !important;
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.stat-icon mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+}
+
+/* Colores por estado */
+.stat-total .stat-icon {
+  background-color: #e3f2fd;
+}
+
+.stat-total .stat-icon mat-icon {
+  color: #1976d2;
+}
+
+.stat-free .stat-icon {
+  background-color: #f1f8f4;
+}
+
+.stat-free .stat-icon mat-icon {
+  color: #4caf50;
+}
+
+.stat-occupied .stat-icon {
+  background-color: #fef5f5;
+}
+
+.stat-occupied .stat-icon mat-icon {
+  color: #f44336;
+}
+
+.stat-maintenance .stat-icon {
+  background-color: #fff8f0;
+}
+
+.stat-maintenance .stat-icon mat-icon {
+  color: #ff9800;
+}
+
+.stat-offline .stat-icon {
+  background-color: #f5f5f5;
+}
+
+.stat-offline .stat-icon mat-icon {
+  color: #9e9e9e;
+}
+
+/* Leyenda y filtros */
+.legend-filters-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+.legend-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #666;
+  white-space: nowrap;
+}
+
+.filter-chips {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip-count {
+  margin-left: 4px;
+  font-weight: 600;
+}
+
+.chip-free {
+  background-color: #f1f8f4 !important;
+  color: #2e7d32 !important;
+}
+
+.chip-occupied {
+  background-color: #fef5f5 !important;
+  color: #c62828 !important;
+}
+
+.chip-maintenance {
+  background-color: #fff8f0 !important;
+  color: #e65100 !important;
+}
+
+.chip-offline {
+  background-color: #f5f5f5 !important;
+  color: #616161 !important;
+}
+
+mat-chip-option.selected {
+  opacity: 1 !important;
+  font-weight: 700 !important;
+}
+
+/* Contenedor de spots */
+.spots-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.spots-scroll-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background-color: #e3f2fd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  color: #1976d2;
+  font-size: 14px;
+}
+
+.spots-scroll-hint mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+/* Virtual Scroll Viewport */
+.spots-viewport {
+  height: 200px;
+  width: 100%;
+}
+
+.spots-grid {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 16px 0;
+  gap: 12px;
+}
+
+/* Botones de navegación */
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 0;
+}
+
+.nav-button {
+  padding: 0 24px;
+  height: 48px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.nav-button mat-icon {
+  margin: 0 8px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .spots-visualizer-container {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .statistics-panel {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .stat-card mat-card-content {
+    padding: 12px !important;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .stat-icon mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .legend-filters-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-chips {
+    width: 100%;
+  }
+
+  .navigation-buttons {
+    flex-direction: column;
+  }
+
+  .nav-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .toolbar-title {
+    font-size: 14px;
+  }
+
+  .total-spots-badge {
+    font-size: 12px;
+    padding: 4px 12px;
+  }
+
+  .statistics-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sección de Dispositivos IoT */
+.devices-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 16px 0;
+}
+
+.section-title mat-icon {
+  color: #1976d2;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.devices-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background-color: #e3f2fd;
+  border-radius: 8px;
+  color: #1976d2;
+}
+
+.devices-info .info-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.devices-info p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.devices-info a {
+  color: #1976d2;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.devices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.device-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.device-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.device-card.assigned {
+  border: 2px solid #4caf50;
+  background-color: #f1f8f4;
+}
+
+.device-card mat-card-content {
+  padding: 16px !important;
+}
+
+.device-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.device-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: #1976d2;
+}
+
+.device-info-header {
+  flex: 1;
+}
+
+.device-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 4px 0;
+}
+
+.device-serial {
+  font-size: 12px;
+  color: #666;
+  font-family: 'Courier New', monospace;
+}
+
+.device-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+  padding: 8px 0;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.device-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #666;
+}
+
+.device-stat .stat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #1976d2;
+}
+
+.device-status {
+  margin-bottom: 12px;
+}
+
+.assigned-chip {
+  background-color: #4caf50 !important;
+  color: white !important;
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+.assigned-chip mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+.device-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.assign-button,
+.unassign-button {
+  flex: 1;
+  height: 36px;
+  font-size: 14px;
+}
+
+.assign-button mat-icon,
+.unassign-button mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  margin-right: 4px;
+}
+
+/* Menu de spots */
+.spot-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.spot-menu-header {
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #666;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+}
+
+.spot-menu-empty {
+  padding: 16px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+
+/* Responsive para dispositivos */
+@media (max-width: 768px) {
+  .devices-grid {
+    grid-template-columns: 1fr;
+  }
+}

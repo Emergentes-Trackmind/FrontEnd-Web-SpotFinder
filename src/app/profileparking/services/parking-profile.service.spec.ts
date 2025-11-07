@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
 describe('ParkingProfileService', () => {
   let service: ParkingProfileService;
   let httpMock: HttpTestingController;
-  const baseUrl = `${environment.apiBase}${environment.endpoints.parkingProfiles}`;
+  const baseUrl = `${environment.apiBase}${environment.endpoints.parkings}`;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

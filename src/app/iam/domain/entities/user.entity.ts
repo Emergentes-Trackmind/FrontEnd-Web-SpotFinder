@@ -7,6 +7,7 @@ export interface User {
   isEmailVerified: boolean;
   createdAt: Date;
   lastLoginAt?: Date;
+  plan?: 'basic' | 'premium';
 }
 
 export interface AuthenticatedUser extends User {

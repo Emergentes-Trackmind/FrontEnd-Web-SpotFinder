@@ -225,9 +225,17 @@ export class DevicesDashboardComponent implements OnInit {
     this.loadData();
 
     // Cargar información de límites
+    console.log('🔄 [DevicesDashboard] Cargando límites...');
     this.limitsService.load().subscribe({
+      next: () => {
+        console.log('✅ [DevicesDashboard] Límites cargados:', {
+          canCreate: this.canCreateDevice,
+          limitsInfo: this.limitsService.limitsInfo(),
+          tooltip: this.addDeviceTooltip
+        });
+      },
       error: (error) => {
-        console.error('Error cargando límites:', error);
+        console.error('❌ [DevicesDashboard] Error cargando límites:', error);
       }
     });
   }
@@ -241,10 +249,26 @@ export class DevicesDashboardComponent implements OnInit {
 
     this.facade.loadDevices().subscribe({
       next: (paginatedDevices) => {
+        if (!paginatedDevices) {
+          console.warn('⚠️ [DevicesDashboard] paginatedDevices es undefined');
+          return;
+        }
+
+        console.log('📊 [DevicesDashboard] Dispositivos cargados:', {
+          total: paginatedDevices.total || 0,
+          data: paginatedDevices.data?.length || 0
+        });
+
         // Actualizar el conteo de dispositivos IoT en el servicio de límites
-        this.limitsService.updateIotCount(paginatedDevices.total);
+        this.limitsService.updateIotCount(paginatedDevices.total || 0);
+
+        console.log('✅ [DevicesDashboard] Conteo IoT actualizado. Nuevo estado:', {
+          canCreate: this.canCreateDevice,
+          limitsInfo: this.limitsService.limitsInfo()
+        });
       },
       error: (err) => {
+        console.error('❌ [DevicesDashboard] Error cargando dispositivos:', err);
         this.snackBar.open('Error al cargar dispositivos', 'Cerrar', { duration: 3000 });
       }
     });

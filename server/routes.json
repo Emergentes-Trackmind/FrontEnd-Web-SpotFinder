@@ -1,5 +1,4 @@
 {
-  "/api/*": "/$1",
   "/api/auth/login": "/auth/login",
   "/api/auth/register": "/auth/register",
   "/api/auth/refresh": "/auth/refresh",
@@ -12,12 +11,17 @@
   "/api/account/download": "/account/download",
   "/api/account/delete": "/account/delete",
   "/api/account/2fa/toggle": "/account/2fa-toggle",
+  "/api/billing/me": "/billing/me",
+  "/api/billing/plans": "/billing/plans",
+  "/api/billing/subscribe": "/billing/subscribe",
+  "/api/billing/cancel": "/billing/cancel",
   "/api/parkings": "/parkings",
   "/api/analytics": "/analytics",
   "/api/locations": "/locations",
   "/api/pricing": "/pricing",
   "/api/features": "/features",
   "/api/uploads": "/uploads",
-  "/api/iot/devices": "/iotDevices",
-  "/api/parkingSpots": "/parkingSpots"
+  "/api/iot/devices": "/devices",
+  "/api/parkingSpots": "/parkingSpots",
+  "/api/*": "/$1"
 }

@@ -70,7 +70,8 @@ module.exports = (req, res, next) => {
         roles: user.roles,
         isEmailVerified: user.isEmailVerified,
         createdAt: user.createdAt,
-        lastLoginAt: new Date().toISOString()
+        lastLoginAt: new Date().toISOString(),
+        plan: user.plan || 'basic'
       },
       accessToken,
       refreshToken,
@@ -111,7 +112,8 @@ module.exports = (req, res, next) => {
       roles: ['user'],
       isEmailVerified: false,
       createdAt: new Date().toISOString(),
-      lastLoginAt: new Date().toISOString()
+      lastLoginAt: new Date().toISOString(),
+      plan: 'basic'
     };
 
     db.get('users').push(newUser).write();
@@ -178,7 +180,8 @@ module.exports = (req, res, next) => {
         roles: newUser.roles,
         isEmailVerified: newUser.isEmailVerified,
         createdAt: newUser.createdAt,
-        lastLoginAt: newUser.lastLoginAt
+        lastLoginAt: newUser.lastLoginAt,
+        plan: newUser.plan
       },
       accessToken,
       refreshToken,
@@ -494,8 +497,87 @@ module.exports = (req, res, next) => {
     return res.status(200).json(topParkingsData);
   }
 
-  // GET /profile - Obtener perfil del usuario autenticado
-  if (req.method === 'GET' && req.path === '/profile') {
+  // GET /iot/devices - Obtener dispositivos IoT del usuario autenticado
+  if (req.method === 'GET' && req.path === '/iot/devices') {
+    const token = extractToken(req);
+
+    if (!token) {
+      return res.status(401).json({
+        error: 'No autorizado',
+        message: 'Token de autenticación requerido'
+      });
+    }
+
+    const decoded = verifyToken(token);
+
+    if (!decoded) {
+      return res.status(401).json({
+        error: 'Token inválido',
+        message: 'El token de autenticación no es válido o ha expirado'
+      });
+    }
+
+    const db = req.app.db;
+    const userId = decoded.userId || decoded.sub;
+
+    // Obtener dispositivos del usuario
+    const userDevices = db.get('devices')
+      .filter(device => device.ownerId === userId.toString())
+      .value();
+
+    console.log(`✅ [IoT Devices] Usuario ${userId} tiene ${userDevices.length} dispositivos`);
+    return res.status(200).json(userDevices);
+  }
+
+  // GET /iot/devices/kpis - Obtener KPIs de dispositivos IoT del usuario
+  if (req.method === 'GET' && req.path === '/iot/devices/kpis') {
+    const token = extractToken(req);
+
+    if (!token) {
+      return res.status(401).json({
+        error: 'No autorizado',
+        message: 'Token de autenticación requerido'
+      });
+    }
+
+    const decoded = verifyToken(token);
+
+    if (!decoded) {
+      return res.status(401).json({
+        error: 'Token inválido',
+        message: 'El token de autenticación no es válido o ha expirado'
+      });
+    }
+
+    const db = req.app.db;
+    const userId = decoded.userId || decoded.sub;
+
+    // Obtener dispositivos del usuario
+    const userDevices = db.get('devices')
+      .filter(device => device.ownerId === userId.toString())
+      .value();
+
+    // Calcular KPIs
+    const total = userDevices.length;
+    const online = userDevices.filter(d => d.status === 'online' || d.status === 'available').length;
+    const offline = userDevices.filter(d => d.status === 'offline').length;
+    const maintenance = userDevices.filter(d => d.status === 'maintenance').length;
+
+    const kpis = {
+      totalDevices: total,
+      online: online,
+      offline: offline,
+      maintenance: maintenance,
+      batteryAverage: total > 0 ? Math.round(userDevices.reduce((sum, d) => sum + (d.battery || 0), 0) / total) : 0,
+      signalAverage: total > 0 ? Math.round(userDevices.reduce((sum, d) => sum + (d.signalStrength || 0), 0) / total) : 0
+    };
+
+    console.log(`✅ [IoT KPIs] Usuario ${userId} - KPIs calculados:`, kpis);
+    return res.status(200).json(kpis);
+  }
+
+  // GET /profile o /profiles - Obtener perfil del usuario autenticado
+  if (req.method === 'GET' && (req.path === '/profile' || req.path === '/profiles')) {
     const token = extractToken(req);
 
     if (!token) {
@@ -558,11 +640,12 @@ module.exports = (req, res, next) => {
       db.get('profiles').push(profile).write();
     }
 
+    console.log('✅ [Profile] Perfil encontrado:', profile.firstName, profile.lastName);
     return res.status(200).json(profile);
   }
 
-  // PUT /profile - Actualizar perfil del usuario autenticado
-  if (req.method === 'PUT' && req.path === '/profile') {
+  // PUT /profile o /profiles - Actualizar perfil del usuario autenticado
+  if (req.method === 'PUT' && (req.path === '/profile' || req.path === '/profiles')) {
     const token = extractToken(req);
 
     if (!token) {

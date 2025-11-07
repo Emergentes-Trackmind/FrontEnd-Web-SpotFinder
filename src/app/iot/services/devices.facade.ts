@@ -1,5 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { DevicesPort } from '../domain/services/devices.port';
 import { IotDevice, CreateIotDeviceDto, UpdateIotDeviceDto, DeviceTelemetry, BulkCreateDeviceDto } from '../domain/entities/iot-device.entity';
@@ -45,13 +45,22 @@ export class DevicesFacade {
 
     return this.devicesPort.getDevices(finalFilters).pipe(
       tap((response) => {
-        this.devices.set(response.data);
+        console.log('✅ [DevicesFacade] Dispositivos cargados:', response);
+        this.devices.set(response.data || []);
         this.loading.set(false);
       }),
       catchError((error) => {
+        console.error('❌ [DevicesFacade] Error cargando dispositivos:', error);
         this.error.set('Error al cargar dispositivos');
         this.loading.set(false);
-        throw error;
+        // Retornar un objeto vacío válido en lugar de throw
+        return of({
+          data: [],
+          total: 0,
+          page: 1,
+          size: 10,
+          totalPages: 0
+        } as PaginatedDevicesDto);
       })
     );
   }

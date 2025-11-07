@@ -7,7 +7,7 @@ export interface Profile {
   phone?: string;
   avatar?: string;
   bio?: string;
-  preferences: ProfilePreferences;
+  preferences?: ProfilePreferences;
   updatedAt: Date;
 }
 
