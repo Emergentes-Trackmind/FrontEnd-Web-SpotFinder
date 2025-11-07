@@ -25,7 +25,7 @@
       ],
       "isEmailVerified": false,
       "createdAt": "2025-10-30T12:09:23.261Z",
-      "lastLoginAt": "2025-11-07T10:24:04.733Z",
+      "lastLoginAt": "2025-11-07T10:44:39.544Z",
       "plan": "basic"
     },
     {
@@ -194,6 +194,20 @@
       "isEmailVerified": false,
       "createdAt": "2025-11-07T10:32:21.226Z",
       "lastLoginAt": "2025-11-07T10:32:21.226Z",
+      "plan": "basic"
+    },
+    {
+      "id": "1762512738311",
+      "email": "ch9que5@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-11-07T10:52:18.311Z",
+      "lastLoginAt": "2025-11-07T10:52:18.311Z",
       "plan": "basic"
     }
   ],
@@ -608,6 +622,31 @@
         "theme": "light"
       },
       "updatedAt": "2025-11-07T10:32:21.227Z"
+    },
+    {
+      "id": "1762512738311",
+      "userId": "1762512738311",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "email": "ch9que5@gmail.com",
+      "phone": null,
+      "avatar": null,
+      "bio": "",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2025-11-07T10:52:18.312Z"
     }
   ],
   "devices": [],
@@ -618,7 +657,7 @@
     "totals": {
       "totalRevenue": {
         "value": 0,
-        "currency": "EUR",
+        "currency": "PEN",
         "deltaPercentage": 0,
         "deltaText": "+0% vs mes anterior"
       },
@@ -650,18 +689,13 @@
       "name": "Plan Básico",
       "code": "BASIC",
       "description": "Ideal para pequeños negocios",
-      "price": 29,
-      "currency": "EUR",
+      "price": 0,
+      "currency": "PEN",
       "interval": "month",
       "parkingLimit": 3,
       "iotLimit": 10,
-      "features": [
-        "Hasta 3 parkings",
-        "Hasta 10 dispositivos IoT",
-        "Dashboard básico",
-        "Soporte por email"
-      ],
-      "priceId": "price_basic_eur_monthly",
+      "features": [],
+      "priceId": "price_basic_pen_monthly",
       "isActive": true
     },
     {
@@ -670,18 +704,12 @@
       "code": "ADVANCED",
       "description": "Para negocios en crecimiento",
       "price": 79,
-      "currency": "EUR",
+      "currency": "PEN",
       "interval": "month",
       "parkingLimit": 10,
       "iotLimit": 50,
-      "features": [
-        "Hasta 10 parkings",
-        "Hasta 50 dispositivos IoT",
-        "Dashboard avanzado",
-        "Soporte prioritario",
-        "Analytics avanzados"
-      ],
-      "priceId": "price_advanced_eur_monthly",
+      "features": [],
+      "priceId": "price_advanced_pen_monthly",
       "isActive": true,
       "isPopular": true
     }
@@ -694,18 +722,13 @@
         "name": "Plan Básico",
         "code": "BASIC",
         "description": "Ideal para pequeños negocios",
-        "price": 29,
-        "currency": "EUR",
+        "price": 0,
+        "currency": "PEN",
         "interval": "month",
         "parkingLimit": 3,
         "iotLimit": 10,
-        "features": [
-          "Hasta 3 parkings",
-          "Hasta 10 dispositivos IoT",
-          "Dashboard básico",
-          "Soporte por email"
-        ],
-        "priceId": "price_basic_eur_monthly",
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
         "isActive": true
       },
       "status": "ACTIVE",
@@ -722,18 +745,13 @@
         "name": "Plan Básico",
         "code": "BASIC",
         "description": "Ideal para pequeños negocios",
-        "price": 29,
-        "currency": "EUR",
+        "price": 0,
+        "currency": "PEN",
         "interval": "month",
         "parkingLimit": 3,
         "iotLimit": 10,
-        "features": [
-          "Hasta 3 parkings",
-          "Hasta 10 dispositivos IoT",
-          "Dashboard básico",
-          "Soporte por email"
-        ],
-        "priceId": "price_basic_eur_monthly",
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
         "isActive": true
       },
       "status": "ACTIVE",
@@ -750,18 +768,13 @@
         "name": "Plan Básico",
         "code": "BASIC",
         "description": "Ideal para pequeños negocios",
-        "price": 29,
-        "currency": "EUR",
+        "price": 0,
+        "currency": "PEN",
         "interval": "month",
         "parkingLimit": 3,
         "iotLimit": 10,
-        "features": [
-          "Hasta 3 parkings",
-          "Hasta 10 dispositivos IoT",
-          "Dashboard básico",
-          "Soporte por email"
-        ],
-        "priceId": "price_basic_eur_monthly",
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
         "isActive": true
       },
       "status": "ACTIVE",
@@ -778,18 +791,13 @@
         "name": "Plan Básico",
         "code": "BASIC",
         "description": "Ideal para pequeños negocios",
-        "price": 29,
-        "currency": "EUR",
+        "price": 0,
+        "currency": "PEN",
         "interval": "month",
         "parkingLimit": 3,
         "iotLimit": 10,
-        "features": [
-          "Hasta 3 parkings",
-          "Hasta 10 dispositivos IoT",
-          "Dashboard básico",
-          "Soporte por email"
-        ],
-        "priceId": "price_basic_eur_monthly",
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
         "isActive": true
       },
       "status": "ACTIVE",
@@ -806,18 +814,13 @@
         "name": "Plan Básico",
         "code": "BASIC",
         "description": "Ideal para pequeños negocios",
-        "price": 29,
-        "currency": "EUR",
+        "price": 0,
+        "currency": "PEN",
         "interval": "month",
         "parkingLimit": 3,
         "iotLimit": 10,
-        "features": [
-          "Hasta 3 parkings",
-          "Hasta 10 dispositivos IoT",
-          "Dashboard básico",
-          "Soporte por email"
-        ],
-        "priceId": "price_basic_eur_monthly",
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
         "isActive": true
       },
       "status": "ACTIVE",
@@ -834,18 +837,13 @@
         "name": "Plan Básico",
         "code": "BASIC",
         "description": "Ideal para pequeños negocios",
-        "price": 29,
-        "currency": "EUR",
+        "price": 0,
+        "currency": "PEN",
         "interval": "month",
         "parkingLimit": 3,
         "iotLimit": 10,
-        "features": [
-          "Hasta 3 parkings",
-          "Hasta 10 dispositivos IoT",
-          "Dashboard básico",
-          "Soporte por email"
-        ],
-        "priceId": "price_basic_eur_monthly",
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
         "isActive": true
       },
       "status": "ACTIVE",
@@ -862,18 +860,13 @@
         "name": "Plan Básico",
         "code": "BASIC",
         "description": "Ideal para pequeños negocios",
-        "price": 29,
-        "currency": "EUR",
+        "price": 0,
+        "currency": "PEN",
         "interval": "month",
         "parkingLimit": 3,
         "iotLimit": 10,
-        "features": [
-          "Hasta 3 parkings",
-          "Hasta 10 dispositivos IoT",
-          "Dashboard básico",
-          "Soporte por email"
-        ],
-        "priceId": "price_basic_eur_monthly",
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
         "isActive": true
       },
       "status": "ACTIVE",
@@ -890,18 +883,13 @@
         "name": "Plan Básico",
         "code": "BASIC",
         "description": "Ideal para pequeños negocios",
-        "price": 29,
-        "currency": "EUR",
+        "price": 0,
+        "currency": "PEN",
         "interval": "month",
         "parkingLimit": 3,
         "iotLimit": 10,
-        "features": [
-          "Hasta 3 parkings",
-          "Hasta 10 dispositivos IoT",
-          "Dashboard básico",
-          "Soporte por email"
-        ],
-        "priceId": "price_basic_eur_monthly",
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
         "isActive": true
       },
       "status": "ACTIVE",
@@ -918,18 +906,13 @@
         "name": "Plan Básico",
         "code": "BASIC",
         "description": "Ideal para pequeños negocios",
-        "price": 29,
-        "currency": "EUR",
+        "price": 0,
+        "currency": "PEN",
         "interval": "month",
         "parkingLimit": 3,
         "iotLimit": 10,
-        "features": [
-          "Hasta 3 parkings",
-          "Hasta 10 dispositivos IoT",
-          "Dashboard básico",
-          "Soporte por email"
-        ],
-        "priceId": "price_basic_eur_monthly",
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
         "isActive": true
       },
       "status": "ACTIVE",
@@ -946,18 +929,13 @@
         "name": "Plan Básico",
         "code": "BASIC",
         "description": "Ideal para pequeños negocios",
-        "price": 29,
-        "currency": "EUR",
+        "price": 0,
+        "currency": "PEN",
         "interval": "month",
         "parkingLimit": 3,
         "iotLimit": 10,
-        "features": [
-          "Hasta 3 parkings",
-          "Hasta 10 dispositivos IoT",
-          "Dashboard básico",
-          "Soporte por email"
-        ],
-        "priceId": "price_basic_eur_monthly",
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
         "isActive": true
       },
       "status": "ACTIVE",
@@ -974,18 +952,13 @@
         "name": "Plan Básico",
         "code": "BASIC",
         "description": "Ideal para pequeños negocios",
-        "price": 29,
-        "currency": "EUR",
+        "price": 0,
+        "currency": "PEN",
         "interval": "month",
         "parkingLimit": 3,
         "iotLimit": 10,
-        "features": [
-          "Hasta 3 parkings",
-          "Hasta 10 dispositivos IoT",
-          "Dashboard básico",
-          "Soporte por email"
-        ],
-        "priceId": "price_basic_eur_monthly",
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
         "isActive": true
       },
       "status": "ACTIVE",
@@ -1002,18 +975,13 @@
         "name": "Plan Básico",
         "code": "BASIC",
         "description": "Ideal para pequeños negocios",
-        "price": 29,
-        "currency": "EUR",
+        "price": 0,
+        "currency": "PEN",
         "interval": "month",
         "parkingLimit": 3,
         "iotLimit": 10,
-        "features": [
-          "Hasta 3 parkings",
-          "Hasta 10 dispositivos IoT",
-          "Dashboard básico",
-          "Soporte por email"
-        ],
-        "priceId": "price_basic_eur_monthly",
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
         "isActive": true
       },
       "status": "ACTIVE",
@@ -1030,18 +998,13 @@
         "name": "Plan Básico",
         "code": "BASIC",
         "description": "Ideal para pequeños negocios",
-        "price": 29,
-        "currency": "EUR",
+        "price": 0,
+        "currency": "PEN",
         "interval": "month",
         "parkingLimit": 3,
         "iotLimit": 10,
-        "features": [
-          "Hasta 3 parkings",
-          "Hasta 10 dispositivos IoT",
-          "Dashboard básico",
-          "Soporte por email"
-        ],
-        "priceId": "price_basic_eur_monthly",
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
         "isActive": true
       },
       "status": "ACTIVE",
@@ -1050,6 +1013,29 @@
       "cancelAtPeriodEnd": false,
       "stripeCustomerId": "cus_mock_1762511541226",
       "stripeSubscriptionId": "sub_mock_1762511541226"
+    },
+    {
+      "userId": "1762512738311",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Ideal para pequeños negocios",
+        "price": 0,
+        "currency": "PEN",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-11-07T10:52:18.312Z",
+      "currentPeriodEnd": "2025-12-07T10:52:18.312Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_1762512738311",
+      "stripeSubscriptionId": "sub_mock_1762512738311"
     }
   ],
   "billingPayments": [
@@ -1058,7 +1044,7 @@
       "userId": "1761826163261",
       "date": "2025-10-01T10:00:00.000Z",
       "amount": 29,
-      "currency": "EUR",
+      "currency": "PEN",
       "status": "succeeded",
       "description": "Plan Básico - Octubre 2025",
       "invoiceUrl": "https://invoice.stripe.com/mock_invoice_1"
@@ -1068,7 +1054,7 @@
       "userId": "1761826163261",
       "date": "2025-09-01T10:00:00.000Z",
       "amount": 29,
-      "currency": "EUR",
+      "currency": "PEN",
       "status": "succeeded",
       "description": "Plan Bsico - Septiembre 2025",
       "invoiceUrl": "https://invoice.stripe.com/mock_invoice_2"

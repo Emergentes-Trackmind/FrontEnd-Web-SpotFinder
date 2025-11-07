@@ -32,7 +32,7 @@ import { Plan } from '../../models/billing.models';
 
       <!-- Precio -->
       <div class="plan-price">
-        <span class="amount">{{ plan.currency === 'EUR' ? '€' : '$' }}{{ plan.price }}</span>
+        <span class="amount">{{ getCurrencySymbol() }}{{ plan.price }}</span>
         <span class="period">/mes</span>
       </div>
 
@@ -188,5 +188,18 @@ export class PlanCardComponent {
   @Input() ctaLabel = 'Elegir Plan';
 
   @Output() select = new EventEmitter<Plan>();
+
+  getCurrencySymbol(): string {
+    switch (this.plan.currency) {
+      case 'EUR':
+        return '€';
+      case 'PEN':
+        return 'S/';
+      case 'USD':
+        return '$';
+      default:
+        return '$';
+    }
+  }
 }
 
