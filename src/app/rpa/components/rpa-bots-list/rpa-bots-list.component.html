@@ -1,0 +1,92 @@
+<div class="bots-grid" *ngIf="!loading; else loadingTemplate">
+  <mat-card
+    *ngFor="let bot of bots"
+    class="bot-card">
+
+    <!-- Card Header -->
+    <div class="bot-header">
+      <div class="bot-info">
+        <h3 class="bot-name">{{ bot.name }}</h3>
+        <p class="bot-description">{{ bot.description }}</p>
+      </div>
+      <div class="bot-status">
+        <mat-chip
+          [color]="getStatusColor(bot.status)"
+          selected>
+          <mat-icon>{{ getStatusIcon(bot.status) }}</mat-icon>
+          {{ getStatusText(bot.status) }}
+        </mat-chip>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="bot-divider"></div>
+
+    <!-- Card Footer -->
+    <div class="bot-footer">
+      <div class="bot-metrics">
+        <div class="metric">
+          <span class="metric-value">{{ bot.executionsToday }}</span>
+          <span class="metric-label">ejecuciones hoy</span>
+        </div>
+        <div class="metric">
+          <span class="metric-value">{{ bot.lastRunRelative }}</span>
+          <span class="metric-label">última ejecución</span>
+        </div>
+      </div>
+
+      <div class="bot-actions">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="botMenu"
+          matTooltip="Más opciones">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #botMenu="matMenu">
+          <button mat-menu-item (click)="onViewDetail(bot)">
+            <mat-icon>visibility</mat-icon>
+            <span>Ver detalle</span>
+          </button>
+          <button
+            mat-menu-item
+            (click)="onRunNow(bot)"
+            [disabled]="bot.status === 'error'">
+            <mat-icon>play_arrow</mat-icon>
+            <span>Ejecutar ahora</span>
+          </button>
+          <button mat-menu-item (click)="onEditBot(bot)">
+            <mat-icon>edit</mat-icon>
+            <span>Editar</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="onDeleteBot(bot)" class="delete-option">
+            <mat-icon>delete</mat-icon>
+            <span>Eliminar</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<ng-template #loadingTemplate>
+  <div class="bots-grid">
+    <mat-card *ngFor="let i of [1,2,3,4]" class="bot-card loading">
+      <div class="bot-header">
+        <div class="bot-info">
+          <div class="skeleton skeleton-name"></div>
+          <div class="skeleton skeleton-description"></div>
+        </div>
+        <div class="skeleton skeleton-status"></div>
+      </div>
+      <div class="bot-divider"></div>
+      <div class="bot-footer">
+        <div class="bot-metrics">
+          <div class="skeleton skeleton-metric"></div>
+        </div>
+        <div class="skeleton skeleton-actions"></div>
+      </div>
+    </mat-card>
+  </div>
+</ng-template>

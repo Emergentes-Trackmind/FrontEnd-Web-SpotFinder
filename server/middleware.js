@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const analyticsMiddleware = require('./analytics.middleware');
 
 // Clave secreta para JWT (en producción esto debería ser una variable de entorno)
 const JWT_SECRET = 'spotfinder_secret_key_2024';
@@ -36,6 +37,40 @@ function generateToken(user) {
 }
 
 module.exports = (req, res, next) => {
+  // Ejecutar analytics middleware PRIMERO para evitar problemas de auth
+  if (req.path.startsWith('/analytics') || req.path.startsWith('/api/analytics')) {
+    return analyticsMiddleware(req, res, next);
+  }
+
+  // Filtros de parkings por usuario (CRUCIAL para privacidad)
+  if (req.method === 'GET' && (req.path === '/parkings' || req.path === '/api/parkings')) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Token requerido' });
+    }
+
+    const token = authHeader.substring(7);
+    try {
+      const jwt = require('jsonwebtoken');
+      const JWT_SECRET = 'spotfinder_secret_key_2024';
+      const decoded = jwt.verify(token, JWT_SECRET);
+      const currentUserId = decoded.userId;
+
+      const db = req.app.db;
+      const allParkings = db.get('parkings').value() || [];
+
+      // Filtrar solo parkings del usuario actual
+      const userParkings = allParkings.filter(parking => parking.ownerId === currentUserId);
+
+      console.log(`🔒 [PARKINGS] User ${currentUserId} has ${userParkings.length} parkings`);
+      return res.json(userParkings);
+
+    } catch (error) {
+      console.error('Error decoding JWT:', error);
+      return res.status(401).json({ error: 'Token inválido' });
+    }
+  }
+
   // Middleware para simular endpoints de autenticación
 
   // POST /auth/login (después del rewrite de routes.json)
@@ -261,7 +296,7 @@ module.exports = (req, res, next) => {
     const totalsKpi = {
       totalRevenue: {
         value: Math.round(estimatedRevenue),
-        currency: '$',
+        currency: 'S/',
         deltaPercentage: 12.5,
         deltaText: '+12.5% vs mes anterior'
       },
@@ -314,12 +349,12 @@ module.exports = (req, res, next) => {
     const baseRevenue = userParkings.reduce((sum, p) => sum + (p.pricePerHour || 0) * 50, 0);
 
     const revenueData = [
-      { month: 'Ene', revenue: Math.round(baseRevenue * 0.7), currency: '$' },
-      { month: 'Feb', revenue: Math.round(baseRevenue * 0.75), currency: '$' },
-      { month: 'Mar', revenue: Math.round(baseRevenue * 0.8), currency: '$' },
-      { month: 'Abr', revenue: Math.round(baseRevenue * 0.85), currency: '$' },
-      { month: 'May', revenue: Math.round(baseRevenue * 0.95), currency: '$' },
-      { month: 'Jun', revenue: Math.round(baseRevenue), currency: '$' }
+      { month: 'Ene', revenue: Math.round(baseRevenue * 0.7), currency: 'S/' },
+      { month: 'Feb', revenue: Math.round(baseRevenue * 0.75), currency: 'S/' },
+      { month: 'Mar', revenue: Math.round(baseRevenue * 0.8), currency: 'S/' },
+      { month: 'Abr', revenue: Math.round(baseRevenue * 0.85), currency: 'S/' },
+      { month: 'May', revenue: Math.round(baseRevenue * 0.95), currency: 'S/' },
+      { month: 'Jun', revenue: Math.round(baseRevenue), currency: 'S/' }
     ];
 
     return res.status(200).json(revenueData);

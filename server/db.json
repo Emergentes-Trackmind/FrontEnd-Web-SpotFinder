@@ -25,7 +25,7 @@
       ],
       "isEmailVerified": false,
       "createdAt": "2025-10-30T12:09:23.261Z",
-      "lastLoginAt": "2025-11-10T08:02:19.184Z",
+      "lastLoginAt": "2025-11-10T13:46:27.702Z",
       "plan": "basic"
     },
     {
@@ -208,6 +208,48 @@
       "isEmailVerified": false,
       "createdAt": "2025-11-07T10:52:18.311Z",
       "lastLoginAt": "2025-11-07T10:52:18.311Z",
+      "plan": "basic"
+    },
+    {
+      "id": "1762765976801",
+      "email": "dsadasda5@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-11-10T09:12:56.801Z",
+      "lastLoginAt": "2025-11-10T09:12:56.801Z",
+      "plan": "basic"
+    },
+    {
+      "id": "1762766477196",
+      "email": "31231215@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-11-10T09:21:17.196Z",
+      "lastLoginAt": "2025-11-10T09:21:17.196Z",
+      "plan": "basic"
+    },
+    {
+      "id": "1762767579883",
+      "email": "asdaddasdasdasdas@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Patata",
+      "lastName": "Lol",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-11-10T09:39:39.883Z",
+      "lastLoginAt": "2025-11-10T09:39:39.883Z",
       "plan": "basic"
     }
   ],
@@ -647,42 +689,88 @@
         "theme": "light"
       },
       "updatedAt": "2025-11-07T10:52:18.312Z"
+    },
+    {
+      "id": "1762765976801",
+      "userId": "1762765976801",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "email": "dsadasda5@gmail.com",
+      "phone": null,
+      "avatar": null,
+      "bio": "",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2025-11-10T09:12:56.802Z"
+    },
+    {
+      "id": "1762766477196",
+      "userId": "1762766477196",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "email": "31231215@gmail.com",
+      "phone": null,
+      "avatar": null,
+      "bio": "",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2025-11-10T09:21:17.197Z"
+    },
+    {
+      "id": "1762767579883",
+      "userId": "1762767579883",
+      "firstName": "Patata",
+      "lastName": "Lol",
+      "email": "asdaddasdasdasdas@gmail.com",
+      "phone": null,
+      "avatar": null,
+      "bio": "",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2025-11-10T09:39:39.883Z"
     }
   ],
   "devices": [],
+  "parkingSpots": [],
   "reservations": [],
   "reviews": [],
   "payments": [],
-  "analytics": {
-    "totals": {
-      "totalRevenue": {
-        "value": 0,
-        "currency": "PEN",
-        "deltaPercentage": 0,
-        "deltaText": "+0% vs mes anterior"
-      },
-      "occupiedSpaces": {
-        "occupied": 0,
-        "total": 0,
-        "percentage": 0,
-        "text": "0 de 0 ocupadas"
-      },
-      "activeUsers": {
-        "count": 0,
-        "deltaPercentage": 0,
-        "deltaText": "+0 nuevos usuarios"
-      },
-      "registeredParkings": {
-        "total": 0,
-        "newThisMonth": 0,
-        "deltaText": "+0 este mes"
-      }
-    },
-    "revenue": [],
-    "occupancy": [],
-    "activity": [],
-    "topParkings": []
-  },
   "billingPlans": [
     {
       "id": "plan_basic",
@@ -1036,6 +1124,75 @@
       "cancelAtPeriodEnd": false,
       "stripeCustomerId": "cus_mock_1762512738311",
       "stripeSubscriptionId": "sub_mock_1762512738311"
+    },
+    {
+      "userId": "1762765976801",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Plan gratuito para empezar",
+        "price": 0,
+        "currency": "PEN",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-11-10T09:12:56.802Z",
+      "currentPeriodEnd": "2025-12-10T09:12:56.802Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_1762765976801",
+      "stripeSubscriptionId": "sub_mock_1762765976801"
+    },
+    {
+      "userId": "1762766477196",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Plan gratuito para empezar",
+        "price": 0,
+        "currency": "PEN",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-11-10T09:21:17.197Z",
+      "currentPeriodEnd": "2025-12-10T09:21:17.197Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_1762766477196",
+      "stripeSubscriptionId": "sub_mock_1762766477196"
+    },
+    {
+      "userId": "1762767579883",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Plan gratuito para empezar",
+        "price": 0,
+        "currency": "PEN",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-11-10T09:39:39.883Z",
+      "currentPeriodEnd": "2025-12-10T09:39:39.883Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_1762767579883",
+      "stripeSubscriptionId": "sub_mock_1762767579883"
     }
   ],
   "billingPayments": [

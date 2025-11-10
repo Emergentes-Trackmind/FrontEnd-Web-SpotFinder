@@ -1,0 +1,53 @@
+<div class="rpa-container">
+  <!-- Header -->
+  <div class="rpa-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="page-title">Centro de Automatización Robótica</h1>
+        <p class="page-subtitle">Crea y gestiona robots RPA que se conectan con sistemas externos como SUNAT, bancos o Excel.</p>
+      </div>
+      <div class="header-actions">
+        <button mat-icon-button (click)="onRefreshData()" matTooltip="Actualizar datos">
+          <mat-icon>refresh</mat-icon>
+        </button>
+        <button mat-raised-button color="accent" (click)="onCreateNewBot()">
+          <mat-icon>add</mat-icon>
+          Nuevo Robot RPA
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Progress Bar -->
+  <mat-progress-bar mode="indeterminate" *ngIf="loading()" class="loading-bar"></mat-progress-bar>
+
+  <!-- KPI Cards Row -->
+  <div class="kpi-section">
+    <app-rpa-summary-cards
+      [summary]="rpaSummary()"
+      [loading]="loading()">
+    </app-rpa-summary-cards>
+  </div>
+
+  <!-- Bots Section -->
+  <div class="bots-section">
+    <div class="section-header">
+      <h2 class="section-title">Automatizaciones RPA Configuradas</h2>
+    </div>
+    <app-rpa-bots-list
+      [bots]="rpaBots()"
+      [loading]="loading()">
+    </app-rpa-bots-list>
+  </div>
+
+  <!-- Executions Table Section -->
+  <div class="executions-section">
+    <div class="section-header">
+      <h2 class="section-title">Registro de Ejecuciones RPA</h2>
+    </div>
+    <app-rpa-executions-table
+      [executions]="rpaExecutions()"
+      [loading]="loading()">
+    </app-rpa-executions-table>
+  </div>
+</div>

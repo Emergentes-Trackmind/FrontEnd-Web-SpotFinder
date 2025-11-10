@@ -1,0 +1,459 @@
+<div class="wizard-dialog">
+  <!-- Header del Dialog -->
+  <div class="dialog-header">
+    <h2 mat-dialog-title>
+      <mat-icon class="header-icon">smart_toy</mat-icon>
+      Nuevo Robot RPA
+    </h2>
+    <button mat-icon-button mat-dialog-close class="close-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Contenido principal con Stepper -->
+  <mat-dialog-content class="dialog-content">
+    <mat-horizontal-stepper #stepper linear>
+
+      <!-- PASO 1: Seleccionar Plantilla -->
+      <mat-step [stepControl]="templateForm" label="Plantilla">
+        <ng-template matStepLabel>Seleccionar Plantilla</ng-template>
+
+        <div class="step-content">
+          <div class="step-header">
+            <h3>Elige una plantilla de robot RPA</h3>
+            <p>Selecciona el tipo de automatización que necesitas para tu negocio</p>
+          </div>
+
+          <form [formGroup]="templateForm" class="step-form">
+            <!-- Grid de plantillas -->
+            <div class="templates-grid">
+              <mat-card
+                *ngFor="let template of availableTemplates"
+                class="template-card"
+                [class.selected]="selectedTemplate?.id === template.id"
+                (click)="onTemplateSelect(template)">
+
+                <div class="template-header">
+                  <div class="template-icon">
+                    <mat-icon>{{ template.icon }}</mat-icon>
+                  </div>
+                  <div class="template-info">
+                    <h4>{{ template.name }}</h4>
+                    <span class="template-category">{{ template.category }}</span>
+                  </div>
+                  <div class="template-badges">
+                    <mat-chip
+                      [color]="getComplexityColor(template.complexity)">
+                      {{ getComplexityText(template.complexity) }}
+                    </mat-chip>
+                  </div>
+                </div>
+
+                <div class="template-body">
+                  <p class="template-description">{{ template.description }}</p>
+
+                  <div class="template-details">
+                    <div class="detail-item">
+                      <mat-icon class="detail-icon">schedule</mat-icon>
+                      <span>{{ template.estimatedTime }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <mat-icon class="detail-icon">integration_instructions</mat-icon>
+                      <span>{{ template.systems.join(', ') }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Indicador de selección -->
+                <div class="selection-indicator" *ngIf="selectedTemplate?.id === template.id">
+                  <mat-icon>check_circle</mat-icon>
+                </div>
+              </mat-card>
+            </div>
+
+            <!-- Campos adicionales cuando se selecciona una plantilla -->
+            <div class="template-config" *ngIf="selectedTemplate">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Nombre del robot</mat-label>
+                <input matInput formControlName="name" placeholder="Ej. Mi Bot de Facturación">
+                <mat-error *ngIf="templateForm.get('name')?.hasError('required')">
+                  El nombre es requerido
+                </mat-error>
+                <mat-error *ngIf="templateForm.get('name')?.hasError('minlength')">
+                  Mínimo 3 caracteres
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Descripción (opcional)</mat-label>
+                <textarea
+                  matInput
+                  formControlName="description"
+                  rows="3"
+                  placeholder="Describe qué hace este robot específicamente...">
+                </textarea>
+              </mat-form-field>
+            </div>
+          </form>
+        </div>
+      </mat-step>
+
+      <!-- PASO 2: Conectar Sistemas -->
+      <mat-step [stepControl]="systemsForm" label="Sistemas">
+        <ng-template matStepLabel>Conectar Sistemas</ng-template>
+
+        <div class="step-content">
+          <div class="step-header">
+            <h3>Configura las conexiones externas</h3>
+            <p>Define cómo el robot se conectará con los sistemas externos</p>
+          </div>
+
+          <form [formGroup]="systemsForm" class="step-form">
+
+            <!-- Conexión SUNAT -->
+            <mat-card class="system-card" *ngIf="selectedTemplate?.systems?.includes('SUNAT')">
+              <div class="system-header">
+                <mat-checkbox formControlName="sunatConnected">
+                  <div class="system-info">
+                    <mat-icon class="system-icon">receipt_long</mat-icon>
+                    <div>
+                      <h4>SUNAT - Facturación Electrónica</h4>
+                      <p>Conectar con los servicios web de SUNAT</p>
+                    </div>
+                  </div>
+                </mat-checkbox>
+              </div>
+
+              <div class="system-config" *ngIf="systemsForm.get('sunatConnected')?.value">
+                <div class="config-row">
+                  <mat-form-field appearance="outline">
+                    <mat-label>RUC</mat-label>
+                    <input matInput formControlName="sunatRuc" placeholder="20123456789">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Usuario SOL</mat-label>
+                    <input matInput formControlName="sunatUsuario">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Clave SOL</mat-label>
+                    <input matInput type="password" formControlName="sunatClave">
+                  </mat-form-field>
+                </div>
+              </div>
+            </mat-card>
+
+            <!-- Conexión Bancaria -->
+            <mat-card class="system-card" *ngIf="selectedTemplate?.systems?.includes('Banco')">
+              <div class="system-header">
+                <mat-checkbox formControlName="bankConnected">
+                  <div class="system-info">
+                    <mat-icon class="system-icon">account_balance</mat-icon>
+                    <div>
+                      <h4>Conexión Bancaria</h4>
+                      <p>Integrar con sistemas bancarios para conciliación</p>
+                    </div>
+                  </div>
+                </mat-checkbox>
+              </div>
+
+              <div class="system-config" *ngIf="systemsForm.get('bankConnected')?.value">
+                <div class="config-row">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Banco</mat-label>
+                    <mat-select formControlName="banco">
+                      <mat-option value="bcp">BCP</mat-option>
+                      <mat-option value="interbank">Interbank</mat-option>
+                      <mat-option value="bbva">BBVA</mat-option>
+                      <mat-option value="scotiabank">Scotiabank</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Tipo de Conexión</mat-label>
+                    <mat-select formControlName="tipoConexion">
+                      <mat-option value="api">API Bancaria</mat-option>
+                      <mat-option value="scraping">Web Scraping</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </mat-card>
+
+            <!-- Conexión Excel -->
+            <mat-card class="system-card" *ngIf="selectedTemplate?.systems?.includes('Excel')">
+              <div class="system-header">
+                <mat-checkbox formControlName="excelConnected">
+                  <div class="system-info">
+                    <mat-icon class="system-icon">table_chart</mat-icon>
+                    <div>
+                      <h4>Generación de Reportes Excel</h4>
+                      <p>Configurar la generación automática de reportes</p>
+                    </div>
+                  </div>
+                </mat-checkbox>
+              </div>
+
+              <div class="system-config" *ngIf="systemsForm.get('excelConnected')?.value">
+                <div class="config-row">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Ruta del archivo</mat-label>
+                    <input matInput formControlName="rutaArchivo" placeholder="C:/Reportes/reporte_diario.xlsx">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Hoja de cálculo</mat-label>
+                    <input matInput formControlName="hojaCalculo" placeholder="Datos" value="Datos">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Formato</mat-label>
+                    <mat-select formControlName="formatoReporte">
+                      <mat-option value="xlsx">Excel (.xlsx)</mat-option>
+                      <mat-option value="csv">CSV (.csv)</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </mat-card>
+
+          </form>
+        </div>
+      </mat-step>
+
+      <!-- PASO 3: Configurar Disparador -->
+      <mat-step [stepControl]="triggerForm" label="Disparador">
+        <ng-template matStepLabel>Configurar Disparador</ng-template>
+
+        <div class="step-content">
+          <div class="step-header">
+            <h3>¿Cuándo debe ejecutarse el robot?</h3>
+            <p>Define el disparador que activará la ejecución automática</p>
+          </div>
+
+          <form [formGroup]="triggerForm" class="step-form">
+
+            <!-- Tipo de disparador -->
+            <div class="trigger-types">
+              <mat-card class="trigger-option"
+                [class.selected]="triggerForm.get('triggerType')?.value === 'event'"
+                (click)="triggerForm.patchValue({triggerType: 'event'})">
+                <div class="trigger-icon">
+                  <mat-icon>flash_on</mat-icon>
+                </div>
+                <div class="trigger-info">
+                  <h4>Por Evento</h4>
+                  <p>Se ejecuta cuando ocurre una acción específica</p>
+                </div>
+                <mat-radio-button
+                  value="event"
+                  formControlName="triggerType">
+                </mat-radio-button>
+              </mat-card>
+
+              <mat-card class="trigger-option"
+                [class.selected]="triggerForm.get('triggerType')?.value === 'schedule'"
+                (click)="triggerForm.patchValue({triggerType: 'schedule'})">
+                <div class="trigger-icon">
+                  <mat-icon>schedule</mat-icon>
+                </div>
+                <div class="trigger-info">
+                  <h4>Por Horario</h4>
+                  <p>Se ejecuta según una programación definida</p>
+                </div>
+                <mat-radio-button
+                  value="schedule"
+                  formControlName="triggerType">
+                </mat-radio-button>
+              </mat-card>
+            </div>
+
+            <!-- Configuración por evento -->
+            <div class="trigger-config" *ngIf="triggerForm.get('triggerType')?.value === 'event'">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Tipo de evento</mat-label>
+                <mat-select formControlName="eventType">
+                  <mat-option value="reservaPagada">Cuando se confirme un pago</mat-option>
+                  <mat-option value="reservaCreada">Cuando se cree una reserva</mat-option>
+                  <mat-option value="finDeDia">Al final del día</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- Configuración por horario -->
+            <div class="trigger-config" *ngIf="triggerForm.get('triggerType')?.value === 'schedule'">
+              <div class="schedule-row">
+                <mat-form-field appearance="outline">
+                  <mat-label>Frecuencia</mat-label>
+                  <mat-select formControlName="scheduleFrequency">
+                    <mat-option value="daily">Diariamente</mat-option>
+                    <mat-option value="weekly">Semanalmente</mat-option>
+                    <mat-option value="monthly">Mensualmente</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Hora de ejecución</mat-label>
+                  <input matInput type="time" formControlName="scheduleTime">
+                </mat-form-field>
+              </div>
+
+              <!-- Configuración específica por frecuencia -->
+              <div class="frequency-config" *ngIf="triggerForm.get('scheduleFrequency')?.value === 'weekly'">
+                <label class="config-label">Días de la semana:</label>
+                <div class="days-selection">
+                  <mat-checkbox value="lunes">Lunes</mat-checkbox>
+                  <mat-checkbox value="martes">Martes</mat-checkbox>
+                  <mat-checkbox value="miercoles">Miércoles</mat-checkbox>
+                  <mat-checkbox value="jueves">Jueves</mat-checkbox>
+                  <mat-checkbox value="viernes">Viernes</mat-checkbox>
+                  <mat-checkbox value="sabado">Sábado</mat-checkbox>
+                  <mat-checkbox value="domingo">Domingo</mat-checkbox>
+                </div>
+              </div>
+
+              <div class="frequency-config" *ngIf="triggerForm.get('scheduleFrequency')?.value === 'monthly'">
+                <mat-form-field appearance="outline">
+                  <mat-label>Día del mes</mat-label>
+                  <mat-select formControlName="diaMes">
+                    <mat-option *ngFor="let day of [1,2,3,4,5,10,15,20,25,30]" [value]="day">
+                      Día {{ day }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </mat-step>
+
+      <!-- PASO 4: Revisar y Confirmar -->
+      <mat-step [stepControl]="reviewForm" label="Confirmar">
+        <ng-template matStepLabel>Revisar y Confirmar</ng-template>
+
+        <div class="step-content">
+          <div class="step-header">
+            <h3>Revisa la configuración del robot</h3>
+            <p>Verifica que toda la información sea correcta antes de crear el robot</p>
+          </div>
+
+          <!-- Resumen de la configuración -->
+          <div class="review-summary">
+
+            <!-- Información básica -->
+            <mat-card class="review-section">
+              <h4>
+                <mat-icon>smart_toy</mat-icon>
+                Información Básica
+              </h4>
+              <div class="review-item">
+                <span class="label">Plantilla:</span>
+                <span class="value">{{ selectedTemplate?.name }}</span>
+              </div>
+              <div class="review-item">
+                <span class="label">Nombre:</span>
+                <span class="value">{{ templateForm.get('name')?.value }}</span>
+              </div>
+              <div class="review-item" *ngIf="templateForm.get('description')?.value">
+                <span class="label">Descripción:</span>
+                <span class="value">{{ templateForm.get('description')?.value }}</span>
+              </div>
+            </mat-card>
+
+            <!-- Sistemas conectados -->
+            <mat-card class="review-section">
+              <h4>
+                <mat-icon>integration_instructions</mat-icon>
+                Sistemas Conectados
+              </h4>
+              <div class="connected-systems">
+                <div class="system-item" *ngIf="systemsForm.get('sunatConnected')?.value">
+                  <mat-icon class="system-icon">receipt_long</mat-icon>
+                  <span>SUNAT (RUC: {{ systemsForm.get('sunatRuc')?.value }})</span>
+                </div>
+                <div class="system-item" *ngIf="systemsForm.get('bankConnected')?.value">
+                  <mat-icon class="system-icon">account_balance</mat-icon>
+                  <span>{{ (systemsForm.get('banco')?.value | uppercase) }} ({{ systemsForm.get('tipoConexion')?.value }})</span>
+                </div>
+                <div class="system-item" *ngIf="systemsForm.get('excelConnected')?.value">
+                  <mat-icon class="system-icon">table_chart</mat-icon>
+                  <span>Excel ({{ (systemsForm.get('formatoReporte')?.value | uppercase) }})</span>
+                </div>
+              </div>
+            </mat-card>
+
+            <!-- Configuración de disparador -->
+            <mat-card class="review-section">
+              <h4>
+                <mat-icon>schedule</mat-icon>
+                Disparador
+              </h4>
+              <div class="review-item">
+                <span class="label">Tipo:</span>
+                <span class="value">
+                  {{ triggerForm.get('triggerType')?.value === 'event' ? 'Por Evento' : 'Por Horario' }}
+                </span>
+              </div>
+              <div class="review-item" *ngIf="triggerForm.get('triggerType')?.value === 'event'">
+                <span class="label">Evento:</span>
+                <span class="value">{{ triggerForm.get('eventType')?.value }}</span>
+              </div>
+              <div class="review-item" *ngIf="triggerForm.get('triggerType')?.value === 'schedule'">
+                <span class="label">Programación:</span>
+                <span class="value">
+                  {{ triggerForm.get('scheduleFrequency')?.value }} a las {{ triggerForm.get('scheduleTime')?.value }}
+                </span>
+              </div>
+            </mat-card>
+
+          </div>
+
+          <!-- Términos y condiciones -->
+          <form [formGroup]="reviewForm" class="review-form">
+            <mat-checkbox formControlName="acceptTerms">
+              Confirmo que la configuración es correcta y acepto que el robot se ejecute automáticamente según lo programado
+            </mat-checkbox>
+          </form>
+        </div>
+      </mat-step>
+
+    </mat-horizontal-stepper>
+  </mat-dialog-content>
+
+  <!-- Acciones del dialog -->
+  <mat-dialog-actions class="dialog-actions">
+    <div class="actions-left">
+      <button mat-button (click)="onCancel()">
+        <mat-icon>close</mat-icon>
+        Cancelar
+      </button>
+    </div>
+
+    <div class="actions-right">
+      <button
+        mat-button
+        matStepperPrevious
+        *ngIf="stepper.selectedIndex > 0">
+        <mat-icon>arrow_back</mat-icon>
+        Anterior
+      </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        matStepperNext
+        *ngIf="stepper.selectedIndex < 3"
+        [disabled]="!isStepValid(stepper.selectedIndex)">
+        Siguiente
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+
+      <button
+        mat-raised-button
+        color="accent"
+        *ngIf="stepper.selectedIndex === 3"
+        [disabled]="!reviewForm.valid"
+        (click)="onCreateRobot()">
+        <mat-icon>smart_toy</mat-icon>
+        Crear Robot
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>

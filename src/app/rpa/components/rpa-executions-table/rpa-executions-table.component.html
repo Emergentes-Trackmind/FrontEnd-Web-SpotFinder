@@ -1,0 +1,86 @@
+<mat-card class="executions-table-card">
+  <div class="table-header" *ngIf="!loading">
+    <div class="table-info">
+      <h3 class="table-title">Últimas Ejecuciones</h3>
+      <p class="table-subtitle">{{ executions.length }} registros totales</p>
+    </div>
+  </div>
+
+  <div class="table-container" *ngIf="!loading; else loadingTemplate">
+    <table mat-table [dataSource]="dataSource" class="executions-table">
+
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Fecha / Hora</th>
+        <td mat-cell *matCellDef="let execution">
+          <div class="date-cell">
+            <span class="date-primary">{{ formatDate(execution.date) }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Bot Name Column -->
+      <ng-container matColumnDef="botName">
+        <th mat-header-cell *matHeaderCellDef>Bot</th>
+        <td mat-cell *matCellDef="let execution">
+          <div class="bot-cell">
+            <mat-icon class="bot-icon">smart_toy</mat-icon>
+            <span class="bot-name">{{ execution.botName }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Resultado</th>
+        <td mat-cell *matCellDef="let execution">
+          <mat-chip
+            [color]="getStatusColor(execution.status)"
+            selected
+            class="status-chip">
+            <mat-icon>{{ getStatusIcon(execution.status) }}</mat-icon>
+            {{ getStatusText(execution.status) }}
+          </mat-chip>
+        </td>
+      </ng-container>
+
+      <!-- Duration Column -->
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef>Duración</th>
+        <td mat-cell *matCellDef="let execution">
+          <div class="duration-cell">
+            <mat-icon class="duration-icon">schedule</mat-icon>
+            <span class="duration-text">{{ execution.duration }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Message Column -->
+      <ng-container matColumnDef="message">
+        <th mat-header-cell *matHeaderCellDef>Mensaje</th>
+        <td mat-cell *matCellDef="let execution">
+          <div class="message-cell" [title]="execution.message">
+            {{ execution.message }}
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="execution-row"></tr>
+    </table>
+
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      [pageSize]="10"
+      showFirstLastButtons
+      aria-label="Seleccionar página de ejecuciones RPA">
+    </mat-paginator>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-container">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      <div class="loading-text">Cargando ejecuciones...</div>
+    </div>
+  </ng-template>
+</mat-card>

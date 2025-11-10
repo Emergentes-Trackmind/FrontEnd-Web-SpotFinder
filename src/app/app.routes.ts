@@ -112,6 +112,13 @@ export const routes: Routes = [
   },
   // Notificaciones
   ...NOTIFICATIONS_ROUTES,
+  // Automatización Robótica RPA
+  {
+    path: 'automatizacion-robotica',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./rpa/automatizacion-robotica.module').then(m => m.AutomatizacionRoboticaModule),
+    title: 'Centro de Automatización Robótica'
+  },
   {
     path: '**',
     redirectTo: '/dashboard'

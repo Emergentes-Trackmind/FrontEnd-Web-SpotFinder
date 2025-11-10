@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,7 +7,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, interval, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 // Analytics Port
 import { AnalyticsPort } from '../../domain/services/analytics.port';
@@ -59,13 +60,18 @@ interface KpiCard {
   templateUrl: './home-page.html',
   styleUrl: './home-page.css'
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   private analyticsService = inject(AnalyticsPort);
   private router = inject(Router);
 
   // Loading state
   private loadingSubject = new BehaviorSubject<boolean>(false);
   loading = this.loadingSubject.asObservable();
+
+  // Auto-refresh control
+  private destroy$ = new Subject<void>();
+  private autoRefreshInterval = 60000; // Refresh each 60 seconds
+  isAutoRefreshEnabled = signal(true);
 
   // Signals for reactive data
   private totalsKpi = signal<TotalsKpiDTO | null>(null);
@@ -166,6 +172,43 @@ export class HomePage implements OnInit {
   ngOnInit() {
     console.log('🏠 HomePage initialized - Loading dashboard data...');
     this.initializeDashboard();
+    this.startAutoRefresh();
+  }
+
+  ngOnDestroy() {
+    console.log('🏠 HomePage destroyed - Cleaning up...');
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  /**
+   * Start auto-refresh interval for dashboard data
+   */
+  private startAutoRefresh() {
+    if (this.isAutoRefreshEnabled()) {
+      console.log('🔄 Starting auto-refresh every', this.autoRefreshInterval / 1000, 'seconds');
+
+      interval(this.autoRefreshInterval)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          if (this.isAutoRefreshEnabled()) {
+            console.log('🔄 Auto-refreshing dashboard data...');
+            this.loadDashboardData();
+          }
+        });
+    }
+  }
+
+  /**
+   * Toggle auto-refresh functionality
+   */
+  toggleAutoRefresh() {
+    this.isAutoRefreshEnabled.set(!this.isAutoRefreshEnabled());
+    console.log('🔄 Auto-refresh', this.isAutoRefreshEnabled() ? 'enabled' : 'disabled');
+
+    if (this.isAutoRefreshEnabled()) {
+      this.startAutoRefresh();
+    }
   }
 
   /**
@@ -315,7 +358,16 @@ export class HomePage implements OnInit {
    * Refresh all dashboard data - Handler for refresh button in HTML
    */
   onRefreshData() {
-    console.log('🔄 Refreshing dashboard data...');
+    console.log('🔄 Manual refresh triggered...');
+
+    // Reset all signals to force refresh
+    this.totalsKpi.set(null);
+    this.revenueByMonth.set([]);
+    this.occupancyByHour.set([]);
+    this.recentActivity.set([]);
+    this.topParkings.set([]);
+
+    // Force reload
     this.loadDashboardData();
   }
 

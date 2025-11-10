@@ -1,0 +1,42 @@
+<div class="kpi-grid" *ngIf="!loading; else loadingTemplate">
+  <mat-card
+    *ngFor="let card of kpiCards"
+    class="kpi-card">
+    <div class="kpi-content">
+      <div class="kpi-info">
+        <h3 class="kpi-title">{{ card.title }}</h3>
+        <div class="kpi-value">{{ card.value }}</div>
+        <p class="kpi-description">{{ card.description }}</p>
+      </div>
+      <div class="kpi-icon-container">
+        <div class="kpi-icon" [style.background-color]="card.color">
+          <mat-icon>{{ card.icon }}</mat-icon>
+        </div>
+      </div>
+    </div>
+    <div class="kpi-trend" *ngIf="card.trend">
+      <div class="trend-indicator positive">
+        <mat-icon class="trend-icon">trending_up</mat-icon>
+        <span class="trend-value">+{{ card.trend }}%</span>
+      </div>
+      <span class="trend-period">vs. mes anterior</span>
+    </div>
+  </mat-card>
+</div>
+
+<ng-template #loadingTemplate>
+  <div class="kpi-grid">
+    <mat-card *ngFor="let i of [1,2,3,4]" class="kpi-card loading">
+      <div class="kpi-content">
+        <div class="kpi-info">
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton skeleton-value"></div>
+          <div class="skeleton skeleton-description"></div>
+        </div>
+        <div class="kpi-icon-container">
+          <div class="skeleton skeleton-icon"></div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</ng-template>

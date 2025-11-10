@@ -111,6 +111,9 @@ export class TopParkingsComponent {
   }
 
   formatRevenue(revenue: number): string {
+    if (!revenue || revenue === undefined || revenue === null) {
+      return '0';
+    }
     if (revenue >= 1000000) {
       return (revenue / 1000000).toFixed(1) + 'M';
     } else if (revenue >= 1000) {

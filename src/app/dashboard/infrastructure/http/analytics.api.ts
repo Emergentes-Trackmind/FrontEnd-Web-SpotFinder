@@ -13,7 +13,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class AnalyticsApi {
   private http = inject(HttpClient);
-  private baseUrl = environment.analytics.base;
+  private baseUrl = `${environment.apiBase}${environment.analytics.base}`;
   private endpoints = environment.analytics.endpoints;
 
   getTotalsKpis(): Observable<TotalsKpiDTO> {

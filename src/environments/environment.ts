@@ -50,7 +50,7 @@ export const environment: Environment = {
     base: '/reservationPayments'
   },
   featureFlags: {
-    useMockApi: true,
+    useMockApi: false, // Usar datos reales del servidor
     logHttp: true,
     enableOfflineMode: false
   },

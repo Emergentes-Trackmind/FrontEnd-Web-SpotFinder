@@ -16,7 +16,8 @@
   "/api/billing/subscribe": "/billing/subscribe",
   "/api/billing/cancel": "/billing/cancel",
   "/api/parkings": "/parkings",
-  "/api/analytics": "/analytics",
+  "/api/parkings/:id/analytics": "/parkings/:id/analytics",
+
   "/api/locations": "/locations",
   "/api/pricing": "/pricing",
   "/api/features": "/features",
