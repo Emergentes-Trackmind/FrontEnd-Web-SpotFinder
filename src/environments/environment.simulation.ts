@@ -1,7 +1,7 @@
 import { Environment } from './environment.interface';
 
 export const environment: Environment = {
-  production: true,
+  production: false,
   apiBase: 'http://localhost:3001/api',
   endpoints: {
     parkings: '/parkings',
@@ -50,7 +50,7 @@ export const environment: Environment = {
     base: '/reservationPayments'
   },
   featureFlags: {
-    useMockApi: true,
+    useMockApi: false, // Usamos la API externa real para simulación
     logHttp: true,
     enableOfflineMode: false
   },
@@ -65,8 +65,6 @@ export const environment: Environment = {
     }
   },
   stripePublicKey: 'pk_test_YOUR_STRIPE_PUBLIC_KEY_HERE',
-  // Configuración de Firebase Cloud Messaging
-  // IMPORTANTE: Reemplazar con tus credenciales reales de Firebase
   firebase: {
     apiKey: 'TU_API_KEY',
     authDomain: 'TU_PROJECT_ID.firebaseapp.com',
@@ -74,11 +72,11 @@ export const environment: Environment = {
     storageBucket: 'TU_PROJECT_ID.appspot.com',
     messagingSenderId: 'TU_SENDER_ID',
     appId: 'TU_APP_ID',
-    vapidKey: 'TU_WEB_PUSH_CERTIFICATE_KEY' // Clave pública para Web Push
+    vapidKey: 'TU_WEB_PUSH_CERTIFICATE_KEY'
   },
-  // IoT configuration (production ready)
+  // Configuración específica para edge server IoT en Azure
   iot: {
-    sensorApiUrl: 'https://api.spotfinder.com/sensors', // API de producción
+    sensorApiUrl: 'https://tu-edge-server.azurewebsites.net/api/sensors', // Tu edge server en Azure
     endpoints: {
       devices: '/devices',
       status: '/status',
@@ -86,8 +84,8 @@ export const environment: Environment = {
       bind: '/bind'
     },
     simulation: {
-      enabled: false, // Deshabilitado en producción
-      mockDataInterval: 300000 // 5 minutos si se habilita
+      enabled: false, // Deshabilitado ya que usamos edge server real
+      mockDataInterval: 30000 // Intervalo para polling si es necesario
     }
   }
 };

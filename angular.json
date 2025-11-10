@@ -48,6 +48,17 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "simulation": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.simulation.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -60,6 +71,9 @@
             },
             "development": {
               "buildTarget": "spotfinder-frontend-web:build:development"
+            },
+            "simulation": {
+              "buildTarget": "spotfinder-frontend-web:build:simulation"
             }
           },
           "defaultConfiguration": "development"

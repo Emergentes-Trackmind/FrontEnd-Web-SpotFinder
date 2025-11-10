@@ -9,7 +9,8 @@
     "test": "ng test",
     "mock:server": "json-server --watch server/db.json --routes server/routes.json --middlewares server/middleware.js server/iot.middleware.js server/billing.middleware.js server/notifications.middleware.js --port 3001 --host 127.0.0.1 --delay 300",
     "dev": "concurrently \"npm run mock:server\" \"ng serve\"",
-    "dev:mock": "npm run mock:server"
+    "dev:mock": "npm run mock:server",
+    "start:simulation": "ng serve --configuration=simulation --port=4200"
   },
   "prettier": {
     "printWidth": 100,

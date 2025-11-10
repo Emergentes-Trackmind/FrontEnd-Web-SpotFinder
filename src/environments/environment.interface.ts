@@ -80,5 +80,18 @@ export interface Environment {
   };
   stripePublicKey: string;
   firebase?: FirebaseConfig; // Opcional para evitar errores si no está configurado
+  iot?: {
+    sensorApiUrl: string;
+    endpoints: {
+      devices: string;
+      status: string;
+      simulation: string;
+      bind: string;
+    };
+    simulation: {
+      enabled: boolean;
+      mockDataInterval: number; // en milisegundos
+    };
+  };
 }
 

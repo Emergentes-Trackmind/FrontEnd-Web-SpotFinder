@@ -39,6 +39,15 @@ export const IOT_ROUTES: Routes = [
         title: 'Editar Dispositivo'
       }
     ]
+  },
+  {
+    path: 'simulation',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('./presentation/components/sensor-simulation/sensor-simulation.component').then(
+        (m) => m.SensorSimulationComponent
+      ),
+    title: 'Simulación de Sensores IoT'
   }
 ];
 

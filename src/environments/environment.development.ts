@@ -73,6 +73,20 @@ export const environment: Environment = {
     messagingSenderId: 'TU_SENDER_ID',
     appId: 'TU_APP_ID',
     vapidKey: 'TU_WEB_PUSH_CERTIFICATE_KEY'
+  },
+  // IoT configuration (opcional en desarrollo)
+  iot: {
+    sensorApiUrl: 'http://localhost:3002/api/sensors',
+    endpoints: {
+      devices: '/devices',
+      status: '/status',
+      simulation: '/simulation',
+      bind: '/bind'
+    },
+    simulation: {
+      enabled: false, // Deshabilitado por defecto en desarrollo
+      mockDataInterval: 60000
+    }
   }
 };
 
