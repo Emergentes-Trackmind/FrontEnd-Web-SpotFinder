@@ -4,8 +4,8 @@
     <div class="brand">
       <div class="brand-icon">P</div>
       <div class="brand-text">
-        <div class="brand-title">QuadrApp</div>
-        <div class="brand-subtitle">Gestión de Parkings</div>
+        <div class="brand-title">{{ 'SIDEBAR.BRAND.TITLE' | translate }}</div>
+        <div class="brand-subtitle">{{ 'SIDEBAR.BRAND.SUBTITLE' | translate }}</div>
       </div>
     </div>
   </div>
@@ -22,14 +22,14 @@
   <!-- Navigation -->
   <nav class="sidebar-nav">
     <div class="nav-section">
-      <div class="nav-label">NAVEGACIÓN</div>
+      <div class="nav-label">{{ 'SIDEBAR.NAVIGATION' | translate }}</div>
       <div class="nav-items">
         <a
           routerLink="/dashboard"
           routerLinkActive="active"
           class="nav-item">
           <mat-icon class="nav-icon">dashboard</mat-icon>
-          <span class="nav-text">Dashboard</span>
+          <span class="nav-text">{{ 'SIDEBAR.MENU.DASHBOARD' | translate }}</span>
         </a>
 
         <a
@@ -37,7 +37,7 @@
           routerLinkActive="active"
           class="nav-item">
           <mat-icon class="nav-icon">local_parking</mat-icon>
-          <span class="nav-text">Mis Parkings</span>
+          <span class="nav-text">{{ 'SIDEBAR.MENU.MY_PARKINGS' | translate }}</span>
         </a>
 
         <a
@@ -45,7 +45,7 @@
           routerLinkActive="active"
           class="nav-item">
           <mat-icon class="nav-icon">add_location</mat-icon>
-          <span class="nav-text">Nuevo Parking</span>
+          <span class="nav-text">{{ 'SIDEBAR.MENU.NEW_PARKING' | translate }}</span>
         </a>
 
         <!-- ✅ RESERVAS HABILITADAS - Conectadas al bounded context -->
@@ -54,7 +54,7 @@
           routerLinkActive="active"
           class="nav-item">
           <mat-icon class="nav-icon">event_seat</mat-icon>
-          <span class="nav-text">Reservas</span>
+          <span class="nav-text">{{ 'SIDEBAR.MENU.RESERVATIONS' | translate }}</span>
         </a>
 
         <!-- ✅ RESEÑAS HABILITADAS - Conectadas al bounded context -->
@@ -63,7 +63,7 @@
           routerLinkActive="active"
           class="nav-item">
           <mat-icon class="nav-icon">star_rate</mat-icon>
-          <span class="nav-text">Reseñas</span>
+          <span class="nav-text">{{ 'SIDEBAR.MENU.REVIEWS' | translate }}</span>
         </a>
 
         <!-- ✅ DISPOSITIVOS IoT - Gestión de sensores, cámaras y barreras -->
@@ -72,13 +72,13 @@
           routerLinkActive="active"
           class="nav-item">
           <mat-icon class="nav-icon">sensors</mat-icon>
-          <span class="nav-text">Dispositivos IoT</span>
+          <span class="nav-text">{{ 'SIDEBAR.MENU.IOT_DEVICES' | translate }}</span>
         </a>
       </div>
     </div>
 
     <div class="nav-section">
-      <div class="nav-label">AUTOMATIZACIÓN</div>
+      <div class="nav-label">{{ 'SIDEBAR.AUTOMATION' | translate }}</div>
       <div class="nav-items">
         <!-- ✅ AUTOMATIZACIÓN ROBÓTICA RPA - Centro de gestión de bots -->
         <a
@@ -86,26 +86,26 @@
           routerLinkActive="active"
           class="nav-item">
           <mat-icon class="nav-icon">smart_toy</mat-icon>
-          <span class="nav-text">Centro RPA</span>
+          <span class="nav-text">{{ 'SIDEBAR.MENU.RPA_CENTER' | translate }}</span>
         </a>
       </div>
     </div>
 
     <div class="nav-section">
-      <div class="nav-label">CONFIGURACIÓN</div>
+      <div class="nav-label">{{ 'SIDEBAR.SETTINGS' | translate }}</div>
       <div class="nav-items">
         <a
           routerLink="/me/profile"
           routerLinkActive="active"
           class="nav-item">
           <mat-icon class="nav-icon">person</mat-icon>
-          <span class="nav-text">Mi Perfil</span>
+          <span class="nav-text">{{ 'SIDEBAR.MENU.PROFILE' | translate }}</span>
         </a>
 
         <div class="nav-item disabled">
           <mat-icon class="nav-icon">settings</mat-icon>
-          <span class="nav-text">Configuración</span>
-          <span class="nav-badge">PRÓXIMAMENTE</span>
+          <span class="nav-text">{{ 'SIDEBAR.MENU.SETTINGS' | translate }}</span>
+          <span class="nav-badge">{{ 'SIDEBAR.MENU.COMING_SOON' | translate }}</span>
         </div>
       </div>
     </div>
@@ -118,7 +118,7 @@
       class="logout-btn"
       (click)="onLogout()">
       <mat-icon>logout</mat-icon>
-      Cerrar Sesión
+      {{ 'SIDEBAR.LOGOUT' | translate }}
     </button>
   </div>
 </div>

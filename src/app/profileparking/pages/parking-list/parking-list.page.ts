@@ -10,6 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil, startWith, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 
@@ -48,7 +49,8 @@ export interface ParkingCardData {
     MatDialogModule,
     MatSnackBarModule,
     MatTooltipModule,
-    ParkingCardComponent
+    ParkingCardComponent,
+    TranslateModule
   ],
   templateUrl: './parking-list.page.html',
   styleUrls: ['./parking-list.page.css']

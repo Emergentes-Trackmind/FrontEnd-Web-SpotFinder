@@ -21,6 +21,7 @@ export class ReservationsService {
   });
 
   private reservationsSubject = new BehaviorSubject<Reservation[]>([]);
+  private allReservationsSubject = new BehaviorSubject<Reservation[]>([]); // Para KPIs
   private totalSubject = new BehaviorSubject<number>(0);
   private loadingSubject = new BehaviorSubject<boolean>(false);
   private errorSubject = new BehaviorSubject<string | null>(null);
@@ -28,6 +29,7 @@ export class ReservationsService {
   // Observables públicos
   filters$ = this.filtersSubject.asObservable();
   reservations$ = this.reservationsSubject.asObservable();
+  allReservations$ = this.allReservationsSubject.asObservable(); // Para KPIs
   total$ = this.totalSubject.asObservable();
   loading$ = this.loadingSubject.asObservable();
   error$ = this.errorSubject.asObservable();
@@ -55,6 +57,17 @@ export class ReservationsService {
   }
 
   private initializeDataLoad(): void {
+    // Cargar todas las reservas sin filtros (para KPIs)
+    this.listUC.execute({ _page: 1, _limit: 1000 }).subscribe({
+      next: response => {
+        this.allReservationsSubject.next(response.data);
+      },
+      error: error => {
+        console.error('Error al cargar todas las reservas:', error);
+      }
+    });
+
+    // Cargar reservas filtradas (para la tabla)
     this.filters$.pipe(
       tap(() => {
         this.loadingSubject.next(true);
@@ -137,6 +150,43 @@ export class ReservationsService {
     );
   }
 
+  markAsPaid(id: string | number): Observable<Reservation> {
+    // Implementación temporal: actualizar el estado a PAID
+    return this.getUC.execute(id).pipe(
+      switchMap(reservation => {
+        const updatedReservation = { ...reservation, status: ReservationStatus.PAID };
+        // Aquí deberías llamar a un caso de uso específico para marcar como pagada
+        this.updateReservationInList(updatedReservation);
+        this.selectedReservation.set(updatedReservation);
+        return of(updatedReservation);
+      }),
+      catchError(error => {
+        this.errorSubject.next(error.message || 'Error al marcar como pagada');
+        throw error;
+      })
+    );
+  }
+
+  deleteReservation(id: string | number): Observable<void> {
+    // Eliminar de la lista filtrada
+    const currentReservations = this.reservationsSubject.value;
+    const updatedReservations = currentReservations.filter(r => r.id !== id);
+    this.reservationsSubject.next(updatedReservations);
+    this.totalSubject.next(updatedReservations.length);
+
+    // Eliminar de la lista global (para KPIs)
+    const allReservations = this.allReservationsSubject.value;
+    const updatedAllReservations = allReservations.filter(r => r.id !== id);
+    this.allReservationsSubject.next(updatedAllReservations);
+
+    // Cerrar panel de detalles si la reserva eliminada estaba seleccionada
+    if (this.selectedReservation()?.id === id) {
+      this.closeReservationDetail();
+    }
+
+    return of(void 0);
+  }
+
   getReservation(id: string | number): Observable<Reservation> {
     return this.getUC.execute(id).pipe(
       tap(reservation => this.selectedReservation.set(reservation)),
@@ -174,9 +224,24 @@ export class ReservationsService {
       reservation.id === updatedReservation.id ? updatedReservation : reservation
     );
     this.reservationsSubject.next(updatedReservations);
+
+    // También actualizar en la lista global
+    const allReservations = this.allReservationsSubject.value;
+    const updatedAllReservations = allReservations.map(reservation =>
+      reservation.id === updatedReservation.id ? updatedReservation : reservation
+    );
+    this.allReservationsSubject.next(updatedAllReservations);
   }
 
   refreshReservations(): void {
+    // Recargar todas las reservas globales
+    this.listUC.execute({ _page: 1, _limit: 1000 }).subscribe({
+      next: response => {
+        this.allReservationsSubject.next(response.data);
+      }
+    });
+
+    // Recargar reservas filtradas
     const currentFilters = this.filtersSubject.value;
     this.filtersSubject.next({ ...currentFilters });
   }

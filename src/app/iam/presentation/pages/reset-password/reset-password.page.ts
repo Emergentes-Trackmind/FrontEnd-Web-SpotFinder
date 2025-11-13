@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -22,7 +23,8 @@ import { AuthService } from '../../../services/auth.service';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    TranslateModule
   ],
   templateUrl: './reset-password.page.html',
   styleUrl: './reset-password.page.css'
@@ -39,6 +41,7 @@ export class ResetPasswordPage implements OnInit {
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
+    private translate: TranslateService,
     private router: Router
   ) {
     this.resetForm = this.fb.group({

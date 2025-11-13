@@ -10,6 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -26,7 +27,8 @@ import { AuthService } from '../../../services/auth.service';
     MatCheckboxModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    TranslateModule
   ],
   templateUrl: './login.page.html',
   styleUrl: './login.page.css'
@@ -38,7 +40,8 @@ export class LoginPage {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private translate: TranslateService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -57,20 +60,24 @@ export class LoginPage {
 
       this.authService.login(credentials).subscribe({
         next: () => {
-          this.snackBar.open('¡Bienvenido!', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
+          this.translate.get(['AUTH.LOGIN.MESSAGES.SUCCESS', 'COMMON.CLOSE']).subscribe(translations => {
+            this.snackBar.open(translations['AUTH.LOGIN.MESSAGES.SUCCESS'], translations['COMMON.CLOSE'], {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
           });
         },
         error: (error) => {
-          this.snackBar.open(
-            error.message || 'Error al iniciar sesión',
-            'Cerrar',
-            {
-              duration: 5000,
-              panelClass: ['error-snackbar']
-            }
-          );
+          this.translate.get(['AUTH.LOGIN.MESSAGES.ERROR', 'COMMON.CLOSE']).subscribe(translations => {
+            this.snackBar.open(
+              error.message || translations['AUTH.LOGIN.MESSAGES.ERROR'],
+              translations['COMMON.CLOSE'],
+              {
+                duration: 5000,
+                panelClass: ['error-snackbar']
+              }
+            );
+          });
         }
       });
     } else {

@@ -14,6 +14,29 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
+/* Dark theme variables */
+.dark-theme {
+  --app-bg: #111827;
+  --app-text: #F9FAFB;
+  --app-muted: #9CA3AF;
+  --app-border: #374151;
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.2);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.2);
+}
+
+.dark-theme {
+  background: var(--app-bg);
+  color: var(--app-text);
+}
+
+/* Light theme (default) */
+.light-theme {
+  --app-bg: #F9FAFB;
+  --app-text: #111827;
+  --app-muted: #6B7280;
+  --app-border: #E5E7EB;
+}
+
 /* Estilos base */
 html, body {
   margin: 0;

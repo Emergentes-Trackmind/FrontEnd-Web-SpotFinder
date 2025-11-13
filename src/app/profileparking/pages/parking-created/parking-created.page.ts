@@ -18,6 +18,7 @@ import { StepFeaturesComponent } from './steps/step-features/step-features.compo
 import { StepPricingComponent } from './steps/step-pricing/step-pricing.component';
 import { StepReviewComponent } from './steps/step-review/step-review.component';
 import {SpotsVisualizerStepComponent} from './steps/spots-visualizer-step/spots-visualizer-step.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-parking-created',
@@ -34,7 +35,8 @@ import {SpotsVisualizerStepComponent} from './steps/spots-visualizer-step/spots-
     StepFeaturesComponent,
     StepPricingComponent,
     StepReviewComponent,
-    SpotsVisualizerStepComponent
+    SpotsVisualizerStepComponent,
+    TranslateModule
   ],
   templateUrl: './parking-created.page.html',
   styleUrls: ['./parking-created.page.css']

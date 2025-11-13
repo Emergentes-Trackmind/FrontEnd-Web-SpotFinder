@@ -1,9 +1,11 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { importProvidersFrom } from '@angular/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
 
 import { routes } from './app.routes';
 import { ApiPrefixInterceptor } from './core/http/api-prefix.interceptor';
@@ -16,6 +18,20 @@ import { REVIEWS_PROVIDERS } from './reviews/reviews.providers';
 import { IOT_PROVIDERS } from './iot/iot.providers';
 import { NOTIFICATIONS_PROVIDERS } from './notifications/notifications.providers';
 
+// Loader personalizado para traducciones
+export class CustomTranslateLoader implements TranslateLoader {
+  constructor(private http: HttpClient) {}
+
+  getTranslation(lang: string): Observable<any> {
+    return this.http.get(`/assets/i18n/${lang}.json`);
+  }
+}
+
+// Factory function para el loader de traducciones
+export function createTranslateLoader(http: HttpClient) {
+  return new CustomTranslateLoader(http);
+}
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -23,7 +39,17 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimationsAsync(),
-    importProvidersFrom(MatSnackBarModule),
+    importProvidersFrom(
+      MatSnackBarModule,
+      TranslateModule.forRoot({
+        defaultLanguage: 'es',
+        loader: {
+          provide: TranslateLoader,
+          useFactory: createTranslateLoader,
+          deps: [HttpClient]
+        }
+      })
+    ),
 
     // HTTP Interceptors
     {

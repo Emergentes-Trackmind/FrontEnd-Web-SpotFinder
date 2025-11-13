@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ComingSoonComponent } from '../../components/coming-soon/coming-soon.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reservations',
   standalone: true,
-  imports: [ComingSoonComponent],
+  imports: [ComingSoonComponent, TranslateModule],
   template: `<app-coming-soon></app-coming-soon>`
 })
 export class ReservationsPage {

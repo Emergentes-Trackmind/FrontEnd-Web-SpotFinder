@@ -12,8 +12,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProfileService } from '../../../services/profile.service';
 import { Profile } from '../../../domain/entities/profile.entity';
+import { ThemeService } from '../../../../shared/services/theme.service';
 
 @Component({
   selector: 'app-profile',
@@ -31,24 +33,31 @@ import { Profile } from '../../../domain/entities/profile.entity';
     MatIconModule,
     MatSnackBarModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    TranslateModule
   ],
   templateUrl: './profile.page.html',
   styleUrl: './profile.page.css'
 })
 export class ProfilePage implements OnInit {
-  personalDataForm!: FormGroup; // Agregar ! para indicar asignación definitiva
-  preferencesForm!: FormGroup;  // Agregar ! para indicar asignación definitiva
+  personalDataForm!: FormGroup;
+  preferencesForm!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private profileService: ProfileService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private translate: TranslateService,
+    private themeService: ThemeService
   ) {
     this.initializeForms();
   }
 
   ngOnInit(): void {
+    // Configurar idioma inicial
+    const savedLanguage = localStorage.getItem('app-language') || 'es';
+    this.translate.use(savedLanguage);
+
     this.loadProfile();
   }
 
@@ -105,7 +114,7 @@ export class ProfilePage implements OnInit {
         language: profile.preferences.language || 'es',
         timezone: profile.preferences.timezone || 'America/Mexico_City',
         dateFormat: profile.preferences.dateFormat || 'DD/MM/YYYY',
-        theme: profile.preferences.theme || 'light',
+        theme: profile.preferences.theme || this.themeService.theme(),
         notifications: profile.preferences.notifications || {
           email: true,
           push: true,
@@ -115,6 +124,17 @@ export class ProfilePage implements OnInit {
           systemUpdates: true
         }
       });
+
+      // Aplicar tema guardado
+      if (profile.preferences.theme) {
+        this.themeService.setTheme(profile.preferences.theme as any);
+      }
+
+      // Aplicar idioma guardado
+      if (profile.preferences.language) {
+        this.translate.use(profile.preferences.language);
+        localStorage.setItem('app-language', profile.preferences.language);
+      }
     }
   }
 
@@ -124,17 +144,21 @@ export class ProfilePage implements OnInit {
 
       this.profileService.updateProfile(formData).subscribe({
         next: () => {
-          this.snackBar.open('Datos personales actualizados', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
+          this.translate.get('PROFILE.MESSAGES.PERSONAL_DATA_UPDATED').subscribe((msg: string) => {
+            this.snackBar.open(msg, this.translate.instant('COMMON.CLOSE'), {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
           });
         },
         error: (error) => {
-          this.snackBar.open(
-            error.message || 'Error al actualizar datos',
-            'Cerrar',
-            { duration: 5000, panelClass: ['error-snackbar'] }
-          );
+          this.translate.get('PROFILE.MESSAGES.ERROR_UPDATING').subscribe((msg: string) => {
+            this.snackBar.open(
+              error.message || msg,
+              this.translate.instant('COMMON.CLOSE'),
+              { duration: 5000, panelClass: ['error-snackbar'] }
+            );
+          });
         }
       });
     }
@@ -144,19 +168,34 @@ export class ProfilePage implements OnInit {
     if (this.preferencesForm.valid) {
       const preferences = this.preferencesForm.value;
 
+      // Aplicar cambio de idioma inmediatamente
+      if (preferences.language) {
+        this.translate.use(preferences.language);
+        localStorage.setItem('app-language', preferences.language);
+      }
+
+      // Aplicar cambio de tema inmediatamente
+      if (preferences.theme) {
+        this.themeService.setTheme(preferences.theme);
+      }
+
       this.profileService.updateProfile({ preferences }).subscribe({
         next: () => {
-          this.snackBar.open('Preferencias actualizadas', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
+          this.translate.get('PROFILE.MESSAGES.PREFERENCES_UPDATED').subscribe((msg: string) => {
+            this.snackBar.open(msg, this.translate.instant('COMMON.CLOSE'), {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
           });
         },
         error: (error) => {
-          this.snackBar.open(
-            error.message || 'Error al actualizar preferencias',
-            'Cerrar',
-            { duration: 5000, panelClass: ['error-snackbar'] }
-          );
+          this.translate.get('PROFILE.MESSAGES.ERROR_UPDATING').subscribe((msg: string) => {
+            this.snackBar.open(
+              error.message || msg,
+              this.translate.instant('COMMON.CLOSE'),
+              { duration: 5000, panelClass: ['error-snackbar'] }
+            );
+          });
         }
       });
     }
@@ -167,9 +206,11 @@ export class ProfilePage implements OnInit {
     const updatedSessions = sessions.filter(session => session.id !== sessionId);
     this.activeSessions.set(updatedSessions);
 
-    this.snackBar.open('Sesión cerrada exitosamente', 'Cerrar', {
-      duration: 3000,
-      panelClass: ['success-snackbar']
+    this.translate.get('PROFILE.MESSAGES.SESSION_CLOSED').subscribe((msg: string) => {
+      this.snackBar.open(msg, this.translate.instant('COMMON.CLOSE'), {
+        duration: 3000,
+        panelClass: ['success-snackbar']
+      });
     });
   }
 
@@ -177,13 +218,14 @@ export class ProfilePage implements OnInit {
     const control = form.get(fieldName);
     if (control?.errors && control.touched) {
       if (control.errors['required']) {
-        return `${fieldName === 'firstName' ? 'Nombre' : 'Apellido'} es requerido`;
+        const key = fieldName === 'firstName' ? 'PROFILE.PERSONAL_DATA.ERRORS.FIRST_NAME_REQUIRED' : 'PROFILE.PERSONAL_DATA.ERRORS.LAST_NAME_REQUIRED';
+        return this.translate.instant(key);
       }
       if (control.errors['minlength']) {
-        return 'Mínimo 2 caracteres';
+        return this.translate.instant('PROFILE.PERSONAL_DATA.ERRORS.MIN_LENGTH');
       }
       if (control.errors['maxlength']) {
-        return 'Máximo 500 caracteres';
+        return this.translate.instant('PROFILE.PERSONAL_DATA.ERRORS.MAX_LENGTH');
       }
     }
     return '';
@@ -207,6 +249,7 @@ export class ProfilePage implements OnInit {
     { value: 'America/Mexico_City', label: 'Ciudad de México (GMT-6)' },
     { value: 'America/New_York', label: 'Nueva York (GMT-5)' },
     { value: 'Europe/Madrid', label: 'Madrid (GMT+1)' },
+    { value: 'Europe/Paris', label: 'París (GMT+1)' },
     { value: 'UTC', label: 'UTC (GMT+0)' }
   ];
 
@@ -216,11 +259,17 @@ export class ProfilePage implements OnInit {
     { value: 'YYYY-MM-DD', label: '2023-12-31' }
   ];
 
-  readonly themes = [
-    { value: 'light', label: 'Claro' },
-    { value: 'dark', label: 'Oscuro' },
-    { value: 'auto', label: 'Automático' }
-  ];
+  get themes() {
+    return [
+      { value: 'light', label: this.translate.instant('THEMES.LIGHT') },
+      { value: 'dark', label: this.translate.instant('THEMES.DARK') },
+      { value: 'auto', label: this.translate.instant('THEMES.AUTO') }
+    ];
+  }
+
+  get currentTheme() {
+    return this.themeService.theme();
+  }
 
   // Mock data para sesiones activas
   readonly activeSessions = signal([

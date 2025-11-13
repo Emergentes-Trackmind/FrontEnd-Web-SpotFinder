@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AnalyticsService, AnalyticsData } from '../../services/analytics.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-parking-analytics',
@@ -19,7 +20,8 @@ import { AnalyticsService, AnalyticsData } from '../../services/analytics.servic
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    TranslateModule
   ],
   templateUrl: './parking-analytics.page.html',
   styleUrls: ['./parking-analytics.page.css']

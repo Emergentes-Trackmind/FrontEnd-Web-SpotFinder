@@ -18,7 +18,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.authService.getAccessToken();
-    const shouldSkip = this.isPublicRoute(req.url);
+    const shouldSkip = this.isPublicRoute(req.url) || this.isAssetRequest(req.url);
 
     console.log('🔍 AuthInterceptor:', {
       url: req.url,
@@ -68,6 +68,15 @@ export class AuthInterceptor implements HttpInterceptor {
    */
   private isPublicRoute(url: string): boolean {
     return this.publicRoutes.some(pattern => pattern.test(url));
+  }
+
+  /**
+   * Verifica si la petición es a archivos estáticos (assets)
+   */
+  private isAssetRequest(url: string): boolean {
+    return url.startsWith('./assets') ||
+           url.startsWith('/assets') ||
+           url.includes('/assets/');
   }
 
   /**

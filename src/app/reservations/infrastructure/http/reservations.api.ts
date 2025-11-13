@@ -5,14 +5,22 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { Reservation } from '../../domain/entities/reservation.entity';
 import { ListReservationsFilters, ListReservationsResponse } from '../../application/use-cases/list-reservations.usecase';
+import { AuthService } from '../../../iam/services/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class ReservationsApi {
   private http = inject(HttpClient);
+  private authService = inject(AuthService);
   private base = environment.reservations.base;
 
   list(filters: ListReservationsFilters): Observable<ListReservationsResponse> {
     let httpParams = new HttpParams();
+
+    // Agregar currentUserId para privacidad
+    const currentUserId = this.getCurrentUserId();
+    if (currentUserId) {
+      httpParams = httpParams.set('currentUserId', currentUserId);
+    }
 
     // Agregar filtros a los parámetros HTTP
     Object.entries(filters).forEach(([key, value]) => {
@@ -44,5 +52,15 @@ export class ReservationsApi {
 
   patch(id: string | number, data: Partial<Reservation>): Observable<Reservation> {
     return this.http.patch<Reservation>(`${this.base}/${id}`, data);
+  }
+
+  private getCurrentUserId(): string | null {
+    try {
+      const currentUser = this.authService.user();
+      return currentUser?.id?.toString() || null;
+    } catch (error) {
+      console.error('[ReservationsApi] Error getting current user:', error);
+      return null;
+    }
   }
 }

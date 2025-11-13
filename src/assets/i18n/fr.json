@@ -1,0 +1,107 @@
+{
+  "PROFILE": {
+    "TITLE": "Mon Profil",
+    "SUBTITLE": "Gérez vos informations personnelles et préférences",
+    "TABS": {
+      "PERSONAL_DATA": "Données Personnelles",
+      "PREFERENCES": "Préférences",
+      "SECURITY": "Sécurité",
+      "ACTIVE_SESSIONS": "Sessions Actives",
+      "MY_ACCOUNT": "Mon Compte"
+    },
+    "PERSONAL_DATA": {
+      "TITLE": "Informations Personnelles",
+      "SUBTITLE": "Mettez à jour vos informations de base",
+      "FIRST_NAME": "Prénom",
+      "LAST_NAME": "Nom",
+      "EMAIL": "Email",
+      "EMAIL_HINT": "L'email ne peut pas être modifié",
+      "PHONE": "Téléphone",
+      "BIO": "Biographie",
+      "BIO_PLACEHOLDER": "Parlez-nous de vous...",
+      "SAVE": "Enregistrer les Modifications",
+      "SAVING": "Enregistrement...",
+      "ERRORS": {
+        "FIRST_NAME_REQUIRED": "Le prénom est requis",
+        "LAST_NAME_REQUIRED": "Le nom est requis",
+        "MIN_LENGTH": "Minimum 2 caractères",
+        "MAX_LENGTH": "Maximum 500 caractères"
+      }
+    },
+    "PREFERENCES": {
+      "GENERAL_TITLE": "Paramètres Généraux",
+      "GENERAL_SUBTITLE": "Personnalisez votre expérience d'application",
+      "LANGUAGE": "Langue",
+      "TIMEZONE": "Fuseau Horaire",
+      "DATE_FORMAT": "Format de Date",
+      "THEME": "Thème",
+      "NOTIFICATIONS_TITLE": "Notifications",
+      "NOTIFICATIONS_SUBTITLE": "Contrôlez les notifications que vous souhaitez recevoir",
+      "NOTIFICATION_TYPES": {
+        "EMAIL": "Email",
+        "EMAIL_DESC": "Recevoir des notifications par email",
+        "PUSH": "Push",
+        "PUSH_DESC": "Notifications push dans le navigateur",
+        "SMS": "SMS",
+        "SMS_DESC": "Recevoir des messages texte",
+        "PARKING_ALERTS": "Alertes de Parking",
+        "PARKING_ALERTS_DESC": "Notifications sur vos parkings",
+        "SYSTEM_UPDATES": "Mises à Jour Système",
+        "SYSTEM_UPDATES_DESC": "Informations sur les nouvelles fonctionnalités",
+        "MARKETING": "Marketing",
+        "MARKETING_DESC": "Offres spéciales et promotions"
+      },
+      "SAVE": "Enregistrer les Préférences"
+    },
+    "SECURITY": {
+      "TITLE": "Paramètres de Sécurité",
+      "SUBTITLE": "Protégez votre compte avec des paramètres de sécurité",
+      "CHANGE_PASSWORD": "Changer le Mot de Passe",
+      "CHANGE_PASSWORD_DESC": "Mettez à jour votre mot de passe pour sécuriser votre compte",
+      "TWO_FACTOR": "Authentification à Deux Facteurs",
+      "TWO_FACTOR_DESC": "Ajoutez une couche de sécurité supplémentaire à votre compte",
+      "CHANGE": "Changer",
+      "CONFIGURE": "Configurer"
+    },
+    "SESSIONS": {
+      "TITLE": "Appareils Connectés",
+      "SUBTITLE": "Examinez et gérez les appareils où vous êtes connecté",
+      "CURRENT_SESSION": "Cette session",
+      "LAST_ACTIVITY": "Dernière activité",
+      "CLOSE_SESSION": "Fermer la Session"
+    },
+    "ACCOUNT": {
+      "TITLE": "Actions du Compte",
+      "SUBTITLE": "Options avancées pour gérer votre compte",
+      "DOWNLOAD_DATA": "Télécharger Mes Données",
+      "DOWNLOAD_DATA_DESC": "Obtenez une copie de toutes vos informations personnelles",
+      "DELETE_ACCOUNT": "Supprimer le Compte",
+      "DELETE_ACCOUNT_DESC": "Supprimez définitivement votre compte et toutes vos données",
+      "DOWNLOAD": "Télécharger",
+      "DELETE": "Supprimer"
+    },
+    "MESSAGES": {
+      "PERSONAL_DATA_UPDATED": "Données personnelles mises à jour",
+      "PREFERENCES_UPDATED": "Préférences mises à jour",
+      "SESSION_CLOSED": "Session fermée avec succès",
+      "ERROR_LOADING": "Erreur lors du chargement du profil",
+      "ERROR_UPDATING": "Erreur lors de la mise à jour des données"
+    }
+  },
+  "LANGUAGES": {
+    "ES": "Español",
+    "EN": "English",
+    "FR": "Français"
+  },
+  "THEMES": {
+    "LIGHT": "Clair",
+    "DARK": "Sombre",
+    "AUTO": "Automatique"
+  },
+  "COMMON": {
+    "CLOSE": "Fermer",
+    "SAVE": "Enregistrer",
+    "CANCEL": "Annuler"
+  }
+}
+

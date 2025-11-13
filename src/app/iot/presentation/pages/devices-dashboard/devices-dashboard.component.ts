@@ -17,6 +17,7 @@ import { DeviceKpisComponent } from '../../components/device-kpis/device-kpis.co
 import { DeviceTableComponent } from '../../components/device-table/device-table.component';
 import { IotDevice } from '../../../domain/entities/iot-device.entity';
 import { DeviceFiltersDto } from '../../../domain/dtos/device-filters.dto';
+import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * Dashboard principal de dispositivos IoT
@@ -37,7 +38,8 @@ import { DeviceFiltersDto } from '../../../domain/dtos/device-filters.dto';
     MatSnackBarModule,
     MatTooltipModule,
     DeviceKpisComponent,
-    DeviceTableComponent
+    DeviceTableComponent,
+    TranslateModule
   ],
   template: `
     <div class="dashboard-container">

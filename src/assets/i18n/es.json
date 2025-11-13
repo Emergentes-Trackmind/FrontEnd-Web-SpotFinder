@@ -1,0 +1,427 @@
+{
+  "SIDEBAR": {
+    "BRAND": {
+      "TITLE": "QuadrApp",
+      "SUBTITLE": "Gestión de Parkings"
+    },
+    "NAVIGATION": "NAVEGACIÓN",
+    "AUTOMATION": "AUTOMATIZACIÓN",
+    "SETTINGS": "CONFIGURACIÓN",
+    "MENU": {
+      "DASHBOARD": "Dashboard",
+      "MY_PARKINGS": "Mis Parkings",
+      "NEW_PARKING": "Nuevo Parking",
+      "RESERVATIONS": "Reservas",
+      "REVIEWS": "Reseñas",
+      "IOT_DEVICES": "Dispositivos IoT",
+      "RPA_CENTER": "Centro RPA",
+      "PROFILE": "Mi Perfil",
+      "SETTINGS": "Configuración",
+      "COMING_SOON": "PRÓXIMAMENTE"
+    },
+    "LOGOUT": "Cerrar Sesión"
+  },
+  "DASHBOARD": {
+    "TITLE": "Dashboard",
+    "SUBTITLE": "Vista general de tu sistema de parkings",
+    "WELCOME": "Bienvenido",
+    "STATS": {
+      "TOTAL_PARKINGS": "Total Parkings",
+      "ACTIVE_RESERVATIONS": "Reservas Activas",
+      "TOTAL_REVENUE": "Ingresos Totales",
+      "OCCUPANCY_RATE": "Tasa de Ocupación"
+    },
+    "RECENT_ACTIVITY": "Actividad Reciente",
+    "QUICK_ACTIONS": "Acciones Rápidas",
+    "NO_DATA": "No hay datos disponibles"
+  },
+  "PARKINGS": {
+    "TITLE": "Mis Parkings",
+    "SUBTITLE": "Gestiona tus estacionamientos",
+    "NEW_PARKING": "Nuevo Parking",
+    "SEARCH": "Buscar parking...",
+    "FILTERS": {
+      "ALL": "Todos",
+      "ACTIVE": "Activos",
+      "INACTIVE": "Inactivos"
+    },
+    "TABLE": {
+      "NAME": "Nombre",
+      "LOCATION": "Ubicación",
+      "CAPACITY": "Capacidad",
+      "OCCUPIED": "Ocupados",
+      "STATUS": "Estado",
+      "ACTIONS": "Acciones"
+    },
+    "STATUS": {
+      "ACTIVE": "Activo",
+      "INACTIVE": "Inactivo"
+    },
+    "ACTIONS": {
+      "VIEW": "Ver",
+      "EDIT": "Editar",
+      "DELETE": "Eliminar",
+      "ANALYTICS": "Analíticas"
+    },
+    "MESSAGES": {
+      "NO_PARKINGS": "No tienes parkings registrados",
+      "CREATE_FIRST": "Crea tu primer parking",
+      "DELETED": "Parking eliminado exitosamente",
+      "ERROR_DELETE": "Error al eliminar parking"
+    },
+    "CREATE": {
+      "TITLE": "Crear Nuevo Parking",
+      "SUBTITLE": "Completa la información de tu parking",
+      "BASIC_INFO": "Información Básica",
+      "LOCATION_INFO": "Ubicación",
+      "PRICING_INFO": "Tarifas",
+      "FIELDS": {
+        "NAME": "Nombre del Parking",
+        "DESCRIPTION": "Descripción",
+        "ADDRESS": "Dirección",
+        "CITY": "Ciudad",
+        "COUNTRY": "País",
+        "CAPACITY": "Capacidad Total",
+        "HOURLY_RATE": "Tarifa por Hora",
+        "DAILY_RATE": "Tarifa Diaria",
+        "MONTHLY_RATE": "Tarifa Mensual"
+      },
+      "BUTTONS": {
+        "SAVE": "Guardar Parking",
+        "CANCEL": "Cancelar"
+      },
+      "MESSAGES": {
+        "SUCCESS": "Parking creado exitosamente",
+        "ERROR": "Error al crear parking"
+      }
+    },
+    "EDIT": {
+      "TITLE": "Editar Parking",
+      "SUBTITLE": "Actualiza la información de tu parking",
+      "MESSAGES": {
+        "SUCCESS": "Parking actualizado exitosamente",
+        "ERROR": "Error al actualizar parking"
+      }
+    },
+    "ANALYTICS": {
+      "TITLE": "Analíticas del Parking",
+      "SUBTITLE": "Estadísticas y métricas de rendimiento",
+      "REVENUE": "Ingresos",
+      "OCCUPANCY": "Ocupación",
+      "RESERVATIONS": "Reservas",
+      "PEAK_HOURS": "Horas Pico",
+      "PERIOD": {
+        "TODAY": "Hoy",
+        "WEEK": "Esta Semana",
+        "MONTH": "Este Mes",
+        "YEAR": "Este Año"
+      }
+    }
+  },
+  "RESERVATIONS": {
+    "TITLE": "Reservas",
+    "SUBTITLE": "Gestiona las reservas de tus parkings",
+    "SEARCH": "Buscar reserva...",
+    "FILTERS": {
+      "ALL": "Todas",
+      "PENDING": "Pendientes",
+      "CONFIRMED": "Confirmadas",
+      "CANCELLED": "Canceladas",
+      "COMPLETED": "Completadas"
+    },
+    "TABLE": {
+      "ID": "ID",
+      "PARKING": "Parking",
+      "CLIENT": "Cliente",
+      "START_DATE": "Fecha Inicio",
+      "END_DATE": "Fecha Fin",
+      "STATUS": "Estado",
+      "AMOUNT": "Monto",
+      "ACTIONS": "Acciones"
+    },
+    "STATUS": {
+      "PENDING": "Pendiente",
+      "CONFIRMED": "Confirmada",
+      "CANCELLED": "Cancelada",
+      "COMPLETED": "Completada",
+      "ACTIVE": "Activa"
+    },
+    "ACTIONS": {
+      "VIEW": "Ver Detalles",
+      "CONFIRM": "Confirmar",
+      "CANCEL": "Cancelar",
+      "COMPLETE": "Completar"
+    },
+    "DETAIL": {
+      "TITLE": "Detalle de Reserva",
+      "RESERVATION_INFO": "Información de Reserva",
+      "CLIENT_INFO": "Información del Cliente",
+      "PARKING_INFO": "Información del Parking",
+      "PAYMENT_INFO": "Información de Pago"
+    },
+    "MESSAGES": {
+      "NO_RESERVATIONS": "No hay reservas",
+      "CONFIRMED": "Reserva confirmada",
+      "CANCELLED": "Reserva cancelada",
+      "COMPLETED": "Reserva completada",
+      "ERROR": "Error al procesar reserva"
+    }
+  },
+  "REVIEWS": {
+    "TITLE": "Reseñas",
+    "SUBTITLE": "Opiniones de tus clientes",
+    "SEARCH": "Buscar reseña...",
+    "FILTERS": {
+      "ALL": "Todas",
+      "5_STARS": "5 Estrellas",
+      "4_STARS": "4 Estrellas",
+      "3_STARS": "3 Estrellas",
+      "2_STARS": "2 Estrellas",
+      "1_STAR": "1 Estrella"
+    },
+    "AVERAGE_RATING": "Calificación Promedio",
+    "TOTAL_REVIEWS": "Total de Reseñas",
+    "TABLE": {
+      "PARKING": "Parking",
+      "CLIENT": "Cliente",
+      "RATING": "Calificación",
+      "COMMENT": "Comentario",
+      "DATE": "Fecha",
+      "ACTIONS": "Acciones"
+    },
+    "ACTIONS": {
+      "VIEW": "Ver",
+      "REPLY": "Responder",
+      "REPORT": "Reportar"
+    },
+    "MESSAGES": {
+      "NO_REVIEWS": "No hay reseñas todavía",
+      "REPLY_SENT": "Respuesta enviada",
+      "ERROR": "Error al cargar reseñas"
+    }
+  },
+  "IOT": {
+    "TITLE": "Dispositivos IoT",
+    "SUBTITLE": "Gestión de sensores, cámaras y barreras",
+    "ADD_DEVICE": "Agregar Dispositivo",
+    "SEARCH": "Buscar dispositivo...",
+    "TYPES": {
+      "ALL": "Todos",
+      "SENSOR": "Sensores",
+      "CAMERA": "Cámaras",
+      "BARRIER": "Barreras",
+      "DISPLAY": "Pantallas"
+    },
+    "TABLE": {
+      "NAME": "Nombre",
+      "TYPE": "Tipo",
+      "PARKING": "Parking",
+      "STATUS": "Estado",
+      "LAST_UPDATE": "Última Actualización",
+      "ACTIONS": "Acciones"
+    },
+    "STATUS": {
+      "ONLINE": "En Línea",
+      "OFFLINE": "Desconectado",
+      "MAINTENANCE": "Mantenimiento",
+      "ERROR": "Error"
+    },
+    "DEVICE_TYPES": {
+      "SENSOR": "Sensor",
+      "CAMERA": "Cámara",
+      "BARRIER": "Barrera",
+      "DISPLAY": "Pantalla"
+    },
+    "ACTIONS": {
+      "VIEW": "Ver",
+      "CONFIGURE": "Configurar",
+      "RESTART": "Reiniciar",
+      "DELETE": "Eliminar"
+    },
+    "MESSAGES": {
+      "NO_DEVICES": "No hay dispositivos conectados",
+      "DEVICE_ADDED": "Dispositivo agregado",
+      "DEVICE_REMOVED": "Dispositivo eliminado",
+      "ERROR": "Error al gestionar dispositivo"
+    }
+  },
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Iniciar Sesión",
+      "SUBTITLE": "Accede a tu cuenta de QuadrApp",
+      "EMAIL": "Correo Electrónico",
+      "PASSWORD": "Contraseña",
+      "REMEMBER_ME": "Recordarme",
+      "FORGOT_PASSWORD": "¿Olvidaste tu contraseña?",
+      "SIGN_IN": "Iniciar Sesión",
+      "NO_ACCOUNT": "¿No tienes cuenta?",
+      "REGISTER": "Regístrate",
+      "MESSAGES": {
+        "SUCCESS": "Inicio de sesión exitoso",
+        "ERROR": "Credenciales inválidas",
+        "EMAIL_REQUIRED": "El email es requerido",
+        "PASSWORD_REQUIRED": "La contraseña es requerida"
+      }
+    },
+    "REGISTER": {
+      "TITLE": "Crear Cuenta",
+      "SUBTITLE": "Únete a QuadrApp",
+      "FIRST_NAME": "Nombre",
+      "LAST_NAME": "Apellido",
+      "EMAIL": "Correo Electrónico",
+      "PASSWORD": "Contraseña",
+      "CONFIRM_PASSWORD": "Confirmar Contraseña",
+      "TERMS": "Acepto los términos y condiciones",
+      "SIGN_UP": "Registrarse",
+      "HAVE_ACCOUNT": "¿Ya tienes cuenta?",
+      "LOGIN": "Inicia Sesión",
+      "MESSAGES": {
+        "SUCCESS": "Cuenta creada exitosamente",
+        "ERROR": "Error al crear cuenta",
+        "PASSWORDS_NO_MATCH": "Las contraseñas no coinciden"
+      }
+    },
+    "FORGOT_PASSWORD": {
+      "TITLE": "Recuperar Contraseña",
+      "SUBTITLE": "Te enviaremos un enlace para restablecer tu contraseña",
+      "EMAIL": "Correo Electrónico",
+      "SEND": "Enviar Enlace",
+      "BACK_TO_LOGIN": "Volver a Iniciar Sesión",
+      "MESSAGES": {
+        "SUCCESS": "Enlace enviado a tu correo",
+        "ERROR": "Error al enviar enlace"
+      }
+    },
+    "RESET_PASSWORD": {
+      "TITLE": "Restablecer Contraseña",
+      "SUBTITLE": "Ingresa tu nueva contraseña",
+      "PASSWORD": "Nueva Contraseña",
+      "CONFIRM_PASSWORD": "Confirmar Contraseña",
+      "RESET": "Restablecer",
+      "MESSAGES": {
+        "SUCCESS": "Contraseña restablecida exitosamente",
+        "ERROR": "Error al restablecer contraseña"
+      }
+    }
+  },
+  "PROFILE": {
+    "TITLE": "Mi Perfil",
+    "SUBTITLE": "Gestiona tu información personal y preferencias",
+    "TABS": {
+      "PERSONAL_DATA": "Datos Personales",
+      "PREFERENCES": "Preferencias",
+      "SECURITY": "Seguridad",
+      "ACTIVE_SESSIONS": "Sesiones Activas",
+      "MY_ACCOUNT": "Mi Cuenta"
+    },
+    "PERSONAL_DATA": {
+      "TITLE": "Información Personal",
+      "SUBTITLE": "Actualiza tu información básica",
+      "FIRST_NAME": "Nombre",
+      "LAST_NAME": "Apellido",
+      "EMAIL": "Email",
+      "EMAIL_HINT": "El email no se puede modificar",
+      "PHONE": "Teléfono",
+      "BIO": "Biografía",
+      "BIO_PLACEHOLDER": "Cuéntanos algo sobre ti...",
+      "SAVE": "Guardar Cambios",
+      "SAVING": "Guardando...",
+      "ERRORS": {
+        "FIRST_NAME_REQUIRED": "Nombre es requerido",
+        "LAST_NAME_REQUIRED": "Apellido es requerido",
+        "MIN_LENGTH": "Mínimo 2 caracteres",
+        "MAX_LENGTH": "Máximo 500 caracteres"
+      }
+    },
+    "PREFERENCES": {
+      "GENERAL_TITLE": "Configuración General",
+      "GENERAL_SUBTITLE": "Personaliza tu experiencia en la aplicación",
+      "LANGUAGE": "Idioma",
+      "TIMEZONE": "Zona Horaria",
+      "DATE_FORMAT": "Formato de Fecha",
+      "THEME": "Tema",
+      "NOTIFICATIONS_TITLE": "Notificaciones",
+      "NOTIFICATIONS_SUBTITLE": "Controla qué notificaciones deseas recibir",
+      "NOTIFICATION_TYPES": {
+        "EMAIL": "Email",
+        "EMAIL_DESC": "Recibir notificaciones por correo",
+        "PUSH": "Push",
+        "PUSH_DESC": "Notificaciones push en el navegador",
+        "SMS": "SMS",
+        "SMS_DESC": "Recibir mensajes de texto",
+        "PARKING_ALERTS": "Alertas de Parking",
+        "PARKING_ALERTS_DESC": "Notificaciones sobre tus parkings",
+        "SYSTEM_UPDATES": "Actualizaciones del Sistema",
+        "SYSTEM_UPDATES_DESC": "Información sobre nuevas funciones",
+        "MARKETING": "Marketing",
+        "MARKETING_DESC": "Ofertas y promociones especiales"
+      },
+      "SAVE": "Guardar Preferencias"
+    },
+    "SECURITY": {
+      "TITLE": "Configuración de Seguridad",
+      "SUBTITLE": "Protege tu cuenta con configuraciones de seguridad",
+      "CHANGE_PASSWORD": "Cambiar Contraseña",
+      "CHANGE_PASSWORD_DESC": "Actualiza tu contraseña para mantener tu cuenta segura",
+      "TWO_FACTOR": "Autenticación de Dos Factores",
+      "TWO_FACTOR_DESC": "Agrega una capa extra de seguridad a tu cuenta",
+      "CHANGE": "Cambiar",
+      "CONFIGURE": "Configurar"
+    },
+    "SESSIONS": {
+      "TITLE": "Dispositivos Conectados",
+      "SUBTITLE": "Revisa y gestiona los dispositivos donde has iniciado sesión",
+      "CURRENT_SESSION": "Esta sesión",
+      "LAST_ACTIVITY": "Última actividad",
+      "CLOSE_SESSION": "Cerrar Sesión"
+    },
+    "ACCOUNT": {
+      "TITLE": "Acciones de Cuenta",
+      "SUBTITLE": "Opciones avanzadas para gestionar tu cuenta",
+      "DOWNLOAD_DATA": "Descargar Mis Datos",
+      "DOWNLOAD_DATA_DESC": "Obtén una copia de toda tu información personal",
+      "DELETE_ACCOUNT": "Eliminar Cuenta",
+      "DELETE_ACCOUNT_DESC": "Elimina permanentemente tu cuenta y todos tus datos",
+      "DOWNLOAD": "Descargar",
+      "DELETE": "Eliminar"
+    },
+    "MESSAGES": {
+      "PERSONAL_DATA_UPDATED": "Datos personales actualizados",
+      "PREFERENCES_UPDATED": "Preferencias actualizadas",
+      "SESSION_CLOSED": "Sesión cerrada exitosamente",
+      "ERROR_LOADING": "Error al cargar el perfil",
+      "ERROR_UPDATING": "Error al actualizar datos"
+    }
+  },
+  "LANGUAGES": {
+    "ES": "Español",
+    "EN": "English",
+    "FR": "Français"
+  },
+  "THEMES": {
+    "LIGHT": "Claro",
+    "DARK": "Oscuro",
+    "AUTO": "Automático"
+  },
+  "COMMON": {
+    "CLOSE": "Cerrar",
+    "SAVE": "Guardar",
+    "CANCEL": "Cancelar",
+    "DELETE": "Eliminar",
+    "EDIT": "Editar",
+    "VIEW": "Ver",
+    "SEARCH": "Buscar",
+    "FILTER": "Filtrar",
+    "LOADING": "Cargando...",
+    "NO_DATA": "No hay datos disponibles",
+    "ERROR": "Ha ocurrido un error",
+    "SUCCESS": "Operación exitosa",
+    "CONFIRM": "Confirmar",
+    "BACK": "Volver",
+    "NEXT": "Siguiente",
+    "PREVIOUS": "Anterior",
+    "YES": "Sí",
+    "NO": "No"
+  }
+}
+

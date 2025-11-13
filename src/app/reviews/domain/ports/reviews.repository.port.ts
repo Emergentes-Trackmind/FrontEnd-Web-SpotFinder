@@ -9,6 +9,6 @@ export abstract class ReviewsRepositoryPort {
   abstract getReview(id: ReviewId): Observable<Review>;
   abstract respondReview(id: ReviewId, responseText: string): Observable<Review>;
   abstract markReviewAsRead(id: ReviewId): Observable<Review>;
-  abstract deleteReview(id: ReviewId): Observable<void>;
+  abstract archiveReview(id: ReviewId): Observable<Review>; // Cambio de delete a archive
   abstract exportReviewsCSV(filters?: ReviewFilters): Observable<Blob>;
 }

@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const analyticsMiddleware = require('./analytics.middleware');
+const reviewsMiddleware = require('./reviews.middleware');
+const reservationsMiddleware = require('./reservations.middleware');
 
 // Clave secreta para JWT (en producción esto debería ser una variable de entorno)
 const JWT_SECRET = 'spotfinder_secret_key_2024';
@@ -37,6 +39,16 @@ function generateToken(user) {
 }
 
 module.exports = (req, res, next) => {
+  // Ejecutar reviews middleware para privacidad de reviews
+  if (req.path.startsWith('/reviews') || req.path.startsWith('/api/reviews')) {
+    return reviewsMiddleware(req, res, next);
+  }
+  // Ejecutar reservations middleware para privacidad de reservas
+  if (req.path.startsWith('/reservations') || req.path.startsWith('/api/reservations')) {
+    return reservationsMiddleware(req, res, next);
+  }
+
+
   // Ejecutar analytics middleware PRIMERO para evitar problemas de auth
   if (req.path.startsWith('/analytics') || req.path.startsWith('/api/analytics')) {
     return analyticsMiddleware(req, res, next);

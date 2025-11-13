@@ -27,17 +27,17 @@ import { ReviewId } from '../../../domain/value-objects/review-id.vo';
         <div class="user-info">
           <div class="user-avatar">
             <img
-              *ngIf="review.driver_avatar; else defaultAvatar"
-              [src]="review.driver_avatar"
-              [alt]="review.driver_name"
+              *ngIf="getUserAvatar(); else defaultAvatar"
+              [src]="getUserAvatar()"
+              [alt]="getUserName()"
               class="avatar-img">
             <ng-template #defaultAvatar>
               <mat-icon>person</mat-icon>
             </ng-template>
           </div>
           <div class="user-details">
-            <h4 class="user-name">{{ review.driver_name || 'Unknown User' }}</h4>
-            <p class="parking-name">{{ review.parking_name || 'Unknown Parking' }}</p>
+            <h4 class="user-name">{{ getUserName() }}</h4>
+            <p class="parking-name">{{ getParkingName() }}</p>
             <div class="review-meta">
               <div class="rating">
                 <mat-icon
@@ -46,7 +46,7 @@ import { ReviewId } from '../../../domain/value-objects/review-id.vo';
                   star
                 </mat-icon>
               </div>
-              <span class="review-date">{{ formatDate(review.created_at) }}</span>
+              <span class="review-date">{{ formatDate(getCreatedAt()) }}</span>
             </div>
           </div>
         </div>
@@ -70,9 +70,9 @@ import { ReviewId } from '../../../domain/value-objects/review-id.vo';
               <mat-icon>edit</mat-icon>
               <span>Edit Response</span>
             </button>
-            <button mat-menu-item (click)="onDelete()" *ngIf="canDelete()">
-              <mat-icon>delete</mat-icon>
-              <span>Delete</span>
+            <button mat-menu-item (click)="onArchive()" *ngIf="canArchive()">
+              <mat-icon>visibility_off</mat-icon>
+              <span>Ocultar review</span>
             </button>
           </mat-menu>
         </div>
@@ -82,13 +82,13 @@ import { ReviewId } from '../../../domain/value-objects/review-id.vo';
         <p class="review-comment">{{ review.comment }}</p>
 
         <!-- Show response if exists -->
-        <div *ngIf="review.responded && review.response_text" class="review-response">
+        <div *ngIf="review.responded && getResponseText()" class="review-response">
           <div class="response-header">
             <mat-icon>reply</mat-icon>
             <span class="response-label">Your Response</span>
-            <span class="response-date">{{ formatDate(review.response_at) }}</span>
+            <span class="response-date" *ngIf="getResponseAt()">{{ formatDate(getResponseAt()!) }}</span>
           </div>
-          <p class="response-text">{{ review.response_text }}</p>
+          <p class="response-text">{{ getResponseText() }}</p>
         </div>
       </div>
 
@@ -104,7 +104,7 @@ import { ReviewId } from '../../../domain/value-objects/review-id.vo';
           </button>
 
           <button
-            *ngIf="!review.read_at"
+            *ngIf="!getReadAt()"
             mat-button
             (click)="onMarkRead()">
             <mat-icon>mark_chat_read</mat-icon>
@@ -120,11 +120,40 @@ export class ReviewItemComponent {
   @Input() review!: Review;
   @Output() respond = new EventEmitter<{ id: ReviewId, text: string }>();
   @Output() markAsRead = new EventEmitter<ReviewId>();
-  @Output() delete = new EventEmitter<ReviewId>();
+  @Output() archive = new EventEmitter<ReviewId>(); // Cambio de delete a archive
   @Output() edit = new EventEmitter<{ id: ReviewId, text: string }>();
 
   getStarsArray(): number[] {
     return [1, 2, 3, 4, 5];
+  }
+
+  // Helper methods for backward compatibility
+  getUserName(): string {
+    return this.review.userName || this.review.driver_name || 'Unknown User';
+  }
+
+  getUserAvatar(): string | undefined {
+    return this.review.userAvatar || this.review.driver_avatar;
+  }
+
+  getParkingName(): string {
+    return this.review.parkingName || this.review.parking_name || 'Unknown Parking';
+  }
+
+  getCreatedAt(): string {
+    return this.review.createdAt || this.review.created_at || '';
+  }
+
+  getResponseText(): string | null | undefined {
+    return this.review.responseText || this.review.response_text;
+  }
+
+  getResponseAt(): string | null | undefined {
+    return this.review.responseAt || this.review.response_at;
+  }
+
+  getReadAt(): string | null | undefined {
+    return this.review.readAt || this.review.read_at;
   }
 
   getStatusClass(): string {
@@ -165,32 +194,31 @@ export class ReviewItemComponent {
   }
 
   onRespond(): void {
-    const responseText = prompt('Enter your response:');
-    if (responseText) {
-      this.respond.emit({ id: this.review.id, text: responseText });
-    }
+    // Emit event to parent to open dialog
+    this.respond.emit({ id: this.review.id, text: '' });
   }
 
   onMarkRead(): void {
     this.markAsRead.emit(this.review.id);
   }
 
-  onDelete(): void {
-    this.delete.emit(this.review.id);
-  }
-
-  onEdit(): void {
-    const newText = prompt('Edit your response:', this.review.response_text);
-    if (newText !== null) {
-      this.edit.emit({ id: this.review.id, text: newText });
+  onArchive(): void {
+    if (confirm('¿Estás seguro de que deseas ocultar esta reseña?\n\nNo se eliminará, solo dejará de mostrarse en tu lista.')) {
+      this.archive.emit(this.review.id);
     }
   }
 
-  canEdit(): boolean {
-    return this.review.responded && !!this.review.response_text;
+  onEdit(): void {
+    // Emit event to parent to open dialog with existing response
+    const currentResponse = this.getResponseText() || '';
+    this.edit.emit({ id: this.review.id, text: currentResponse });
   }
 
-  canDelete(): boolean {
-    return true; // Admin can delete any review
+  canEdit(): boolean {
+    return this.review.responded && !!this.getResponseText();
+  }
+
+  canArchive(): boolean {
+    return true; // Admin siempre puede ocultar cualquier review
   }
 }

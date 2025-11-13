@@ -7,8 +7,15 @@ import { environment } from '../../../environments/environment';
 export class ApiPrefixInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Solo interceptar requests que empiecen con '/' (rutas relativas)
-    if (!req.url.startsWith('/') || req.url.startsWith('http')) {
+    // No interceptar:
+    // - URLs absolutas (que comienzan con http)
+    // - URLs que no comienzan con '/' (rutas relativas)
+    // - Peticiones a assets
+    if (!req.url.startsWith('/') ||
+        req.url.startsWith('http') ||
+        req.url.startsWith('./assets') ||
+        req.url.startsWith('/assets') ||
+        req.url.includes('/assets/')) {
       return next.handle(req);
     }
 

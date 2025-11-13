@@ -17,6 +17,7 @@ import { StepLocationEditComponent } from './steps/step-location-edit/step-locat
 import { StepFeaturesEditComponent } from './steps/step-features-edit/step-features-edit.component';
 import { StepPricingEditComponent } from './steps/step-pricing-edit/step-pricing-edit.component';
 import { StepReviewEditComponent } from './steps/step-review-edit/step-review-edit.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-parking-edit',
@@ -33,7 +34,8 @@ import { StepReviewEditComponent } from './steps/step-review-edit/step-review-ed
     StepLocationEditComponent,
     StepFeaturesEditComponent,
     StepPricingEditComponent,
-    StepReviewEditComponent
+    StepReviewEditComponent,
+    TranslateModule
   ],
   templateUrl: './parking-edit.page.html',
   styleUrls: ['./parking-edit.page.css']

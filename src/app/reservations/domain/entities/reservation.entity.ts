@@ -8,6 +8,7 @@ export interface Reservation {
   vehiclePlate?: string;
   parkingId: string | number;
   parkingName?: string;
+  parkingOwnerId?: string | number; // ID del dueño del parking (para privacidad)
   parkingSpotId?: string;   // UUID
   space?: string;           // A-3 si aplica
   startTime: string;        // ISO

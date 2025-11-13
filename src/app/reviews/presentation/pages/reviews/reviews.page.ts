@@ -12,10 +12,12 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 
 // Components
 import { ReviewsKpisComponent } from '../../components/reviews-kpis/reviews-kpis.component';
 import { ReviewItemComponent } from '../../components/review-item/review-item.component';
+import { RespondDialogComponent } from '../../components/respond-dialog/respond-dialog.component';
 
 // Services & Domain
 import { ReviewKpis } from '../../../domain/dtos/review-kpis.dto';
@@ -23,6 +25,7 @@ import { Review } from '../../../domain/entities/review.entity';
 import { ReviewsFacade } from '../../../services/reviews.facade';
 import { ReviewStatus, ReviewRating } from '../../../domain/enums/review-status.enum';
 import { ReviewId } from '../../../domain/value-objects/review-id.vo';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reviews-page',
@@ -40,7 +43,8 @@ import { ReviewId } from '../../../domain/value-objects/review-id.vo';
     MatProgressBarModule,
     MatSnackBarModule,
     ReviewsKpisComponent,
-    ReviewItemComponent
+    ReviewItemComponent,
+    TranslateModule
   ],
   template: `
     <div class="reviews-page">
@@ -142,7 +146,7 @@ import { ReviewId } from '../../../domain/value-objects/review-id.vo';
             [review]="review"
             (respond)="onRespondToReview($event)"
             (markAsRead)="onMarkAsRead($event)"
-            (delete)="onDeleteReview($event)"
+            (archive)="onArchiveReview($event)"
             (edit)="onEditResponse($event)">
           </app-review-item>
         </div>
@@ -183,6 +187,7 @@ import { ReviewId } from '../../../domain/value-objects/review-id.vo';
 export class ReviewsPage implements OnInit {
   private reviewsFacadeService = inject(ReviewsFacade);
   private snackBar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
 
   // Local signals
   searchQuery = '';
@@ -289,16 +294,31 @@ export class ReviewsPage implements OnInit {
   }
 
   onRespondToReview(event: { id: ReviewId, text: string }): void {
-    this.reviewsFacadeService.respondToReview(event.id, event.text).subscribe({
-      next: (success) => {
-        if (success) {
-          this.snackBar.open('Response sent successfully', 'Close', { duration: 3000 });
-          this.loadReviews(); // Refresh the list
-        }
-      },
-      error: (error) => {
-        console.error('Error responding to review:', error);
-        this.snackBar.open('Error sending response', 'Close', { duration: 3000 });
+    // Find the review to pass to dialog
+    const review = this.reviews().find(r => r.id === event.id);
+    if (!review) return;
+
+    // Open dialog
+    const dialogRef = this.dialog.open(RespondDialogComponent, {
+      width: '600px',
+      data: { review }
+    });
+
+    dialogRef.afterClosed().subscribe(responseText => {
+      if (responseText) {
+        this.reviewsFacadeService.respondToReview(event.id, responseText).subscribe({
+          next: (success) => {
+            if (success) {
+              this.snackBar.open('Respuesta enviada exitosamente', 'Cerrar', { duration: 3000 });
+              this.loadReviews(); // Refresh the list
+              this.loadKpis(); // Refresh KPIs
+            }
+          },
+          error: (error) => {
+            console.error('Error responding to review:', error);
+            this.snackBar.open('Error al enviar la respuesta', 'Cerrar', { duration: 3000 });
+          }
+        });
       }
     });
   }
@@ -307,50 +327,63 @@ export class ReviewsPage implements OnInit {
     this.reviewsFacadeService.markAsRead(id).subscribe({
       next: (success) => {
         if (success) {
-          this.snackBar.open('Review marked as read', 'Close', { duration: 3000 });
+          this.snackBar.open('Reseña marcada como leída', 'Cerrar', { duration: 3000 });
           this.loadReviews(); // Refresh the list
         }
       },
       error: (error) => {
         console.error('Error marking as read:', error);
-        this.snackBar.open('Error marking as read', 'Close', { duration: 3000 });
+        this.snackBar.open('Error al marcar como leída', 'Cerrar', { duration: 3000 });
       }
     });
   }
 
-  onDeleteReview(id: ReviewId): void {
-    if (confirm('Are you sure you want to delete this review?')) {
-      this.reviewsFacadeService.deleteReview(id).subscribe({
-        next: (success) => {
-          if (success) {
-            this.snackBar.open('Review deleted successfully', 'Close', { duration: 3000 });
-            this.loadReviews(); // Refresh the list
-          }
-        },
-        error: (error) => {
-          console.error('Error deleting review:', error);
-          this.snackBar.open('Error deleting review', 'Close', { duration: 3000 });
-        }
-      });
-    }
-  }
-
-  onEditResponse(event: { id: ReviewId, text: string }): void {
-    this.reviewsFacadeService.respondToReview(event.id, event.text).subscribe({
+  onArchiveReview(id: ReviewId): void {
+    this.reviewsFacadeService.archiveReview(id).subscribe({
       next: (success) => {
         if (success) {
-          this.snackBar.open('Response updated successfully', 'Close', { duration: 3000 });
+          this.snackBar.open('Reseña ocultada exitosamente', 'Cerrar', { duration: 3000 });
           this.loadReviews(); // Refresh the list
+          this.loadKpis(); // Refresh KPIs
         }
       },
       error: (error) => {
-        console.error('Error editing response:', error);
-        this.snackBar.open('Error updating response', 'Close', { duration: 3000 });
+        console.error('Error archiving review:', error);
+        this.snackBar.open('Error al ocultar la reseña', 'Cerrar', { duration: 3000 });
       }
     });
   }
 
-  async exportCSV(): Promise<void> {
+  onEditResponse(event: { id: ReviewId, text: string }): void {
+    // Find the review to pass to dialog
+    const review = this.reviews().find(r => r.id === event.id);
+    if (!review) return;
+
+    // Open dialog with existing response
+    const dialogRef = this.dialog.open(RespondDialogComponent, {
+      width: '600px',
+      data: { review }
+    });
+
+    dialogRef.afterClosed().subscribe(responseText => {
+      if (responseText) {
+        this.reviewsFacadeService.respondToReview(event.id, responseText).subscribe({
+          next: (success) => {
+            if (success) {
+              this.snackBar.open('Respuesta actualizada exitosamente', 'Cerrar', { duration: 3000 });
+              this.loadReviews(); // Refresh the list
+            }
+          },
+          error: (error) => {
+            console.error('Error editing response:', error);
+            this.snackBar.open('Error al actualizar la respuesta', 'Cerrar', { duration: 3000 });
+          }
+        });
+      }
+    });
+  }
+
+  exportCSV(): void {
     this.reviewsFacadeService.exportReviewsCSV().subscribe({
       next: (blob) => {
         const url = window.URL.createObjectURL(blob);
@@ -359,11 +392,11 @@ export class ReviewsPage implements OnInit {
         link.download = 'reviews.csv';
         link.click();
         window.URL.revokeObjectURL(url);
-        this.snackBar.open('Export completed', 'Close', { duration: 3000 });
+        this.snackBar.open('Export completado', 'Cerrar', { duration: 3000 });
       },
       error: (error) => {
         console.error('Error exporting CSV:', error);
-        this.snackBar.open('Error exporting reviews', 'Close', { duration: 3000 });
+        this.snackBar.open('Error al exportar reviews', 'Cerrar', { duration: 3000 });
       }
     });
   }
@@ -378,18 +411,16 @@ export class ReviewsPage implements OnInit {
     this.searchQuery = '';
     this.selectedStatus.set(ReviewStatus.ALL);
     this.selectedRating.set(null);
-    this.currentPage.set(0); // Reset to first page
+    this.currentPage.set(0);
     this.loadReviews(0);
   }
 
   onPageChange(event: PageEvent): void {
     console.log('Page change:', event);
-
-    // Update pagination state
     this.currentPage.set(event.pageIndex);
     this.pageSize.set(event.pageSize);
-
-    // Load reviews for the new page
     this.loadReviews(event.pageIndex, event.pageSize);
   }
 }
+
+

@@ -28,6 +28,7 @@ import { RevenueChartComponent } from '../../presentation/components/revenue-cha
 import { OccupancyChartComponent } from '../../presentation/components/occupancy-chart/occupancy-chart.component';
 import { RecentActivityComponent } from '../../presentation/components/recent-activity/recent-activity.component';
 import { TopParkingsComponent } from '../../presentation/components/top-parkings/top-parkings.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface KpiCard {
   id: string;
@@ -55,7 +56,8 @@ interface KpiCard {
     RevenueChartComponent,
     OccupancyChartComponent,
     RecentActivityComponent,
-    TopParkingsComponent
+    TopParkingsComponent,
+    TranslateModule
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css'

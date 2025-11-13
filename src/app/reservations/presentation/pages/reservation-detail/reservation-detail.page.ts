@@ -16,6 +16,7 @@ import { ReservationStatus } from '../../../domain/enums/reservation-status.enum
 import { StatusPillComponent } from '../../components/status-pill/status-pill.component';
 import { canConfirm, canCancel } from '../../../domain/policies/reservation-policies';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reservation-detail',
@@ -26,7 +27,8 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
     MatIconModule,
     MatSnackBarModule,
     MatDialogModule,
-    StatusPillComponent
+    StatusPillComponent,
+    TranslateModule
   ],
   templateUrl: './reservation-detail.page.html',
   styleUrl: './reservation-detail.page.css'

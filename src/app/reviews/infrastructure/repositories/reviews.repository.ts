@@ -55,9 +55,10 @@ export class ReviewsRepository extends ReviewsRepositoryPort {
     );
   }
 
-  deleteReview(id: ReviewId): Observable<void> {
-    return this.api.deleteReview(id).pipe(
-      tap(() => console.log('🗑️ Deleting review:', id.value))
+  archiveReview(id: ReviewId): Observable<Review> {
+    return this.api.archiveReview(id).pipe(
+      tap(() => console.log('📦 Archiving review:', id.value)),
+      map(review => this.transformReview(review))
     );
   }
 
@@ -87,13 +88,15 @@ export class ReviewsRepository extends ReviewsRepositoryPort {
   private transformReview(review: any): Review {
     return {
       ...review,
-      id: ReviewId.create(review.id), // Convert raw id to ReviewId Value Object
-      driver_name: review.drivers?.full_name || review.driver_name,
-      user_email: review.drivers?.users?.email || review.user_email,
-      parking_name: review.parkings?.name || review.parking_name,
-      parking_city: review.parkings?.address?.split(',').pop()?.trim() || review.parking_city,
-      driver_avatar: review.drivers?.avatar || review.driver_avatar,
-      responded: Boolean(review.responded || review.response_text)
+      id: ReviewId.create(review.id),
+      // Asegurar compatibilidad con nombres de campos
+      userName: review.userName || review.driver_name,
+      userEmail: review.userEmail || review.user_email,
+      parkingName: review.parkingName || review.parking_name,
+      createdAt: review.createdAt || review.created_at,
+      responseText: review.responseText || review.response_text,
+      responseAt: review.responseAt || review.response_at,
+      readAt: review.readAt || review.read_at
     };
   }
 }

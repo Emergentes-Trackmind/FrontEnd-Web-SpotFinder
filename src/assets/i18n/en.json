@@ -1,0 +1,107 @@
+{
+  "PROFILE": {
+    "TITLE": "My Profile",
+    "SUBTITLE": "Manage your personal information and preferences",
+    "TABS": {
+      "PERSONAL_DATA": "Personal Data",
+      "PREFERENCES": "Preferences",
+      "SECURITY": "Security",
+      "ACTIVE_SESSIONS": "Active Sessions",
+      "MY_ACCOUNT": "My Account"
+    },
+    "PERSONAL_DATA": {
+      "TITLE": "Personal Information",
+      "SUBTITLE": "Update your basic information",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "EMAIL": "Email",
+      "EMAIL_HINT": "Email cannot be modified",
+      "PHONE": "Phone",
+      "BIO": "Biography",
+      "BIO_PLACEHOLDER": "Tell us something about yourself...",
+      "SAVE": "Save Changes",
+      "SAVING": "Saving...",
+      "ERRORS": {
+        "FIRST_NAME_REQUIRED": "First name is required",
+        "LAST_NAME_REQUIRED": "Last name is required",
+        "MIN_LENGTH": "Minimum 2 characters",
+        "MAX_LENGTH": "Maximum 500 characters"
+      }
+    },
+    "PREFERENCES": {
+      "GENERAL_TITLE": "General Settings",
+      "GENERAL_SUBTITLE": "Customize your application experience",
+      "LANGUAGE": "Language",
+      "TIMEZONE": "Timezone",
+      "DATE_FORMAT": "Date Format",
+      "THEME": "Theme",
+      "NOTIFICATIONS_TITLE": "Notifications",
+      "NOTIFICATIONS_SUBTITLE": "Control which notifications you want to receive",
+      "NOTIFICATION_TYPES": {
+        "EMAIL": "Email",
+        "EMAIL_DESC": "Receive email notifications",
+        "PUSH": "Push",
+        "PUSH_DESC": "Browser push notifications",
+        "SMS": "SMS",
+        "SMS_DESC": "Receive text messages",
+        "PARKING_ALERTS": "Parking Alerts",
+        "PARKING_ALERTS_DESC": "Notifications about your parkings",
+        "SYSTEM_UPDATES": "System Updates",
+        "SYSTEM_UPDATES_DESC": "Information about new features",
+        "MARKETING": "Marketing",
+        "MARKETING_DESC": "Special offers and promotions"
+      },
+      "SAVE": "Save Preferences"
+    },
+    "SECURITY": {
+      "TITLE": "Security Settings",
+      "SUBTITLE": "Protect your account with security settings",
+      "CHANGE_PASSWORD": "Change Password",
+      "CHANGE_PASSWORD_DESC": "Update your password to keep your account secure",
+      "TWO_FACTOR": "Two-Factor Authentication",
+      "TWO_FACTOR_DESC": "Add an extra layer of security to your account",
+      "CHANGE": "Change",
+      "CONFIGURE": "Configure"
+    },
+    "SESSIONS": {
+      "TITLE": "Connected Devices",
+      "SUBTITLE": "Review and manage devices where you're logged in",
+      "CURRENT_SESSION": "This session",
+      "LAST_ACTIVITY": "Last activity",
+      "CLOSE_SESSION": "Close Session"
+    },
+    "ACCOUNT": {
+      "TITLE": "Account Actions",
+      "SUBTITLE": "Advanced options to manage your account",
+      "DOWNLOAD_DATA": "Download My Data",
+      "DOWNLOAD_DATA_DESC": "Get a copy of all your personal information",
+      "DELETE_ACCOUNT": "Delete Account",
+      "DELETE_ACCOUNT_DESC": "Permanently delete your account and all your data",
+      "DOWNLOAD": "Download",
+      "DELETE": "Delete"
+    },
+    "MESSAGES": {
+      "PERSONAL_DATA_UPDATED": "Personal data updated",
+      "PREFERENCES_UPDATED": "Preferences updated",
+      "SESSION_CLOSED": "Session closed successfully",
+      "ERROR_LOADING": "Error loading profile",
+      "ERROR_UPDATING": "Error updating data"
+    }
+  },
+  "LANGUAGES": {
+    "ES": "Español",
+    "EN": "English",
+    "FR": "Français"
+  },
+  "THEMES": {
+    "LIGHT": "Light",
+    "DARK": "Dark",
+    "AUTO": "Automatic"
+  },
+  "COMMON": {
+    "CLOSE": "Close",
+    "SAVE": "Save",
+    "CANCEL": "Cancel"
+  }
+}
+

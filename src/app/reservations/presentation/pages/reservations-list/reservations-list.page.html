@@ -1,216 +1,372 @@
 <div class="reservations-container">
-  <!-- Header -->
-  <div class="page-header">
-    <h1 class="page-title">Gestión de Reservas</h1>
-    <div class="header-actions">
-      <span class="support-link">Soporte</span>
-      <span class="account-link">Cuenta</span>
+
+  <!-- KPI Cards Section -->
+  <div class="kpi-section">
+    <div class="kpi-card">
+      <div class="kpi-icon total">
+        <mat-icon>receipt_long</mat-icon>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-label">Total Reservas</div>
+        <div class="kpi-value">{{ totalReservations }}</div>
+        <div class="kpi-trend positive" *ngIf="totalTrend > 0">
+          +{{ totalTrend }}% vs. mes anterior
+        </div>
+        <div class="kpi-trend negative" *ngIf="totalTrend < 0">
+          {{ totalTrend }}% vs. mes anterior
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon pending">
+        <mat-icon>schedule</mat-icon>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-label">Pendientes</div>
+        <div class="kpi-value">{{ pendingReservations }}</div>
+        <div class="kpi-trend negative" *ngIf="pendingTrend !== 0">
+          {{ pendingTrend > 0 ? '+' : '' }}{{ pendingTrend }}% vs. mes anterior
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon confirmed">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-label">Confirmadas</div>
+        <div class="kpi-value">{{ confirmedReservations }}</div>
+        <div class="kpi-trend positive" *ngIf="confirmedTrend > 0">
+          +{{ confirmedTrend }}% vs. mes anterior
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon cancelled">
+        <mat-icon>cancel</mat-icon>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-label">Canceladas</div>
+        <div class="kpi-value">{{ cancelledReservations }}</div>
+        <div class="kpi-trend negative" *ngIf="cancelledTrend !== 0">
+          {{ cancelledTrend > 0 ? '+' : '' }}{{ cancelledTrend }}% vs. mes anterior
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Filters Card -->
-  <div class="filters-card">
-    <!-- Search Input -->
-    <div class="search-section">
-      <mat-form-field class="search-field" appearance="outline">
-        <mat-icon matPrefix>search</mat-icon>
-        <input matInput
-               placeholder="Buscar reservas..."
-               [formControl]="searchControl">
-      </mat-form-field>
+  <!-- Search and Filters Section -->
+  <div class="search-filters-section">
+    <div class="search-container">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input type="text"
+             class="search-input"
+             placeholder="Buscar por cliente, email o ID de reserva..."
+             [formControl]="searchControl">
     </div>
 
-    <!-- Status Filter Chips -->
-    <div class="chips-section">
-      <mat-chip-set class="status-chips">
-        <mat-chip
-          *ngFor="let option of statusOptions; let i = index"
-          [class]="option.chipClass"
-          [class.selected]="selectedFilterIndex === i"
-          (click)="onStatusFilterClick(i)">
-          {{ option.label }}
-        </mat-chip>
-      </mat-chip-set>
+    <div class="date-filter">
+      <button mat-button class="date-filter-btn">
+        Hoy
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+    </div>
 
-      <button mat-stroked-button
-              color="primary"
-              class="more-filters-btn"
-              (click)="onOpenAdvancedFilters()">
-        <mat-icon>tune</mat-icon>
-        Más filtros
+    <div class="action-buttons">
+      <button mat-stroked-button class="filter-btn">
+        <mat-icon>filter_list</mat-icon>
+        Filtros
+      </button>
+      <button mat-flat-button color="warn" class="export-csv-btn" (click)="onExportCsv()">
+        <mat-icon>download</mat-icon>
+        Exportar CSV
       </button>
     </div>
   </div>
 
-  <!-- Main Content -->
+  <!-- Tabs Section -->
+  <div class="tabs-section">
+    <div class="tab-item"
+         [class.active]="selectedFilterIndex === 0"
+         (click)="onStatusFilterClick(0)">
+      <span class="tab-label">Todas</span>
+      <span class="tab-count">({{ totalReservations }})</span>
+    </div>
+    <div class="tab-item"
+         [class.active]="selectedFilterIndex === 1"
+         (click)="onStatusFilterClick(1)">
+      <span class="tab-label">Pendientes</span>
+      <span class="tab-count">({{ pendingReservations }})</span>
+    </div>
+    <div class="tab-item"
+         [class.active]="selectedFilterIndex === 2"
+         (click)="onStatusFilterClick(2)">
+      <span class="tab-label">Confirmadas</span>
+      <span class="tab-count">({{ confirmedReservations }})</span>
+    </div>
+    <div class="tab-item"
+         [class.active]="selectedFilterIndex === 3"
+         (click)="onStatusFilterClick(3)">
+      <span class="tab-label">Pagadas</span>
+      <span class="tab-count">({{ paidReservations }})</span>
+    </div>
+    <div class="tab-item"
+         [class.active]="selectedFilterIndex === 4"
+         (click)="onStatusFilterClick(4)">
+      <span class="tab-label">Canceladas</span>
+      <span class="tab-count">({{ cancelledReservations }})</span>
+    </div>
+  </div>
+
+  <!-- Main Content Layout -->
   <div class="content-layout" [class.with-detail]="isDetailPanelOpen">
-    <!-- Table Card -->
-    <div class="table-card">
-      <div class="table-header">
-        <h2 class="table-title">Lista de reservas</h2>
-        <div class="table-actions">
-          <button mat-button (click)="onExportCsv()">
-            <mat-icon>download</mat-icon>
-            Exportar CSV
-          </button>
+
+    <!-- Lista de Reservas Card -->
+    <div class="reservations-card">
+      <!-- Header -->
+      <div class="card-header">
+        <h2 class="card-title">Lista de Reservas</h2>
+      </div>
+
+      <!-- Column Headers -->
+      <div class="list-header">
+        <div class="header-cliente">Cliente</div>
+        <div class="header-parking">Parking</div>
+        <div class="header-fecha">Fecha y Hora</div>
+        <div class="header-estado">Estado</div>
+        <div class="header-importe">Importe</div>
+        <div class="header-acciones">Acciones</div>
+      </div>
+
+      <!-- Reservations List -->
+      <div class="reservations-list">
+        <div *ngFor="let reservation of dataSource.data"
+             class="reservation-item"
+             (click)="onRowClick(reservation)">
+
+          <!-- Cliente Column -->
+          <div class="column-cliente">
+            <div class="client-info">
+              <div class="client-avatar">
+                {{ getInitials(reservation.userName || 'U') }}
+              </div>
+              <div class="client-details">
+                <div class="client-name">{{ reservation.userName || 'N/A' }}</div>
+                <div class="client-email">{{ reservation.userEmail || '' }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Parking Column -->
+          <div class="column-parking">
+            <div class="parking-info">
+              <div class="parking-name">{{ reservation.parkingName || 'N/A' }}</div>
+              <div class="parking-location">
+                <mat-icon class="location-icon">location_on</mat-icon>
+                {{ reservation.space || 'N/A' }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Fecha y Hora Column -->
+          <div class="column-fecha">
+            <div class="date-info">
+              <div class="date-day">
+                <mat-icon class="calendar-icon">calendar_today</mat-icon>
+                {{ formatDate(reservation.startTime) }}
+              </div>
+              <div class="date-time">
+                <mat-icon class="time-icon">schedule</mat-icon>
+                {{ formatTimeRange(reservation.startTime, reservation.endTime) }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Estado Column -->
+          <div class="column-estado">
+            <app-status-pill [status]="reservation.status"></app-status-pill>
+          </div>
+
+          <!-- Importe Column -->
+          <div class="column-importe">
+            <div class="price-amount">{{ formatCurrencySimple(reservation.totalPrice, reservation.currency) }}</div>
+          </div>
+
+          <!-- Acciones Column -->
+          <div class="column-acciones">
+            <button mat-flat-button
+                    color="primary"
+                    class="ver-btn"
+                    (click)="onViewDetails(reservation, $event)">
+              <mat-icon>visibility</mat-icon>
+              Ver
+            </button>
+            <button mat-icon-button [matMenuTriggerFor]="actionsMenu" (click)="$event.stopPropagation()">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+            <mat-menu #actionsMenu="matMenu">
+              <button mat-menu-item
+                      *ngIf="canConfirm(reservation.status)"
+                      (click)="onConfirmReservation(reservation, $event)">
+                <mat-icon>check_circle</mat-icon>
+                <span>Confirmar</span>
+              </button>
+              <button mat-menu-item
+                      *ngIf="canCancel(reservation.status)"
+                      (click)="onCancelReservation(reservation, $event)">
+                <mat-icon>cancel</mat-icon>
+                <span>Cancelar</span>
+              </button>
+              <button mat-menu-item (click)="exportSingleReservation(reservation)">
+                <mat-icon>download</mat-icon>
+                <span>Exportar CSV</span>
+              </button>
+              <button mat-menu-item
+                      *ngIf="reservation.status === 'CANCELLED'"
+                      (click)="onDeleteReservation(reservation, $event)"
+                      class="delete-menu-item">
+                <mat-icon color="warn">delete</mat-icon>
+                <span>Eliminar permanentemente</span>
+              </button>
+            </mat-menu>
+          </div>
         </div>
       </div>
 
-      <div class="table-container">
-        <table mat-table
-               [dataSource]="dataSource"
-               matSort
-               class="reservations-table">
-
-          <!-- ID Column -->
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let reservation">#{{ reservation.id }}</td>
-          </ng-container>
-
-          <!-- Usuario Column -->
-          <ng-container matColumnDef="userName">
-            <th mat-header-cell *matHeaderCellDef>Usuario</th>
-            <td mat-cell *matCellDef="let reservation">{{ reservation.userName || 'N/A' }}</td>
-          </ng-container>
-
-          <!-- Fecha/Hora Column -->
-          <ng-container matColumnDef="startTime">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha/Hora</th>
-            <td mat-cell *matCellDef="let reservation">{{ formatDateTime(reservation.startTime) }}</td>
-          </ng-container>
-
-          <!-- Estado Column -->
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef>Estado</th>
-            <td mat-cell *matCellDef="let reservation">
-              <app-status-pill [status]="reservation.status"></app-status-pill>
-            </td>
-          </ng-container>
-
-          <!-- Monto Column -->
-          <ng-container matColumnDef="totalPrice">
-            <th mat-header-cell *matHeaderCellDef>Monto</th>
-            <td mat-cell *matCellDef="let reservation">
-              {{ formatCurrency(reservation.totalPrice, reservation.currency) }}
-            </td>
-          </ng-container>
-
-          <!-- Acciones Column -->
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Acciones</th>
-            <td mat-cell *matCellDef="let reservation">
-              <button mat-icon-button [matMenuTriggerFor]="actionsMenu" (click)="$event.stopPropagation()">
-                <mat-icon>more_horiz</mat-icon>
-              </button>
-              <mat-menu #actionsMenu="matMenu">
-                <button mat-menu-item
-                        *ngIf="canConfirm(reservation.status)"
-                        (click)="onConfirmReservation(reservation, $event)">
-                  <mat-icon>check_circle</mat-icon>
-                  <span>Confirmar</span>
-                </button>
-                <button mat-menu-item
-                        *ngIf="canCancel(reservation.status)"
-                        (click)="onCancelReservation(reservation, $event)">
-                  <mat-icon>cancel</mat-icon>
-                  <span>Cancelar</span>
-                </button>
-                <button mat-menu-item (click)="exportSingleReservation(reservation)">
-                  <mat-icon>download</mat-icon>
-                  <span>Exportar CSV</span>
-                </button>
-              </mat-menu>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row
-              *matRowDef="let row; columns: displayedColumns;"
-              class="table-row"
-              (click)="onRowClick(row)"></tr>
-        </table>
-
-        <!-- Paginator -->
-        <mat-paginator
-          [pageSizeOptions]="[5, 10, 20, 50]"
-          [pageSize]="10"
-          [showFirstLastButtons]="true"
-          (page)="onPageChange($event)"
-          class="table-paginator">
-        </mat-paginator>
-      </div>
+      <!-- Paginator -->
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 20, 50]"
+        [pageSize]="10"
+        [showFirstLastButtons]="true"
+        (page)="onPageChange($event)"
+        class="table-paginator">
+      </mat-paginator>
     </div>
 
-    <!-- Detail Panel (Desktop only) -->
-    <div class="detail-panel"
-         *ngIf="isDetailPanelOpen && selectedReservation">
+    <!-- Detail Panel (Side Panel) -->
+    <div class="detail-panel" *ngIf="isDetailPanelOpen && selectedReservation">
       <div class="detail-card">
+
+        <!-- Header con Estado -->
         <div class="detail-header">
-          <h2 class="detail-title">
-            Detalle de reserva #{{ selectedReservation?.id }}
-          </h2>
-          <button mat-icon-button (click)="closeReservationDetail()">
-            <mat-icon>close</mat-icon>
-          </button>
+          <div class="detail-title-section">
+            <h2 class="detail-title">Detalles de Reserva</h2>
+            <div class="detail-id">ID: {{ selectedReservation.id }}</div>
+          </div>
+          <app-status-pill [status]="selectedReservation.status"></app-status-pill>
         </div>
 
         <div class="detail-content">
-          <div class="detail-field">
-            <label class="field-label">Usuario</label>
-            <div class="field-value">{{ selectedReservation?.userName }}</div>
-          </div>
 
-          <div class="detail-field">
-            <label class="field-label">Email</label>
-            <div class="field-value">{{ selectedReservation?.userEmail }}</div>
-          </div>
-
-          <div class="detail-field">
-            <label class="field-label">Horario</label>
-            <div class="field-value">
-              {{ formatDateTime(selectedReservation?.startTime || '') }} -
-              {{ formatDateTime(selectedReservation?.endTime || '') }}
+          <!-- Información del Cliente -->
+          <div class="detail-section">
+            <h3 class="section-title">Información del Cliente</h3>
+            <div class="client-detail-info">
+              <div class="client-avatar-large">
+                {{ getInitials(selectedReservation.userName || 'U') }}
+              </div>
+              <div class="client-data">
+                <div class="client-name-large">{{ selectedReservation.userName || 'N/A' }}</div>
+                <div class="client-contact">
+                  <mat-icon class="contact-icon">email</mat-icon>
+                  <span>{{ selectedReservation.userEmail || 'N/A' }}</span>
+                </div>
+                <div class="client-contact" *ngIf="selectedReservation.vehiclePlate">
+                  <mat-icon class="contact-icon">directions_car</mat-icon>
+                  <span>Placa: {{ selectedReservation.vehiclePlate }}</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="detail-field">
-            <label class="field-label">Espacio</label>
-            <div class="field-value">{{ selectedReservation?.space || 'N/A' }}</div>
-          </div>
-
-          <div class="detail-field">
-            <label class="field-label">Monto</label>
-            <div class="field-value">
-              {{ formatCurrency(selectedReservation?.totalPrice || 0,
-                                selectedReservation?.currency || 'USD') }}
+          <!-- Información del Parking -->
+          <div class="detail-section">
+            <h3 class="section-title">Información del Parking</h3>
+            <div class="parking-detail-info">
+              <div class="parking-item">
+                <mat-icon class="detail-icon">local_parking</mat-icon>
+                <div class="parking-detail-text">
+                  <div class="parking-value">{{ selectedReservation.parkingName || 'N/A' }}</div>
+                </div>
+              </div>
+              <div class="parking-item">
+                <mat-icon class="detail-icon">location_on</mat-icon>
+                <div class="parking-detail-text">
+                  <div class="parking-value">Plaza {{ selectedReservation.space || 'N/A' }}</div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="detail-actions">
-          <button mat-flat-button
-                  color="accent"
-                  class="confirm-btn"
-                  *ngIf="canConfirm(selectedReservation?.status!)"
-                  (click)="onConfirmReservation(selectedReservation!, $event)">
-            Confirmar
-          </button>
+          <!-- Detalles de la Reserva -->
+          <div class="detail-section">
+            <h3 class="section-title">Detalles de la Reserva</h3>
+            <div class="reservation-details">
+              <div class="detail-item">
+                <mat-icon class="detail-icon">calendar_today</mat-icon>
+                <div class="detail-text">
+                  <div class="detail-value">{{ formatDate(selectedReservation.startTime) }}</div>
+                </div>
+              </div>
+              <div class="detail-item">
+                <mat-icon class="detail-icon">schedule</mat-icon>
+                <div class="detail-text">
+                  <div class="detail-value">
+                    {{ formatTimeRange(selectedReservation.startTime, selectedReservation.endTime) }}
+                    ({{ calculateDuration(selectedReservation.startTime, selectedReservation.endTime) }})
+                  </div>
+                </div>
+              </div>
+              <div class="detail-item">
+                <mat-icon class="detail-icon">payments</mat-icon>
+                <div class="detail-text">
+                  <div class="detail-value price-highlight">
+                    {{ formatCurrencySimple(selectedReservation.totalPrice, selectedReservation.currency) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <button mat-stroked-button
-                  class="cancel-btn"
-                  *ngIf="canCancel(selectedReservation?.status!)"
-                  (click)="onCancelReservation(selectedReservation!, $event)">
-            Cancelar
-          </button>
+          <!-- Action Buttons -->
+          <div class="detail-actions">
+            <button mat-flat-button
+                    class="action-btn edit-btn"
+                    *ngIf="canEdit(selectedReservation.status)">
+              <mat-icon>edit</mat-icon>
+              Editar Reserva
+            </button>
 
-          <button mat-button
-                  class="export-btn"
-                  (click)="exportSingleReservation(selectedReservation!)">
-            Exportar CSV
-          </button>
+            <button mat-stroked-button
+                    class="action-btn paid-btn"
+                    *ngIf="canMarkAsPaid(selectedReservation.status)"
+                    (click)="onMarkAsPaid(selectedReservation)">
+              <mat-icon>payment</mat-icon>
+              Marcar como Pagada
+            </button>
+
+            <button mat-stroked-button
+                    class="action-btn cancel-btn"
+                    *ngIf="canCancel(selectedReservation.status)"
+                    (click)="onCancelReservation(selectedReservation, $event)">
+              <mat-icon>cancel</mat-icon>
+              Cancelar Reserva
+            </button>
+          </div>
+
+          <!-- Metadata -->
+          <div class="detail-metadata">
+            <div class="metadata-item">Creada el {{ formatFullDate(selectedReservation.createdAt) }}</div>
+            <div class="metadata-item">Última actualización: {{ getTimeAgo(selectedReservation.updatedAt) }}</div>
+          </div>
+
         </div>
       </div>
     </div>
+
   </div>
 </div>
+
