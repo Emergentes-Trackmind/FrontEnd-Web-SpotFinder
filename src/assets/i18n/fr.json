@@ -21,6 +21,26 @@
     },
     "LOGOUT": "Cerrar Sesión"
   },
+  "DASHBOARD": {
+    "TITLE": "Tableau de Bord",
+    "SUBTITLE": "Vue d'ensemble de votre système de parking",
+    "WELCOME": "Bienvenue",
+    "STATS": {
+      "TOTAL_PARKINGS": "Total Parkings",
+      "ACTIVE_RESERVATIONS": "Réservations Actives",
+      "TOTAL_REVENUE": "Revenus Totaux",
+      "OCCUPANCY_RATE": "Taux d'Occupation"
+    },
+    "RECENT_ACTIVITY": "Activité Récente",
+    "QUICK_ACTIONS": "Actions Rapides",
+    "NO_DATA": "Aucune donnée disponible",
+    "ACTIONS": {
+      "REFRESH": "Actualiser les données",
+      "SEARCH": "Rechercher",
+      "NOTIFICATIONS": "Notifications",
+      "PROFILE": "Profil"
+    }
+  },
   "PROFILE": {
     "TITLE": "Mon Profil",
     "SUBTITLE": "Gérez vos informations personnelles et préférences",
@@ -198,35 +218,75 @@
     "CANCEL": "Annuler"
   },
   "PARKINGS": {
-    "TITLE": "Mis Parkings",
-    "SUBTITLE": "Gestiona tus estacionamientos",
-    "BUTTON": {
-      "NEW": "Nuevo Parking",
-      "DELETE_SELECTED": "Eliminar seleccionados",
-      "RETRY": "Reintentar",
-      "CLEAR_SEARCH": "Limpiar búsqueda",
-      "EXIT_SELECTION": "Salir selección"
+    "PAGE": {
+      "TITLE": "Mes Parkings",
+      "SUBTITLE": "Gérez et contrôlez tous vos parkings depuis un seul endroit"
     },
-    "SEARCH": { "PLACEHOLDER": "Buscar por nombre, dirección..." },
-    "SELECTION_MODE": { "ACTIVE": "Modo selección activo" },
-    "ITEMS": { "SINGULAR": "elemento", "PLURAL": "elementos" },
-    "LOADING": "Cargando parkings...",
-    "ERROR": { "TITLE": "Error", "DESCRIPTION": "Error al cargar tus parkings" },
-    "EMPTY": { "TITLE": "No hay parkings", "DESCRIPTION": "Aún no tienes parkings" },
-    "NO_RESULTS": { "TITLE": "Sin resultados", "DESCRIPTION": "No hay parkings que coincidan" },
-    "STATE": { "SELECTED": "Seleccionado", "NOT_SELECTED": "No seleccionado" }
+    "TITLE": "Mes Parkings",
+    "SUBTITLE": "Gérez vos parkings",
+    "BUTTON": "Créer un Parking",
+    "CREATE": {
+      "TITLE": "Créer un Nouveau Parking",
+      "SUBTITLE": "Complétez les informations de votre parking",
+      "PROGRESS": {
+        "TITLE": "Étape {{current}} sur {{total}}",
+        "STEP_OF": "Étape {{current}} sur {{total}}"
+      },
+      "BUTTON": {
+        "PREVIOUS": "Précédent",
+        "NEXT": "Suivant",
+        "CANCEL": "Annuler",
+        "CREATE": "Créer un Parking"
+      }
+    },
+    "ACTIONS": {
+      "NEW": "Nouveau Parking",
+      "DELETE_SELECTED": "Supprimer la sélection",
+      "RETRY": "Réessayer",
+      "CLEAR_SEARCH": "Effacer la recherche",
+      "EXIT_SELECTION": "Quitter la sélection"
+    },
+    "SEARCH": { "PLACEHOLDER": "Rechercher par nom, adresse..." },
+    "SELECTION_MODE": { "ACTIVE": "Mode sélection actif" },
+    "ITEMS": { "SINGULAR": "élément", "PLURAL": "éléments" },
+    "LOADING": "Chargement des parkings...",
+    "ERROR": { "TITLE": "Erreur", "DESCRIPTION": "Erreur lors du chargement de vos parkings" },
+    "EMPTY": { "TITLE": "Aucun parking", "DESCRIPTION": "Vous n'avez pas encore de parkings" },
+    "NO_RESULTS": { "TITLE": "Aucun résultat", "DESCRIPTION": "Aucun parking ne correspond" },
+    "STATE": { "SELECTED": "Sélectionné", "NOT_SELECTED": "Non sélectionné" }
   },
   "PARKING_STEPS": {
+    "BASIC": {
+      "TITLE": "Informations de Base",
+      "SUBTITLE": "Données fondamentales de votre parking",
+      "DESCRIPTION": "Complétez les données de base pour identifier votre parking"
+    },
+    "LOCATION": {
+      "TITLE": "Localisation",
+      "SUBTITLE": "Où se trouve votre parking",
+      "DESCRIPTION": "Définissez l'emplacement exact de votre parking"
+    },
+    "FEATURES": {
+      "TITLE": "Caractéristiques",
+      "SUBTITLE": "Services et commodités",
+      "DESCRIPTION": "Sélectionnez les caractéristiques et services disponibles",
+      "NO_FEATURES": "Aucune caractéristique sélectionnée"
+    },
+    "PRICING": {
+      "TITLE": "Tarifs et Horaires",
+      "SUBTITLE": "Tarifs et disponibilité",
+      "DESCRIPTION": "Configurez les tarifs et les heures d'ouverture"
+    },
     "REVIEW": {
-      "TITLE": "Revisión del Parking",
-      "SUBTITLE": "Verifica y confirma la información antes de crear",
-      "EDIT": "Editar",
+      "TITLE": "Révision du Parking",
+      "SUBTITLE": "Vérifiez et confirmez les informations avant de créer",
+      "EDIT": "Modifier",
       "SECTIONS": {
-        "BASIC": { "TITLE": "Información Básica" },
-        "IOT": { "TITLE": "Dispositivos IoT", "ASSIGNED_TITLE": "Dispositivos asignados", "SPOT_LINE": "Plaza {{spot}} — Dispositivo {{device}}", "NO_DEVICES": "No hay dispositivos asignados" },
-        "LOCATION": { "TITLE": "Ubicación" },
-        "FEATURES": { "TITLE": "Características", "NO_FEATURES": "No se han seleccionado características" },
-        "PRICING": { "TITLE": "Precios y Horarios" }
+        "BASIC": { "TITLE": "Informations de Base" },
+        "IOT": { "TITLE": "Appareils IoT", "ASSIGNED_TITLE": "Appareils assignés", "SPOT_LINE": "Place {{spot}} — Appareil {{device}}", "NO_DEVICES": "Aucun appareil assigné" },
+        "LOCATION": { "TITLE": "Localisation" },
+        "FEATURES": { "TITLE": "Caractéristiques", "NO_FEATURES": "Aucune caractéristique sélectionnée" },
+        "PRICING": { "TITLE": "Tarifs et Horaires" }
       },
       "LABELS": {
         "NAME": "Nombre",
@@ -299,5 +359,46 @@
       "RESET": "Restablecer",
       "MESSAGES": { "SUCCESS": "Contraseña restablecida exitosamente", "ERROR": "Error al restablecer contraseña" }
     }
+  },
+  "BILLING": {
+    "PAGE": {
+      "TITLE": "Abonnement et Facturation",
+      "SUBTITLE": "Gérez votre plan et vos méthodes de paiement"
+    },
+    "LOADING": "Chargement des informations de facturation...",
+    "TAB": {
+      "PLANS": "Plans",
+      "BILLING": "Facturation"
+    },
+    "PLANS": {
+      "INFO": "Tous les plans incluent un support prioritaire et des mises à jour gratuites. Vous pouvez changer de plan à tout moment."
+    }
+  },
+  "ANALYTICS": {
+    "PAGE": {
+      "TITLE": "Analytiques du Parking",
+      "SUBTITLE": "Données et métriques de performance"
+    },
+    "LOADING": "Chargement des analytiques...",
+    "BUTTON": {
+      "BACK_TO_EDIT": "Retour à l'Édition",
+      "RETRY": "Réessayer"
+    },
+    "ERROR": {
+      "TITLE": "Erreur lors du chargement des analytiques",
+      "MESSAGE": "Impossible de charger les données analytiques."
+    },
+    "SECTION": {
+      "MAIN_METRICS": "Métriques Principales",
+      "HOURLY_OCCUPATION": "Occupation par Heure",
+      "RECENT_ACTIVITY": "Activité Récente"
+    },
+    "KPI": {
+      "AVG_OCCUPATION": "Occupation Moyenne",
+      "MONTHLY_REVENUE": "Revenus Mensuels",
+      "UNIQUE_USERS": "Utilisateurs Uniques",
+      "AVG_TIME": "Temps Moyen"
+    },
+    "NO_RECENT_ACTIVITY": "Aucune activité récente"
   }
 }

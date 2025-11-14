@@ -1,18 +1,18 @@
 <div class="dashboard-container">
   <!-- Header -->
   <div class="dashboard-header">
-    <h1 class="page-title">Dashboard</h1>
+    <h1 class="page-title">{{ 'DASHBOARD.TITLE' | translate }}</h1>
     <div class="header-actions">
-      <button mat-icon-button (click)="onRefreshData()" matTooltip="Actualizar datos">
+      <button mat-icon-button (click)="onRefreshData()" [matTooltip]="'DASHBOARD.ACTIONS.REFRESH' | translate">
         <mat-icon>refresh</mat-icon>
       </button>
-      <button mat-icon-button (click)="onSearch()" matTooltip="Buscar">
+      <button mat-icon-button (click)="onSearch()" [matTooltip]="'DASHBOARD.ACTIONS.SEARCH' | translate">
         <mat-icon>search</mat-icon>
       </button>
-      <button mat-icon-button (click)="onNotifications()" matTooltip="Notificaciones" matBadge="3" matBadgeColor="warn">
+      <button mat-icon-button (click)="onNotifications()" [matTooltip]="'DASHBOARD.ACTIONS.NOTIFICATIONS' | translate" matBadge="3" matBadgeColor="warn">
         <mat-icon>notifications</mat-icon>
       </button>
-      <button mat-icon-button (click)="onProfile()" matTooltip="Perfil">
+      <button mat-icon-button (click)="onProfile()" [matTooltip]="'DASHBOARD.ACTIONS.PROFILE' | translate">
         <mat-icon>account_circle</mat-icon>
       </button>
     </div>

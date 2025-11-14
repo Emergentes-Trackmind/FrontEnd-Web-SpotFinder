@@ -33,11 +33,22 @@
     },
     "RECENT_ACTIVITY": "Actividad Reciente",
     "QUICK_ACTIONS": "Acciones Rápidas",
-    "NO_DATA": "No hay datos disponibles"
+    "NO_DATA": "No hay datos disponibles",
+    "ACTIONS": {
+      "REFRESH": "Actualizar datos",
+      "SEARCH": "Buscar",
+      "NOTIFICATIONS": "Notificaciones",
+      "PROFILE": "Perfil"
+    }
   },
   "PARKINGS": {
+    "PAGE": {
+      "TITLE": "Mis Parkings",
+      "SUBTITLE": "Gestiona y controla todos tus estacionamientos desde un solo lugar"
+    },
     "TITLE": "Mis Parkings",
     "SUBTITLE": "Gestiona tus estacionamientos",
+    "BUTTON": "Crear Parking",
     "NEW_PARKING": "Nuevo Parking",
     "SEARCH": "Buscar parking...",
     "FILTERS": {
@@ -67,6 +78,8 @@
       "NO_PARKINGS": "No tienes parkings registrados",
       "CREATE_FIRST": "Crea tu primer parking",
       "DELETED": "Parking eliminado exitosamente",
+      "PROGRESS": "Paso {{current}} de {{total}}",
+      "BUTTON": "Crear Parking",
       "ERROR_DELETE": "Error al eliminar parking"
     },
     "CREATE": {
@@ -440,6 +453,27 @@
     "ERROR": "Ha ocurrido un error",
     "SUCCESS": "Operación exitosa",
     "CONFIRM": "Confirmar",
+    "BASIC": {
+      "TITLE": "Información Básica",
+      "SUBTITLE": "Datos fundamentales de tu parking",
+      "DESCRIPTION": "Completa los datos básicos para identificar tu parking"
+    },
+    "LOCATION": {
+      "TITLE": "Ubicación",
+      "SUBTITLE": "Dónde se encuentra tu parking",
+      "DESCRIPTION": "Establece la ubicación exacta de tu estacionamiento"
+    },
+    "FEATURES": {
+      "TITLE": "Características",
+      "SUBTITLE": "Servicios y comodidades",
+      "DESCRIPTION": "Selecciona las características y servicios disponibles",
+      "NO_FEATURES": "No se han seleccionado características"
+    },
+    "PRICING": {
+      "TITLE": "Precios y Horarios",
+      "SUBTITLE": "Tarifas y disponibilidad",
+      "DESCRIPTION": "Configura las tarifas y horarios de operación"
+    },
     "BACK": "Volver",
     "NEXT": "Siguiente",
     "PREVIOUS": "Anterior",
@@ -556,5 +590,46 @@
     "PUBLICO": "Público",
     "PRIVADO": "Privado",
     "RESIDENCIAL": "Residencial"
+  },
+  "BILLING": {
+    "PAGE": {
+      "TITLE": "Suscripción y Facturación",
+      "SUBTITLE": "Gestiona tu plan y métodos de pago"
+    },
+    "LOADING": "Cargando información de facturación...",
+    "TAB": {
+      "PLANS": "Planes",
+      "BILLING": "Facturación"
+    },
+    "PLANS": {
+      "INFO": "Todos los planes incluyen soporte prioritario y actualizaciones gratuitas. Puedes cambiar de plan en cualquier momento."
+    }
+  },
+  "ANALYTICS": {
+    "PAGE": {
+      "TITLE": "Analíticas del Parking",
+      "SUBTITLE": "Datos y métricas de rendimiento"
+    },
+    "LOADING": "Cargando analíticas...",
+    "BUTTON": {
+      "BACK_TO_EDIT": "Volver a Editar",
+      "RETRY": "Reintentar"
+    },
+    "ERROR": {
+      "TITLE": "Error al cargar analíticas",
+      "MESSAGE": "No se pudieron cargar los datos de analíticas."
+    },
+    "SECTION": {
+      "MAIN_METRICS": "Métricas Principales",
+      "HOURLY_OCCUPATION": "Ocupación por Hora",
+      "RECENT_ACTIVITY": "Actividad Reciente"
+    },
+    "KPI": {
+      "AVG_OCCUPATION": "Ocupación Promedio",
+      "MONTHLY_REVENUE": "Ingresos Mensuales",
+      "UNIQUE_USERS": "Usuarios Únicos",
+      "AVG_TIME": "Tiempo Promedio"
+    },
+    "NO_RECENT_ACTIVITY": "No hay actividad reciente"
   }
 }

@@ -32,7 +32,7 @@ import { IotDevice } from '../../../domain/entities/iot-device.entity';
           <th mat-header-cell *matHeaderCellDef>Dispositivo</th>
           <td mat-cell *matCellDef="let device">
             <div class="device-info">
-              <strong>{{ device.model }}</strong>
+              <strong>{{ device.model || device.name || 'Sin nombre' }}</strong>
               <small>{{ device.serialNumber }}</small>
             </div>
           </td>
@@ -68,7 +68,7 @@ import { IotDevice } from '../../../domain/entities/iot-device.entity';
         <ng-container matColumnDef="status">
           <th mat-header-cell *matHeaderCellDef>Estado</th>
           <td mat-cell *matCellDef="let device">
-            <div class="status-badge" [class]="'status-' + device.status">
+            <div class="status-badge" [class]="'status-' + getNormalizedStatus(device.status)">
               <span class="status-dot"></span>
               {{ getStatusLabel(device.status) }}
             </div>
@@ -224,6 +224,15 @@ import { IotDevice } from '../../../domain/entities/iot-device.entity';
       }
     }
 
+    .status-available {
+      background-color: #e0e7ff;
+      color: #3730a3;
+
+      .status-dot {
+        background-color: #6366f1;
+      }
+    }
+
     .battery-container {
       display: flex;
       align-items: center;
@@ -290,10 +299,17 @@ export class DeviceTableComponent {
     return labels[type] || type;
   }
 
+  getNormalizedStatus(status: string): string {
+    // Convertir 'available' a 'offline' para compatibilidad
+    if (status === 'available') return 'offline';
+    return status;
+  }
+
   getStatusLabel(status: string): string {
     const labels: Record<string, string> = {
       online: 'Online',
       offline: 'Offline',
+      available: 'Disponible',
       maintenance: 'Mantenimiento'
     };
     return labels[status] || status;

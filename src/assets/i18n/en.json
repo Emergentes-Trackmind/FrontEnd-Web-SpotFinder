@@ -123,6 +123,26 @@
     },
     "LOGOUT": "Log Out"
   },
+  "DASHBOARD": {
+    "TITLE": "Dashboard",
+    "SUBTITLE": "Overview of your parking system",
+    "WELCOME": "Welcome",
+    "STATS": {
+      "TOTAL_PARKINGS": "Total Parkings",
+      "ACTIVE_RESERVATIONS": "Active Reservations",
+      "TOTAL_REVENUE": "Total Revenue",
+      "OCCUPANCY_RATE": "Occupancy Rate"
+    },
+    "RECENT_ACTIVITY": "Recent Activity",
+    "QUICK_ACTIONS": "Quick Actions",
+    "NO_DATA": "No data available",
+    "ACTIONS": {
+      "REFRESH": "Refresh data",
+      "SEARCH": "Search",
+      "NOTIFICATIONS": "Notifications",
+      "PROFILE": "Profile"
+    }
+  },
   "RESERVATIONS": {
     "TITLE": "Reservations",
     "SUBTITLE": "Manage your parking reservations",
@@ -144,9 +164,27 @@
     "MESSAGES": { "NO_RESERVATIONS": "No reservations", "CONFIRMED": "Reservation confirmed", "CANCELLED": "Reservation cancelled", "COMPLETED": "Reservation completed", "ERROR": "Error processing reservation" }
   },
   "PARKINGS": {
+    "PAGE": {
+      "TITLE": "My Parkings",
+      "SUBTITLE": "Manage and control all your parking lots from a single place"
+    },
     "TITLE": "My Parkings",
     "SUBTITLE": "Manage your parking locations",
     "NEW_PARKING": "New Parking",
+    "CREATE": {
+      "TITLE": "Create New Parking",
+      "SUBTITLE": "Complete your parking information",
+      "PROGRESS": {
+        "TITLE": "Step {{current}} of {{total}}",
+        "STEP_OF": "Step {{current}} of {{total}}"
+      },
+      "BUTTON": {
+        "PREVIOUS": "Previous",
+        "NEXT": "Next",
+        "CANCEL": "Cancel",
+        "CREATE": "Create Parking"
+      }
+    },
     "FILTERS": {
       "ALL": "All",
       "ACTIVE": "Active",
@@ -209,6 +247,27 @@
     },
     "STATE": {
       "SELECTED": "Selected",
+    "BASIC": {
+      "TITLE": "Basic Information",
+      "SUBTITLE": "Fundamental data about your parking",
+      "DESCRIPTION": "Complete the basic data to identify your parking"
+    },
+    "LOCATION": {
+      "TITLE": "Location",
+      "SUBTITLE": "Where your parking is located",
+      "DESCRIPTION": "Set the exact location of your parking lot"
+    },
+    "FEATURES": {
+      "TITLE": "Features",
+      "SUBTITLE": "Services and amenities",
+      "DESCRIPTION": "Select available features and services",
+      "NO_FEATURES": "No features selected"
+    },
+    "PRICING": {
+      "TITLE": "Pricing and Hours",
+      "SUBTITLE": "Rates and availability",
+      "DESCRIPTION": "Configure rates and operating hours"
+    },
       "NOT_SELECTED": "Not selected"
     }
   },
@@ -304,5 +363,46 @@
       "RESET": "Reset",
       "MESSAGES": { "SUCCESS": "Password reset successfully", "ERROR": "Error resetting password" }
     }
+  },
+  "BILLING": {
+    "PAGE": {
+      "TITLE": "Subscription & Billing",
+      "SUBTITLE": "Manage your plan and payment methods"
+    },
+    "LOADING": "Loading billing information...",
+    "TAB": {
+      "PLANS": "Plans",
+      "BILLING": "Billing"
+    },
+    "PLANS": {
+      "INFO": "All plans include priority support and free updates. You can change your plan at any time."
+    }
+  },
+  "ANALYTICS": {
+    "PAGE": {
+      "TITLE": "Parking Analytics",
+      "SUBTITLE": "Performance data and metrics"
+    },
+    "LOADING": "Loading analytics...",
+    "BUTTON": {
+      "BACK_TO_EDIT": "Back to Edit",
+      "RETRY": "Retry"
+    },
+    "ERROR": {
+      "TITLE": "Error loading analytics",
+      "MESSAGE": "Could not load analytics data."
+    },
+    "SECTION": {
+      "MAIN_METRICS": "Main Metrics",
+      "HOURLY_OCCUPATION": "Hourly Occupation",
+      "RECENT_ACTIVITY": "Recent Activity"
+    },
+    "KPI": {
+      "AVG_OCCUPATION": "Average Occupation",
+      "MONTHLY_REVENUE": "Monthly Revenue",
+      "UNIQUE_USERS": "Unique Users",
+      "AVG_TIME": "Average Time"
+    },
+    "NO_RECENT_ACTIVITY": "No recent activity"
   }
 }

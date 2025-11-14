@@ -25,8 +25,8 @@ function verifyToken(token) {
 module.exports = (req, res, next) => {
   const db = req.app.db;
 
-  // GET /api/iot/devices/kpis - KPIs de dispositivos IoT
-  if (req.method === 'GET' && req.path === '/api/iot/devices/kpis') {
+  // GET /api/iot/devices/kpis O /iot/devices/kpis - KPIs de dispositivos IoT
+  if (req.method === 'GET' && (req.path === '/api/iot/devices/kpis' || req.path === '/iot/devices/kpis')) {
     const token = extractToken(req);
     if (!token) {
       return res.status(401).json({ error: 'No autorizado' });
@@ -44,9 +44,13 @@ module.exports = (req, res, next) => {
 
     const parkingIds = userParkings.map(p => p.id);
 
-    // Obtener dispositivos de los parkings del usuario
+    // 🔧 SOLUCIÓN: Obtener dispositivos que pertenecen al usuario (propios + en parkings)
     const userDevices = db.get('iotDevices')
-      .filter(d => parkingIds.includes(d.parkingId))
+      .filter(d => {
+        const belongsToUser = d.ownerId === decoded.userId || d.ownerId === decoded.userId.toString();
+        const belongsToUserParking = d.parkingId && parkingIds.includes(d.parkingId);
+        return belongsToUser || belongsToUserParking;
+      })
       .value();
 
     const totalDevices = userDevices.length;
@@ -71,11 +75,20 @@ module.exports = (req, res, next) => {
       lowBatteryCount
     };
 
+    // Deshabilitar caché
+    res.set({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, private',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    });
+
     return res.status(200).json(kpis);
   }
 
-  // GET /api/iot/devices - Listar dispositivos con filtros
-  if (req.method === 'GET' && req.path === '/api/iot/devices') {
+  // GET /api/iot/devices O /iot/devices - Listar dispositivos con filtros
+  if (req.method === 'GET' && (req.path === '/api/iot/devices' || req.path === '/iot/devices')) {
+    console.log('🔵 [IOT] GET', req.path, 'interceptado por middleware personalizado');
+
     const token = extractToken(req);
     if (!token) {
       return res.status(401).json({ error: 'No autorizado' });
@@ -96,9 +109,19 @@ module.exports = (req, res, next) => {
     // Filtros de query params
     const { type, status, parking_id, q, page = 1, size = 10 } = req.query;
 
+    // 🔧 SOLUCIÓN: Incluir dispositivos que pertenecen al usuario directamente O tienen un parkingId del usuario
     let devices = db.get('iotDevices')
-      .filter(d => parkingIds.includes(d.parkingId))
+      .filter(d => {
+        // Dispositivo pertenece al usuario directamente (por ownerId)
+        const belongsToUser = d.ownerId === decoded.userId || d.ownerId === decoded.userId.toString();
+        // O el dispositivo está en un parking del usuario
+        const belongsToUserParking = d.parkingId && parkingIds.includes(d.parkingId);
+
+        return belongsToUser || belongsToUserParking;
+      })
       .value();
+
+    console.log(`📊 [IOT] Usuario ${decoded.userId} tiene ${devices.length} dispositivos (propios + en parkings)`);
 
     // Aplicar filtros
     if (type && type !== 'all') {
@@ -115,13 +138,14 @@ module.exports = (req, res, next) => {
 
     if (q) {
       const query = q.toLowerCase();
-      devices = devices.filter(d =>
-        d.model.toLowerCase().includes(query) ||
-        d.serialNumber.toLowerCase().includes(query)
-      );
+      devices = devices.filter(d => {
+        const model = (d.model || d.name || '').toLowerCase();
+        const serial = (d.serialNumber || '').toLowerCase();
+        return model.includes(query) || serial.includes(query);
+      });
     }
 
-    // Enriquecer con datos relacionados
+    // Enriquecer con datos relacionados y normalizar campos
     devices = devices.map(device => {
       const parking = userParkings.find(p => p.id === device.parkingId);
       const spot = device.parkingSpotId
@@ -130,8 +154,13 @@ module.exports = (req, res, next) => {
 
       return {
         ...device,
-        parkingName: parking?.name || 'N/A',
-        parkingSpotLabel: spot?.label || null
+        // 🔧 Normalizar: Si tiene 'name' pero no 'model', copiar name a model
+        model: device.model || device.name || 'Sin modelo',
+        // Agregar parkingName siempre (incluso si es null)
+        parkingName: parking?.name || 'Sin asignar',
+        parkingSpotLabel: spot?.label || null,
+        // Normalizar lastCheckIn a lastCheckIn
+        lastCheckIn: device.lastCheckIn || device.lastSeen || new Date().toISOString()
       };
     });
 
@@ -143,17 +172,32 @@ module.exports = (req, res, next) => {
     const start = (pageNum - 1) * pageSize;
     const paginatedDevices = devices.slice(start, start + pageSize);
 
-    return res.status(200).json({
+    const response = {
       data: paginatedDevices,
       total,
       page: pageNum,
       size: pageSize,
       totalPages
+    };
+
+    console.log('✅ [IOT] Respuesta GET /api/iot/devices:', {
+      total: response.total,
+      dataLength: response.data?.length,
+      page: response.page
     });
+
+    // 🔧 SOLUCIÓN: Deshabilitar caché para asegurar que se devuelve la respuesta completa
+    res.set({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, private',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    });
+
+    return res.status(200).json(response);
   }
 
-  // GET /api/iot/devices/:id - Obtener dispositivo por ID
-  if (req.method === 'GET' && req.path.match(/^\/api\/iot\/devices\/[^/]+$/)) {
+  // GET /api/iot/devices/:id O /iot/devices/:id - Obtener dispositivo por ID
+  if (req.method === 'GET' && (req.path.match(/^\/api\/iot\/devices\/[^/]+$/) || req.path.match(/^\/iot\/devices\/[^/]+$/))) {
     const token = extractToken(req);
     if (!token) {
       return res.status(401).json({ error: 'No autorizado' });
@@ -171,28 +215,38 @@ module.exports = (req, res, next) => {
       return res.status(404).json({ error: 'Dispositivo no encontrado' });
     }
 
-    // Verificar que el parking pertenezca al usuario
-    const parking = db.get('parkingProfiles').find({ id: device.parkingId }).value();
-    if (!parking || (parking.ownerId !== decoded.userId && parking.ownerId !== decoded.userId.toString())) {
+    // 🔧 SOLUCIÓN: Verificar permisos por ownerId O por parkingId
+    const deviceBelongsToUser = device.ownerId === decoded.userId || device.ownerId === decoded.userId.toString();
+
+    let hasPermission = deviceBelongsToUser;
+
+    // Si no es dueño directo, verificar si tiene acceso por parking
+    if (!hasPermission && device.parkingId) {
+      const parking = db.get('parkingProfiles').find({ id: device.parkingId }).value();
+      hasPermission = parking && (parking.ownerId === decoded.userId || parking.ownerId === decoded.userId.toString());
+    }
+
+    if (!hasPermission) {
       return res.status(403).json({ error: 'Acceso denegado' });
     }
 
     // Enriquecer con datos relacionados
+    const parking = device.parkingId ? db.get('parkingProfiles').find({ id: device.parkingId }).value() : null;
     const spot = device.parkingSpotId
       ? db.get('parkingSpots').find({ id: device.parkingSpotId }).value()
       : null;
 
     const enrichedDevice = {
       ...device,
-      parkingName: parking.name,
+      parkingName: parking?.name || 'Sin asignar',
       parkingSpotLabel: spot?.label || null
     };
 
     return res.status(200).json(enrichedDevice);
   }
 
-  // POST /api/iot/devices - Crear dispositivo
-  if (req.method === 'POST' && req.path === '/api/iot/devices') {
+  // POST /api/iot/devices O /iot/devices - Crear dispositivo
+  if (req.method === 'POST' && (req.path === '/api/iot/devices' || req.path === '/iot/devices')) {
     const token = extractToken(req);
     if (!token) {
       return res.status(401).json({ error: 'No autorizado' });
@@ -205,9 +259,10 @@ module.exports = (req, res, next) => {
 
     const { serialNumber, model, type, parkingId, parkingSpotId, status = 'offline' } = req.body;
 
-    // Validaciones
-    if (!serialNumber || !model || !type || !parkingId) {
-      return res.status(400).json({ error: 'Campos requeridos: serialNumber, model, type, parkingId' });
+    // 🔧 SOLUCIÓN: parkingId ahora es opcional - se puede crear dispositivo sin parking asignado
+    // Validaciones básicas
+    if (!serialNumber || !model || !type) {
+      return res.status(400).json({ error: 'Campos requeridos: serialNumber, model, type' });
     }
 
     // Verificar que el serial sea único
@@ -216,24 +271,27 @@ module.exports = (req, res, next) => {
       return res.status(409).json({ error: 'Serial number ya existe' });
     }
 
-    // Verificar que el parking pertenezca al usuario
-    const parking = db.get('parkingProfiles').find({ id: parkingId }).value();
-    if (!parking || (parking.ownerId !== decoded.userId && parking.ownerId !== decoded.userId.toString())) {
-      return res.status(403).json({ error: 'Parking no pertenece al usuario' });
-    }
+    // Si se proporciona parkingId, verificar que pertenezca al usuario
+    if (parkingId) {
+      const parking = db.get('parkingProfiles').find({ id: parkingId }).value();
+      if (!parking || (parking.ownerId !== decoded.userId && parking.ownerId !== decoded.userId.toString())) {
+        return res.status(403).json({ error: 'Parking no pertenece al usuario' });
+      }
 
-    // Si hay parkingSpotId, verificar que pertenezca al mismo parking
-    if (parkingSpotId) {
-      const spot = db.get('parkingSpots').find({ id: parkingSpotId }).value();
-      if (!spot || spot.parkingId !== parkingId) {
-        return res.status(400).json({ error: 'Parking spot no pertenece al parking especificado' });
+      // Si hay parkingSpotId, verificar que pertenezca al mismo parking
+      if (parkingSpotId) {
+        const spot = db.get('parkingSpots').find({ id: parkingSpotId }).value();
+        if (!spot || spot.parkingId !== parkingId) {
+          return res.status(400).json({ error: 'Parking spot no pertenece al parking especificado' });
+        }
       }
     }
 
-    // Crear dispositivo
+    // Crear dispositivo con ownerId para rastrear el propietario
     const newDevice = {
       id: `dev-${Date.now()}`,
-      parkingId,
+      ownerId: decoded.userId, // 🔧 CRÍTICO: Agregar ownerId para rastrear propietario
+      parkingId: parkingId || null, // Puede ser null si no está asignado a parking
       parkingSpotId: parkingSpotId || null,
       serialNumber,
       model,
@@ -242,7 +300,7 @@ module.exports = (req, res, next) => {
       battery: 100,
       lastCheckIn: new Date().toISOString(),
       deviceToken: `token_${serialNumber}_${Date.now()}`,
-      mqttTopic: `iot/${parkingId}/${serialNumber}/telemetry`,
+      mqttTopic: parkingId ? `iot/${parkingId}/${serialNumber}/telemetry` : `iot/${decoded.userId}/${serialNumber}/telemetry`,
       webhookEndpoint: `http://localhost:3001/api/iot/devices/${serialNumber}/telemetry`,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
@@ -250,11 +308,12 @@ module.exports = (req, res, next) => {
 
     db.get('iotDevices').push(newDevice).write();
 
+    console.log(`✅ [IOT] Dispositivo creado para usuario ${decoded.userId}:`, newDevice.id);
     return res.status(201).json(newDevice);
   }
 
-  // PUT /api/iot/devices/:id - Actualizar dispositivo
-  if (req.method === 'PUT' && req.path.match(/^\/api\/iot\/devices\/[^/]+$/)) {
+  // PUT /api/iot/devices/:id O /iot/devices/:id - Actualizar dispositivo
+  if (req.method === 'PUT' && (req.path.match(/^\/api\/iot\/devices\/[^/]+$/) || req.path.match(/^\/iot\/devices\/[^/]+$/))) {
     const token = extractToken(req);
     if (!token) {
       return res.status(401).json({ error: 'No autorizado' });
@@ -272,9 +331,17 @@ module.exports = (req, res, next) => {
       return res.status(404).json({ error: 'Dispositivo no encontrado' });
     }
 
-    // Verificar permisos
-    const parking = db.get('parkingProfiles').find({ id: device.parkingId }).value();
-    if (!parking || (parking.ownerId !== decoded.userId && parking.ownerId !== decoded.userId.toString())) {
+    // 🔧 SOLUCIÓN: Verificar permisos por ownerId O por parkingId
+    const deviceBelongsToUser = device.ownerId === decoded.userId || device.ownerId === decoded.userId.toString();
+
+    let hasPermission = deviceBelongsToUser;
+
+    if (!hasPermission && device.parkingId) {
+      const parking = db.get('parkingProfiles').find({ id: device.parkingId }).value();
+      hasPermission = parking && (parking.ownerId === decoded.userId || parking.ownerId === decoded.userId.toString());
+    }
+
+    if (!hasPermission) {
       return res.status(403).json({ error: 'Acceso denegado' });
     }
 
@@ -302,8 +369,8 @@ module.exports = (req, res, next) => {
     return res.status(200).json(updatedDevice);
   }
 
-  // DELETE /api/iot/devices/:id - Eliminar dispositivo
-  if (req.method === 'DELETE' && req.path.match(/^\/api\/iot\/devices\/[^/]+$/)) {
+  // DELETE /api/iot/devices/:id O /iot/devices/:id - Eliminar dispositivo
+  if (req.method === 'DELETE' && (req.path.match(/^\/api\/iot\/devices\/[^/]+$/) || req.path.match(/^\/iot\/devices\/[^/]+$/))) {
     const token = extractToken(req);
     if (!token) {
       return res.status(401).json({ error: 'No autorizado' });
@@ -321,14 +388,23 @@ module.exports = (req, res, next) => {
       return res.status(404).json({ error: 'Dispositivo no encontrado' });
     }
 
-    // Verificar permisos
-    const parking = db.get('parkingProfiles').find({ id: device.parkingId }).value();
-    if (!parking || (parking.ownerId !== decoded.userId && parking.ownerId !== decoded.userId.toString())) {
+    // 🔧 SOLUCIÓN: Verificar permisos por ownerId O por parkingId
+    const deviceBelongsToUser = device.ownerId === decoded.userId || device.ownerId === decoded.userId.toString();
+
+    let hasPermission = deviceBelongsToUser;
+
+    if (!hasPermission && device.parkingId) {
+      const parking = db.get('parkingProfiles').find({ id: device.parkingId }).value();
+      hasPermission = parking && (parking.ownerId === decoded.userId || parking.ownerId === decoded.userId.toString());
+    }
+
+    if (!hasPermission) {
       return res.status(403).json({ error: 'Acceso denegado' });
     }
 
     db.get('iotDevices').remove({ id: deviceId }).write();
 
+    console.log(`✅ [IOT] Dispositivo eliminado: ${deviceId}`);
     return res.status(204).send();
   }
 

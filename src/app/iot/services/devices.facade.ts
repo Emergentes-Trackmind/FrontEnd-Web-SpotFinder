@@ -46,7 +46,10 @@ export class DevicesFacade {
     return this.devicesPort.getDevices(finalFilters).pipe(
       tap((response) => {
         console.log('✅ [DevicesFacade] Dispositivos cargados:', response);
-        this.devices.set(response.data || []);
+        // 🔧 Manejar tanto Array directo como objeto paginado
+        const devicesArray = Array.isArray(response) ? response : (response.data || []);
+        this.devices.set(devicesArray);
+        console.log('✅ [DevicesFacade] Signal actualizado con', devicesArray.length, 'dispositivos');
         this.loading.set(false);
       }),
       catchError((error) => {

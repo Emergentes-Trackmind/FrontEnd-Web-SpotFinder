@@ -224,9 +224,7 @@ export class DevicesDashboardComponent implements OnInit {
   selectedParking: any = 'all';
 
   ngOnInit(): void {
-    this.loadData();
-
-    // Cargar información de límites
+    // 🔧 SOLUCIÓN: Primero cargar límites, DESPUÉS cargar dispositivos
     console.log('🔄 [DevicesDashboard] Cargando límites...');
     this.limitsService.load().subscribe({
       next: () => {
@@ -235,9 +233,14 @@ export class DevicesDashboardComponent implements OnInit {
           limitsInfo: this.limitsService.limitsInfo(),
           tooltip: this.addDeviceTooltip
         });
+
+        // AHORA sí cargar los datos (después de cargar límites)
+        this.loadData();
       },
       error: (error) => {
         console.error('❌ [DevicesDashboard] Error cargando límites:', error);
+        // Intentar cargar datos de todas formas
+        this.loadData();
       }
     });
   }
@@ -249,25 +252,47 @@ export class DevicesDashboardComponent implements OnInit {
       }
     });
 
+    console.log('🔄 [DevicesDashboard] Iniciando carga de dispositivos...');
     this.facade.loadDevices().subscribe({
       next: (paginatedDevices) => {
+        console.log('📥 [DevicesDashboard] Respuesta recibida:', paginatedDevices);
+
         if (!paginatedDevices) {
           console.warn('⚠️ [DevicesDashboard] paginatedDevices es undefined');
           return;
         }
 
-        console.log('📊 [DevicesDashboard] Dispositivos cargados:', {
-          total: paginatedDevices.total || 0,
-          data: paginatedDevices.data?.length || 0
+        // 🔧 MANEJO: Si llega un Array directo en lugar de objeto paginado
+        let devicesArray: any[];
+        let totalDevices: number;
+
+        if (Array.isArray(paginatedDevices)) {
+          console.warn('⚠️ [DevicesDashboard] Respuesta es Array directo (middleware no se ejecutó)');
+          devicesArray = paginatedDevices;
+          totalDevices = paginatedDevices.length;
+        } else {
+          console.log('✅ [DevicesDashboard] Respuesta es objeto paginado correcto');
+          devicesArray = paginatedDevices.data || [];
+          totalDevices = paginatedDevices.total || 0;
+        }
+
+        console.log('📊 [DevicesDashboard] Dispositivos procesados:', {
+          total: totalDevices,
+          data: devicesArray.length,
+          devices: devicesArray
         });
 
         // Actualizar el conteo de dispositivos IoT en el servicio de límites
-        this.limitsService.updateIotCount(paginatedDevices.total || 0);
+        console.log(`🔢 [DevicesDashboard] Actualizando conteo IoT a: ${totalDevices}`);
+        this.limitsService.updateIotCount(totalDevices);
 
-        console.log('✅ [DevicesDashboard] Conteo IoT actualizado. Nuevo estado:', {
-          canCreate: this.canCreateDevice,
-          limitsInfo: this.limitsService.limitsInfo()
-        });
+        // Esperar un tick para que el computed se actualice
+        setTimeout(() => {
+          console.log('✅ [DevicesDashboard] Conteo IoT actualizado. Nuevo estado:', {
+            canCreate: this.canCreateDevice,
+            limitsInfo: this.limitsService.limitsInfo()
+          });
+        }, 100);
       },
       error: (err) => {
         console.error('❌ [DevicesDashboard] Error cargando dispositivos:', err);

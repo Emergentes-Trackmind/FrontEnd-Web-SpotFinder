@@ -2,29 +2,29 @@
   <!-- Header -->
   <div class="header">
     <div class="title-section">
-      <h1 class="page-title">Analíticas del Parking</h1>
-      <p class="page-subtitle">Datos y métricas de rendimiento</p>
+      <h1 class="page-title">{{ 'ANALYTICS.PAGE.TITLE' | translate }}</h1>
+      <p class="page-subtitle">{{ 'ANALYTICS.PAGE.SUBTITLE' | translate }}</p>
     </div>
     <button mat-stroked-button color="primary" class="back-btn" (click)="onBackToEdit()">
       <mat-icon>edit</mat-icon>
-      Volver a Editar
+      {{ 'ANALYTICS.BUTTON.BACK_TO_EDIT' | translate }}
     </button>
   </div>
 
   <!-- Loading State -->
   <div *ngIf="isLoading" class="loading-container">
     <mat-spinner diameter="40"></mat-spinner>
-    <p>Cargando analíticas...</p>
+    <p>{{ 'ANALYTICS.LOADING' | translate }}</p>
   </div>
 
   <!-- Error State -->
   <div *ngIf="hasError && !isLoading" class="error-container">
     <mat-icon class="error-icon">analytics</mat-icon>
-    <h3>Error al cargar analíticas</h3>
-    <p>No se pudieron cargar los datos de analíticas.</p>
+    <h3>{{ 'ANALYTICS.ERROR.TITLE' | translate }}</h3>
+    <p>{{ 'ANALYTICS.ERROR.MESSAGE' | translate }}</p>
     <button mat-button color="primary" (click)="onRetry()">
       <mat-icon>refresh</mat-icon>
-      Reintentar
+      {{ 'ANALYTICS.BUTTON.RETRY' | translate }}
     </button>
   </div>
 
@@ -33,7 +33,7 @@
 
     <!-- KPI Cards -->
     <div class="kpi-section">
-      <h2 class="section-title">Métricas Principales</h2>
+      <h2 class="section-title">{{ 'ANALYTICS.SECTION.MAIN_METRICS' | translate }}</h2>
       <div class="kpi-grid">
 
         <!-- Average Occupation -->
@@ -46,7 +46,7 @@
             </div>
           </div>
           <div class="kpi-value">{{ formatPercentage(analyticsData.kpis.avgOccupation.value) }}</div>
-          <div class="kpi-label">Ocupación Promedio</div>
+          <div class="kpi-label">{{ 'ANALYTICS.KPI.AVG_OCCUPATION' | translate }}</div>
         </mat-card>
 
         <!-- Monthly Revenue -->
@@ -59,7 +59,7 @@
             </div>
           </div>
           <div class="kpi-value">{{ formatCurrency(analyticsData.kpis.monthlyRevenue.value) }}</div>
-          <div class="kpi-label">Ingresos Mensuales</div>
+          <div class="kpi-label">{{ 'ANALYTICS.KPI.MONTHLY_REVENUE' | translate }}</div>
         </mat-card>
 
         <!-- Unique Users -->
@@ -72,7 +72,7 @@
             </div>
           </div>
           <div class="kpi-value">{{ analyticsData.kpis.uniqueUsers.value }}</div>
-          <div class="kpi-label">Usuarios Únicos</div>
+          <div class="kpi-label">{{ 'ANALYTICS.KPI.UNIQUE_USERS' | translate }}</div>
         </mat-card>
 
         <!-- Average Time -->
@@ -85,14 +85,14 @@
             </div>
           </div>
           <div class="kpi-value">{{ analyticsData.kpis.avgTime.value }}h</div>
-          <div class="kpi-label">Tiempo Promedio</div>
+          <div class="kpi-label">{{ 'ANALYTICS.KPI.AVG_TIME' | translate }}</div>
         </mat-card>
       </div>
     </div>
 
     <!-- Hourly Occupation Chart -->
     <div class="chart-section">
-      <h2 class="section-title">Ocupación por Hora</h2>
+      <h2 class="section-title">{{ 'ANALYTICS.SECTION.HOURLY_OCCUPATION' | translate }}</h2>
       <mat-card class="chart-card">
         <div class="chart-container">
           <div *ngFor="let data of analyticsData.hourlyOccupation" class="hour-bar">
@@ -112,11 +112,11 @@
 
     <!-- Recent Activity -->
     <div class="activity-section">
-      <h2 class="section-title">Actividad Reciente</h2>
+      <h2 class="section-title">{{ 'ANALYTICS.SECTION.RECENT_ACTIVITY' | translate }}</h2>
       <mat-card class="activity-card">
         <div *ngIf="analyticsData.recentActivity.length === 0" class="no-activity">
           <mat-icon>inbox</mat-icon>
-          <p>No hay actividad reciente</p>
+          <p>{{ 'ANALYTICS.NO_RECENT_ACTIVITY' | translate }}</p>
         </div>
         <div *ngIf="analyticsData.recentActivity.length > 0" class="activity-list">
           <div *ngFor="let activity of analyticsData.recentActivity" class="activity-item">
