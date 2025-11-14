@@ -25,7 +25,7 @@
       ],
       "isEmailVerified": false,
       "createdAt": "2025-10-30T12:09:23.261Z",
-      "lastLoginAt": "2025-11-14T09:18:49.020Z",
+      "lastLoginAt": "2025-11-14T21:48:44.592Z",
       "plan": "basic"
     },
     {
@@ -324,11 +324,99 @@
       "status": "Activo",
       "createdAt": "2025-11-13T10:00:00.000Z",
       "updatedAt": "2025-11-13T10:00:00.000Z"
+    },
+    {
+      "id": "1763158105593",
+      "ownerId": "1761826163261",
+      "name": "PATATA",
+      "type": "Comercial",
+      "description": "DASDASDASDASDAS",
+      "totalSpaces": 1,
+      "accessibleSpaces": 0,
+      "phone": "21312312312",
+      "email": "luis.eduardo.200325@gmail.com",
+      "website": "",
+      "status": "Activo",
+      "createdAt": "2025-11-14T22:08:25.593Z",
+      "updatedAt": "2025-11-14T22:08:25.593Z"
     }
   ],
-  "locations": [],
-  "pricing": [],
-  "features": [],
+  "locations": [
+    {
+      "id": 1763158105613,
+      "addressLine": "Avenida Central",
+      "city": "Lima",
+      "postalCode": "15804",
+      "state": "Lima",
+      "country": "Peru",
+      "latitude": -12.136025,
+      "longitude": -76.9616021,
+      "profileId": "1763158105593",
+      "createdAt": "2025-11-14T22:08:25.613Z"
+    }
+  ],
+  "pricing": [
+    {
+      "id": 1763158105616,
+      "hourlyRate": 0,
+      "dailyRate": 0,
+      "monthlyRate": 0,
+      "currency": "EUR",
+      "minimumStay": "SinLimite",
+      "open24h": false,
+      "operatingHours": {
+        "openTime": "08:00",
+        "closeTime": "22:00"
+      },
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": false
+      },
+      "promotions": {
+        "earlyBird": false,
+        "weekend": false,
+        "longStay": false
+      },
+      "profileId": "1763158105593",
+      "createdAt": "2025-11-14T22:08:25.616Z"
+    }
+  ],
+  "features": [
+    {
+      "id": 1763158105617,
+      "security": {
+        "security24h": false,
+        "cameras": false,
+        "lighting": false,
+        "accessControl": true
+      },
+      "amenities": {
+        "covered": false,
+        "elevator": false,
+        "bathrooms": false,
+        "carWash": true
+      },
+      "services": {
+        "electricCharging": true,
+        "freeWifi": false,
+        "valetService": false,
+        "maintenance": false
+      },
+      "payments": {
+        "cardPayment": true,
+        "mobilePayment": false,
+        "monthlyPasses": false,
+        "corporateRates": false
+      },
+      "profileId": "1763158105593",
+      "createdAt": "2025-11-14T22:08:25.617Z"
+    }
+  ],
   "profiles": [
     {
       "id": "1761825474560",
@@ -781,7 +869,23 @@
       "updatedAt": "2025-11-10T09:39:39.883Z"
     }
   ],
-  "devices": [],
+  "devices": [
+    {
+      "name": "PlazaNorte",
+      "serialNumber": "sn45323",
+      "type": "sensor",
+      "status": "available",
+      "ownerId": "1761826163261",
+      "parkingId": null,
+      "spotNumber": null,
+      "battery": 100,
+      "signalStrength": 0,
+      "firmware": "v1.0.0",
+      "lastSeen": "2025-11-14T21:49:01.221Z",
+      "createdAt": "2025-11-14T21:49:01.221Z",
+      "id": 1
+    }
+  ],
   "parkingSpots": [],
   "reservations": [
     {

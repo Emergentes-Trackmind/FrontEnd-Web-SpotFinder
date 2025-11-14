@@ -263,6 +263,10 @@ export class StepReviewComponent implements OnInit, OnDestroy {
   private loadSpots(): void {
     const savedSpots = this.parkingStateService.getSpots();
     this.spots = savedSpots || [];
+    console.log(`📊 Step Review - Cargados ${this.spots.length} spots, ${this.getAssignedDevicesCount()} con dispositivos IoT asignados`);
+    if (this.getAssignedDevicesCount() > 0) {
+      console.log('📱 Spots con dispositivos:', this.getSpotsWithDevices());
+    }
   }
 
   getTotalSpots(): number {
@@ -270,15 +274,15 @@ export class StepReviewComponent implements OnInit, OnDestroy {
   }
 
   getAssignedDevicesCount(): number {
-    return this.spots.filter(spot => spot.deviceId).length;
+    return this.spots.filter(spot => spot.deviceId && spot.deviceId !== '').length;
   }
 
   getSpotsWithoutDevice(): number {
-    return this.spots.filter(spot => !spot.deviceId).length;
+    return this.spots.filter(spot => !spot.deviceId || spot.deviceId === '').length;
   }
 
   getSpotsWithDevices(): SpotData[] {
-    return this.spots.filter(spot => spot.deviceId);
+    return this.spots.filter(spot => spot.deviceId && spot.deviceId !== '');
   }
 
   hasIoTDevicesAssigned(): boolean {

@@ -95,7 +95,7 @@ export class SpotsService {
   /**
    * Asigna un dispositivo IoT a un spot
    */
-  assignDevice(spotNumber: number, deviceId: string): void {
+  assignDevice(spotNumber: number, deviceId: string | null): void {
     const spotsMap = this.spotsSubject.value;
     const spot = spotsMap.get(spotNumber);
 
@@ -104,15 +104,23 @@ export class SpotsService {
       return;
     }
 
+    // Convertir string vacío a null
+    const finalDeviceId = deviceId === '' ? null : deviceId;
+
     const updatedSpot: SpotData = {
       ...spot,
-      deviceId,
+      deviceId: finalDeviceId,
       lastUpdated: new Date()
     };
 
     spotsMap.set(spotNumber, updatedSpot);
     this.spotsSubject.next(new Map(spotsMap));
-    console.log(`✅ Dispositivo ${deviceId} asignado al spot ${spotNumber}`);
+
+    if (finalDeviceId) {
+      console.log(`✅ Dispositivo ${finalDeviceId} asignado al spot ${spotNumber}`);
+    } else {
+      console.log(`🔗 Dispositivo removido del spot ${spotNumber}`);
+    }
   }
 
   /**
@@ -160,6 +168,13 @@ export class SpotsService {
   }
 
   /**
+   * Obtiene el mapa actual de spots
+   */
+  getCurrentSpotsMap(): Map<number, SpotData> {
+    return this.spotsSubject.value;
+  }
+
+  /**
    * Limpia todos los spots
    */
   clearSpots(): void {
@@ -174,4 +189,3 @@ export interface SpotStatistics {
   maintenance: number;
   offline: number;
 }
-

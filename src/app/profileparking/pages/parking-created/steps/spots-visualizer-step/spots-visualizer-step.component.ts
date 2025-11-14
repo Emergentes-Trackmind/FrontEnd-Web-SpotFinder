@@ -109,7 +109,11 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
 
     if (savedSpots && savedSpots.length === this.totalSpots) {
       // Restaurar spots guardados con sus asignaciones
-      console.log('✅ Restaurando spots guardados con asignaciones');
+      const spotsWithDevices = savedSpots.filter(s => s.deviceId);
+      console.log(`✅ Restaurando ${savedSpots.length} spots guardados, ${spotsWithDevices.length} con dispositivos asignados`);
+      if (spotsWithDevices.length > 0) {
+        console.log('📱 Spots con dispositivos:', spotsWithDevices.map(s => `Spot ${s.spotNumber} -> ${s.deviceId}`));
+      }
       this.spots = savedSpots;
       this.spotsService.restoreSpots(savedSpots); // Método para restaurar en el servicio
     } else {
@@ -147,10 +151,10 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
       this.applyFilter(savedFilter);
     }
 
-    // Cargar dispositivos IoT disponibles
-    this.loadAvailableDevices();
-
-    console.log(`✅ Step 2 iniciado con ${this.totalSpots} spots`);
+    // Cargar dispositivos IoT disponibles y sincronizar con spots
+    this.loadAvailableDevices().then(() => {
+      console.log(`✅ Step 2 iniciado con ${this.totalSpots} spots`);
+    });
   }
 
   ngOnDestroy(): void {
@@ -206,9 +210,12 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
    * Navega al siguiente paso
    */
   onNextClick(): void {
-    // Guardar datos de spots en el estado
-    this.parkingStateService.setSpotsData(this.spots);
+    // Guardar datos de spots en el estado - obtener directamente del servicio para asegurar que tenemos la última versión
+    const currentSpots = this.spotsService.getSpotsArray();
+    this.parkingStateService.setSpotsData(currentSpots);
     this.parkingStateService.setCurrentStep(3);
+
+    console.log(`✅ Guardando ${currentSpots.length} spots, ${currentSpots.filter(s => s.deviceId).length} con dispositivos IoT asignados`);
 
     // Navegar al siguiente paso (antiguo Step 2, ahora Step 3)
     this.router.navigate(['/parkings/new/step-3']);
@@ -249,12 +256,37 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
         const devices = await response.json();
         // Filtrar solo dispositivos disponibles (sin asignar)
         this.availableDevices = devices.filter((d: IoTDevice) => !d.parkingId);
+
+        // IMPORTANTE: Sincronizar con las asignaciones guardadas en los spots
+        this.syncDevicesWithSpots();
+
         this.cdr.markForCheck();
         console.log(`✅ ${this.availableDevices.length} dispositivos IoT disponibles`);
       }
     } catch (error) {
       console.error('❌ Error cargando dispositivos IoT:', error);
       this.availableDevices = [];
+    }
+  }
+
+  /**
+   * Sincroniza los dispositivos cargados con las asignaciones guardadas en los spots
+   */
+  private syncDevicesWithSpots(): void {
+    const currentSpots = this.spotsService.getSpotsArray();
+    let syncCount = 0;
+
+    // Para cada dispositivo, verificar si está asignado a algún spot
+    this.availableDevices.forEach(device => {
+      const assignedSpot = currentSpots.find(spot => spot.deviceId === device.id);
+      if (assignedSpot) {
+        device.spotNumber = assignedSpot.spotNumber;
+        syncCount++;
+      }
+    });
+
+    if (syncCount > 0) {
+      console.log(`🔄 Sincronizados ${syncCount} dispositivos con sus spots asignados`);
     }
   }
 
@@ -289,13 +321,35 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
   assignDeviceToSpot(deviceId: string, spotNumber: number): void {
     // Encontrar el dispositivo
     const device = this.availableDevices.find(d => d.id === deviceId);
-    if (!device) return;
+    if (!device) {
+      console.error(`❌ Dispositivo ${deviceId} no encontrado en availableDevices`);
+      return;
+    }
 
-    // Actualizar el spot con el dispositivo
+    console.log(`📱 Asignando dispositivo ${device.name} (${deviceId}) al Spot ${spotNumber}`);
+
+    // Actualizar el spot con el dispositivo en el servicio
     this.spotsService.assignDevice(spotNumber, deviceId);
 
-    // Actualizar el dispositivo local
+    // Actualizar el dispositivo local para que la UI se actualice
     device.spotNumber = spotNumber;
+
+    // ✨ CRÍTICO: Guardar INMEDIATAMENTE en el estado global
+    const currentSpots = this.spotsService.getSpotsArray();
+    this.parkingStateService.setSpotsData(currentSpots);
+    console.log(`💾 Estado guardado inmediatamente - ${currentSpots.filter(s => s.deviceId).length} dispositivos asignados`);
+
+    // Verificar que se guardó correctamente en el servicio
+    const updatedSpot = this.spotsService.getSpot(spotNumber);
+    console.log(`✅ Spot ${spotNumber} actualizado en servicio:`, updatedSpot);
+
+    // Verificar en el array local (debería actualizarse por la suscripción)
+    const localSpot = this.spots.find(s => s.spotNumber === spotNumber);
+    console.log(`📍 Spot ${spotNumber} en array local:`, localSpot);
+
+    // Verificar total de dispositivos asignados
+    const totalAssigned = this.spotsService.getSpotsArray().filter(s => s.deviceId).length;
+    console.log(`📊 Total de dispositivos asignados: ${totalAssigned}`);
 
     this.alertsService.showSuccess(`✅ Dispositivo ${device.name} asignado al Spot ${spotNumber}`);
     this.cdr.markForCheck();
@@ -311,11 +365,18 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
 
     const spotNumber = device.spotNumber;
 
+    console.log(`🔗 Desasignando dispositivo ${device.name} del Spot ${spotNumber}`);
+
     // Actualizar el spot removiendo el dispositivo
-    this.spotsService.assignDevice(spotNumber, '');
+    this.spotsService.assignDevice(spotNumber, null);
 
     // Actualizar el dispositivo local
     device.spotNumber = null;
+
+    // ✨ CRÍTICO: Guardar INMEDIATAMENTE en el estado global
+    const currentSpots = this.spotsService.getSpotsArray();
+    this.parkingStateService.setSpotsData(currentSpots);
+    console.log(`💾 Estado guardado inmediatamente - ${currentSpots.filter(s => s.deviceId).length} dispositivos asignados`);
 
     this.alertsService.showSuccess(`🔗 Dispositivo ${device.name} desasignado del Spot ${spotNumber}`);
     this.cdr.markForCheck();

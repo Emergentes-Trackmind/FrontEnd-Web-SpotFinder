@@ -2,7 +2,7 @@ import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: false,
-  apiBase: 'http://localhost:8080/api',
+  apiBase: 'http://localhost:3001/api',
   endpoints: {
     parkings: '/parkings',
     analytics: '/analytics',
