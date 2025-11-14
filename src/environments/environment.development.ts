@@ -2,7 +2,7 @@ import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: false,
-  apiBase: 'http://localhost:3001/api',
+  apiBase: 'http://localhost:8080/api',
   endpoints: {
     parkings: '/parkings',
     analytics: '/analytics',
@@ -76,7 +76,8 @@ export const environment: Environment = {
   },
   // IoT configuration (opcional en desarrollo)
   iot: {
-    sensorApiUrl: 'http://localhost:3002/api/sensors',
+    // Apunta al backend local (ruta compatible con el controlador de IoT: /api/iot)
+    sensorApiUrl: 'http://localhost:8080/api/iot',
     endpoints: {
       devices: '/devices',
       status: '/status',

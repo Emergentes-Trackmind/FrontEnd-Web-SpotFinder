@@ -17,6 +17,7 @@ import { ParkingStateService, SpotData, SpotFilterType } from '../../../../servi
 import { SpotsService, SpotStatistics } from '../../../../services/spots.service';
 import { IoTService } from '../../../../services/iot-simulation.service';
 import { IoTAlertsService } from '../../../../services/iot-alerts.service';
+import { environment } from 'src/environments/environment';
 
 /**
  * Step 2: Visualización de Plazas (Spots)
@@ -231,7 +232,7 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
    */
   private async loadAvailableDevices(): Promise<void> {
     try {
-      const response = await fetch('http://localhost:3001/api/iot/devices', {
+      const response = await fetch(`${environment.apiBase}/iot/devices`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }

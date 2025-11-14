@@ -2,7 +2,7 @@ import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: false,
-  apiBase: 'http://localhost:3001/api',
+  apiBase: 'http://localhost:8080/api',
   endpoints: {
     parkings: '/parkings',
     analytics: '/analytics',
@@ -76,7 +76,8 @@ export const environment: Environment = {
   },
   // Configuración específica para edge server IoT en Azure
   iot: {
-    sensorApiUrl: 'https://tu-edge-server.azurewebsites.net/api/sensors', // Tu edge server en Azure
+    // En simulación local apuntamos al backend IoT compat (/api/iot)
+    sensorApiUrl: 'http://localhost:8080/api/iot',
     endpoints: {
       devices: '/devices',
       status: '/status',
