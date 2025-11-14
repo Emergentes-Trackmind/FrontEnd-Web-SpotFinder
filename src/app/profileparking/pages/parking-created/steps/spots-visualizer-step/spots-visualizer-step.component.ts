@@ -17,7 +17,7 @@ import { ParkingStateService, SpotData, SpotFilterType } from '../../../../servi
 import { SpotsService, SpotStatistics } from '../../../../services/spots.service';
 import { IoTService } from '../../../../services/iot-simulation.service';
 import { IoTAlertsService } from '../../../../services/iot-alerts.service';
-import { environment } from 'src/environments/environment';
+import {environment} from '../../../../../../environments/environment';
 
 /**
  * Step 2: Visualización de Plazas (Spots)
