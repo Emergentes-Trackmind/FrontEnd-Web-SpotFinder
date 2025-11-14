@@ -1,7 +1,7 @@
 <mat-card class="step-card">
   <mat-card-header class="step-header">
-    <mat-card-title>Revisión Final</mat-card-title>
-    <mat-card-subtitle>Revisa toda la información antes de registrar tu parking</mat-card-subtitle>
+    <mat-card-title>{{ 'PARKING_STEPS.REVIEW.TITLE' | translate }}</mat-card-title>
+    <mat-card-subtitle>{{ 'PARKING_STEPS.REVIEW.SUBTITLE' | translate }}</mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content class="step-content">
@@ -13,9 +13,9 @@
           <mat-icon class="section-icon" [class.complete]="isBasicInfoComplete()">
             {{ isBasicInfoComplete() ? 'check_circle' : 'info' }}
           </mat-icon>
-          <h3>Información Básica</h3>
+          <h3>{{ 'PARKING_STEPS.REVIEW.SECTIONS.BASIC.TITLE' | translate }}</h3>
         </div>
-        <button mat-icon-button class="edit-btn" title="Editar información básica">
+        <button mat-icon-button class="edit-btn" [title]="'PARKING_STEPS.REVIEW.EDIT' | translate">
           <mat-icon>edit</mat-icon>
         </button>
       </div>
@@ -23,41 +23,41 @@
       <div class="section-content">
         <div class="info-grid">
           <div class="info-item">
-            <span class="label">Nombre:</span>
-            <span class="value">{{ basicInfo.name || 'No especificado' }}</span>
+            <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.NAME' | translate }}:</span>
+            <span class="value">{{ basicInfo.name || ('COMMON.N_A' | translate) }}</span>
           </div>
           <div class="info-item">
-            <span class="label">Tipo:</span>
-            <span class="value">{{ basicInfo.type || 'No especificado' }}</span>
+            <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.TYPE' | translate }}:</span>
+            <span class="value">{{ basicInfo.type || ('COMMON.N_A' | translate) }}</span>
           </div>
           <div class="info-item">
-            <span class="label">Total de Plazas:</span>
-            <span class="value">{{ basicInfo.totalSpaces || 'No especificado' }}</span>
+            <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.TOTAL_SPACES' | translate }}:</span>
+            <span class="value">{{ basicInfo.totalSpaces || ('COMMON.N_A' | translate) }}</span>
           </div>
           <div class="info-item">
-            <span class="label">Plazas Accesibles:</span>
+            <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.ACCESSIBLE_SPACES' | translate }}:</span>
             <span class="value">{{ basicInfo.accessibleSpaces || 0 }}</span>
           </div>
         </div>
 
         <div class="description-section" *ngIf="basicInfo.description">
-          <span class="label">Descripción:</span>
+          <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.DESCRIPTION' | translate }}:</span>
           <p class="description">{{ basicInfo.description }}</p>
         </div>
 
         <div class="contact-section">
-          <h4>Información de Contacto</h4>
+          <h4>{{ 'PARKING_STEPS.REVIEW.SECTIONS.CONTACT.TITLE' | translate }}</h4>
           <div class="info-grid">
             <div class="info-item">
-              <span class="label">Teléfono:</span>
-              <span class="value">{{ basicInfo.phone || 'No especificado' }}</span>
+              <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.PHONE' | translate }}:</span>
+              <span class="value">{{ basicInfo.phone || ('COMMON.N_A' | translate) }}</span>
             </div>
             <div class="info-item">
-              <span class="label">Email:</span>
-              <span class="value">{{ basicInfo.email || 'No especificado' }}</span>
+              <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.EMAIL' | translate }}:</span>
+              <span class="value">{{ basicInfo.email || ('COMMON.N_A' | translate) }}</span>
             </div>
             <div class="info-item" *ngIf="basicInfo.website">
-              <span class="label">Sitio Web:</span>
+              <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.WEBSITE' | translate }}:</span>
               <span class="value">{{ basicInfo.website }}</span>
             </div>
           </div>
@@ -72,9 +72,9 @@
           <mat-icon class="section-icon" [class.complete]="hasIoTDevicesAssigned()">
             {{ hasIoTDevicesAssigned() ? 'check_circle' : 'sensors' }}
           </mat-icon>
-          <h3>Dispositivos IoT</h3>
+          <h3>{{ 'PARKING_STEPS.REVIEW.SECTIONS.IOT.TITLE' | translate }}</h3>
         </div>
-        <button mat-icon-button class="edit-btn" title="Editar asignaciones">
+        <button mat-icon-button class="edit-btn" [title]="'PARKING_STEPS.REVIEW.EDIT' | translate">
           <mat-icon>edit</mat-icon>
         </button>
       </div>
@@ -82,32 +82,32 @@
       <div class="section-content">
         <div class="info-grid">
           <div class="info-item">
-            <span class="label">Total de Plazas:</span>
+            <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.TOTAL_SPOTS' | translate }}:</span>
             <span class="value">{{ getTotalSpots() }}</span>
           </div>
           <div class="info-item">
-            <span class="label">Dispositivos Asignados:</span>
-            <span class="value">{{ getAssignedDevicesCount() }} sensores</span>
+            <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.ASSIGNED_DEVICES' | translate }}:</span>
+            <span class="value">{{ getAssignedDevicesCount() }} {{ 'PARKING_STEPS.REVIEW.LABELS.SENSORS' | translate }}</span>
           </div>
           <div class="info-item">
-            <span class="label">Plazas sin Sensor:</span>
+            <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.SPOTS_NO_DEVICE' | translate }}:</span>
             <span class="value">{{ getSpotsWithoutDevice() }}</span>
           </div>
         </div>
 
         <div class="devices-summary" *ngIf="getAssignedDevicesCount() > 0">
-          <h4>Sensores Asignados:</h4>
+          <h4>{{ 'PARKING_STEPS.REVIEW.SECTIONS.IOT.ASSIGNED_TITLE' | translate }}</h4>
           <div class="device-list">
             <div class="device-item" *ngFor="let spot of getSpotsWithDevices()">
               <mat-icon class="device-icon">sensors</mat-icon>
-              <span class="device-info">Spot {{ spot.spotNumber }} → Sensor {{ spot.deviceId }}</span>
+              <span class="device-info">{{ 'PARKING_STEPS.REVIEW.SECTIONS.IOT.SPOT_LINE' | translate:{ spot: spot.spotNumber, device: spot.deviceId } }}</span>
             </div>
           </div>
         </div>
 
         <div class="warning-note" *ngIf="getAssignedDevicesCount() === 0">
           <mat-icon>info</mat-icon>
-          <p>No hay dispositivos IoT asignados. Puedes asignarlos después desde la edición del parking.</p>
+          <p>{{ t('PARKING_STEPS.REVIEW.SECTIONS.IOT.NO_DEVICES') }}</p>
         </div>
       </div>
     </div>
@@ -119,9 +119,9 @@
           <mat-icon class="section-icon" [class.complete]="isLocationComplete()">
             {{ isLocationComplete() ? 'check_circle' : 'location_on' }}
           </mat-icon>
-          <h3>Ubicación</h3>
+          <h3>{{ 'PARKING_STEPS.REVIEW.SECTIONS.LOCATION.TITLE' | translate }}</h3>
         </div>
-        <button mat-icon-button class="edit-btn" title="Editar ubicación">
+        <button mat-icon-button class="edit-btn" [title]="'PARKING_STEPS.REVIEW.EDIT' | translate">
           <mat-icon>edit</mat-icon>
         </button>
       </div>
@@ -130,11 +130,11 @@
         <div class="location-info">
           <div class="address-display">
             <mat-icon>place</mat-icon>
-            <span>{{ formattedAddress }}</span>
+            <span>{{ formattedAddress || ('COMMON.N_A' | translate) }}</span>
           </div>
 
           <div class="coordinates" *ngIf="location.latitude && location.longitude">
-            <small>Coordenadas: {{ location.latitude | number:'1.6-6' }}, {{ location.longitude | number:'1.6-6' }}</small>
+            <small>{{ 'PARKING_STEPS.REVIEW.LABELS.COORDINATES' | translate }}: {{ location.latitude | number:'1.6-6' }}, {{ location.longitude | number:'1.6-6' }}</small>
           </div>
         </div>
       </div>
@@ -147,9 +147,9 @@
           <mat-icon class="section-icon" [class.complete]="isFeaturesComplete()">
             {{ isFeaturesComplete() ? 'check_circle' : 'featured_play_list' }}
           </mat-icon>
-          <h3>Características</h3>
+          <h3>{{ 'PARKING_STEPS.REVIEW.SECTIONS.FEATURES.TITLE' | translate }}</h3>
         </div>
-        <button mat-icon-button class="edit-btn" title="Editar características">
+        <button mat-icon-button class="edit-btn" [title]="'PARKING_STEPS.REVIEW.EDIT' | translate">
           <mat-icon>edit</mat-icon>
         </button>
       </div>
@@ -164,7 +164,7 @@
         </div>
 
         <ng-template #noFeatures>
-          <p class="no-data">No se han seleccionado características</p>
+          <p class="no-data">{{ 'PARKING_STEPS.REVIEW.SECTIONS.FEATURES.NO_FEATURES' | translate }}</p>
         </ng-template>
       </div>
     </div>
@@ -176,9 +176,9 @@
           <mat-icon class="section-icon" [class.complete]="isPricingComplete()">
             {{ isPricingComplete() ? 'check_circle' : 'euro' }}
           </mat-icon>
-          <h3>Precios y Horarios</h3>
+          <h3>{{ 'PARKING_STEPS.REVIEW.SECTIONS.PRICING.TITLE' | translate }}</h3>
         </div>
-        <button mat-icon-button class="edit-btn" title="Editar precios">
+        <button mat-icon-button class="edit-btn" [title]="'PARKING_STEPS.REVIEW.EDIT' | translate">
           <mat-icon>edit</mat-icon>
         </button>
       </div>
@@ -186,31 +186,31 @@
       <div class="section-content">
         <!-- Tarifas -->
         <div class="pricing-display">
-          <h4>Tarifas</h4>
+          <h4>{{ 'PARKING_STEPS.REVIEW.LABELS.RATES' | translate }}</h4>
           <div class="info-grid">
             <div class="info-item">
-              <span class="label">Tarifa por Hora:</span>
+              <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.HOURLY_RATE' | translate }}:</span>
               <span class="value price">
-                {{ (pricing.hourlyRate || 'No especificado') }}
+                {{ (pricing.hourlyRate || ('COMMON.N_A' | translate)) }}
                 <span *ngIf="pricing.hourlyRate">{{ currencySymbol }}</span>
               </span>
             </div>
             <div class="info-item">
-              <span class="label">Tarifa Diaria:</span>
+              <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.DAILY_RATE' | translate }}:</span>
               <span class="value price">
-                {{ (pricing.dailyRate || 'No especificado') }}
+                {{ (pricing.dailyRate || ('COMMON.N_A' | translate)) }}
                 <span *ngIf="pricing.dailyRate">{{ currencySymbol }}</span>
               </span>
             </div>
             <div class="info-item">
-              <span class="label">Tarifa Mensual:</span>
+              <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.MONTHLY_RATE' | translate }}:</span>
               <span class="value price">
-                {{ (pricing.monthlyRate || 'No especificado') }}
+                {{ (pricing.monthlyRate || ('COMMON.N_A' | translate)) }}
                 <span *ngIf="pricing.monthlyRate">{{ currencySymbol }}</span>
               </span>
             </div>
             <div class="info-item">
-              <span class="label">Estancia Mínima:</span>
+              <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.MINIMUM_STAY' | translate }}:</span>
               <span class="value">{{ minimumStayLabel }}</span>
             </div>
           </div>
@@ -218,14 +218,14 @@
 
         <!-- Horarios -->
         <div class="schedule-display">
-          <h4>Horarios</h4>
+          <h4>{{ 'PARKING_STEPS.REVIEW.LABELS.SCHEDULE' | translate }}</h4>
           <div class="info-grid">
             <div class="info-item">
-              <span class="label">Horario:</span>
+              <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.SCHEDULE' | translate }}:</span>
               <span class="value">{{ operatingHours }}</span>
             </div>
             <div class="info-item">
-              <span class="label">Días:</span>
+              <span class="label">{{ 'PARKING_STEPS.REVIEW.LABELS.DAYS' | translate }}:</span>
               <span class="value">{{ operatingSchedule }}</span>
             </div>
           </div>
@@ -233,7 +233,7 @@
 
         <!-- Promociones -->
         <div class="promotions-display" *ngIf="selectedPromotions.length > 0">
-          <h4>Promociones Activas</h4>
+          <h4>{{ 'PARKING_STEPS.REVIEW.LABELS.ACTIVE_PROMOTIONS' | translate }}</h4>
           <mat-chip-set>
             <mat-chip *ngFor="let promotion of selectedPromotions" class="promotion-chip">
               <mat-icon matChipAvatar>local_offer</mat-icon>
@@ -248,38 +248,38 @@
     <div class="completion-status">
       <div class="status-header">
         <mat-icon class="status-icon">assignment_turned_in</mat-icon>
-        <h3>Estado del Registro</h3>
+        <h3>{{ t('PARKING_STEPS.REVIEW.STATUS_TITLE') }}</h3>
       </div>
 
       <div class="status-grid">
         <div class="status-item" [class.complete]="isBasicInfoComplete()">
           <mat-icon>{{ isBasicInfoComplete() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-          <span>Información Básica</span>
+          <span>{{ t('PARKING_STEPS.REVIEW.SECTIONS.BASIC.TITLE') }}</span>
         </div>
         <div class="status-item" [class.complete]="isLocationComplete()">
           <mat-icon>{{ isLocationComplete() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-          <span>Ubicación</span>
+          <span>{{ t('PARKING_STEPS.REVIEW.SECTIONS.LOCATION.TITLE') }}</span>
         </div>
         <div class="status-item" [class.complete]="isFeaturesComplete()">
           <mat-icon>{{ isFeaturesComplete() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-          <span>Características</span>
+          <span>{{ t('PARKING_STEPS.REVIEW.SECTIONS.FEATURES.TITLE') }}</span>
         </div>
         <div class="status-item" [class.complete]="isPricingComplete()">
           <mat-icon>{{ isPricingComplete() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-          <span>Precios y Horarios</span>
+          <span>{{ t('PARKING_STEPS.REVIEW.SECTIONS.PRICING.TITLE') }}</span>
         </div>
       </div>
 
       <div class="completion-message"
            *ngIf="isBasicInfoComplete() && isLocationComplete() && isPricingComplete()">
         <mat-icon>thumb_up</mat-icon>
-        <p>¡Tu parking está listo para ser registrado!</p>
+        <p>{{ t('PARKING_STEPS.REVIEW.COMPLETE_MESSAGE') }}</p>
       </div>
 
       <div class="incomplete-message"
            *ngIf="!(isBasicInfoComplete() && isLocationComplete() && isPricingComplete())">
         <mat-icon>warning</mat-icon>
-        <p>Completa las secciones faltantes para continuar con el registro.</p>
+        <p>{{ t('PARKING_STEPS.REVIEW.INCOMPLETE_MESSAGE') }}</p>
       </div>
     </div>
 

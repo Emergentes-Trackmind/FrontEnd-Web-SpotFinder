@@ -2,8 +2,8 @@
   <!-- Header -->
   <div class="header">
     <div class="title-section">
-      <h1 class="page-title">Mis Parkings</h1>
-      <p class="page-subtitle">Selecciona un parking para editar su información</p>
+      <h1 class="page-title">{{ 'PARKINGS.PAGE.TITLE' | translate }}</h1>
+      <p class="page-subtitle">{{ 'PARKINGS.PAGE.SUBTITLE' | translate }}</p>
     </div>
 
     <!-- Acciones -->
@@ -17,7 +17,7 @@
         [disabled]="!canCreateParking"
         class="new-parking-btn">
         <mat-icon>add</mat-icon>
-        Nuevo Parking
+        {{ 'PARKINGS.BUTTON.NEW' | translate }}
       </button>
 
       <!-- Botón de eliminar múltiple -->
@@ -27,9 +27,9 @@
         [disabled]="!canDelete"
         (click)="onDeleteSelected()"
         class="delete-multiple-btn"
-        [attr.aria-label]="'Eliminar ' + selectedCount + ' parkings seleccionados'">
+        [attr.aria-label]="('PARKINGS.ACTIONS.DELETE_SELECTED' | translate) + ' ' + selectedCount + ' ' + (selectedCount > 1 ? ('PARKINGS.ITEMS.PLURAL' | translate) : ('PARKINGS.ITEMS.SINGULAR' | translate))">
         <mat-icon>delete</mat-icon>
-        Eliminar parking{{ selectedCount > 1 ? 's' : '' }}
+        {{ 'PARKINGS.BUTTON.DELETE_SELECTED' | translate }}
       </button>
     </div>
   </div>
@@ -48,7 +48,7 @@
     <mat-form-field appearance="outline" class="search-field">
       <mat-icon matPrefix>search</mat-icon>
       <input matInput
-             placeholder="Buscar parking..."
+             placeholder="{{ 'PARKINGS.SEARCH.PLACEHOLDER' | translate }}"
              [formControl]="searchControl">
     </mat-form-field>
   </div>
@@ -56,49 +56,49 @@
   <!-- Modo selección indicator -->
   <div *ngIf="isSelectionMode" class="selection-mode-banner">
     <mat-icon>check_circle</mat-icon>
-    <span>Modo selección activo - {{ selectedCount }} seleccionado{{ selectedCount !== 1 ? 's' : '' }}</span>
+    <span>{{ 'PARKINGS.SELECTION_MODE.ACTIVE' | translate }} - {{ selectedCount }} {{ selectedCount !== 1 ? ('PARKINGS.ITEMS.PLURAL' | translate) : ('PARKINGS.ITEMS.SINGULAR' | translate) }}</span>
     <button mat-button (click)="exitSelectionMode()">
       <mat-icon>close</mat-icon>
-      Salir
+      {{ 'PARKINGS.BUTTON.EXIT_SELECTION' | translate }}
     </button>
   </div>
 
   <!-- Loading State -->
   <div *ngIf="isLoading" class="loading-container">
     <mat-spinner diameter="40"></mat-spinner>
-    <p>Cargando parkings...</p>
+    <p>{{ 'PARKINGS.LOADING' | translate }}</p>
   </div>
 
   <!-- Error State -->
   <div *ngIf="hasError && !isLoading" class="error-container">
     <mat-icon class="error-icon">error_outline</mat-icon>
-    <h3>Error al cargar los parkings</h3>
-    <p>No se pudieron cargar los datos. Inténtalo de nuevo.</p>
+    <h3>{{ 'PARKINGS.ERROR.TITLE' | translate }}</h3>
+    <p>{{ 'PARKINGS.ERROR.DESCRIPTION' | translate }}</p>
     <button mat-button color="primary" (click)="onRetry()">
       <mat-icon>refresh</mat-icon>
-      Reintentar
+      {{ 'PARKINGS.BUTTON.RETRY' | translate }}
     </button>
   </div>
 
   <!-- Empty State -->
   <div *ngIf="!isLoading && !hasError && filteredParkings.length === 0 && parkings.length === 0" class="empty-container">
     <mat-icon class="empty-icon">local_parking</mat-icon>
-    <h3>Sin parkings registrados</h3>
-    <p>Aún no tienes ningún parking registrado. ¡Crea tu primer parking!</p>
+    <h3>{{ 'PARKINGS.EMPTY.TITLE' | translate }}</h3>
+    <p>{{ 'PARKINGS.EMPTY.DESCRIPTION' | translate }}</p>
     <button mat-raised-button color="primary" (click)="onNewParking()">
       <mat-icon>add</mat-icon>
-      Nuevo Parking
+      {{ 'PARKINGS.BUTTON.NEW' | translate }}
     </button>
   </div>
 
   <!-- No Search Results -->
   <div *ngIf="!isLoading && !hasError && filteredParkings.length === 0 && parkings.length > 0" class="no-results-container">
     <mat-icon class="no-results-icon">search_off</mat-icon>
-    <h3>Sin resultados</h3>
-    <p>No se encontraron parkings que coincidan con tu búsqueda.</p>
+    <h3>{{ 'PARKINGS.NO_RESULTS.TITLE' | translate }}</h3>
+    <p>{{ 'PARKINGS.NO_RESULTS.DESCRIPTION' | translate }}</p>
     <button mat-button color="primary" (click)="searchControl.setValue('')">
       <mat-icon>clear</mat-icon>
-      Limpiar búsqueda
+      {{ 'PARKINGS.BUTTON.CLEAR_SEARCH' | translate }}
     </button>
   </div>
 
@@ -119,7 +119,7 @@
       [attr.tabindex]="isSelectionMode ? 0 : -1"
       [attr.role]="isSelectionMode ? 'checkbox' : null"
       [attr.aria-checked]="isSelectionMode ? isParkingSelected(parking.id) : null"
-      [attr.aria-label]="parking.name + (isSelectionMode ? (isParkingSelected(parking.id) ? ' - seleccionado' : ' - no seleccionado') : '')">
+      [attr.aria-label]="parking.name + (isSelectionMode ? (isParkingSelected(parking.id) ? ' - ' + ('PARKINGS.STATE.SELECTED' | translate) : ' - ' + ('PARKINGS.STATE.NOT_SELECTED' | translate)) : '')">
 
       <app-parking-card
         [parking]="parking"

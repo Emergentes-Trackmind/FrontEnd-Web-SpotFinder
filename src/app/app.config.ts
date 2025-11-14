@@ -1,10 +1,10 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, APP_INITIALIZER } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { importProvidersFrom } from '@angular/core';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { routes } from './app.routes';
@@ -42,7 +42,9 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       MatSnackBarModule,
       TranslateModule.forRoot({
+        // Establecemos tanto defaultLanguage como fallbackLang para compatibilidad
         defaultLanguage: 'es',
+        fallbackLang: 'es',
         loader: {
           provide: TranslateLoader,
           useFactory: createTranslateLoader,
@@ -50,6 +52,20 @@ export const appConfig: ApplicationConfig = {
         }
       })
     ),
+
+    // Asegurarse de que el idioma por defecto se cargue antes del bootstrap
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (translate: TranslateService) => {
+        return () => new Promise<void>(resolve => {
+          // Establecer idioma por defecto y luego usarlo (cargar fichero)
+          translate.setDefaultLang('es');
+          translate.use('es').subscribe({ next: () => resolve(), error: () => resolve() });
+        });
+      },
+      deps: [TranslateService],
+      multi: true
+    },
 
     // HTTP Interceptors
     {

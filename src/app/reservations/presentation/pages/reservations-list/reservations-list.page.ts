@@ -14,6 +14,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 // Domain & Services
 import { ReservationsService } from '../../../services/reservations.service';
@@ -24,8 +25,7 @@ import { StatusPillComponent } from '../../components/status-pill/status-pill.co
 // Breakpoint observer for responsive
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reservations-list',
@@ -59,6 +59,7 @@ export class ReservationsListPage implements OnInit {
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
   private breakpointObserver = inject(BreakpointObserver);
+  private translate = inject(TranslateService);
 
   displayedColumns: string[] = ['id', 'userName', 'startTime', 'status', 'totalPrice', 'actions'];
   dataSource = new MatTableDataSource<Reservation>([]);
@@ -396,5 +397,10 @@ export class ReservationsListPage implements OnInit {
 
   exportSingleReservation(reservation: Reservation) {
     this.reservationsService.exportSingleReservation(reservation);
+  }
+
+  // Helper para usar traducciones en la plantilla
+  t(key: string, params?: any): string {
+    return this.translate.instant(key, params);
   }
 }

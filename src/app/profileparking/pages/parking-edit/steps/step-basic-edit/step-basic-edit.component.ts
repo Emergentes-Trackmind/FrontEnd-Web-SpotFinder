@@ -8,9 +8,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { ParkingEditService } from '../../../../services/parking-edit.service';
-import { CreateBasicInfoDto } from '../../../../services/create-types';
 import { ParkingType } from '../../../../model/profileparking.entity';
 
 @Component({
@@ -23,7 +23,8 @@ import { ParkingType } from '../../../../model/profileparking.entity';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatIconModule
+    MatIconModule,
+    TranslateModule
   ],
   templateUrl: './step-basic-edit.component.html',
   styleUrls: ['./step-basic-edit.component.css']
@@ -32,17 +33,18 @@ export class StepBasicEditComponent implements OnInit, OnDestroy {
   basicForm!: FormGroup;
 
   readonly parkingTypes = [
-    { value: ParkingType.Comercial, label: 'Comercial' },
-    { value: ParkingType.Publico, label: 'Público' },
-    { value: ParkingType.Privado, label: 'Privado' },
-    { value: ParkingType.Residencial, label: 'Residencial' }
+    { value: ParkingType.Comercial, labelKey: 'PARKING_TYPES.COMERCIAL' },
+    { value: ParkingType.Publico, labelKey: 'PARKING_TYPES.PUBLICO' },
+    { value: ParkingType.Privado, labelKey: 'PARKING_TYPES.PRIVADO' },
+    { value: ParkingType.Residencial, labelKey: 'PARKING_TYPES.RESIDENCIAL' }
   ];
 
   private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
-    private editService: ParkingEditService
+    private editService: ParkingEditService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -158,5 +160,14 @@ export class StepBasicEditComponent implements OnInit, OnDestroy {
     const field = this.basicForm.get(fieldName);
     return !!(field && field.invalid && (field.dirty || field.touched));
   }
-}
 
+  // Getter para evitar expresiones complejas en la plantilla
+  get descriptionLength(): number {
+    return this.basicForm?.get('description')?.value?.length || 0;
+  }
+
+  // Helper para traducciones en plantilla
+  t(key: string, params?: any): string {
+    return this.translate.instant(key, params);
+  }
+}

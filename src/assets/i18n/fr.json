@@ -1,4 +1,26 @@
 {
+  "SIDEBAR": {
+    "BRAND": {
+      "TITLE": "QuadrApp",
+      "SUBTITLE": "Gestión de Parkings"
+    },
+    "NAVIGATION": "NAVEGACIÓN",
+    "AUTOMATION": "AUTOMATIZACIÓN",
+    "SETTINGS": "CONFIGURACIÓN",
+    "MENU": {
+      "DASHBOARD": "Dashboard",
+      "MY_PARKINGS": "Mis Parkings",
+      "NEW_PARKING": "Nuevo Parking",
+      "RESERVATIONS": "Reservas",
+      "REVIEWS": "Reseñas",
+      "IOT_DEVICES": "Dispositivos IoT",
+      "RPA_CENTER": "Centro RPA",
+      "PROFILE": "Mi Perfil",
+      "SETTINGS": "Configuración",
+      "COMING_SOON": "PRÓXIMAMENTE"
+    },
+    "LOGOUT": "Cerrar Sesión"
+  },
   "PROFILE": {
     "TITLE": "Mon Profil",
     "SUBTITLE": "Gérez vos informations personnelles et préférences",
@@ -88,6 +110,77 @@
       "ERROR_UPDATING": "Erreur lors de la mise à jour des données"
     }
   },
+  "RESERVATIONS": {
+    "TITLE": "Reservas",
+    "SUBTITLE": "Gestiona las reservas de tus parkings",
+    "KPI": {
+      "TOTAL_LABEL": "Total reservas",
+      "PENDING_LABEL": "Pendientes",
+      "CONFIRMED_LABEL": "Confirmadas",
+      "CANCELLED_LABEL": "Canceladas",
+      "VS_PREVIOUS_MONTH": "vs mes anterior"
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Buscar reserva..."
+    },
+    "TABS": {
+      "ALL": "Todas",
+      "PENDING": "Pendientes",
+      "CONFIRMED": "Confirmadas",
+      "PAID": "Pagadas",
+      "CANCELLED": "Canceladas"
+    },
+    "LIST": {
+      "TITLE": "Listado de Reservas",
+      "HEADER": {
+        "CLIENT": "Cliente",
+        "PARKING": "Parking",
+        "DATE_TIME": "Fecha y hora",
+        "STATUS": "Estado",
+        "AMOUNT": "Importe",
+        "ACTIONS": "Acciones"
+      }
+    },
+    "BUTTON": {
+      "FILTERS": "Filtros",
+      "EXPORT_CSV": "Exportar CSV",
+      "VIEW": "Ver",
+      "EDIT": "Editar",
+      "MARK_AS_PAID": "Marcar como pagada",
+      "CANCEL": "Cancelar"
+    },
+    "METADATA": {
+      "CREATED_AT": "Creado el",
+      "UPDATED_AT": "Actualizado"
+    },
+    "STATUS": {
+      "PENDING": "Pendiente",
+      "CONFIRMED": "Confirmada",
+      "CANCELLED": "Cancelada",
+      "COMPLETED": "Completada",
+      "ACTIVE": "Activa"
+    },
+    "ACTIONS": {
+      "VIEW": "Ver Detalles",
+      "CONFIRM": "Confirmar",
+      "CANCEL": "Cancelar",
+      "COMPLETE": "Completar"
+    },
+    "DETAIL": {
+      "TITLE": "Detalle de Reserva",
+      "RESERVATION_INFO": "Información de Reserva",
+      "CLIENT_INFO": "Información del Cliente",
+      "PARKING_INFO": "Información del Parking",
+      "PAYMENT_INFO": "Información de Pago"
+    },
+    "MESSAGES": {
+      "NO_RESERVATIONS": "No hay reservas",
+      "CONFIRMED": "Reserva confirmada",
+      "CANCELLED": "Reserva cancelada",
+      "COMPLETED": "Reserva completada",
+      "ERROR": "Error al procesar reserva"
+    }
+  },
   "LANGUAGES": {
     "ES": "Español",
     "EN": "English",
@@ -99,9 +192,112 @@
     "AUTO": "Automatique"
   },
   "COMMON": {
+    "N_A": "N/D",
     "CLOSE": "Fermer",
     "SAVE": "Enregistrer",
     "CANCEL": "Annuler"
+  },
+  "PARKINGS": {
+    "TITLE": "Mis Parkings",
+    "SUBTITLE": "Gestiona tus estacionamientos",
+    "BUTTON": {
+      "NEW": "Nuevo Parking",
+      "DELETE_SELECTED": "Eliminar seleccionados",
+      "RETRY": "Reintentar",
+      "CLEAR_SEARCH": "Limpiar búsqueda",
+      "EXIT_SELECTION": "Salir selección"
+    },
+    "SEARCH": { "PLACEHOLDER": "Buscar por nombre, dirección..." },
+    "SELECTION_MODE": { "ACTIVE": "Modo selección activo" },
+    "ITEMS": { "SINGULAR": "elemento", "PLURAL": "elementos" },
+    "LOADING": "Cargando parkings...",
+    "ERROR": { "TITLE": "Error", "DESCRIPTION": "Error al cargar tus parkings" },
+    "EMPTY": { "TITLE": "No hay parkings", "DESCRIPTION": "Aún no tienes parkings" },
+    "NO_RESULTS": { "TITLE": "Sin resultados", "DESCRIPTION": "No hay parkings que coincidan" },
+    "STATE": { "SELECTED": "Seleccionado", "NOT_SELECTED": "No seleccionado" }
+  },
+  "PARKING_STEPS": {
+    "REVIEW": {
+      "TITLE": "Revisión del Parking",
+      "SUBTITLE": "Verifica y confirma la información antes de crear",
+      "EDIT": "Editar",
+      "SECTIONS": {
+        "BASIC": { "TITLE": "Información Básica" },
+        "IOT": { "TITLE": "Dispositivos IoT", "ASSIGNED_TITLE": "Dispositivos asignados", "SPOT_LINE": "Plaza {{spot}} — Dispositivo {{device}}", "NO_DEVICES": "No hay dispositivos asignados" },
+        "LOCATION": { "TITLE": "Ubicación" },
+        "FEATURES": { "TITLE": "Características", "NO_FEATURES": "No se han seleccionado características" },
+        "PRICING": { "TITLE": "Precios y Horarios" }
+      },
+      "LABELS": {
+        "NAME": "Nombre",
+        "TYPE": "Tipo",
+        "TOTAL_SPACES": "Plazas Totales",
+        "ACCESSIBLE_SPACES": "Plazas Accesibles",
+        "DESCRIPTION": "Descripción",
+        "PHONE": "Teléfono",
+        "EMAIL": "Email",
+        "WEBSITE": "Web",
+        "COORDINATES": "Coordenadas",
+        "TOTAL_SPOTS": "Plazas totales",
+        "ASSIGNED_DEVICES": "Dispositivos asignados",
+        "SPOTS_NO_DEVICE": "Plazas sin dispositivo",
+        "SENSORS": "sensores",
+        "RATES": "Tarifas",
+        "HOURLY_RATE": "Tarifa por hora",
+        "DAILY_RATE": "Tarifa diaria",
+        "MONTHLY_RATE": "Tarifa mensual",
+        "MINIMUM_STAY": "Estancia mínima",
+        "SCHEDULE": "Horario",
+        "DAYS": "Días",
+        "ACTIVE_PROMOTIONS": "Promociones activas"
+      },
+      "STATUS_TITLE": "Estado de completitud",
+      "COMPLETE_MESSAGE": "¡Todo listo! Puedes crear el parking.",
+      "INCOMPLETE_MESSAGE": "Faltan datos por completar en alguna sección."
+    }
+  },
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Iniciar Sesión",
+      "SUBTITLE": "Accede a tu cuenta",
+      "EMAIL": "Correo Electrónico",
+      "PASSWORD": "Contraseña",
+      "REMEMBER_ME": "Recordarme",
+      "FORGOT_PASSWORD": "¿Olvidaste tu contraseña?",
+      "SIGN_IN": "Iniciar Sesión",
+      "NO_ACCOUNT": "¿No tienes cuenta?",
+      "REGISTER": "Regístrate",
+      "MESSAGES": { "SUCCESS": "Inicio de sesión exitoso", "ERROR": "Credenciales inválidas", "EMAIL_REQUIRED": "El email es requerido", "PASSWORD_REQUIRED": "La contraseña es requerida" }
+    },
+    "REGISTER": {
+      "TITLE": "Crear Cuenta",
+      "SUBTITLE": "Únete",
+      "FIRST_NAME": "Nombre",
+      "LAST_NAME": "Apellido",
+      "EMAIL": "Correo Electrónico",
+      "PASSWORD": "Contraseña",
+      "CONFIRM_PASSWORD": "Confirmar Contraseña",
+      "TERMS": "Acepto los términos y condiciones",
+      "SIGN_UP": "Registrarse",
+      "HAVE_ACCOUNT": "¿Ya tienes cuenta?",
+      "LOGIN": "Inicia Sesión",
+      "MESSAGES": { "SUCCESS": "Cuenta creada exitosamente", "ERROR": "Error al crear cuenta", "PASSWORDS_NO_MATCH": "Las contraseñas no coinciden" }
+    },
+    "FORGOT_PASSWORD": {
+      "TITLE": "Recuperar Contraseña",
+      "SUBTITLE": "Te enviaremos un enlace para restablecer tu contraseña",
+      "EMAIL": "Correo Electrónico",
+      "SEND": "Enviar Enlace",
+      "BACK_TO_LOGIN": "Volver a Iniciar Sesión",
+      "MESSAGES": { "SUCCESS": "Enlace enviado a tu correo", "ERROR": "Error al enviar enlace" }
+    },
+    "RESET_PASSWORD": {
+      "TITLE": "Restablecer Contraseña",
+      "SUBTITLE": "Ingresa tu nueva contraseña",
+      "PASSWORD": "Nueva Contraseña",
+      "CONFIRM_PASSWORD": "Confirmar Contraseña",
+      "RESET": "Restablecer",
+      "MESSAGES": { "SUCCESS": "Contraseña restablecida exitosamente", "ERROR": "Error al restablecer contraseña" }
+    }
   }
 }
-

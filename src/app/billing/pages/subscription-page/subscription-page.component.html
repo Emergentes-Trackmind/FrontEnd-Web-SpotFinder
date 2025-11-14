@@ -4,8 +4,8 @@
     <div class="header-content">
       <mat-icon class="header-icon">credit_card</mat-icon>
       <div>
-        <h1>Planes y Suscripción</h1>
-        <p>Gestiona tu plan y método de pago</p>
+        <h1>{{ 'BILLING.PAGE.TITLE' | translate }}</h1>
+        <p>{{ 'BILLING.PAGE.SUBTITLE' | translate }}</p>
       </div>
     </div>
   </div>
@@ -13,7 +13,7 @@
   <!-- Loading State -->
   <div class="loading-container" *ngIf="isLoading()">
     <mat-spinner diameter="40"></mat-spinner>
-    <p>Cargando información...</p>
+    <p>{{ 'BILLING.LOADING' | translate }}</p>
   </div>
 
   <!-- Content -->
@@ -21,7 +21,7 @@
     <mat-tab-group class="billing-tabs" animationDuration="300ms">
 
       <!-- Tab: Planes -->
-      <mat-tab label="Planes">
+      <mat-tab [label]="'BILLING.TAB.PLANS' | translate">
         <div class="tab-content">
           <div class="plans-grid">
             <app-plan-card
@@ -36,13 +36,13 @@
           <!-- Info adicional -->
           <div class="plans-info">
             <mat-icon>info</mat-icon>
-            <p>Todos los planes incluyen acceso completo a las funcionalidades principales. Puedes cambiar de plan en cualquier momento.</p>
+            <p>{{ 'BILLING.PLANS.INFO' | translate }}</p>
           </div>
         </div>
       </mat-tab>
 
       <!-- Tab: Facturación -->
-      <mat-tab label="Facturación">
+      <mat-tab [label]="'BILLING.TAB.BILLING' | translate">
         <div class="tab-content">
           <!-- Resumen de suscripción -->
           <div class="billing-section">
@@ -65,4 +65,3 @@
     </mat-tab-group>
   </div>
 </div>
-

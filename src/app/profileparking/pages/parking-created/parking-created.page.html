@@ -1,13 +1,13 @@
 <div class="parking-wizard">
   <!-- Header del wizard -->
   <div class="wizard-header">
-    <h1 class="wizard-title">Registrar Nuevo Parking</h1>
+    <h1 class="wizard-title">{{ 'PARKING_CREATE.TITLE' | translate }}</h1>
 
     <!-- Barra de progreso y pasos -->
     <mat-card class="progress-card">
       <div class="progress-header">
-        <h2 class="progress-title">Registro de Parking</h2>
-        <span class="step-indicator">Paso {{ currentStep }} de 6</span>
+        <h2 class="progress-title">{{ 'PARKING_CREATE.PROGRESS.TITLE' | translate }}</h2>
+        <span class="step-indicator">{{ 'PARKING_CREATE.PROGRESS.STEP_OF' | translate:{current: currentStep, total: 6} }}</span>
       </div>
 
       <!-- Barra de progreso -->
@@ -100,7 +100,7 @@
           (click)="onPreviousClick()"
           class="previous-btn">
           <mat-icon>chevron_left</mat-icon>
-          Anterior
+          {{ 'PARKING_CREATE.BUTTON.PREVIOUS' | translate }}
         </button>
 
         <!-- Espaciador -->
@@ -112,7 +112,7 @@
           type="button"
           (click)="onCancel()"
           class="cancel-btn">
-          Cancelar
+          {{ 'PARKING_CREATE.BUTTON.CANCEL' | translate }}
         </button>
 
         <!-- Botón Siguiente/Registrar -->
@@ -135,10 +135,10 @@
 
           <!-- Texto del botón -->
           <span *ngIf="currentStep === 6">
-            {{ isSubmitting ? 'Registrando...' : 'Registrar Parking' }}
+            {{ isSubmitting ? ('PARKING_CREATE.BUTTON.SAVING' | translate) : ('PARKING_CREATE.BUTTON.SAVE' | translate) }}
           </span>
           <span *ngIf="currentStep < 6">
-            Siguiente
+            {{ 'PARKING_CREATE.BUTTON.NEXT' | translate }}
             <mat-icon>chevron_right</mat-icon>
           </span>
         </button>

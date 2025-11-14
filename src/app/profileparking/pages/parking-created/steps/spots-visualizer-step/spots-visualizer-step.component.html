@@ -9,7 +9,7 @@
         </div>
         <div class="stat-info">
           <div class="stat-value">{{ statistics.total }}</div>
-          <div class="stat-label">Total</div>
+          <div class="stat-label">{{ t('SPOTS.KPI.TOTAL') }}</div>
         </div>
       </mat-card-content>
     </mat-card>
@@ -21,7 +21,7 @@
         </div>
         <div class="stat-info">
           <div class="stat-value">{{ statistics.free }}</div>
-          <div class="stat-label">Libres</div>
+          <div class="stat-label">{{ t('SPOTS.KPI.FREE') }}</div>
         </div>
       </mat-card-content>
     </mat-card>
@@ -33,7 +33,7 @@
         </div>
         <div class="stat-info">
           <div class="stat-value">{{ statistics.occupied }}</div>
-          <div class="stat-label">Ocupados</div>
+          <div class="stat-label">{{ t('SPOTS.KPI.OCCUPIED') }}</div>
         </div>
       </mat-card-content>
     </mat-card>
@@ -45,7 +45,7 @@
         </div>
         <div class="stat-info">
           <div class="stat-value">{{ statistics.maintenance }}</div>
-          <div class="stat-label">Mantenimiento</div>
+          <div class="stat-label">{{ t('SPOTS.KPI.MAINTENANCE') }}</div>
         </div>
       </mat-card-content>
     </mat-card>
@@ -57,7 +57,7 @@
         </div>
         <div class="stat-info">
           <div class="stat-value">{{ statistics.offline }}</div>
-          <div class="stat-label">Offline</div>
+          <div class="stat-label">{{ t('SPOTS.KPI.OFFLINE') }}</div>
         </div>
       </mat-card-content>
     </mat-card>
@@ -67,7 +67,7 @@
   <div class="legend-filters-container">
     <div class="legend-label">
       <mat-icon>filter_list</mat-icon>
-      <span>Filtrar por:</span>
+      <span>{{ t('SPOTS.FILTER.LABEL') }}</span>
     </div>
 
     <div class="filter-chips">
@@ -95,12 +95,12 @@
   <div class="spots-container">
     <h3 class="section-title">
       <mat-icon>grid_view</mat-icon>
-      Plazas del Parking
+      {{ t('SPOTS.SECTION.TITLE') }}
     </h3>
 
     <div class="spots-scroll-hint" *ngIf="totalSpots > 20">
       <mat-icon>swipe</mat-icon>
-      <span>Desliza horizontalmente para ver más plazas</span>
+      <span>{{ t('SPOTS.HINT.SWIPE') }}</span>
     </div>
 
     <cdk-virtual-scroll-viewport
@@ -127,12 +127,12 @@
   <div class="devices-container">
     <h3 class="section-title">
       <mat-icon>sensors</mat-icon>
-      Dispositivos IoT Disponibles ({{ availableDevices.length }})
+      {{ t('SPOTS.DEVICES.TITLE') }} ({{ availableDevices.length }})
     </h3>
 
     <div class="devices-info" *ngIf="availableDevices.length === 0">
       <mat-icon class="info-icon">info</mat-icon>
-      <p>No hay dispositivos IoT disponibles. Ve a la sección de <a routerLink="/iot/devices">Dispositivos IoT</a> para registrar sensores.</p>
+      <p>{{ t('SPOTS.DEVICES.NO_AVAILABLE') }} <a routerLink="/iot/devices">{{ t('SPOTS.DEVICES.LINK') }}</a></p>
     </div>
 
     <div class="devices-grid" *ngIf="availableDevices.length > 0">
@@ -164,7 +164,7 @@
           <div class="device-status" *ngIf="device.spotNumber">
             <mat-chip class="assigned-chip">
               <mat-icon>link</mat-icon>
-              Asignado a Spot {{ device.spotNumber }}
+              {{ t('SPOTS.DEVICES.ASSIGNED_TO') }} {{ device.spotNumber }}
             </mat-chip>
           </div>
 
@@ -177,7 +177,7 @@
               class="assign-button"
             >
               <mat-icon>add_link</mat-icon>
-              Asignar a Spot
+              {{ t('SPOTS.DEVICES.ASSIGN') }}
             </button>
 
             <button
@@ -188,21 +188,21 @@
               class="unassign-button"
             >
               <mat-icon>link_off</mat-icon>
-              Desasignar
+              {{ t('SPOTS.DEVICES.UNASSIGN') }}
             </button>
 
             <mat-menu #spotMenu="matMenu" class="spot-menu">
-              <div class="spot-menu-header">Selecciona un Spot</div>
+              <div class="spot-menu-header">{{ t('SPOTS.DEVICES.MENU.SELECT_SPOT') }}</div>
               <button
                 mat-menu-item
                 *ngFor="let spot of getAvailableSpots()"
                 (click)="assignDeviceToSpot(device.id, spot.spotNumber)"
               >
                 <mat-icon>place</mat-icon>
-                Spot {{ spot.spotNumber }}
+                {{ t('SPOTS.DEVICES.MENU.SPOT') }} {{ spot.spotNumber }}
               </button>
               <div class="spot-menu-empty" *ngIf="getAvailableSpots().length === 0">
-                Todos los spots tienen dispositivos asignados
+                {{ t('SPOTS.DEVICES.MENU.ALL_ASSIGNED') }}
               </div>
             </mat-menu>
           </div>
@@ -213,4 +213,3 @@
 
 
 </div>
-

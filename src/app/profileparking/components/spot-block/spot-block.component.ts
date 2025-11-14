@@ -7,6 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SpotStatus } from '../../services/parking-state.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 /**
  * Componente que representa un bloque individual de spot/plaza
@@ -21,13 +22,16 @@ import { SpotStatus } from '../../services/parking-state.service';
     MatButtonModule,
     MatMenuModule,
     MatBadgeModule,
-    MatTooltipModule
+    MatTooltipModule,
+    TranslateModule
   ],
   templateUrl: './spot-block.component.html',
   styleUrls: ['./spot-block.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpotBlockComponent {
+  constructor(private translate: TranslateService) {}
+
   @Input() id!: number;
   @Input() spotNumber!: number;
   @Input() status: SpotStatus = 'free';
@@ -79,15 +83,15 @@ export class SpotBlockComponent {
   getStatusText(): string {
     switch (this.status) {
       case 'free':
-        return 'Libre';
+        return this.translate.instant('SPOT.STATUS.FREE');
       case 'occupied':
-        return 'Ocupado';
+        return this.translate.instant('SPOT.STATUS.OCCUPIED');
       case 'maintenance':
-        return 'Mantenimiento';
+        return this.translate.instant('SPOT.STATUS.MAINTENANCE');
       case 'offline':
-        return 'Sin conexión';
+        return this.translate.instant('SPOT.STATUS.OFFLINE');
       default:
-        return 'Desconocido';
+        return this.translate.instant('SPOT.STATUS.UNKNOWN');
     }
   }
 
@@ -121,7 +125,30 @@ export class SpotBlockComponent {
    * Obtiene el aria-label para accesibilidad
    */
   get ariaLabel(): string {
-    return `Spot ${this.spotNumber}, estado ${this.getStatusText()}${this.hasDevice ? ', dispositivo conectado' : ', sin sensor'}`;
+    const statusText = this.getStatusText();
+    const deviceText = this.hasDevice ? this.translate.instant('SPOT.ARIA.HAS_DEVICE') : this.translate.instant('SPOT.ARIA.NO_DEVICE');
+    return `Spot ${this.spotNumber}, ${statusText}, ${deviceText}`;
+  }
+
+  // Helper para traducir desde la plantilla sin usar el pipe
+  t(key: string, params?: any): string {
+    return this.translate.instant(key, params);
+  }
+
+  // Getters reutilizables para etiquetas usadas en la plantilla
+  get noSensorTooltip(): string {
+    return this.t('SPOT.NO_SENSOR_TOOLTIP');
+  }
+
+  get actionsLabel(): string {
+    return this.t('SPOT.ACTIONS.LABEL');
+  }
+
+  get viewDeviceLabel(): string {
+    return this.t('SPOT.ACTIONS.VIEW_DEVICE');
+  }
+
+  get maintenanceActionLabel(): string {
+    return this.inMaintenance ? this.t('SPOT.ACTIONS.REMOVE_MAINTENANCE') : this.t('SPOT.ACTIONS.MARK_MAINTENANCE');
   }
 }
-

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../iam/services/auth.service';
 
 @Component({
@@ -16,6 +16,12 @@ import { AuthService } from '../../../iam/services/auth.service';
 export class SidebarComponent {
   private router = inject(Router);
   private authService = inject(AuthService);
+  private translate = inject(TranslateService);
+
+  // Helper para usar en la plantilla
+  t(key: string, params?: any): string {
+    return this.translate.instant(key, params);
+  }
 
   getUserInitials(): string {
     return 'PJ'; // Por ahora fijo, luego se puede hacer dinámico

@@ -11,13 +11,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { SpotBlockComponent } from '../../../../components/spot-block/spot-block.component';
 import { ParkingStateService, SpotData, SpotFilterType } from '../../../../services/parking-state.service';
 import { SpotsService, SpotStatistics } from '../../../../services/spots.service';
 import { IoTService } from '../../../../services/iot-simulation.service';
 import { IoTAlertsService } from '../../../../services/iot-alerts.service';
-import {environment} from '../../../../../../environments/environment';
 
 /**
  * Step 2: Visualización de Plazas (Spots)
@@ -37,7 +37,8 @@ import {environment} from '../../../../../../environments/environment';
     MatMenuModule,
     MatTooltipModule,
     ScrollingModule,
-    SpotBlockComponent
+    SpotBlockComponent,
+    TranslateModule
   ],
   templateUrl: './spots-visualizer-step.component.html',
   styleUrls: ['./spots-visualizer-step.component.css'],
@@ -76,8 +77,14 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     private iotService: IoTService,
     private alertsService: IoTAlertsService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private translate: TranslateService
   ) {}
+
+  // Helper para traducciones en plantilla
+  t(key: string, params?: any) {
+    return this.translate.instant(key, params);
+  }
 
   ngOnInit(): void {
     // Verificar que venimos del Step 1
@@ -232,7 +239,7 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
    */
   private async loadAvailableDevices(): Promise<void> {
     try {
-      const response = await fetch(`${environment.apiBase}/iot/devices`, {
+        const response = await fetch('http://localhost:3001/api/iot/devices', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }

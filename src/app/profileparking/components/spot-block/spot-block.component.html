@@ -12,7 +12,7 @@
 
     <!-- Indicador de dispositivo -->
     <div class="device-indicator" *ngIf="!hasDevice">
-      <mat-icon class="no-sensor-icon" matTooltip="Sin sensor IoT">sensors_off</mat-icon>
+      <mat-icon class="no-sensor-icon" [matTooltip]="noSensorTooltip">sensors_off</mat-icon>
     </div>
 
     <!-- Menú de acciones -->
@@ -20,7 +20,7 @@
       mat-icon-button
       [matMenuTriggerFor]="menu"
       class="spot-menu-button"
-      aria-label="Acciones del spot"
+      [attr.aria-label]="actionsLabel"
     >
       <mat-icon>more_vert</mat-icon>
     </button>
@@ -32,7 +32,7 @@
         [disabled]="!hasDevice"
       >
         <mat-icon>devices</mat-icon>
-        <span>Ver detalle de dispositivo IoT</span>
+        <span>{{ viewDeviceLabel }}</span>
       </button>
 
       <button
@@ -40,9 +40,8 @@
         (click)="onToggleMaintenance()"
       >
         <mat-icon>{{ inMaintenance ? 'check_circle' : 'engineering' }}</mat-icon>
-        <span>{{ inMaintenance ? 'Quitar de mantenimiento' : 'Marcar en mantenimiento' }}</span>
+        <span>{{ maintenanceActionLabel }}</span>
       </button>
     </mat-menu>
   </mat-card-content>
 </mat-card>
-

@@ -4,6 +4,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { BillingApiClient } from '../../services/billing-api.client';
 import { LimitsService } from '../../services/limits.service';
@@ -21,6 +22,7 @@ import { Plan, SubscriptionInfo, PaymentRow } from '../../models/billing.models'
     MatProgressSpinnerModule,
     MatIconModule,
     MatSnackBarModule,
+    TranslateModule,
     PlanCardComponent,
     BillingSummaryComponent,
     PaymentsTableComponent

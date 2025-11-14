@@ -43,6 +43,10 @@ export class LoginPage {
     private snackBar: MatSnackBar,
     private translate: TranslateService
   ) {
+    // Asegurar que el idioma por defecto esté establecido y cargado para este componente
+    this.translate.setDefaultLang('es');
+    // `use` devuelve un observable; llamar para forzar la carga del JSON de traducción
+    this.translate.use('es').subscribe({ next: () => {}, error: () => {} });
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],

@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { ParkingCreateService } from '../../../../services/parking-create.service';
 import { CreateFeaturesDto } from '../../../../services/create-types';
@@ -20,7 +21,8 @@ import { CreateFeaturesDto } from '../../../../services/create-types';
     MatCardModule,
     MatCheckboxModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    TranslateModule
   ],
   templateUrl: './step-features.component.html',
   styleUrls: ['./step-features.component.css']
@@ -75,8 +77,14 @@ export class StepFeaturesComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private createService: ParkingCreateService
+    private createService: ParkingCreateService,
+    private translate: TranslateService
   ) {}
+
+  // Helper para traducir en plantillas (evita uso del pipe)
+  t(key: string, params?: any): string {
+    return this.translate.instant(key, params);
+  }
 
   ngOnInit(): void {
     this.initializeForm();

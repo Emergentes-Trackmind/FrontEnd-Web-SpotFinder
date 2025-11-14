@@ -1,7 +1,7 @@
 <mat-card class="step-card">
   <mat-card-header class="step-header">
-    <mat-card-title>Características y Servicios</mat-card-title>
-    <mat-card-subtitle>Selecciona las características y servicios que ofrece tu parking</mat-card-subtitle>
+    <mat-card-title>{{ 'PARKING_STEPS.FEATURES.TITLE' | translate }}</mat-card-title>
+    <mat-card-subtitle>{{ 'PARKING_STEPS.FEATURES.SUBTITLE' | translate }}</mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content class="step-content">
@@ -10,7 +10,7 @@
       <!-- Resumen de selección -->
       <div class="selection-summary" *ngIf="getTotalSelectedFeatures() > 0">
         <mat-icon>check_circle</mat-icon>
-        <span>{{ getTotalSelectedFeatures() }} características seleccionadas</span>
+        <span>{{ getTotalSelectedFeatures() }} {{ 'PARKING_STEPS.FEATURES.SELECTED_LABEL' | translate }}</span>
       </div>
 
       <!-- Categorías de características -->
@@ -26,14 +26,14 @@
 
             <div class="category-actions">
               <span class="selection-count" *ngIf="getSelectedFeaturesCount('security') > 0">
-                {{ getSelectedFeaturesCount('security') }} seleccionados
+                {{ getSelectedFeaturesCount('security') }} {{ 'PARKING_STEPS.FEATURES.SELECTED' | translate }}
               </span>
               <button
                 mat-button
                 type="button"
                 (click)="selectAllInCategory('security')"
                 class="select-all-btn">
-                Seleccionar todos
+                {{ 'PARKING_STEPS.FEATURES.SELECT_ALL' | translate }}
               </button>
             </div>
           </div>
@@ -60,14 +60,14 @@
 
             <div class="category-actions">
               <span class="selection-count" *ngIf="getSelectedFeaturesCount('amenities') > 0">
-                {{ getSelectedFeaturesCount('amenities') }} seleccionados
+                {{ getSelectedFeaturesCount('amenities') }} {{ 'PARKING_STEPS.FEATURES.SELECTED' | translate }}
               </span>
               <button
                 mat-button
                 type="button"
                 (click)="selectAllInCategory('amenities')"
                 class="select-all-btn">
-                Seleccionar todos
+                {{ 'PARKING_STEPS.FEATURES.SELECT_ALL' | translate }}
               </button>
             </div>
           </div>
@@ -94,14 +94,14 @@
 
             <div class="category-actions">
               <span class="selection-count" *ngIf="getSelectedFeaturesCount('services') > 0">
-                {{ getSelectedFeaturesCount('services') }} seleccionados
+                {{ getSelectedFeaturesCount('services') }} {{ 'PARKING_STEPS.FEATURES.SELECTED' | translate }}
               </span>
               <button
                 mat-button
                 type="button"
                 (click)="selectAllInCategory('services')"
                 class="select-all-btn">
-                Seleccionar todos
+                {{ 'PARKING_STEPS.FEATURES.SELECT_ALL' | translate }}
               </button>
             </div>
           </div>
@@ -128,14 +128,14 @@
 
             <div class="category-actions">
               <span class="selection-count" *ngIf="getSelectedFeaturesCount('payments') > 0">
-                {{ getSelectedFeaturesCount('payments') }} seleccionados
+                {{ getSelectedFeaturesCount('payments') }} {{ 'PARKING_STEPS.FEATURES.SELECTED' | translate }}
               </span>
               <button
                 mat-button
                 type="button"
                 (click)="selectAllInCategory('payments')"
                 class="select-all-btn">
-                Seleccionar todos
+                {{ 'PARKING_STEPS.FEATURES.SELECT_ALL' | translate }}
               </button>
             </div>
           </div>
@@ -157,8 +157,8 @@
       <!-- Mensaje cuando no hay características seleccionadas -->
       <div class="no-selection-message" *ngIf="getTotalSelectedFeatures() === 0">
         <mat-icon>info</mat-icon>
-        <p>No se han seleccionado características</p>
-        <small>Las características son opcionales, pero ayudan a los usuarios a encontrar tu parking</small>
+        <p>{{ 'PARKING_STEPS.FEATURES.NO_SELECTION' | translate }}</p>
+        <small>{{ 'PARKING_STEPS.FEATURES.NO_SELECTION_HINT' | translate }}</small>
       </div>
 
     </form>

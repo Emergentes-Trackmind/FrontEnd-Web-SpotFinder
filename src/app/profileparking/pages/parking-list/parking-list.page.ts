@@ -10,7 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil, startWith, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 
@@ -78,6 +78,12 @@ export class ParkingListPage implements OnInit, OnDestroy {
   private router = inject(Router);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
+  private translate = inject(TranslateService);
+
+  // Helper para usar traducciones en plantilla
+  t(key: string, params?: any): string {
+    return this.translate.instant(key, params);
+  }
 
   @HostListener('document:keydown.escape')
   onEscapeKey() {

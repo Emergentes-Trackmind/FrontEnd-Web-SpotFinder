@@ -25,7 +25,7 @@
       ],
       "isEmailVerified": false,
       "createdAt": "2025-10-30T12:09:23.261Z",
-      "lastLoginAt": "2025-11-13T07:42:38.046Z",
+      "lastLoginAt": "2025-11-14T09:18:49.020Z",
       "plan": "basic"
     },
     {
@@ -365,7 +365,7 @@
       "avatar": null,
       "bio": "",
       "preferences": {
-        "language": "en",
+        "language": "es",
         "timezone": "America/Mexico_City",
         "dateFormat": "DD/MM/YYYY",
         "theme": "light",
@@ -378,7 +378,7 @@
           "systemUpdates": true
         }
       },
-      "updatedAt": "2025-11-13T07:59:53.094Z"
+      "updatedAt": "2025-11-14T09:19:59.821Z"
     },
     {
       "id": "1761857990792",

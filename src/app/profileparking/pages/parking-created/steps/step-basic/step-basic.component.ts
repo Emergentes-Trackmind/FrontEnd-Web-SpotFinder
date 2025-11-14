@@ -8,10 +8,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { ParkingCreateService } from '../../../../services/parking-create.service';
 import { ParkingStateService } from '../../../../services/parking-state.service';
-import { CreateBasicInfoDto } from '../../../../services/create-types';
 import { ParkingType } from '../../../../model/profileparking.entity';
 
 @Component({
@@ -24,7 +24,8 @@ import { ParkingType } from '../../../../model/profileparking.entity';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatIconModule
+    MatIconModule,
+    TranslateModule
   ],
   templateUrl: './step-basic.component.html',
   styleUrls: ['./step-basic.component.css']
@@ -33,10 +34,10 @@ export class StepBasicComponent implements OnInit, OnDestroy {
   basicForm!: FormGroup;
 
   readonly parkingTypes = [
-    { value: ParkingType.Comercial, label: 'Comercial' },
-    { value: ParkingType.Publico, label: 'Público' },
-    { value: ParkingType.Privado, label: 'Privado' },
-    { value: ParkingType.Residencial, label: 'Residencial' }
+    { value: ParkingType.Comercial, labelKey: 'PARKING_TYPES.COMERCIAL' },
+    { value: ParkingType.Publico, labelKey: 'PARKING_TYPES.PUBLICO' },
+    { value: ParkingType.Privado, labelKey: 'PARKING_TYPES.PRIVADO' },
+    { value: ParkingType.Residencial, labelKey: 'PARKING_TYPES.RESIDENCIAL' }
   ];
 
   private destroy$ = new Subject<void>();
@@ -44,8 +45,14 @@ export class StepBasicComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private createService: ParkingCreateService,
-    private parkingStateService: ParkingStateService
+    private parkingStateService: ParkingStateService,
+    private translate: TranslateService
   ) {}
+
+  // Helper para traducciones en plantilla
+  t(key: string, params?: any): string {
+    return this.translate.instant(key, params);
+  }
 
   ngOnInit(): void {
     this.initializeForm();

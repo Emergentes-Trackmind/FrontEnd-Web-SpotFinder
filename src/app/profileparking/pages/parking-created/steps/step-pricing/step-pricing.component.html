@@ -1,7 +1,7 @@
 <mat-card class="step-card">
   <mat-card-header class="step-header">
-    <mat-card-title>Precios y Horarios</mat-card-title>
-    <mat-card-subtitle>Configura las tarifas y horarios de funcionamiento de tu parking</mat-card-subtitle>
+    <mat-card-title>{{ 'PARKING_STEPS.PRICING.TITLE' | translate }}</mat-card-title>
+    <mat-card-subtitle>{{ 'PARKING_STEPS.PRICING.SUBTITLE' | translate }}</mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content class="step-content">
@@ -11,12 +11,12 @@
       <div class="section-card">
         <div class="section-header">
           <mat-icon class="section-icon">euro</mat-icon>
-          <h3>Tarifas Básicas</h3>
+          <h3>{{ 'PARKING_STEPS.PRICING.SECTION.BASIC_RATES' | translate }}</h3>
         </div>
 
         <div class="form-row">
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Tarifa por Hora ({{ selectedCurrency }}) *</mat-label>
+            <mat-label>{{ 'PARKING_STEPS.PRICING.LABELS.HOURLY_RATE' | translate }} ({{ selectedCurrency }}) *</mat-label>
             <input
               matInput
               type="number"
@@ -32,7 +32,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Tarifa Diaria ({{ selectedCurrency }}) *</mat-label>
+            <mat-label>{{ 'PARKING_STEPS.PRICING.LABELS.DAILY_RATE' | translate }} ({{ selectedCurrency }}) *</mat-label>
             <input
               matInput
               type="number"
@@ -48,7 +48,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Tarifa Mensual ({{ selectedCurrency }}) *</mat-label>
+            <mat-label>{{ 'PARKING_STEPS.PRICING.LABELS.MONTHLY_RATE' | translate }} ({{ selectedCurrency }}) *</mat-label>
             <input
               matInput
               type="number"
@@ -66,7 +66,7 @@
 
         <div class="form-row">
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Moneda *</mat-label>
+            <mat-label>{{ 'PARKING_STEPS.PRICING.LABELS.CURRENCY' | translate }} *</mat-label>
             <mat-select formControlName="currency">
               <mat-option *ngFor="let currency of currencies" [value]="currency.value">
                 {{ currency.label }}
@@ -76,7 +76,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Estancia Mínima *</mat-label>
+            <mat-label>{{ 'PARKING_STEPS.PRICING.LABELS.MINIMUM_STAY' | translate }} *</mat-label>
             <mat-select formControlName="minimumStay">
               <mat-option *ngFor="let option of minimumStayOptions" [value]="option.value">
                 {{ option.label }}
@@ -91,7 +91,7 @@
       <div class="section-card">
         <div class="section-header">
           <mat-icon class="section-icon">access_time</mat-icon>
-          <h3>Horarios de Funcionamiento</h3>
+          <h3>{{ 'PARKING_STEPS.PRICING.SECTION.OPERATING_HOURS' | translate }}</h3>
         </div>
 
         <!-- Toggle 24 horas -->
@@ -99,10 +99,10 @@
           <mat-slide-toggle
             formControlName="open24h"
             class="toggle-control">
-            Abierto 24 horas
+            {{ 'PARKING_STEPS.PRICING.TOGGLE.OPEN_24H' | translate }}
           </mat-slide-toggle>
           <p class="toggle-description">
-            {{ isOpen24h ? 'Tu parking estará disponible las 24 horas del día' : 'Define horarios específicos de apertura y cierre' }}
+            {{ isOpen24h ? ('PARKING_STEPS.PRICING.DESCRIPTION.OPEN_24H' | translate) : ('PARKING_STEPS.PRICING.DESCRIPTION.SPECIFIC_HOURS' | translate) }}
           </p>
         </div>
 
@@ -110,7 +110,7 @@
         <div *ngIf="!isOpen24h" formGroupName="operatingHours" class="hours-section">
           <div class="form-row">
             <mat-form-field appearance="outline" class="form-field">
-              <mat-label>Hora de Apertura *</mat-label>
+              <mat-label>{{ 'PARKING_STEPS.PRICING.LABELS.OPEN_TIME' | translate }} *</mat-label>
               <mat-select formControlName="openTime">
                 <mat-option *ngFor="let time of timeSlots" [value]="time">
                   {{ time }}
@@ -120,7 +120,7 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="form-field">
-              <mat-label>Hora de Cierre *</mat-label>
+              <mat-label>{{ 'PARKING_STEPS.PRICING.LABELS.CLOSE_TIME' | translate }} *</mat-label>
               <mat-select formControlName="closeTime">
                 <mat-option *ngFor="let time of timeSlots" [value]="time">
                   {{ time }}
@@ -134,20 +134,20 @@
         <!-- Días de Funcionamiento -->
         <div class="days-section" formGroupName="operatingDays">
           <div class="days-header">
-            <h4>Días de Funcionamiento</h4>
+            <h4>{{ 'PARKING_STEPS.PRICING.DAYS.TITLE' | translate }}</h4>
             <div class="days-actions">
               <span class="selection-count" *ngIf="getSelectedDaysCount() > 0">
-                {{ getSelectedDaysCount() }} días seleccionados
+                {{ getSelectedDaysCount() }} {{ 'PARKING_STEPS.PRICING.DAYS.SELECTED' | translate }}
               </span>
               <div class="quick-actions">
                 <button mat-button type="button" (click)="selectWeekdays()" class="quick-btn">
-                  Lunes a Viernes
+                  {{ 'PARKING_STEPS.PRICING.DAYS.WEEKDAYS' | translate }}
                 </button>
                 <button mat-button type="button" (click)="selectWeekends()" class="quick-btn">
-                  Fines de semana
+                  {{ 'PARKING_STEPS.PRICING.DAYS.WEEKENDS' | translate }}
                 </button>
                 <button mat-button type="button" (click)="selectAllDays()" class="quick-btn">
-                  Todos los días
+                  {{ 'PARKING_STEPS.PRICING.DAYS.ALL_DAYS' | translate }}
                 </button>
               </div>
             </div>
@@ -167,9 +167,9 @@
       <div class="section-card">
         <div class="section-header">
           <mat-icon class="section-icon">local_offer</mat-icon>
-          <h3>Promociones</h3>
+          <h3>{{ 'PARKING_STEPS.PRICING.SECTION.PROMOTIONS' | translate }}</h3>
           <span class="selection-count" *ngIf="getSelectedPromotionsCount() > 0">
-            {{ getSelectedPromotionsCount() }} promociones activas
+            {{ getSelectedPromotionsCount() }} {{ 'PARKING_STEPS.PRICING.PROMOTIONS.ACTIVE' | translate }}
           </span>
         </div>
 
@@ -177,8 +177,8 @@
           <div class="promotion-item">
             <mat-checkbox formControlName="earlyBird" class="promotion-checkbox">
               <div class="promotion-content">
-                <span class="promotion-title">Early Bird</span>
-                <span class="promotion-description">Descuentos por reservas anticipadas</span>
+                <span class="promotion-title">{{ 'PARKING_STEPS.PRICING.PROMOTIONS.EARLY_BIRD.TITLE' | translate }}</span>
+                <span class="promotion-description">{{ 'PARKING_STEPS.PRICING.PROMOTIONS.EARLY_BIRD.DESCRIPTION' | translate }}</span>
               </div>
             </mat-checkbox>
           </div>
@@ -186,8 +186,8 @@
           <div class="promotion-item">
             <mat-checkbox formControlName="weekend" class="promotion-checkbox">
               <div class="promotion-content">
-                <span class="promotion-title">Fin de Semana</span>
-                <span class="promotion-description">Tarifas especiales para fines de semana</span>
+                <span class="promotion-title">{{ 'PARKING_STEPS.PRICING.PROMOTIONS.WEEKEND.TITLE' | translate }}</span>
+                <span class="promotion-description">{{ 'PARKING_STEPS.PRICING.PROMOTIONS.WEEKEND.DESCRIPTION' | translate }}</span>
               </div>
             </mat-checkbox>
           </div>
@@ -195,8 +195,8 @@
           <div class="promotion-item">
             <mat-checkbox formControlName="longStay" class="promotion-checkbox">
               <div class="promotion-content">
-                <span class="promotion-title">Estancia Larga</span>
-                <span class="promotion-description">Descuentos por estancias prolongadas</span>
+                <span class="promotion-title">{{ 'PARKING_STEPS.PRICING.PROMOTIONS.LONG_STAY.TITLE' | translate }}</span>
+                <span class="promotion-description">{{ 'PARKING_STEPS.PRICING.PROMOTIONS.LONG_STAY.DESCRIPTION' | translate }}</span>
               </div>
             </mat-checkbox>
           </div>

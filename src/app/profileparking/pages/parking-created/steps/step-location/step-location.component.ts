@@ -9,11 +9,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { ParkingCreateService } from '../../../../services/parking-create.service';
 import { MapsService } from '../../../../services/maps.service';
 import { MapComponent } from '../../../../components/map/map.component';
-import { CreateLocationDto, MapCoordinates, GeocodeResult } from '../../../../services/create-types';
+import { MapCoordinates, GeocodeResult } from '../../../../services/create-types';
 
 @Component({
   selector: 'app-step-location',
@@ -27,7 +28,8 @@ import { CreateLocationDto, MapCoordinates, GeocodeResult } from '../../../../se
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MapComponent
+    MapComponent,
+    TranslateModule
   ],
   templateUrl: './step-location.component.html',
   styleUrls: ['./step-location.component.css']
@@ -47,8 +49,14 @@ export class StepLocationComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private createService: ParkingCreateService,
-    private mapsService: MapsService
+    private mapsService: MapsService,
+    private translate: TranslateService
   ) {}
+
+  // Helper para traducciones en plantilla
+  t(key: string, params?: any): string {
+    return this.translate.instant(key, params);
+  }
 
   ngOnInit(): void {
     this.initializeForm();

@@ -7,13 +7,13 @@
         <mat-icon>receipt_long</mat-icon>
       </div>
       <div class="kpi-content">
-        <div class="kpi-label">Total Reservas</div>
+        <div class="kpi-label">{{ 'RESERVATIONS.KPI.TOTAL_LABEL' | translate }}</div>
         <div class="kpi-value">{{ totalReservations }}</div>
         <div class="kpi-trend positive" *ngIf="totalTrend > 0">
-          +{{ totalTrend }}% vs. mes anterior
+          +{{ totalTrend }}% {{ 'RESERVATIONS.KPI.VS_PREVIOUS_MONTH' | translate }}
         </div>
         <div class="kpi-trend negative" *ngIf="totalTrend < 0">
-          {{ totalTrend }}% vs. mes anterior
+          {{ totalTrend }}% {{ 'RESERVATIONS.KPI.VS_PREVIOUS_MONTH' | translate }}
         </div>
       </div>
     </div>
@@ -23,10 +23,10 @@
         <mat-icon>schedule</mat-icon>
       </div>
       <div class="kpi-content">
-        <div class="kpi-label">Pendientes</div>
+        <div class="kpi-label">{{ 'RESERVATIONS.KPI.PENDING_LABEL' | translate }}</div>
         <div class="kpi-value">{{ pendingReservations }}</div>
         <div class="kpi-trend negative" *ngIf="pendingTrend !== 0">
-          {{ pendingTrend > 0 ? '+' : '' }}{{ pendingTrend }}% vs. mes anterior
+          {{ pendingTrend > 0 ? '+' : '' }}{{ pendingTrend }}% {{ 'RESERVATIONS.KPI.VS_PREVIOUS_MONTH' | translate }}
         </div>
       </div>
     </div>
@@ -36,10 +36,10 @@
         <mat-icon>check_circle</mat-icon>
       </div>
       <div class="kpi-content">
-        <div class="kpi-label">Confirmadas</div>
+        <div class="kpi-label">{{ 'RESERVATIONS.KPI.CONFIRMED_LABEL' | translate }}</div>
         <div class="kpi-value">{{ confirmedReservations }}</div>
         <div class="kpi-trend positive" *ngIf="confirmedTrend > 0">
-          +{{ confirmedTrend }}% vs. mes anterior
+          +{{ confirmedTrend }}% {{ 'RESERVATIONS.KPI.VS_PREVIOUS_MONTH' | translate }}
         </div>
       </div>
     </div>
@@ -49,10 +49,10 @@
         <mat-icon>cancel</mat-icon>
       </div>
       <div class="kpi-content">
-        <div class="kpi-label">Canceladas</div>
+        <div class="kpi-label">{{ 'RESERVATIONS.KPI.CANCELLED_LABEL' | translate }}</div>
         <div class="kpi-value">{{ cancelledReservations }}</div>
         <div class="kpi-trend negative" *ngIf="cancelledTrend !== 0">
-          {{ cancelledTrend > 0 ? '+' : '' }}{{ cancelledTrend }}% vs. mes anterior
+          {{ cancelledTrend > 0 ? '+' : '' }}{{ cancelledTrend }}% {{ 'RESERVATIONS.KPI.VS_PREVIOUS_MONTH' | translate }}
         </div>
       </div>
     </div>
@@ -64,13 +64,13 @@
       <mat-icon class="search-icon">search</mat-icon>
       <input type="text"
              class="search-input"
-             placeholder="Buscar por cliente, email o ID de reserva..."
+             placeholder="{{ 'RESERVATIONS.SEARCH.PLACEHOLDER' | translate }}"
              [formControl]="searchControl">
     </div>
 
     <div class="date-filter">
       <button mat-button class="date-filter-btn">
-        Hoy
+        {{ 'RESERVATIONS.FILTER.TODAY' | translate }}
         <mat-icon>arrow_drop_down</mat-icon>
       </button>
     </div>
@@ -78,11 +78,11 @@
     <div class="action-buttons">
       <button mat-stroked-button class="filter-btn">
         <mat-icon>filter_list</mat-icon>
-        Filtros
+        {{ 'RESERVATIONS.BUTTON.FILTERS' | translate }}
       </button>
       <button mat-flat-button color="warn" class="export-csv-btn" (click)="onExportCsv()">
         <mat-icon>download</mat-icon>
-        Exportar CSV
+        {{ 'RESERVATIONS.BUTTON.EXPORT_CSV' | translate }}
       </button>
     </div>
   </div>
@@ -92,31 +92,31 @@
     <div class="tab-item"
          [class.active]="selectedFilterIndex === 0"
          (click)="onStatusFilterClick(0)">
-      <span class="tab-label">Todas</span>
+      <span class="tab-label">{{ 'RESERVATIONS.TABS.ALL' | translate }}</span>
       <span class="tab-count">({{ totalReservations }})</span>
     </div>
     <div class="tab-item"
          [class.active]="selectedFilterIndex === 1"
          (click)="onStatusFilterClick(1)">
-      <span class="tab-label">Pendientes</span>
+      <span class="tab-label">{{ 'RESERVATIONS.TABS.PENDING' | translate }}</span>
       <span class="tab-count">({{ pendingReservations }})</span>
     </div>
     <div class="tab-item"
          [class.active]="selectedFilterIndex === 2"
          (click)="onStatusFilterClick(2)">
-      <span class="tab-label">Confirmadas</span>
+      <span class="tab-label">{{ 'RESERVATIONS.TABS.CONFIRMED' | translate }}</span>
       <span class="tab-count">({{ confirmedReservations }})</span>
     </div>
     <div class="tab-item"
          [class.active]="selectedFilterIndex === 3"
          (click)="onStatusFilterClick(3)">
-      <span class="tab-label">Pagadas</span>
+      <span class="tab-label">{{ 'RESERVATIONS.TABS.PAID' | translate }}</span>
       <span class="tab-count">({{ paidReservations }})</span>
     </div>
     <div class="tab-item"
          [class.active]="selectedFilterIndex === 4"
          (click)="onStatusFilterClick(4)">
-      <span class="tab-label">Canceladas</span>
+      <span class="tab-label">{{ 'RESERVATIONS.TABS.CANCELLED' | translate }}</span>
       <span class="tab-count">({{ cancelledReservations }})</span>
     </div>
   </div>
@@ -128,17 +128,17 @@
     <div class="reservations-card">
       <!-- Header -->
       <div class="card-header">
-        <h2 class="card-title">Lista de Reservas</h2>
+        <h2 class="card-title">{{ 'RESERVATIONS.LIST.TITLE' | translate }}</h2>
       </div>
 
       <!-- Column Headers -->
       <div class="list-header">
-        <div class="header-cliente">Cliente</div>
-        <div class="header-parking">Parking</div>
-        <div class="header-fecha">Fecha y Hora</div>
-        <div class="header-estado">Estado</div>
-        <div class="header-importe">Importe</div>
-        <div class="header-acciones">Acciones</div>
+        <div class="header-cliente">{{ 'RESERVATIONS.LIST.HEADER.CLIENT' | translate }}</div>
+        <div class="header-parking">{{ 'RESERVATIONS.LIST.HEADER.PARKING' | translate }}</div>
+        <div class="header-fecha">{{ 'RESERVATIONS.LIST.HEADER.DATE_TIME' | translate }}</div>
+        <div class="header-estado">{{ 'RESERVATIONS.LIST.HEADER.STATUS' | translate }}</div>
+        <div class="header-importe">{{ 'RESERVATIONS.LIST.HEADER.AMOUNT' | translate }}</div>
+        <div class="header-acciones">{{ 'RESERVATIONS.LIST.HEADER.ACTIONS' | translate }}</div>
       </div>
 
       <!-- Reservations List -->
@@ -154,7 +154,7 @@
                 {{ getInitials(reservation.userName || 'U') }}
               </div>
               <div class="client-details">
-                <div class="client-name">{{ reservation.userName || 'N/A' }}</div>
+                <div class="client-name">{{ reservation.userName || ('COMMON.N_A' | translate) }}</div>
                 <div class="client-email">{{ reservation.userEmail || '' }}</div>
               </div>
             </div>
@@ -163,10 +163,10 @@
           <!-- Parking Column -->
           <div class="column-parking">
             <div class="parking-info">
-              <div class="parking-name">{{ reservation.parkingName || 'N/A' }}</div>
+              <div class="parking-name">{{ reservation.parkingName || ('COMMON.N_A' | translate) }}</div>
               <div class="parking-location">
                 <mat-icon class="location-icon">location_on</mat-icon>
-                {{ reservation.space || 'N/A' }}
+                {{ reservation.space || ('COMMON.N_A' | translate) }}
               </div>
             </div>
           </div>
@@ -202,7 +202,7 @@
                     class="ver-btn"
                     (click)="onViewDetails(reservation, $event)">
               <mat-icon>visibility</mat-icon>
-              Ver
+              {{ 'RESERVATIONS.BUTTON.VIEW' | translate }}
             </button>
             <button mat-icon-button [matMenuTriggerFor]="actionsMenu" (click)="$event.stopPropagation()">
               <mat-icon>more_horiz</mat-icon>
@@ -212,24 +212,24 @@
                       *ngIf="canConfirm(reservation.status)"
                       (click)="onConfirmReservation(reservation, $event)">
                 <mat-icon>check_circle</mat-icon>
-                <span>Confirmar</span>
+                <span>{{ 'RESERVATIONS.ACTIONS.CONFIRM' | translate }}</span>
               </button>
               <button mat-menu-item
                       *ngIf="canCancel(reservation.status)"
                       (click)="onCancelReservation(reservation, $event)">
                 <mat-icon>cancel</mat-icon>
-                <span>Cancelar</span>
+                <span>{{ 'RESERVATIONS.ACTIONS.CANCEL' | translate }}</span>
               </button>
               <button mat-menu-item (click)="exportSingleReservation(reservation)">
                 <mat-icon>download</mat-icon>
-                <span>Exportar CSV</span>
+                <span>{{ 'RESERVATIONS.ACTIONS.EXPORT_CSV' | translate }}</span>
               </button>
               <button mat-menu-item
                       *ngIf="reservation.status === 'CANCELLED'"
                       (click)="onDeleteReservation(reservation, $event)"
                       class="delete-menu-item">
                 <mat-icon color="warn">delete</mat-icon>
-                <span>Eliminar permanentemente</span>
+                <span>{{ 'RESERVATIONS.ACTIONS.DELETE_PERMANENT' | translate }}</span>
               </button>
             </mat-menu>
           </div>
@@ -253,7 +253,7 @@
         <!-- Header con Estado -->
         <div class="detail-header">
           <div class="detail-title-section">
-            <h2 class="detail-title">Detalles de Reserva</h2>
+            <h2 class="detail-title">{{ 'RESERVATIONS.DETAIL.TITLE' | translate }}</h2>
             <div class="detail-id">ID: {{ selectedReservation.id }}</div>
           </div>
           <app-status-pill [status]="selectedReservation.status"></app-status-pill>
@@ -263,20 +263,20 @@
 
           <!-- Información del Cliente -->
           <div class="detail-section">
-            <h3 class="section-title">Información del Cliente</h3>
+            <h3 class="section-title">{{ 'RESERVATIONS.DETAIL.CLIENT_INFO' | translate }}</h3>
             <div class="client-detail-info">
               <div class="client-avatar-large">
                 {{ getInitials(selectedReservation.userName || 'U') }}
               </div>
               <div class="client-data">
-                <div class="client-name-large">{{ selectedReservation.userName || 'N/A' }}</div>
+                <div class="client-name-large">{{ selectedReservation.userName || ('COMMON.N_A' | translate) }}</div>
                 <div class="client-contact">
                   <mat-icon class="contact-icon">email</mat-icon>
-                  <span>{{ selectedReservation.userEmail || 'N/A' }}</span>
+                  <span>{{ selectedReservation.userEmail || ('COMMON.N_A' | translate) }}</span>
                 </div>
                 <div class="client-contact" *ngIf="selectedReservation.vehiclePlate">
                   <mat-icon class="contact-icon">directions_car</mat-icon>
-                  <span>Placa: {{ selectedReservation.vehiclePlate }}</span>
+                  <span>{{ 'RESERVATIONS.DETAIL.PLATE' | translate }}: {{ selectedReservation.vehiclePlate }}</span>
                 </div>
               </div>
             </div>
@@ -284,18 +284,18 @@
 
           <!-- Información del Parking -->
           <div class="detail-section">
-            <h3 class="section-title">Información del Parking</h3>
+            <h3 class="section-title">{{ 'RESERVATIONS.DETAIL.PARKING_INFO' | translate }}</h3>
             <div class="parking-detail-info">
               <div class="parking-item">
                 <mat-icon class="detail-icon">local_parking</mat-icon>
                 <div class="parking-detail-text">
-                  <div class="parking-value">{{ selectedReservation.parkingName || 'N/A' }}</div>
+                  <div class="parking-value">{{ selectedReservation.parkingName || ('COMMON.N_A' | translate) }}</div>
                 </div>
               </div>
               <div class="parking-item">
                 <mat-icon class="detail-icon">location_on</mat-icon>
                 <div class="parking-detail-text">
-                  <div class="parking-value">Plaza {{ selectedReservation.space || 'N/A' }}</div>
+                  <div class="parking-value">{{ 'RESERVATIONS.DETAIL.SPACE' | translate }} {{ selectedReservation.space || ('COMMON.N_A' | translate) }}</div>
                 </div>
               </div>
             </div>
@@ -303,7 +303,7 @@
 
           <!-- Detalles de la Reserva -->
           <div class="detail-section">
-            <h3 class="section-title">Detalles de la Reserva</h3>
+            <h3 class="section-title">{{ 'RESERVATIONS.DETAIL.RESERVATION_DETAILS' | translate }}</h3>
             <div class="reservation-details">
               <div class="detail-item">
                 <mat-icon class="detail-icon">calendar_today</mat-icon>
@@ -337,7 +337,7 @@
                     class="action-btn edit-btn"
                     *ngIf="canEdit(selectedReservation.status)">
               <mat-icon>edit</mat-icon>
-              Editar Reserva
+              {{ 'RESERVATIONS.BUTTON.EDIT' | translate }}
             </button>
 
             <button mat-stroked-button
@@ -345,7 +345,7 @@
                     *ngIf="canMarkAsPaid(selectedReservation.status)"
                     (click)="onMarkAsPaid(selectedReservation)">
               <mat-icon>payment</mat-icon>
-              Marcar como Pagada
+              {{ 'RESERVATIONS.BUTTON.MARK_AS_PAID' | translate }}
             </button>
 
             <button mat-stroked-button
@@ -353,14 +353,14 @@
                     *ngIf="canCancel(selectedReservation.status)"
                     (click)="onCancelReservation(selectedReservation, $event)">
               <mat-icon>cancel</mat-icon>
-              Cancelar Reserva
+              {{ 'RESERVATIONS.BUTTON.CANCEL' | translate }}
             </button>
           </div>
 
           <!-- Metadata -->
           <div class="detail-metadata">
-            <div class="metadata-item">Creada el {{ formatFullDate(selectedReservation.createdAt) }}</div>
-            <div class="metadata-item">Última actualización: {{ getTimeAgo(selectedReservation.updatedAt) }}</div>
+            <div class="metadata-item">{{ 'RESERVATIONS.METADATA.CREATED_AT' | translate }} {{ formatFullDate(selectedReservation.createdAt) }}</div>
+            <div class="metadata-item">{{ 'RESERVATIONS.METADATA.UPDATED_AT' | translate }} {{ getTimeAgo(selectedReservation.updatedAt) }}</div>
           </div>
 
         </div>
@@ -369,4 +369,3 @@
 
   </div>
 </div>
-

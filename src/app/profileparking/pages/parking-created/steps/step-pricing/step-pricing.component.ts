@@ -10,6 +10,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatButtonModule } from '@angular/material/button';
 
 import { ParkingCreateService } from '../../../../services/parking-create.service';
 import { CreatePricingDto } from '../../../../services/create-types';
@@ -26,7 +28,9 @@ import { CreatePricingDto } from '../../../../services/create-types';
     MatSelectModule,
     MatSlideToggleModule,
     MatCheckboxModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule,
+    TranslateModule
   ],
   templateUrl: './step-pricing.component.html',
   styleUrls: ['./step-pricing.component.css']
@@ -69,8 +73,14 @@ export class StepPricingComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private createService: ParkingCreateService
+    private createService: ParkingCreateService,
+    private translate: TranslateService
   ) {}
+
+  // Helper para plantillas
+  t(key: string, params?: any): string {
+    return this.translate.instant(key, params);
+  }
 
   ngOnInit(): void {
     this.initializeForm();

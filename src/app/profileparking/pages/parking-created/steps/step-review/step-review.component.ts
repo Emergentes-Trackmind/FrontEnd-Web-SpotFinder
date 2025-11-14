@@ -6,6 +6,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { ParkingCreateService } from '../../../../services/parking-create.service';
 import { ParkingStateService, SpotData } from '../../../../services/parking-state.service';
@@ -19,7 +20,8 @@ import { CreateBasicInfoDto, CreateLocationDto, CreateFeaturesDto, CreatePricing
     MatCardModule,
     MatIconModule,
     MatChipsModule,
-    MatButtonModule
+    MatButtonModule,
+    TranslateModule
   ],
   templateUrl: './step-review.component.html',
   styleUrls: ['./step-review.component.css']
@@ -34,6 +36,12 @@ export class StepReviewComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private createService = inject(ParkingCreateService);
   private parkingStateService = inject(ParkingStateService);
+  private translate = inject(TranslateService);
+
+  // Helper simple
+  t(key: string, params?: any) {
+    return this.translate.instant(key, params);
+  }
 
   ngOnInit(): void {
     this.loadAllData();
@@ -277,4 +285,3 @@ export class StepReviewComponent implements OnInit, OnDestroy {
     return this.getAssignedDevicesCount() > 0;
   }
 }
-

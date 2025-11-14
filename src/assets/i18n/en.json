@@ -99,9 +99,210 @@
     "AUTO": "Automatic"
   },
   "COMMON": {
+    "N_A": "N/A",
     "CLOSE": "Close",
     "SAVE": "Save",
     "CANCEL": "Cancel"
+  },
+  "SIDEBAR": {
+    "BRAND": { "TITLE": "SpotFinder", "SUBTITLE": "Parking Management" },
+    "NAVIGATION": "NAVIGATION",
+    "AUTOMATION": "AUTOMATION",
+    "SETTINGS": "SETTINGS",
+    "MENU": {
+      "DASHBOARD": "Dashboard",
+      "MY_PARKINGS": "My Parkings",
+      "NEW_PARKING": "New Parking",
+      "RESERVATIONS": "Reservations",
+      "REVIEWS": "Reviews",
+      "IOT_DEVICES": "IoT Devices",
+      "RPA_CENTER": "RPA Center",
+      "PROFILE": "My Profile",
+      "SETTINGS": "Settings",
+      "COMING_SOON": "COMING SOON"
+    },
+    "LOGOUT": "Log Out"
+  },
+  "RESERVATIONS": {
+    "TITLE": "Reservations",
+    "SUBTITLE": "Manage your parking reservations",
+    "KPI": {
+      "TOTAL_LABEL": "Total reservations",
+      "PENDING_LABEL": "Pending",
+      "CONFIRMED_LABEL": "Confirmed",
+      "CANCELLED_LABEL": "Cancelled",
+      "VS_PREVIOUS_MONTH": "vs previous month"
+    },
+    "SEARCH": { "PLACEHOLDER": "Search reservation..." },
+    "TABS": { "ALL": "All", "PENDING": "Pending", "CONFIRMED": "Confirmed", "PAID": "Paid", "CANCELLED": "Cancelled" },
+    "LIST": { "TITLE": "Reservations list", "HEADER": { "CLIENT": "Client", "PARKING": "Parking", "DATE_TIME": "Date & time", "STATUS": "Status", "AMOUNT": "Amount", "ACTIONS": "Actions" } },
+    "BUTTON": { "FILTERS": "Filters", "EXPORT_CSV": "Export CSV", "VIEW": "View", "EDIT": "Edit", "MARK_AS_PAID": "Mark as paid", "CANCEL": "Cancel" },
+    "METADATA": { "CREATED_AT": "Created at", "UPDATED_AT": "Updated" },
+    "STATUS": { "PENDING": "Pending", "CONFIRMED": "Confirmed", "CANCELLED": "Cancelled", "COMPLETED": "Completed", "ACTIVE": "Active" },
+    "ACTIONS": { "VIEW": "View details", "CONFIRM": "Confirm", "CANCEL": "Cancel", "COMPLETE": "Complete" },
+    "DETAIL": { "TITLE": "Reservation detail", "RESERVATION_INFO": "Reservation information", "CLIENT_INFO": "Client information", "PARKING_INFO": "Parking information", "PAYMENT_INFO": "Payment information" },
+    "MESSAGES": { "NO_RESERVATIONS": "No reservations", "CONFIRMED": "Reservation confirmed", "CANCELLED": "Reservation cancelled", "COMPLETED": "Reservation completed", "ERROR": "Error processing reservation" }
+  },
+  "PARKINGS": {
+    "TITLE": "My Parkings",
+    "SUBTITLE": "Manage your parking locations",
+    "NEW_PARKING": "New Parking",
+    "FILTERS": {
+      "ALL": "All",
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    },
+    "TABLE": {
+      "NAME": "Name",
+      "LOCATION": "Location",
+      "CAPACITY": "Capacity",
+      "OCCUPIED": "Occupied",
+      "STATUS": "Status",
+      "ACTIONS": "Actions"
+    },
+    "STATUS": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    },
+    "ACTIONS": {
+      "VIEW": "View",
+      "EDIT": "Edit",
+      "DELETE": "Delete",
+      "ANALYTICS": "Analytics",
+      "DELETE_SELECTED": "Delete selected"
+    },
+    "MESSAGES": {
+      "NO_PARKINGS": "You have no parkings registered",
+      "CREATE_FIRST": "Create your first parking",
+      "DELETED": "Parking deleted successfully",
+      "ERROR_DELETE": "Error deleting parking"
+    },
+    "BUTTON": {
+      "NEW": "New Parking",
+      "DELETE_SELECTED": "Delete Selected",
+      "RETRY": "Retry",
+      "CLEAR_SEARCH": "Clear Search",
+      "EXIT_SELECTION": "Exit selection"
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Search by name, address..."
+    },
+    "SELECTION_MODE": {
+      "ACTIVE": "Selection mode active"
+    },
+    "ITEMS": {
+      "SINGULAR": "item",
+      "PLURAL": "items"
+    },
+    "LOADING": "Loading parkings...",
+    "ERROR": {
+      "TITLE": "Error",
+      "DESCRIPTION": "There was an error loading your parkings"
+    },
+    "EMPTY": {
+      "TITLE": "No parkings",
+      "DESCRIPTION": "You don't have any parkings yet"
+    },
+    "NO_RESULTS": {
+      "TITLE": "No results",
+      "DESCRIPTION": "No parkings match your search"
+    },
+    "STATE": {
+      "SELECTED": "Selected",
+      "NOT_SELECTED": "Not selected"
+    }
+  },
+  "PARKING_STEPS": {
+    "REVIEW": {
+      "TITLE": "Parking Review",
+      "SUBTITLE": "Verify and confirm information before creating",
+      "EDIT": "Edit",
+      "SECTIONS": {
+        "BASIC": { "TITLE": "Basic Information" },
+        "IOT": { "TITLE": "IoT Devices", "ASSIGNED_TITLE": "Assigned devices", "SPOT_LINE": "Spot {{spot}} — Device {{device}}", "NO_DEVICES": "No devices assigned" },
+        "LOCATION": { "TITLE": "Location" },
+        "FEATURES": { "TITLE": "Features", "NO_FEATURES": "No features selected" },
+        "PRICING": { "TITLE": "Pricing and Hours" }
+      },
+      "LABELS": {
+        "NAME": "Name",
+        "TYPE": "Type",
+        "TOTAL_SPACES": "Total spaces",
+        "ACCESSIBLE_SPACES": "Accessible spaces",
+        "DESCRIPTION": "Description",
+        "PHONE": "Phone",
+        "EMAIL": "Email",
+        "WEBSITE": "Website",
+        "COORDINATES": "Coordinates",
+        "TOTAL_SPOTS": "Total spots",
+        "ASSIGNED_DEVICES": "Assigned devices",
+        "SPOTS_NO_DEVICE": "Spots without device",
+        "SENSORS": "sensors",
+        "RATES": "Rates",
+        "HOURLY_RATE": "Hourly rate",
+        "DAILY_RATE": "Daily rate",
+        "MONTHLY_RATE": "Monthly rate",
+        "MINIMUM_STAY": "Minimum stay",
+        "SCHEDULE": "Schedule",
+        "DAYS": "Days",
+        "ACTIVE_PROMOTIONS": "Active promotions"
+      },
+      "STATUS_TITLE": "Completeness status",
+      "COMPLETE_MESSAGE": "All set! You can create the parking.",
+      "INCOMPLETE_MESSAGE": "Some sections are incomplete."
+    }
+  },
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Sign in",
+      "SUBTITLE": "Access your account",
+      "EMAIL": "Email",
+      "PASSWORD": "Password",
+      "REMEMBER_ME": "Remember me",
+      "FORGOT_PASSWORD": "Forgot password?",
+      "SIGN_IN": "Sign in",
+      "NO_ACCOUNT": "Don't have an account?",
+      "REGISTER": "Register",
+      "MESSAGES": {
+        "SUCCESS": "Signed in successfully",
+        "ERROR": "Invalid credentials",
+        "EMAIL_REQUIRED": "Email is required",
+        "PASSWORD_REQUIRED": "Password is required"
+      }
+    },
+    "REGISTER": {
+      "TITLE": "Create Account",
+      "SUBTITLE": "Join SpotFinder",
+      "FIRST_NAME": "First name",
+      "LAST_NAME": "Last name",
+      "EMAIL": "Email",
+      "PASSWORD": "Password",
+      "CONFIRM_PASSWORD": "Confirm password",
+      "TERMS": "I accept the terms and conditions",
+      "SIGN_UP": "Sign up",
+      "HAVE_ACCOUNT": "Already have an account?",
+      "LOGIN": "Sign in",
+      "MESSAGES": {
+        "SUCCESS": "Account created successfully",
+        "ERROR": "Error creating account",
+        "PASSWORDS_NO_MATCH": "Passwords do not match"
+      }
+    },
+    "FORGOT_PASSWORD": {
+      "TITLE": "Recover Password",
+      "SUBTITLE": "We will send a link to reset your password",
+      "EMAIL": "Email",
+      "SEND": "Send link",
+      "BACK_TO_LOGIN": "Back to sign in",
+      "MESSAGES": { "SUCCESS": "Link sent to your email", "ERROR": "Error sending link" }
+    },
+    "RESET_PASSWORD": {
+      "TITLE": "Reset Password",
+      "SUBTITLE": "Enter your new password",
+      "PASSWORD": "New password",
+      "CONFIRM_PASSWORD": "Confirm password",
+      "RESET": "Reset",
+      "MESSAGES": { "SUCCESS": "Password reset successfully", "ERROR": "Error resetting password" }
+    }
   }
 }
-

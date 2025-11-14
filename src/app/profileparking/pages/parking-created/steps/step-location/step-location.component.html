@@ -1,7 +1,7 @@
 <mat-card class="step-card">
   <mat-card-header class="step-header">
-    <mat-card-title>Ubicación</mat-card-title>
-    <mat-card-subtitle>Dirección y localización en el mapa</mat-card-subtitle>
+    <mat-card-title>{{ t('PARKING_STEPS.LOCATION.TITLE') }}</mat-card-title>
+    <mat-card-subtitle>{{ t('PARKING_STEPS.LOCATION.SUBTITLE') }}</mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content class="step-content">
@@ -10,11 +10,11 @@
       <!-- Primera fila: Dirección y Ciudad -->
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Dirección *</mat-label>
+          <mat-label>{{ t('PARKING_STEPS.LOCATION.LABELS.ADDRESS') }} *</mat-label>
           <input
             matInput
             formControlName="addressLine"
-            placeholder="Calle Gran Vía, 28"
+            placeholder="{{ t('PARKING_STEPS.LOCATION.PLACEHOLDERS.ADDRESS') }}"
             maxlength="200">
           <mat-icon matSuffix>place</mat-icon>
           <mat-error *ngIf="isFieldInvalid('addressLine')">
@@ -23,11 +23,11 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Ciudad *</mat-label>
+          <mat-label>{{ t('PARKING_STEPS.LOCATION.LABELS.CITY') }} *</mat-label>
           <input
             matInput
             formControlName="city"
-            placeholder="Madrid"
+            placeholder="{{ t('PARKING_STEPS.LOCATION.PLACEHOLDERS.CITY') }}"
             maxlength="100">
           <mat-icon matSuffix>location_city</mat-icon>
           <mat-error *ngIf="isFieldInvalid('city')">
@@ -39,11 +39,11 @@
       <!-- Segunda fila: Código Postal, Provincia y País -->
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Código Postal *</mat-label>
+          <mat-label>{{ t('PARKING_STEPS.LOCATION.LABELS.POSTAL_CODE') }} *</mat-label>
           <input
             matInput
             formControlName="postalCode"
-            placeholder="28013"
+            placeholder="{{ t('PARKING_STEPS.LOCATION.PLACEHOLDERS.POSTAL_CODE') }}"
             maxlength="5">
           <mat-icon matSuffix>markunread_mailbox</mat-icon>
           <mat-error *ngIf="isFieldInvalid('postalCode')">
@@ -52,21 +52,21 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Provincia</mat-label>
+          <mat-label>{{ t('PARKING_STEPS.LOCATION.LABELS.STATE') }}</mat-label>
           <input
             matInput
             formControlName="state"
-            placeholder="Madrid"
+            placeholder="{{ t('PARKING_STEPS.LOCATION.PLACEHOLDERS.STATE') }}"
             maxlength="100">
           <mat-icon matSuffix>map</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>País *</mat-label>
+          <mat-label>{{ t('PARKING_STEPS.LOCATION.LABELS.COUNTRY') }} *</mat-label>
           <input
             matInput
             formControlName="country"
-            placeholder="España">
+            placeholder="{{ t('PARKING_STEPS.LOCATION.PLACEHOLDERS.COUNTRY') }}">
           <mat-icon matSuffix>flag</mat-icon>
           <mat-error *ngIf="isFieldInvalid('country')">
             {{ getErrorMessage('country') }}
@@ -79,7 +79,7 @@
         <div class="map-header">
           <div class="map-title">
             <mat-icon>location_on</mat-icon>
-            <span>Ubicación en el Mapa</span>
+            <span>{{ t('PARKING_STEPS.LOCATION.MAP.TITLE') }}</span>
           </div>
 
           <!-- Botón de ubicación actual -->
@@ -95,13 +95,13 @@
               diameter="16"
               mode="indeterminate">
             </mat-progress-spinner>
-            Usar mi ubicación
+            {{ t('PARKING_STEPS.LOCATION.BUTTON.USE_MY_LOCATION') }}
           </button>
         </div>
 
         <div class="map-description">
-          <p>El mapa se mostrará aquí una vez que ingreses la dirección</p>
-          <p>Puedes arrastrar el marcador para ajustar la ubicación exacta</p>
+          <p>{{ t('PARKING_STEPS.LOCATION.MAP.DESCRIPTION_1') }}</p>
+          <p>{{ t('PARKING_STEPS.LOCATION.MAP.DESCRIPTION_2') }}</p>
         </div>
 
         <!-- Componente del mapa -->
@@ -120,12 +120,12 @@
         <!-- Loading indicator para geocodificación -->
         <div *ngIf="isGeocoding" class="geocoding-loading">
           <mat-progress-spinner diameter="24" mode="indeterminate"></mat-progress-spinner>
-          <span>Buscando ubicación...</span>
+          <span>{{ t('PARKING_STEPS.LOCATION.GEOCODING.SEARCHING') }}</span>
         </div>
 
         <!-- Resultados de geocodificación -->
         <div *ngIf="geocodeResults.length > 0" class="geocode-results">
-          <h4>Ubicaciones encontradas:</h4>
+          <h4>{{ t('PARKING_STEPS.LOCATION.GEOCODING.RESULTS_TITLE') }}</h4>
           <div class="results-list">
             <button
               *ngFor="let result of geocodeResults; let i = index"
@@ -142,7 +142,7 @@
         <!-- Coordenadas -->
         <div class="coordinates-row">
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Latitud</mat-label>
+            <mat-label>{{ t('PARKING_STEPS.LOCATION.LABELS.LATITUDE') }}</mat-label>
             <input
               matInput
               type="number"
@@ -153,7 +153,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Longitud</mat-label>
+            <mat-label>{{ t('PARKING_STEPS.LOCATION.LABELS.LONGITUDE') }}</mat-label>
             <input
               matInput
               type="number"
