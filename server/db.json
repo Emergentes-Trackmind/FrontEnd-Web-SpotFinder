@@ -324,21 +324,6 @@
       "status": "Activo",
       "createdAt": "2025-11-13T10:00:00.000Z",
       "updatedAt": "2025-11-13T10:00:00.000Z"
-    },
-    {
-      "id": "1763158105593",
-      "ownerId": "1761826163261",
-      "name": "PATATA",
-      "type": "Comercial",
-      "description": "DASDASDASDASDAS",
-      "totalSpaces": 1,
-      "accessibleSpaces": 0,
-      "phone": "21312312312",
-      "email": "luis.eduardo.200325@gmail.com",
-      "website": "",
-      "status": "Activo",
-      "createdAt": "2025-11-14T22:08:25.593Z",
-      "updatedAt": "2025-11-14T22:08:25.593Z"
     }
   ],
   "locations": [

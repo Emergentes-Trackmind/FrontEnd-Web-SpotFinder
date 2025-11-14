@@ -904,6 +904,72 @@ module.exports = (req, res, next) => {
     return res.status(204).send();
   }
 
+  // DELETE /parkings/:id - Eliminar parking
+  if (req.method === 'DELETE' && req.path.startsWith('/parkings/')) {
+    const token = extractToken(req);
+
+    if (!token) {
+      return res.status(401).json({
+        error: 'No autorizado',
+        message: 'Token de autenticación requerido'
+      });
+    }
+
+    const decoded = verifyToken(token);
+
+    if (!decoded) {
+      return res.status(401).json({
+        error: 'Token inválido',
+        message: 'El token de autenticación no es válido o ha expirado'
+      });
+    }
+
+    // Extraer el ID y convertirlo a string para evitar problemas con lodash-id
+    const parkingId = req.path.split('/')[2];
+    const db = req.app.db;
+
+    // Buscar el parking por ID (convirtiendo a string si es necesario)
+    let parking = db.get('parkings').find({ id: parkingId }).value();
+
+    // Si no se encuentra, intentar con conversión a número
+    if (!parking) {
+      parking = db.get('parkings').find({ id: parseInt(parkingId) }).value();
+    }
+
+    // Si aún no se encuentra, intentar con conversión a string
+    if (!parking) {
+      parking = db.get('parkings').find({ id: parkingId.toString() }).value();
+    }
+
+    if (!parking) {
+      console.log(`⚠️ [DELETE] Parking ${parkingId} no encontrado`);
+      return res.status(404).json({
+        error: 'Parking no encontrado'
+      });
+    }
+
+    // Verificar permisos
+    if (parking.ownerId !== decoded.userId && parking.ownerId !== decoded.userId.toString()) {
+      return res.status(403).json({
+        error: 'Acceso denegado',
+        message: 'No tienes permisos para eliminar este parking'
+      });
+    }
+
+    // Eliminar el parking usando el ID en el formato correcto
+    try {
+      db.get('parkings').remove({ id: parking.id }).write();
+      console.log(`✅ [DELETE] Parking ${parkingId} eliminado correctamente`);
+      return res.status(204).send();
+    } catch (error) {
+      console.error(`❌ [DELETE] Error eliminando parking ${parkingId}:`, error);
+      return res.status(500).json({
+        error: 'Error al eliminar el parking',
+        message: error.message
+      });
+    }
+  }
+
   // POST /parkings - Crear nuevo parking (después del rewrite)
   if (req.method === 'POST' && req.path === '/parkings') {
     const token = extractToken(req);
