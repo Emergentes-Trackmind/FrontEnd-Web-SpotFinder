@@ -107,7 +107,7 @@
 
         <div class="warning-note" *ngIf="getAssignedDevicesCount() === 0">
           <mat-icon>info</mat-icon>
-          <p>{{ t('PARKING_STEPS.REVIEW.SECTIONS.IOT.NO_DEVICES') }}</p>
+          <p>{{ 'PARKING_STEPS.REVIEW.SECTIONS.IOT.NO_DEVICES' | translate }}</p>
         </div>
       </div>
     </div>
@@ -248,38 +248,38 @@
     <div class="completion-status">
       <div class="status-header">
         <mat-icon class="status-icon">assignment_turned_in</mat-icon>
-        <h3>{{ t('PARKING_STEPS.REVIEW.STATUS_TITLE') }}</h3>
+        <h3>{{ 'PARKING_STEPS.REVIEW.STATUS_TITLE' | translate }}</h3>
       </div>
 
       <div class="status-grid">
         <div class="status-item" [class.complete]="isBasicInfoComplete()">
           <mat-icon>{{ isBasicInfoComplete() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-          <span>{{ t('PARKING_STEPS.REVIEW.SECTIONS.BASIC.TITLE') }}</span>
+          <span>{{ 'PARKING_STEPS.REVIEW.SECTIONS.BASIC.TITLE' | translate }}</span>
         </div>
         <div class="status-item" [class.complete]="isLocationComplete()">
           <mat-icon>{{ isLocationComplete() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-          <span>{{ t('PARKING_STEPS.REVIEW.SECTIONS.LOCATION.TITLE') }}</span>
+          <span>{{ 'PARKING_STEPS.REVIEW.SECTIONS.LOCATION.TITLE' | translate }}</span>
         </div>
         <div class="status-item" [class.complete]="isFeaturesComplete()">
           <mat-icon>{{ isFeaturesComplete() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-          <span>{{ t('PARKING_STEPS.REVIEW.SECTIONS.FEATURES.TITLE') }}</span>
+          <span>{{ 'PARKING_STEPS.REVIEW.SECTIONS.FEATURES.TITLE' | translate }}</span>
         </div>
         <div class="status-item" [class.complete]="isPricingComplete()">
           <mat-icon>{{ isPricingComplete() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-          <span>{{ t('PARKING_STEPS.REVIEW.SECTIONS.PRICING.TITLE') }}</span>
+          <span>{{ 'PARKING_STEPS.REVIEW.SECTIONS.PRICING.TITLE' | translate }}</span>
         </div>
       </div>
 
       <div class="completion-message"
            *ngIf="isBasicInfoComplete() && isLocationComplete() && isPricingComplete()">
         <mat-icon>thumb_up</mat-icon>
-        <p>{{ t('PARKING_STEPS.REVIEW.COMPLETE_MESSAGE') }}</p>
+        <p>{{ 'PARKING_STEPS.REVIEW.COMPLETE_MESSAGE' | translate }}</p>
       </div>
 
       <div class="incomplete-message"
            *ngIf="!(isBasicInfoComplete() && isLocationComplete() && isPricingComplete())">
         <mat-icon>warning</mat-icon>
-        <p>{{ t('PARKING_STEPS.REVIEW.INCOMPLETE_MESSAGE') }}</p>
+        <p>{{ 'PARKING_STEPS.REVIEW.INCOMPLETE_MESSAGE' | translate }}</p>
       </div>
     </div>
 

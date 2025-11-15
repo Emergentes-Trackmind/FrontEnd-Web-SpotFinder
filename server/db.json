@@ -25,7 +25,7 @@
       ],
       "isEmailVerified": false,
       "createdAt": "2025-10-30T12:09:23.261Z",
-      "lastLoginAt": "2025-11-14T23:14:55.763Z",
+      "lastLoginAt": "2025-11-15T00:24:06.412Z",
       "plan": "basic"
     },
     {
@@ -324,6 +324,21 @@
       "status": "Activo",
       "createdAt": "2025-11-13T10:00:00.000Z",
       "updatedAt": "2025-11-13T10:00:00.000Z"
+    },
+    {
+      "id": "1763168540995",
+      "ownerId": "1761826163261",
+      "name": "dsadasewq",
+      "type": "Comercial",
+      "description": "weqweqweqwewq",
+      "totalSpaces": 32,
+      "accessibleSpaces": 1,
+      "phone": "2312312312",
+      "email": "luis.eduardo.200325@gmail.com",
+      "website": "",
+      "status": "Activo",
+      "createdAt": "2025-11-15T01:02:20.995Z",
+      "updatedAt": "2025-11-15T01:02:20.995Z"
     }
   ],
   "locations": [
@@ -350,6 +365,30 @@
       "longitude": -76.961607,
       "profileId": "1763160749494",
       "createdAt": "2025-11-14T22:52:29.524Z"
+    },
+    {
+      "id": 1763168541014,
+      "addressLine": "Avenida Central",
+      "city": "Lima",
+      "postalCode": "15804",
+      "state": "Lima",
+      "country": "España",
+      "latitude": -12.1359913,
+      "longitude": -76.961627,
+      "profileId": "1763168540995",
+      "createdAt": "2025-11-15T01:02:21.014Z"
+    },
+    {
+      "id": 1763168579896,
+      "addressLine": "Avenida Central",
+      "city": "Lima",
+      "postalCode": "15804",
+      "state": "Lima",
+      "country": "España",
+      "latitude": -12.1359958,
+      "longitude": -76.9616239,
+      "profileId": "1762800000001",
+      "createdAt": "2025-11-15T01:02:59.896Z"
     }
   ],
   "pricing": [
@@ -410,6 +449,64 @@
       },
       "profileId": "1763160749494",
       "createdAt": "2025-11-14T22:52:29.528Z"
+    },
+    {
+      "id": 1763168541020,
+      "hourlyRate": 0,
+      "dailyRate": 0,
+      "monthlyRate": 0,
+      "currency": "EUR",
+      "minimumStay": "SinLimite",
+      "open24h": false,
+      "operatingHours": {
+        "openTime": "08:00",
+        "closeTime": "22:00"
+      },
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": false
+      },
+      "promotions": {
+        "earlyBird": false,
+        "weekend": false,
+        "longStay": false
+      },
+      "profileId": "1763168540995",
+      "createdAt": "2025-11-15T01:02:21.020Z"
+    },
+    {
+      "id": 1763168579900,
+      "hourlyRate": 0,
+      "dailyRate": 0,
+      "monthlyRate": 0,
+      "currency": "EUR",
+      "minimumStay": "SinLimite",
+      "open24h": false,
+      "operatingHours": {
+        "openTime": "08:00",
+        "closeTime": "22:00"
+      },
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": false
+      },
+      "promotions": {
+        "earlyBird": false,
+        "weekend": false,
+        "longStay": false
+      },
+      "profileId": "1762800000001",
+      "createdAt": "2025-11-15T01:02:59.900Z"
     }
   ],
   "features": [
@@ -470,6 +567,93 @@
       },
       "profileId": "1763160749494",
       "createdAt": "2025-11-14T22:52:29.529Z"
+    },
+    {
+      "id": 1763168541021,
+      "security": {
+        "security24h": true,
+        "cameras": true,
+        "lighting": false,
+        "accessControl": false
+      },
+      "amenities": {
+        "covered": false,
+        "elevator": false,
+        "bathrooms": false,
+        "carWash": false
+      },
+      "services": {
+        "electricCharging": true,
+        "freeWifi": false,
+        "valetService": false,
+        "maintenance": false
+      },
+      "payments": {
+        "cardPayment": true,
+        "mobilePayment": false,
+        "monthlyPasses": false,
+        "corporateRates": false
+      },
+      "profileId": "1763168540995",
+      "createdAt": "2025-11-15T01:02:21.021Z"
+    },
+    {
+      "id": 1763168579915,
+      "security": {
+        "security24h": false,
+        "cameras": false,
+        "lighting": false,
+        "accessControl": false
+      },
+      "amenities": {
+        "covered": false,
+        "elevator": false,
+        "bathrooms": false,
+        "carWash": false
+      },
+      "services": {
+        "electricCharging": false,
+        "freeWifi": false,
+        "valetService": false,
+        "maintenance": false
+      },
+      "payments": {
+        "cardPayment": false,
+        "mobilePayment": false,
+        "monthlyPasses": false,
+        "corporateRates": false
+      },
+      "profileId": "1762800000001",
+      "createdAt": "2025-11-15T01:02:59.915Z"
+    },
+    {
+      "id": 1763168580173,
+      "security": {
+        "security24h": false,
+        "cameras": false,
+        "lighting": false,
+        "accessControl": false
+      },
+      "amenities": {
+        "covered": false,
+        "elevator": false,
+        "bathrooms": false,
+        "carWash": false
+      },
+      "services": {
+        "electricCharging": false,
+        "freeWifi": false,
+        "valetService": false,
+        "maintenance": false
+      },
+      "payments": {
+        "cardPayment": false,
+        "mobilePayment": false,
+        "monthlyPasses": false,
+        "corporateRates": false
+      },
+      "profileId": "1762800000001",
+      "createdAt": "2025-11-15T01:03:00.173Z"
     }
   ],
   "profiles": [
@@ -521,7 +705,7 @@
           "systemUpdates": true
         }
       },
-      "updatedAt": "2025-11-14T23:25:13.211Z"
+      "updatedAt": "2025-11-15T01:07:43.988Z"
     },
     {
       "id": "1761857990792",

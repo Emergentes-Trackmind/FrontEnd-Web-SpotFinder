@@ -1,4 +1,7 @@
 {
+  "COMMON": {
+    "N_A": "N/A"
+  },
   "PROFILE": {
     "TITLE": "My Profile",
     "SUBTITLE": "Manage your personal information and preferences",
@@ -163,67 +166,51 @@
     "DETAIL": { "TITLE": "Reservation detail", "RESERVATION_INFO": "Reservation information", "CLIENT_INFO": "Client information", "PARKING_INFO": "Parking information", "PAYMENT_INFO": "Payment information" },
     "MESSAGES": { "NO_RESERVATIONS": "No reservations", "CONFIRMED": "Reservation confirmed", "CANCELLED": "Reservation cancelled", "COMPLETED": "Reservation completed", "ERROR": "Error processing reservation" }
   },
+  "PARKING_CREATE": {
+    "TITLE": "Create New Parking",
+    "PROGRESS": {
+      "TITLE": "Creation Progress",
+      "STEP_OF": "Step {{current}} of {{total}}"
+    },
+    "BUTTON": {
+      "PREVIOUS": "Previous",
+      "NEXT": "Next",
+      "CANCEL": "Cancel",
+      "SAVE": "Create Parking",
+      "SAVING": "Saving..."
+    }
+  },
+  "PARKING_EDIT": {
+    "TITLE": "Edit Parking",
+    "LOADING": "Loading parking information...",
+    "PROGRESS": {
+      "TITLE": "Edit Progress",
+      "STEP_OF": "Step {{current}} of {{total}}"
+    },
+    "BUTTON": {
+      "PREVIOUS": "Previous",
+      "NEXT": "Next",
+      "CANCEL": "Cancel",
+      "SAVE": "Save Changes",
+      "SAVING": "Saving..."
+    }
+  },
   "PARKINGS": {
     "PAGE": {
       "TITLE": "My Parkings",
       "SUBTITLE": "Manage and control all your parking lots from a single place"
     },
     "TITLE": "My Parkings",
-    "SUBTITLE": "Manage your parking locations",
-    "NEW_PARKING": "New Parking",
-    "CREATE": {
-      "TITLE": "Create New Parking",
-      "SUBTITLE": "Complete your parking information",
-      "PROGRESS": {
-        "TITLE": "Step {{current}} of {{total}}",
-        "STEP_OF": "Step {{current}} of {{total}}"
-      },
-      "BUTTON": {
-        "PREVIOUS": "Previous",
-        "NEXT": "Next",
-        "CANCEL": "Cancel",
-        "CREATE": "Create Parking"
-      }
-    },
-    "FILTERS": {
-      "ALL": "All",
-      "ACTIVE": "Active",
-      "INACTIVE": "Inactive"
-    },
-    "TABLE": {
-      "NAME": "Name",
-      "LOCATION": "Location",
-      "CAPACITY": "Capacity",
-      "OCCUPIED": "Occupied",
-      "STATUS": "Status",
-      "ACTIONS": "Actions"
-    },
-    "STATUS": {
-      "ACTIVE": "Active",
-      "INACTIVE": "Inactive"
-    },
-    "ACTIONS": {
-      "VIEW": "View",
-      "EDIT": "Edit",
-      "DELETE": "Delete",
-      "ANALYTICS": "Analytics",
-      "DELETE_SELECTED": "Delete selected"
-    },
-    "MESSAGES": {
-      "NO_PARKINGS": "You have no parkings registered",
-      "CREATE_FIRST": "Create your first parking",
-      "DELETED": "Parking deleted successfully",
-      "ERROR_DELETE": "Error deleting parking"
-    },
+    "SUBTITLE": "Manage your parking lots",
     "BUTTON": {
       "NEW": "New Parking",
       "DELETE_SELECTED": "Delete Selected",
+      "EXIT_SELECTION": "Exit Selection",
       "RETRY": "Retry",
-      "CLEAR_SEARCH": "Clear Search",
-      "EXIT_SELECTION": "Exit selection"
+      "CLEAR_SEARCH": "Clear Search"
     },
     "SEARCH": {
-      "PLACEHOLDER": "Search by name, address..."
+      "PLACEHOLDER": "Search parking by name..."
     },
     "SELECTION_MODE": {
       "ACTIVE": "Selection mode active"
@@ -232,56 +219,255 @@
       "SINGULAR": "item",
       "PLURAL": "items"
     },
+    "ACTIONS": {
+      "DELETE_SELECTED": "Delete selected"
+    },
     "LOADING": "Loading parkings...",
     "ERROR": {
-      "TITLE": "Error",
-      "DESCRIPTION": "There was an error loading your parkings"
+      "TITLE": "Error loading parkings",
+      "DESCRIPTION": "Could not load parkings. Please try again."
     },
     "EMPTY": {
-      "TITLE": "No parkings",
-      "DESCRIPTION": "You don't have any parkings yet"
+      "TITLE": "You have no parkings",
+      "DESCRIPTION": "Start by creating your first parking to manage your parking lots."
     },
     "NO_RESULTS": {
-      "TITLE": "No results",
-      "DESCRIPTION": "No parkings match your search"
+      "TITLE": "No results found",
+      "DESCRIPTION": "There are no parkings matching your search. Try different terms."
     },
     "STATE": {
       "SELECTED": "Selected",
+      "NOT_SELECTED": "Not selected"
+    }
+  },
+  "PARKING_STEPS": {
     "BASIC": {
       "TITLE": "Basic Information",
       "SUBTITLE": "Fundamental data about your parking",
-      "DESCRIPTION": "Complete the basic data to identify your parking"
+      "DESCRIPTION": "Complete the basic data to identify your parking",
+      "HINT_WEBSITE": "Example: https://myparkingweb.com",
+      "LABELS": {
+        "NAME": "Parking Name",
+        "TYPE": "Parking Type",
+        "TOTAL_SPACES": "Total Spaces",
+        "ACCESSIBLE_SPACES": "Accessible Spaces",
+        "DESCRIPTION": "Description",
+        "PHONE": "Phone Number",
+        "EMAIL": "Contact Email",
+        "WEBSITE": "Website"
+      },
+      "PLACEHOLDERS": {
+        "NAME": "E.g: Central Parking",
+        "DESCRIPTION": "Describe the main features of your parking...",
+        "PHONE": "+1 123 456 789",
+        "EMAIL": "contact@parking.com"
+      }
     },
     "LOCATION": {
       "TITLE": "Location",
       "SUBTITLE": "Where your parking is located",
-      "DESCRIPTION": "Set the exact location of your parking lot"
+      "DESCRIPTION": "Set the exact location of your parking lot",
+      "LABELS": {
+        "ADDRESS": "Address",
+        "CITY": "City",
+        "POSTAL_CODE": "Postal Code",
+        "STATE": "State/Province",
+        "COUNTRY": "Country",
+        "LATITUDE": "Latitude",
+        "LONGITUDE": "Longitude"
+      },
+      "PLACEHOLDERS": {
+        "ADDRESS": "E.g: Main Street 123",
+        "CITY": "E.g: New York",
+        "POSTAL_CODE": "10001",
+        "STATE": "E.g: New York",
+        "COUNTRY": "United States"
+      },
+      "MAP": {
+        "TITLE": "Location on map",
+        "DESCRIPTION_1": "Click on the map or drag the marker to set the exact location.",
+        "DESCRIPTION_2": "You can also use your current location with the button below."
+      },
+      "BUTTON": {
+        "USE_MY_LOCATION": "Use my current location"
+      },
+      "GEOCODING": {
+        "SEARCHING": "Searching location...",
+        "RESULTS_TITLE": "Search results:"
+      }
     },
     "FEATURES": {
       "TITLE": "Features",
       "SUBTITLE": "Services and amenities",
       "DESCRIPTION": "Select available features and services",
-      "NO_FEATURES": "No features selected"
+      "NO_FEATURES": "No features selected",
+      "SELECTED_LABEL": "features selected",
+      "SELECTED": "selected",
+      "SELECT_ALL": "Select all",
+      "NO_SELECTION": "You haven't selected any features",
+      "NO_SELECTION_HINT": "Select the features that best describe your parking",
+      "CATEGORIES": {
+        "SECURITY": {
+          "TITLE": "Security",
+          "FEATURES": {
+            "SECURITY_24H": {
+              "LABEL": "24-hour Security",
+              "DESCRIPTION": "Security staff 24 hours a day"
+            },
+            "CAMERAS": {
+              "LABEL": "Surveillance Cameras",
+              "DESCRIPTION": "Video surveillance system"
+            },
+            "LIGHTING": {
+              "LABEL": "LED Lighting",
+              "DESCRIPTION": "Complete parking lighting"
+            },
+            "ACCESS_CONTROL": {
+              "LABEL": "Access Control",
+              "DESCRIPTION": "Controlled access system"
+            }
+          }
+        },
+        "AMENITIES": {
+          "TITLE": "Amenities",
+          "FEATURES": {
+            "COVERED": {
+              "LABEL": "Covered",
+              "DESCRIPTION": "Roofed parking"
+            },
+            "ELEVATOR": {
+              "LABEL": "Elevator",
+              "DESCRIPTION": "Elevator access"
+            },
+            "BATHROOMS": {
+              "LABEL": "Bathrooms",
+              "DESCRIPTION": "Restrooms available"
+            },
+            "CAR_WASH": {
+              "LABEL": "Car Wash",
+              "DESCRIPTION": "Car wash service"
+            }
+          }
+        },
+        "SERVICES": {
+          "TITLE": "Services",
+          "FEATURES": {
+            "ELECTRIC_CHARGING": {
+              "LABEL": "Electric Charging",
+              "DESCRIPTION": "Charging points for electric vehicles"
+            },
+            "FREE_WIFI": {
+              "LABEL": "Free WiFi",
+              "DESCRIPTION": "Free internet connection"
+            },
+            "VALET_SERVICE": {
+              "LABEL": "Valet Service",
+              "DESCRIPTION": "Vehicle parking and pickup"
+            },
+            "MAINTENANCE": {
+              "LABEL": "Maintenance",
+              "DESCRIPTION": "Vehicle maintenance services"
+            }
+          }
+        },
+        "PAYMENTS": {
+          "TITLE": "Payments",
+          "FEATURES": {
+            "CARD_PAYMENT": {
+              "LABEL": "Card Payment",
+              "DESCRIPTION": "Credit/debit card payment"
+            },
+            "MOBILE_PAYMENT": {
+              "LABEL": "Mobile Payment",
+              "DESCRIPTION": "Payment via mobile apps"
+            },
+            "MONTHLY_PASSES": {
+              "LABEL": "Monthly Passes",
+              "DESCRIPTION": "Monthly subscriptions available"
+            },
+            "CORPORATE_RATES": {
+              "LABEL": "Corporate Rates",
+              "DESCRIPTION": "Business discounts"
+            }
+          }
+        }
+      }
     },
     "PRICING": {
       "TITLE": "Pricing and Hours",
       "SUBTITLE": "Rates and availability",
-      "DESCRIPTION": "Configure rates and operating hours"
+      "DESCRIPTION": "Configure rates and operating hours",
+      "SECTION": {
+        "BASIC_RATES": "Basic Rates",
+        "OPERATING_HOURS": "Operating Hours",
+        "PROMOTIONS": "Promotions and Discounts"
+      },
+      "LABELS": {
+        "HOURLY_RATE": "Hourly Rate",
+        "DAILY_RATE": "Daily Rate",
+        "MONTHLY_RATE": "Monthly Rate",
+        "CURRENCY": "Currency",
+        "MINIMUM_STAY": "Minimum Stay",
+        "OPEN_TIME": "Opening Time",
+        "CLOSE_TIME": "Closing Time"
+      },
+      "TOGGLE": {
+        "OPEN_24H": "Open 24 hours"
+      },
+      "HOURS_DESCRIPTION": {
+        "OPEN_24H": "Your parking is available 24 hours a day, every day",
+        "SPECIFIC_HOURS": "Select specific opening and closing times"
+      },
+      "DAYS": {
+        "TITLE": "Operating Days",
+        "SELECTED": "selected",
+        "WEEKDAYS": "Monday to Friday",
+        "WEEKENDS": "Weekend",
+        "ALL_DAYS": "All days"
+      },
+      "PROMOTIONS": {
+        "ACTIVE": "active",
+        "EARLY_BIRD": {
+          "TITLE": "Early Bird",
+          "DESCRIPTION": "Discount for entry before 7:00 AM"
+        },
+        "WEEKEND": {
+          "TITLE": "Weekend",
+          "DESCRIPTION": "Special rates for Saturdays and Sundays"
+        },
+        "LONG_STAY": {
+          "TITLE": "Long Stay",
+          "DESCRIPTION": "Discount for bookings over 7 days"
+        }
+      }
     },
-      "NOT_SELECTED": "Not selected"
-    }
-  },
-  "PARKING_STEPS": {
     "REVIEW": {
       "TITLE": "Parking Review",
       "SUBTITLE": "Verify and confirm information before creating",
       "EDIT": "Edit",
       "SECTIONS": {
-        "BASIC": { "TITLE": "Basic Information" },
-        "IOT": { "TITLE": "IoT Devices", "ASSIGNED_TITLE": "Assigned devices", "SPOT_LINE": "Spot {{spot}} — Device {{device}}", "NO_DEVICES": "No devices assigned" },
-        "LOCATION": { "TITLE": "Location" },
-        "FEATURES": { "TITLE": "Features", "NO_FEATURES": "No features selected" },
-        "PRICING": { "TITLE": "Pricing and Hours" }
+        "BASIC": {
+          "TITLE": "Basic Information"
+        },
+        "CONTACT": {
+          "TITLE": "Contact Information"
+        },
+        "IOT": {
+          "TITLE": "IoT Devices",
+          "ASSIGNED_TITLE": "Assigned devices",
+          "SPOT_LINE": "Spot {{spot}} — Device {{device}}",
+          "NO_DEVICES": "No devices assigned"
+        },
+        "LOCATION": {
+          "TITLE": "Location"
+        },
+        "FEATURES": {
+          "TITLE": "Features",
+          "NO_FEATURES": "No features selected"
+        },
+        "PRICING": {
+          "TITLE": "Pricing and Hours"
+        }
       },
       "LABELS": {
         "NAME": "Name",
@@ -404,5 +590,63 @@
       "AVG_TIME": "Average Time"
     },
     "NO_RECENT_ACTIVITY": "No recent activity"
+  },
+  "SPOTS": {
+    "KPI": {
+      "TOTAL": "Total spots",
+      "FREE": "Free",
+      "OCCUPIED": "Occupied",
+      "MAINTENANCE": "Maintenance",
+      "OFFLINE": "Offline"
+    },
+    "FILTER": {
+      "LABEL": "Filter spots"
+    },
+    "SECTION": {
+      "TITLE": "Spots Visualizer"
+    },
+    "HINT": {
+      "SWIPE": "Swipe to see more spots"
+    },
+    "DEVICES": {
+      "TITLE": "Available devices",
+      "NO_AVAILABLE": "No devices available",
+      "LINK": "Manage devices",
+      "ASSIGNED_TO": "Assigned to spot",
+      "ASSIGN": "Assign",
+      "UNASSIGN": "Unassign",
+      "MENU": {
+        "SELECT_SPOT": "Select spot",
+        "SPOT": "Spot",
+        "ALL_ASSIGNED": "All devices are assigned"
+      }
+    }
+  },
+  "SPOT": {
+    "NO_SENSOR_TOOLTIP": "No sensor assigned",
+    "ACTIONS": {
+      "LABEL": "Spot actions",
+      "VIEW_DEVICE": "View device",
+      "MARK_MAINTENANCE": "Mark maintenance",
+      "REMOVE_MAINTENANCE": "Remove maintenance"
+    },
+    "STATUS": {
+      "FREE": "Free",
+      "OCCUPIED": "Occupied",
+      "MAINTENANCE": "Maintenance",
+      "OFFLINE": "Offline",
+      "UNKNOWN": "Unknown"
+    },
+    "ARIA": {
+      "HAS_DEVICE": "with device",
+      "NO_DEVICE": "without device"
+    }
+  },
+  "PARKING_TYPES": {
+    "COMERCIAL": "Commercial",
+    "PUBLICO": "Public",
+    "PRIVADO": "Private",
+    "RESIDENCIAL": "Residential"
   }
 }
+

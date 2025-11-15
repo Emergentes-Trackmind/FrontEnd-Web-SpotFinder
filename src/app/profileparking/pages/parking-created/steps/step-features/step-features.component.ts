@@ -30,48 +30,114 @@ import { CreateFeaturesDto } from '../../../../services/create-types';
 export class StepFeaturesComponent implements OnInit, OnDestroy {
   featuresForm!: FormGroup;
 
-  readonly featureCategories = {
-    security: {
-      title: 'Seguridad',
-      icon: 'security',
-      features: [
-        { key: 'security24h', label: 'Seguridad 24 horas', description: 'Personal de seguridad las 24 horas' },
-        { key: 'cameras', label: 'Cámaras de vigilancia', description: 'Sistema de videovigilancia' },
-        { key: 'lighting', label: 'Iluminación LED', description: 'Iluminación completa del parking' },
-        { key: 'accessControl', label: 'Control de acceso', description: 'Sistema de acceso controlado' }
-      ]
-    },
-    amenities: {
-      title: 'Comodidades',
-      icon: 'apartment',
-      features: [
-        { key: 'covered', label: 'Cubierto', description: 'Parking techado' },
-        { key: 'elevator', label: 'Ascensor', description: 'Acceso por ascensor' },
-        { key: 'bathrooms', label: 'Baños', description: 'Servicios disponibles' },
-        { key: 'carWash', label: 'Lavado de coches', description: 'Servicio de lavado' }
-      ]
-    },
-    services: {
-      title: 'Servicios',
-      icon: 'build',
-      features: [
-        { key: 'electricCharging', label: 'Carga eléctrica', description: 'Puntos de carga para vehículos eléctricos' },
-        { key: 'freeWifi', label: 'WiFi gratuito', description: 'Conexión a internet gratuita' },
-        { key: 'valetService', label: 'Servicio de valet', description: 'Aparcamiento y recogida de vehículos' },
-        { key: 'maintenance', label: 'Mantenimiento', description: 'Servicios de mantenimiento de vehículos' }
-      ]
-    },
-    payments: {
-      title: 'Pagos',
-      icon: 'payment',
-      features: [
-        { key: 'cardPayment', label: 'Pago con tarjeta', description: 'Pago con tarjeta de crédito/débito' },
-        { key: 'mobilePayment', label: 'Pago móvil', description: 'Pago a través de aplicaciones móviles' },
-        { key: 'monthlyPasses', label: 'Abonos mensuales', description: 'Suscripciones mensuales disponibles' },
-        { key: 'corporateRates', label: 'Tarifas corporativas', description: 'Descuentos para empresas' }
-      ]
-    }
-  };
+  get featureCategories() {
+    return {
+      security: {
+        title: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SECURITY.TITLE'),
+        icon: 'security',
+        features: [
+          {
+            key: 'security24h',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SECURITY.FEATURES.SECURITY_24H.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SECURITY.FEATURES.SECURITY_24H.DESCRIPTION')
+          },
+          {
+            key: 'cameras',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SECURITY.FEATURES.CAMERAS.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SECURITY.FEATURES.CAMERAS.DESCRIPTION')
+          },
+          {
+            key: 'lighting',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SECURITY.FEATURES.LIGHTING.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SECURITY.FEATURES.LIGHTING.DESCRIPTION')
+          },
+          {
+            key: 'accessControl',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SECURITY.FEATURES.ACCESS_CONTROL.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SECURITY.FEATURES.ACCESS_CONTROL.DESCRIPTION')
+          }
+        ]
+      },
+      amenities: {
+        title: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.AMENITIES.TITLE'),
+        icon: 'apartment',
+        features: [
+          {
+            key: 'covered',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.AMENITIES.FEATURES.COVERED.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.AMENITIES.FEATURES.COVERED.DESCRIPTION')
+          },
+          {
+            key: 'elevator',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.AMENITIES.FEATURES.ELEVATOR.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.AMENITIES.FEATURES.ELEVATOR.DESCRIPTION')
+          },
+          {
+            key: 'bathrooms',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.AMENITIES.FEATURES.BATHROOMS.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.AMENITIES.FEATURES.BATHROOMS.DESCRIPTION')
+          },
+          {
+            key: 'carWash',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.AMENITIES.FEATURES.CAR_WASH.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.AMENITIES.FEATURES.CAR_WASH.DESCRIPTION')
+          }
+        ]
+      },
+      services: {
+        title: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SERVICES.TITLE'),
+        icon: 'build',
+        features: [
+          {
+            key: 'electricCharging',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SERVICES.FEATURES.ELECTRIC_CHARGING.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SERVICES.FEATURES.ELECTRIC_CHARGING.DESCRIPTION')
+          },
+          {
+            key: 'freeWifi',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SERVICES.FEATURES.FREE_WIFI.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SERVICES.FEATURES.FREE_WIFI.DESCRIPTION')
+          },
+          {
+            key: 'valetService',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SERVICES.FEATURES.VALET_SERVICE.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SERVICES.FEATURES.VALET_SERVICE.DESCRIPTION')
+          },
+          {
+            key: 'maintenance',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SERVICES.FEATURES.MAINTENANCE.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.SERVICES.FEATURES.MAINTENANCE.DESCRIPTION')
+          }
+        ]
+      },
+      payments: {
+        title: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.PAYMENTS.TITLE'),
+        icon: 'payment',
+        features: [
+          {
+            key: 'cardPayment',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.PAYMENTS.FEATURES.CARD_PAYMENT.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.PAYMENTS.FEATURES.CARD_PAYMENT.DESCRIPTION')
+          },
+          {
+            key: 'mobilePayment',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.PAYMENTS.FEATURES.MOBILE_PAYMENT.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.PAYMENTS.FEATURES.MOBILE_PAYMENT.DESCRIPTION')
+          },
+          {
+            key: 'monthlyPasses',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.PAYMENTS.FEATURES.MONTHLY_PASSES.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.PAYMENTS.FEATURES.MONTHLY_PASSES.DESCRIPTION')
+          },
+          {
+            key: 'corporateRates',
+            label: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.PAYMENTS.FEATURES.CORPORATE_RATES.LABEL'),
+            description: this.translate.instant('PARKING_STEPS.FEATURES.CATEGORIES.PAYMENTS.FEATURES.CORPORATE_RATES.DESCRIPTION')
+          }
+        ]
+      }
+    };
+  }
 
   private destroy$ = new Subject<void>();
 

@@ -1,7 +1,7 @@
 <mat-card class="step-card">
   <mat-card-header class="step-header">
-    <mat-card-title>{{ t('PARKING_STEPS.BASIC.TITLE') }}</mat-card-title>
-    <mat-card-subtitle>{{ t('PARKING_STEPS.BASIC.SUBTITLE') }}</mat-card-subtitle>
+    <mat-card-title>{{ 'PARKING_STEPS.BASIC.TITLE' | translate }}</mat-card-title>
+    <mat-card-subtitle>{{ 'PARKING_STEPS.BASIC.SUBTITLE' | translate }}</mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content class="step-content">
@@ -10,11 +10,11 @@
       <!-- Primera fila: Nombre y Tipo -->
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ t('PARKING_STEPS.BASIC.LABELS.NAME') }} *</mat-label>
+          <mat-label>{{ 'PARKING_STEPS.BASIC.LABELS.NAME' | translate }} *</mat-label>
           <input
             matInput
             formControlName="name"
-            placeholder="{{ t('PARKING_STEPS.BASIC.PLACEHOLDERS.NAME') }}"
+            [placeholder]="'PARKING_STEPS.BASIC.PLACEHOLDERS.NAME' | translate"
             maxlength="100">
           <mat-icon matSuffix>business</mat-icon>
           <mat-error *ngIf="isFieldInvalid('name')">
@@ -23,10 +23,10 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ t('PARKING_STEPS.BASIC.LABELS.TYPE') }} *</mat-label>
+          <mat-label>{{ 'PARKING_STEPS.BASIC.LABELS.TYPE' | translate }} *</mat-label>
           <mat-select formControlName="type">
             <mat-option *ngFor="let type of parkingTypes" [value]="type.value">
-              {{ t(type.labelKey) }}
+              {{ type.labelKey | translate }}
             </mat-option>
           </mat-select>
           <mat-icon matSuffix>category</mat-icon>
@@ -36,7 +36,7 @@
       <!-- Segunda fila: Total de plazas y Plazas accesibles -->
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ t('PARKING_STEPS.BASIC.LABELS.TOTAL_SPACES') }} *</mat-label>
+          <mat-label>{{ 'PARKING_STEPS.BASIC.LABELS.TOTAL_SPACES' | translate }} *</mat-label>
           <input
             matInput
             type="number"
@@ -51,7 +51,7 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ t('PARKING_STEPS.BASIC.LABELS.ACCESSIBLE_SPACES') }} *</mat-label>
+          <mat-label>{{ 'PARKING_STEPS.BASIC.LABELS.ACCESSIBLE_SPACES' | translate }} *</mat-label>
           <input
             matInput
             type="number"
@@ -68,12 +68,12 @@
       <!-- Descripción -->
       <div class="form-row full-width">
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ t('PARKING_STEPS.BASIC.LABELS.DESCRIPTION') }} *</mat-label>
+          <mat-label>{{ 'PARKING_STEPS.BASIC.LABELS.DESCRIPTION' | translate }} *</mat-label>
           <textarea
             matInput
             formControlName="description"
             rows="4"
-            placeholder="{{ t('PARKING_STEPS.BASIC.PLACEHOLDERS.DESCRIPTION') }}"
+            [placeholder]="'PARKING_STEPS.BASIC.PLACEHOLDERS.DESCRIPTION' | translate"
             maxlength="500">
           </textarea>
           <mat-icon matSuffix>description</mat-icon>
@@ -89,11 +89,11 @@
       <!-- Tercera fila: Teléfono y Email -->
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ t('PARKING_STEPS.BASIC.LABELS.PHONE') }} *</mat-label>
+          <mat-label>{{ 'PARKING_STEPS.BASIC.LABELS.PHONE' | translate }} *</mat-label>
           <input
             matInput
             formControlName="phone"
-            placeholder="{{ t('PARKING_STEPS.BASIC.PLACEHOLDERS.PHONE') }}"
+            [placeholder]="'PARKING_STEPS.BASIC.PLACEHOLDERS.PHONE' | translate"
             maxlength="15">
           <mat-icon matSuffix>phone</mat-icon>
           <mat-error *ngIf="isFieldInvalid('phone')">
@@ -102,12 +102,12 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ t('PARKING_STEPS.BASIC.LABELS.EMAIL') }} *</mat-label>
+          <mat-label>{{ 'PARKING_STEPS.BASIC.LABELS.EMAIL' | translate }} *</mat-label>
           <input
             matInput
             type="email"
             formControlName="email"
-            placeholder="{{ t('PARKING_STEPS.BASIC.PLACEHOLDERS.EMAIL') }}">
+            [placeholder]="'PARKING_STEPS.BASIC.PLACEHOLDERS.EMAIL' | translate">
           <mat-icon matSuffix>email</mat-icon>
           <mat-error *ngIf="isFieldInvalid('email')">
             {{ getErrorMessage('email') }}
@@ -118,13 +118,13 @@
       <!-- Sitio web (opcional) -->
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field full-width">
-          <mat-label>{{ t('PARKING_STEPS.BASIC.LABELS.WEBSITE') }}</mat-label>
+          <mat-label>{{ 'PARKING_STEPS.BASIC.LABELS.WEBSITE' | translate }}</mat-label>
           <input
             matInput
             formControlName="website"
             placeholder="https://www.parking.com">
           <mat-icon matSuffix>language</mat-icon>
-          <mat-hint>{{ t('PARKING_STEPS.BASIC.HINT.WEBSITE') }}</mat-hint>
+          <mat-hint>{{ 'PARKING_STEPS.BASIC.HINT_WEBSITE' | translate }}</mat-hint>
           <mat-error *ngIf="isFieldInvalid('website')">
             {{ getErrorMessage('website') }}
           </mat-error>
