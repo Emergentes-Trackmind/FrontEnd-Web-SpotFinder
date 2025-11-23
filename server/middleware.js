@@ -924,22 +924,26 @@ module.exports = (req, res, next) => {
       });
     }
 
-    // Extraer el ID y convertirlo a string para evitar problemas con lodash-id
+    // Extraer el ID y validar que no sea null o undefined
     const parkingId = req.path.split('/')[2];
+
+    if (!parkingId || parkingId === 'null' || parkingId === 'undefined') {
+      console.log(`❌ [DELETE] ID de parking inválido: ${parkingId}`);
+      return res.status(400).json({
+        error: 'ID de parking inválido',
+        message: 'El ID proporcionado no es válido'
+      });
+    }
+
     const db = req.app.db;
 
-    // Buscar el parking por ID (convirtiendo a string si es necesario)
-    let parking = db.get('parkings').find({ id: parkingId }).value();
-
-    // Si no se encuentra, intentar con conversión a número
-    if (!parking) {
-      parking = db.get('parkings').find({ id: parseInt(parkingId) }).value();
-    }
-
-    // Si aún no se encuentra, intentar con conversión a string
-    if (!parking) {
-      parking = db.get('parkings').find({ id: parkingId.toString() }).value();
-    }
+    // Obtener todos los parkings y buscar manualmente para evitar problemas con lodash-id
+    const allParkings = db.get('parkings').value() || [];
+    const parking = allParkings.find(p =>
+      p.id === parkingId ||
+      p.id === parseInt(parkingId) ||
+      p.id?.toString() === parkingId
+    );
 
     if (!parking) {
       console.log(`⚠️ [DELETE] Parking ${parkingId} no encontrado`);
@@ -958,7 +962,14 @@ module.exports = (req, res, next) => {
 
     // Eliminar el parking usando el ID en el formato correcto
     try {
-      db.get('parkings').remove({ id: parking.id }).write();
+      // Eliminar usando filter para evitar problemas con lodash-id
+      const updatedParkings = allParkings.filter(p =>
+        p.id !== parking.id &&
+        p.id !== parseInt(parking.id) &&
+        p.id?.toString() !== parking.id?.toString()
+      );
+
+      db.set('parkings', updatedParkings).write();
       console.log(`✅ [DELETE] Parking ${parkingId} eliminado correctamente`);
       return res.status(204).send();
     } catch (error) {

@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, forkJoin, of } from 'rxjs';
-import { map, switchMap, catchError } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
-import { Parking, CreateParkingDto, UpdateParkingDto, LocationData, PricingData, FeaturesData } from '../../domain/entities/parking.entity';
+import { Parking, CreateParkingDto, UpdateParkingDto } from '../../domain/entities/parking.entity';
 import { AuthService } from '../../../iam/services/auth.service';
 
 interface ParkingJson {
@@ -102,9 +102,6 @@ export class ParkingsApi {
   private authService = inject(AuthService);
 
   private readonly parkingsUrl = `${environment.apiBase}${environment.endpoints.parkings}`;
-  private readonly locationsUrl = `${environment.apiBase}${environment.endpoints.locations}`;
-  private readonly pricingUrl = `${environment.apiBase}${environment.endpoints.pricing}`;
-  private readonly featuresUrl = `${environment.apiBase}${environment.endpoints.features}`;
 
   getParkings(ownerId?: string): Observable<Parking[]> {
     let params = new HttpParams();
@@ -112,58 +109,45 @@ export class ParkingsApi {
       params = params.set('ownerId', ownerId);
     }
 
-    return this.http.get<ParkingJson[]>(this.parkingsUrl, { params }).pipe(
-      switchMap(parkings => {
+    return this.http.get<any[]>(this.parkingsUrl, { params }).pipe(
+      map(parkings => {
         if (parkings.length === 0) {
-          return of([]);
+          return [];
         }
 
-        // Cargar datos relacionados para todos los parkings
-        const parkingIds = parkings.map(p => p.id);
-        return forkJoin({
-          parkings: of(parkings),
-          locations: this.getLocationsByParkingIds(parkingIds),
-          pricing: this.getPricingByParkingIds(parkingIds),
-          features: this.getFeaturesByParkingIds(parkingIds)
-        }).pipe(
-          map(({ parkings, locations, pricing, features }) => {
-            return parkings.map(parking => this.mapToDomain(parking, locations, pricing, features));
-          })
-        );
+        console.log('📥 [ParkingsApi] Parkings recibidos con datos embebidos:', parkings.length);
+
+        // 🎯 Los parkings ya contienen location, pricing y features embebidos
+        return parkings.map(parking => {
+          const locationMap = new Map<string, LocationJson>();
+          const pricingMap = new Map<string, PricingJson>();
+          const featuresMap = new Map<string, FeaturesJson>();
+
+          if (parking.location) locationMap.set(parking.id, parking.location);
+          if (parking.pricing) pricingMap.set(parking.id, parking.pricing);
+          if (parking.features) featuresMap.set(parking.id, parking.features);
+
+          return this.mapToDomain(parking, locationMap, pricingMap, featuresMap);
+        });
       })
     );
   }
 
   getParkingById(id: string): Observable<Parking> {
-    return this.http.get<ParkingJson>(`${this.parkingsUrl}/${id}`).pipe(
-      switchMap(parking => {
-        return forkJoin({
-          parking: of(parking),
-          location: this.http.get<LocationJson[]>(`${this.locationsUrl}?profileId=${id}`).pipe(
-            map(locations => locations[0] || null),
-            catchError(() => of(null))
-          ),
-          pricing: this.http.get<PricingJson[]>(`${this.pricingUrl}?profileId=${id}`).pipe(
-            map(pricing => pricing[0] || null),
-            catchError(() => of(null))
-          ),
-          features: this.http.get<FeaturesJson[]>(`${this.featuresUrl}?profileId=${id}`).pipe(
-            map(features => features[0] || null),
-            catchError(() => of(null))
-          )
-        }).pipe(
-          map(({ parking, location, pricing, features }) => {
-            const locationMap = new Map<string, LocationJson>();
-            const pricingMap = new Map<string, PricingJson>();
-            const featuresMap = new Map<string, FeaturesJson>();
+    return this.http.get<any>(`${this.parkingsUrl}/${id}`).pipe(
+      map(parking => {
+        console.log('📥 [ParkingsApi] Parking recibido con datos embebidos:', parking);
 
-            if (location) locationMap.set(parking.id, location);
-            if (pricing) pricingMap.set(parking.id, pricing);
-            if (features) featuresMap.set(parking.id, features);
+        // 🎯 El parking ya contiene location, pricing y features embebidos
+        const locationMap = new Map<string, LocationJson>();
+        const pricingMap = new Map<string, PricingJson>();
+        const featuresMap = new Map<string, FeaturesJson>();
 
-            return this.mapToDomain(parking, locationMap, pricingMap, featuresMap);
-          })
-        );
+        if (parking.location) locationMap.set(parking.id, parking.location);
+        if (parking.pricing) pricingMap.set(parking.id, parking.pricing);
+        if (parking.features) featuresMap.set(parking.id, parking.features);
+
+        return this.mapToDomain(parking, locationMap, pricingMap, featuresMap);
       })
     );
   }
@@ -176,8 +160,10 @@ export class ParkingsApi {
       throw new Error('Usuario no autenticado. No se puede crear el parking.');
     }
 
+    // 🎯 SOLUCIÓN: Enviar TODO en un solo objeto al backend
+    // El middleware de json-server guardará location, pricing y features dentro del parking
     const parkingData = {
-      ownerId: ownerId,  // ✅ AGREGAR ESTO
+      ownerId: ownerId,
       name: dto.name,
       type: dto.type,
       description: dto.description,
@@ -186,40 +172,34 @@ export class ParkingsApi {
       phone: dto.phone,
       email: dto.email,
       website: dto.website,
-      status: dto.status
+      status: dto.status,
+      location: dto.location,    // ✅ Incluir location directamente
+      pricing: dto.pricing,      // ✅ Incluir pricing directamente
+      features: dto.features     // ✅ Incluir features directamente
     };
 
-    return this.http.post<ParkingJson>(this.parkingsUrl, parkingData).pipe(
-      switchMap(parking => {
-        // Crear datos relacionados
-        const locationData = { ...dto.location, profileId: parking.id };
-        const pricingData = { ...dto.pricing, profileId: parking.id };
-        const featuresData = { ...dto.features, profileId: parking.id };
+    console.log('📦 [ParkingsApi] Creando parking con todos los datos:', parkingData);
 
-        return forkJoin({
-          parking: of(parking),
-          location: this.http.post<LocationJson>(this.locationsUrl, locationData),
-          pricing: this.http.post<PricingJson>(this.pricingUrl, pricingData),
-          features: this.http.post<FeaturesJson>(this.featuresUrl, featuresData)
-        }).pipe(
-          map(({ parking, location, pricing, features }) => {
-            const locationMap = new Map<string, LocationJson>();
-            const pricingMap = new Map<string, PricingJson>();
-            const featuresMap = new Map<string, FeaturesJson>();
+    return this.http.post<any>(this.parkingsUrl, parkingData).pipe(
+      map(parking => {
+        console.log('✅ [ParkingsApi] Parking creado con location, pricing y features:', parking);
 
-            locationMap.set(parking.id, location);
-            pricingMap.set(parking.id, pricing);
-            featuresMap.set(parking.id, features);
+        // Mapear la respuesta al dominio
+        const locationMap = new Map<string, LocationJson>();
+        const pricingMap = new Map<string, PricingJson>();
+        const featuresMap = new Map<string, FeaturesJson>();
 
-            return this.mapToDomain(parking, locationMap, pricingMap, featuresMap);
-          })
-        );
+        if (parking.location) locationMap.set(parking.id, parking.location);
+        if (parking.pricing) pricingMap.set(parking.id, parking.pricing);
+        if (parking.features) featuresMap.set(parking.id, parking.features);
+
+        return this.mapToDomain(parking, locationMap, pricingMap, featuresMap);
       })
     );
   }
 
   updateParking(id: string, dto: UpdateParkingDto): Observable<Parking> {
-    // Actualizar datos básicos del parking
+    // 🎯 SOLUCIÓN: Enviar TODO en un solo objeto, incluyendo location, pricing y features
     const parkingData: any = {};
     if (dto.name !== undefined) parkingData.name = dto.name;
     if (dto.type !== undefined) parkingData.type = dto.type;
@@ -231,56 +211,27 @@ export class ParkingsApi {
     if (dto.website !== undefined) parkingData.website = dto.website;
     if (dto.status !== undefined) parkingData.status = dto.status;
 
-    return this.http.patch<ParkingJson>(`${this.parkingsUrl}/${id}`, parkingData).pipe(
-      switchMap(parking => {
-        const updates: Observable<any>[] = [of(parking)];
+    // ✅ Incluir location, pricing y features directamente en el objeto
+    if (dto.location !== undefined) parkingData.location = dto.location;
+    if (dto.pricing !== undefined) parkingData.pricing = dto.pricing;
+    if (dto.features !== undefined) parkingData.features = dto.features;
 
-        // Actualizar datos relacionados si se proporcionan
-        if (dto.location) {
-          updates.push(
-            this.http.get<LocationJson[]>(`${this.locationsUrl}?profileId=${id}`).pipe(
-              switchMap(locations => {
-                const locationId = locations[0]?.id;
-                if (locationId) {
-                  return this.http.patch<LocationJson>(`${this.locationsUrl}/${locationId}`, dto.location);
-                }
-                return this.http.post<LocationJson>(this.locationsUrl, { ...dto.location, profileId: id });
-              })
-            )
-          );
-        }
+    console.log('📦 [ParkingsApi] Actualizando parking con todos los datos:', parkingData);
 
-        if (dto.pricing) {
-          updates.push(
-            this.http.get<PricingJson[]>(`${this.pricingUrl}?profileId=${id}`).pipe(
-              switchMap(pricing => {
-                const pricingId = pricing[0]?.id;
-                if (pricingId) {
-                  return this.http.patch<PricingJson>(`${this.pricingUrl}/${pricingId}`, dto.pricing);
-                }
-                return this.http.post<PricingJson>(this.pricingUrl, { ...dto.pricing, profileId: id });
-              })
-            )
-          );
-        }
+    return this.http.patch<any>(`${this.parkingsUrl}/${id}`, parkingData).pipe(
+      map(parking => {
+        console.log('✅ [ParkingsApi] Parking actualizado con location, pricing y features:', parking);
 
-        if (dto.features) {
-          updates.push(
-            this.http.get<FeaturesJson[]>(`${this.featuresUrl}?profileId=${id}`).pipe(
-              switchMap(features => {
-                const featuresId = features[0]?.id;
-                if (featuresId) {
-                  return this.http.patch<FeaturesJson>(`${this.featuresUrl}/${featuresId}`, dto.features);
-                }
-                return this.http.post<FeaturesJson>(this.featuresUrl, { ...dto.features, profileId: id });
-              })
-            )
-          );
-        }
+        // Mapear la respuesta al dominio
+        const locationMap = new Map<string, LocationJson>();
+        const pricingMap = new Map<string, PricingJson>();
+        const featuresMap = new Map<string, FeaturesJson>();
 
-        return forkJoin(updates).pipe(
-          switchMap(() => this.getParkingById(id))
-        );
+        if (parking.location) locationMap.set(parking.id, parking.location);
+        if (parking.pricing) pricingMap.set(parking.id, parking.pricing);
+        if (parking.features) featuresMap.set(parking.id, parking.features);
+
+        return this.mapToDomain(parking, locationMap, pricingMap, featuresMap);
       })
     );
   }
@@ -317,68 +268,6 @@ export class ParkingsApi {
     );
   }
 
-  private getLocationsByParkingIds(parkingIds: string[]): Observable<Map<string, LocationJson>> {
-    const requests = parkingIds.map(id =>
-      this.http.get<LocationJson[]>(`${this.locationsUrl}?profileId=${id}`).pipe(
-        map(locations => ({ id, location: locations[0] || null })),
-        catchError(() => of({ id, location: null }))
-      )
-    );
-
-    return forkJoin(requests).pipe(
-      map(results => {
-        const map = new Map<string, LocationJson>();
-        results.forEach(result => {
-          if (result.location) {
-            map.set(result.id, result.location);
-          }
-        });
-        return map;
-      })
-    );
-  }
-
-  private getPricingByParkingIds(parkingIds: string[]): Observable<Map<string, PricingJson>> {
-    const requests = parkingIds.map(id =>
-      this.http.get<PricingJson[]>(`${this.pricingUrl}?profileId=${id}`).pipe(
-        map(pricing => ({ id, pricing: pricing[0] || null })),
-        catchError(() => of({ id, pricing: null }))
-      )
-    );
-
-    return forkJoin(requests).pipe(
-      map(results => {
-        const map = new Map<string, PricingJson>();
-        results.forEach(result => {
-          if (result.pricing) {
-            map.set(result.id, result.pricing);
-          }
-        });
-        return map;
-      })
-    );
-  }
-
-  private getFeaturesByParkingIds(parkingIds: string[]): Observable<Map<string, FeaturesJson>> {
-    const requests = parkingIds.map(id =>
-      this.http.get<FeaturesJson[]>(`${this.featuresUrl}?profileId=${id}`).pipe(
-        map(features => ({ id, features: features[0] || null })),
-        catchError(() => of({ id, features: null }))
-      )
-    );
-
-    return forkJoin(requests).pipe(
-      map(results => {
-        const map = new Map<string, FeaturesJson>();
-        results.forEach(result => {
-          if (result.features) {
-            map.set(result.id, result.features);
-          }
-        });
-        return map;
-      })
-    );
-  }
 
   private mapToDomain(
     parking: ParkingJson,

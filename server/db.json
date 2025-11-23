@@ -25,7 +25,7 @@
       ],
       "isEmailVerified": false,
       "createdAt": "2025-10-30T12:09:23.261Z",
-      "lastLoginAt": "2025-11-15T00:24:06.412Z",
+      "lastLoginAt": "2025-11-15T01:59:45.986Z",
       "plan": "basic"
     },
     {
@@ -251,6 +251,20 @@
       "createdAt": "2025-11-10T09:39:39.883Z",
       "lastLoginAt": "2025-11-10T09:39:39.883Z",
       "plan": "basic"
+    },
+    {
+      "id": "1763628973023",
+      "email": "33333333335@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-11-20T08:56:13.023Z",
+      "lastLoginAt": "2025-11-20T08:56:13.023Z",
+      "plan": "basic"
     }
   ],
   "parkings": [
@@ -326,19 +340,110 @@
       "updatedAt": "2025-11-13T10:00:00.000Z"
     },
     {
-      "id": "1763168540995",
+      "id": "1763170368818",
       "ownerId": "1761826163261",
-      "name": "dsadasewq",
-      "type": "Comercial",
-      "description": "weqweqweqwewq",
-      "totalSpaces": 32,
-      "accessibleSpaces": 1,
-      "phone": "2312312312",
+      "name": "Bellota Girasol",
+      "type": "Público",
+      "description": "Lugar tranquilo si deseas asistir a eventos cerca de san juan de miraflores",
+      "totalSpaces": 4,
+      "accessibleSpaces": 2,
+      "phone": "+51 923292321",
       "email": "luis.eduardo.200325@gmail.com",
       "website": "",
       "status": "Activo",
-      "createdAt": "2025-11-15T01:02:20.995Z",
-      "updatedAt": "2025-11-15T01:02:20.995Z"
+      "createdAt": "2025-11-15T01:32:48.818Z",
+      "updatedAt": "2025-11-15T01:32:48.818Z"
+    },
+    {
+      "id": "1763173990921",
+      "ownerId": "1761826163261",
+      "name": "PasaMallo",
+      "type": "Público",
+      "description": "The best place ever uwu",
+      "totalSpaces": 2,
+      "accessibleSpaces": 1,
+      "phone": "+51 92312312",
+      "email": "luis.eduardo.200325@gmail.com",
+      "website": "",
+      "status": "Activo",
+      "createdAt": "2025-11-15T02:33:10.921Z",
+      "updatedAt": "2025-11-15T02:33:10.921Z"
+    },
+    {
+      "id": "1763629028714",
+      "ownerId": "1763628973023",
+      "name": "Patata",
+      "type": "Comercial",
+      "description": "eewqeqweqweqw",
+      "totalSpaces": 3,
+      "accessibleSpaces": 1,
+      "phone": "312312312321",
+      "email": "luis.eduardo.200325@gmail.com",
+      "website": "",
+      "status": "Activo",
+      "location": {
+        "addressLine": "Avenida Cental 1035 Ollantay",
+        "city": "Lima",
+        "postalCode": "15000",
+        "state": "Gobierno Regional de Lima",
+        "country": "Peru",
+        "latitude": -12.135998,
+        "longitude": -76.9616238
+      },
+      "pricing": {
+        "hourlyRate": 3,
+        "dailyRate": 3,
+        "monthlyRate": 3,
+        "currency": "EUR",
+        "minimumStay": "SinLimite",
+        "open24h": false,
+        "operatingHours": {
+          "openTime": "08:00",
+          "closeTime": "22:00"
+        },
+        "operatingDays": {
+          "monday": true,
+          "tuesday": true,
+          "wednesday": true,
+          "thursday": true,
+          "friday": true,
+          "saturday": true,
+          "sunday": false
+        },
+        "promotions": {
+          "earlyBird": false,
+          "weekend": false,
+          "longStay": false
+        }
+      },
+      "features": {
+        "security": {
+          "security24h": false,
+          "cameras": false,
+          "lighting": true,
+          "accessControl": false
+        },
+        "amenities": {
+          "covered": false,
+          "elevator": false,
+          "bathrooms": true,
+          "carWash": false
+        },
+        "services": {
+          "electricCharging": true,
+          "freeWifi": false,
+          "valetService": false,
+          "maintenance": false
+        },
+        "payments": {
+          "cardPayment": true,
+          "mobilePayment": false,
+          "monthlyPasses": false,
+          "corporateRates": false
+        }
+      },
+      "createdAt": "2025-11-20T08:57:08.714Z",
+      "updatedAt": "2025-11-20T08:57:08.714Z"
     }
   ],
   "locations": [
@@ -389,6 +494,30 @@
       "longitude": -76.9616239,
       "profileId": "1762800000001",
       "createdAt": "2025-11-15T01:02:59.896Z"
+    },
+    {
+      "id": 1763170368837,
+      "addressLine": "Avenida Central",
+      "city": "Lima",
+      "postalCode": "15804",
+      "state": "Lima",
+      "country": "Peru",
+      "latitude": -12.1359981,
+      "longitude": -76.9616238,
+      "profileId": "1763170368818",
+      "createdAt": "2025-11-15T01:32:48.838Z"
+    },
+    {
+      "id": 1763173990943,
+      "addressLine": "Avenida Cental 1035 Ollantay",
+      "city": "Lima",
+      "postalCode": "15000",
+      "state": "Gobierno Regional de Lima",
+      "country": "Peru",
+      "latitude": -12.1360098,
+      "longitude": -76.9615469,
+      "profileId": "1763173990921",
+      "createdAt": "2025-11-15T02:33:10.943Z"
     }
   ],
   "pricing": [
@@ -507,6 +636,64 @@
       },
       "profileId": "1762800000001",
       "createdAt": "2025-11-15T01:02:59.900Z"
+    },
+    {
+      "id": 1763170368841,
+      "hourlyRate": 2,
+      "dailyRate": 3,
+      "monthlyRate": 25,
+      "currency": "EUR",
+      "minimumStay": "1h",
+      "open24h": true,
+      "operatingHours": {
+        "openTime": "08:00",
+        "closeTime": "22:00"
+      },
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": true
+      },
+      "promotions": {
+        "earlyBird": false,
+        "weekend": true,
+        "longStay": false
+      },
+      "profileId": "1763170368818",
+      "createdAt": "2025-11-15T01:32:48.841Z"
+    },
+    {
+      "id": 1763173990946,
+      "hourlyRate": 3,
+      "dailyRate": 1,
+      "monthlyRate": 42,
+      "currency": "EUR",
+      "minimumStay": "1h",
+      "open24h": true,
+      "operatingHours": {
+        "openTime": "08:00",
+        "closeTime": "22:00"
+      },
+      "operatingDays": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true,
+        "saturday": true,
+        "sunday": true
+      },
+      "promotions": {
+        "earlyBird": false,
+        "weekend": true,
+        "longStay": false
+      },
+      "profileId": "1763173990921",
+      "createdAt": "2025-11-15T02:33:10.946Z"
     }
   ],
   "features": [
@@ -654,6 +841,64 @@
       },
       "profileId": "1762800000001",
       "createdAt": "2025-11-15T01:03:00.173Z"
+    },
+    {
+      "id": 1763170368842,
+      "security": {
+        "security24h": true,
+        "cameras": false,
+        "lighting": false,
+        "accessControl": false
+      },
+      "amenities": {
+        "covered": false,
+        "elevator": false,
+        "bathrooms": true,
+        "carWash": false
+      },
+      "services": {
+        "electricCharging": true,
+        "freeWifi": false,
+        "valetService": false,
+        "maintenance": false
+      },
+      "payments": {
+        "cardPayment": false,
+        "mobilePayment": true,
+        "monthlyPasses": false,
+        "corporateRates": false
+      },
+      "profileId": "1763170368818",
+      "createdAt": "2025-11-15T01:32:48.842Z"
+    },
+    {
+      "id": 1763173990947,
+      "security": {
+        "security24h": true,
+        "cameras": false,
+        "lighting": false,
+        "accessControl": false
+      },
+      "amenities": {
+        "covered": false,
+        "elevator": true,
+        "bathrooms": false,
+        "carWash": false
+      },
+      "services": {
+        "electricCharging": true,
+        "freeWifi": false,
+        "valetService": false,
+        "maintenance": false
+      },
+      "payments": {
+        "cardPayment": true,
+        "mobilePayment": false,
+        "monthlyPasses": true,
+        "corporateRates": false
+      },
+      "profileId": "1763173990921",
+      "createdAt": "2025-11-15T02:33:10.947Z"
     }
   ],
   "profiles": [
@@ -705,7 +950,7 @@
           "systemUpdates": true
         }
       },
-      "updatedAt": "2025-11-15T01:07:43.988Z"
+      "updatedAt": "2025-11-15T01:34:48.745Z"
     },
     {
       "id": "1761857990792",
@@ -1106,6 +1351,31 @@
         "theme": "light"
       },
       "updatedAt": "2025-11-10T09:39:39.883Z"
+    },
+    {
+      "id": "1763628973023",
+      "userId": "1763628973023",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "email": "33333333335@gmail.com",
+      "phone": null,
+      "avatar": null,
+      "bio": "",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2025-11-20T08:56:13.024Z"
     }
   ],
   "devices": [
@@ -1153,6 +1423,51 @@
       "lastSeen": "2025-11-14T22:57:32.123Z",
       "createdAt": "2025-11-14T22:57:32.123Z",
       "id": 3
+    },
+    {
+      "name": "Sensor Plaza Bellota",
+      "serialNumber": "SN-2024-PAX",
+      "type": "sensor",
+      "status": "available",
+      "ownerId": "1761826163261",
+      "parkingId": null,
+      "spotNumber": null,
+      "battery": 100,
+      "signalStrength": 0,
+      "firmware": "v1.0.0",
+      "lastSeen": "2025-11-15T01:34:14.975Z",
+      "createdAt": "2025-11-15T01:34:14.975Z",
+      "id": 4
+    },
+    {
+      "name": "Plaza Sesamo",
+      "serialNumber": "SN2026PIN",
+      "type": "sensor",
+      "status": "available",
+      "ownerId": "1761826163261",
+      "parkingId": null,
+      "spotNumber": null,
+      "battery": 100,
+      "signalStrength": 0,
+      "firmware": "v1.0.0",
+      "lastSeen": "2025-11-15T02:46:06.815Z",
+      "createdAt": "2025-11-15T02:46:06.815Z",
+      "id": 5
+    },
+    {
+      "name": "Plaza Sesar",
+      "serialNumber": "SN123123",
+      "type": "sensor",
+      "status": "available",
+      "ownerId": "1761826163261",
+      "parkingId": null,
+      "spotNumber": null,
+      "battery": 100,
+      "signalStrength": 0,
+      "firmware": "v1.0.0",
+      "lastSeen": "2025-11-15T02:46:32.067Z",
+      "createdAt": "2025-11-15T02:46:32.067Z",
+      "id": 6
     }
   ],
   "parkingSpots": [],
@@ -1566,9 +1881,9 @@
       "rating": 3,
       "comment": "El estacionamiento está bien ubicado pero las plazas son un poco estrechas para autos grandes.",
       "createdAt": "2025-11-09T14:45:00.000Z",
-      "responded": false,
-      "responseText": null,
-      "responseAt": null,
+      "responded": true,
+      "responseText": "Gracias",
+      "responseAt": "2025-11-15T01:33:53.243Z",
       "readAt": "2025-11-09T15:00:00.000Z"
     },
     {
@@ -2097,6 +2412,29 @@
       "cancelAtPeriodEnd": false,
       "stripeCustomerId": "cus_mock_1762767579883",
       "stripeSubscriptionId": "sub_mock_1762767579883"
+    },
+    {
+      "userId": "1763628973023",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Plan gratuito para empezar",
+        "price": 0,
+        "currency": "PEN",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-11-20T08:56:13.024Z",
+      "currentPeriodEnd": "2025-12-20T08:56:13.024Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_1763628973023",
+      "stripeSubscriptionId": "sub_mock_1763628973023"
     }
   ],
   "billingPayments": [
