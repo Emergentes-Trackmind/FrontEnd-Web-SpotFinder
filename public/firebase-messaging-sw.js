@@ -6,12 +6,12 @@ importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-comp
 
 // IMPORTANTE: Reemplazar con tu configuración real de Firebase
 const firebaseConfig = {
-  apiKey: 'TU_API_KEY',
-  authDomain: 'TU_PROJECT_ID.firebaseapp.com',
-  projectId: 'TU_PROJECT_ID',
-  storageBucket: 'TU_PROJECT_ID.appspot.com',
-  messagingSenderId: 'TU_SENDER_ID',
-  appId: 'TU_APP_ID'
+  apiKey: 'AIzaSyAuG2UFUsYthFQSf7cHaHowXV7E_3j7TNM',
+  authDomain: 'spotfinder-notification.firebaseapp.com',
+  projectId: 'spotfinder-notification',
+  storageBucket: 'spotfinder-notification.firebasestorage.app',
+  messagingSenderId: '1020617092469',
+  appId: '1:1020617092469:web:91d0bcf8b4a18f091bb73c'
 };
 
 // Inicializar Firebase
@@ -22,42 +22,42 @@ const messaging = firebase.messaging();
 
 // Manejar mensajes en background
 messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] Mensaje en background recibido:', payload);
+  console.log('[firebase-messaging-sw.js] Mensaje recibido en background:', payload);
 
   const notificationTitle = payload.notification?.title || payload.data?.title || 'Nueva notificación';
   const notificationOptions = {
     body: payload.notification?.body || payload.data?.body || '',
-    icon: '/favicon.ico',
-    badge: '/spot-mapping-icon-white.ico',
-    tag: payload.data?.id || 'notification-' + Date.now(),
-    data: payload.data,
+    icon: '/assets/icons/icon-192x192.png',
+    badge: '/assets/icons/badge-72x72.png',
+    tag: payload.data?.id || 'notification',
+    data: {
+      url: payload.data?.actionUrl || '/',
+      ...payload.data
+    },
     requireInteraction: false,
     vibrate: [200, 100, 200]
   };
 
-  // Mostrar notificación nativa
   return self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-// Manejar clic en notificación
+// Manejar clicks en notificaciones
 self.addEventListener('notificationclick', (event) => {
-  console.log('[firebase-messaging-sw.js] Notificación clickeada:', event.notification);
+  console.log('[firebase-messaging-sw.js] Click en notificación:', event);
 
   event.notification.close();
 
-  // Abrir o enfocar la ventana de la app
-  const urlToOpen = event.notification.data?.actionUrl || '/notificaciones';
+  const urlToOpen = event.notification.data?.url || '/';
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true })
-      .then((clientList) => {
-        // Si hay una ventana abierta, enfocarla
-        for (const client of clientList) {
+      .then((windowClients) => {
+        // Si ya hay una ventana abierta, enfocarla y navegar
+        for (let i = 0; i < windowClients.length; i++) {
+          const client = windowClients[i];
           if (client.url.includes(self.location.origin) && 'focus' in client) {
             return client.focus().then(() => {
-              if ('navigate' in client) {
-                return client.navigate(urlToOpen);
-              }
+              return client.navigate(urlToOpen);
             });
           }
         }
@@ -68,4 +68,3 @@ self.addEventListener('notificationclick', (event) => {
       })
   );
 });
-

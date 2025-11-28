@@ -1,8 +1,8 @@
 import { Environment } from './environment.interface';
 
 export const environment: Environment = {
-  production: false,
-  apiBase: 'http://localhost:3001/api',
+  production: true,
+  apiBase: 'https://spotfinderback-eaehduf4ehh7hjah.eastus2-01.azurewebsites.net/api',
   endpoints: {
     parkings: '/parkings',
     analytics: '/analytics',
@@ -50,8 +50,8 @@ export const environment: Environment = {
     base: '/reservationPayments'
   },
   featureFlags: {
-    useMockApi: false, // Usar datos reales del servidor
-    logHttp: true,
+    useMockApi: false,
+    logHttp: false, // Deshabilitado en producción para mejor performance
     enableOfflineMode: false
   },
   analytics: {
@@ -65,6 +65,8 @@ export const environment: Environment = {
     }
   },
   stripePublicKey: 'pk_test_YOUR_STRIPE_PUBLIC_KEY_HERE',
+  // Configuración de Firebase Cloud Messaging
+  // IMPORTANTE: Reemplazar con tus credenciales reales de Firebase
   firebase: {
     apiKey: 'AIzaSyAuG2UFUsYthFQSf7cHaHowXV7E_3j7TNM',
     authDomain: 'spotfinder-notification.firebaseapp.com',
@@ -74,19 +76,18 @@ export const environment: Environment = {
     appId: '1:1020617092469:web:91d0bcf8b4a18f091bb73c',
     vapidKey: 'G-NWKEM9YZ6K'
   },
-  // IoT configuration (desarrollo con edge API)
+  // IoT configuration (production ready) - apunta al backend de Azure
   iot: {
-    sensorApiUrl: 'https://edgeserverspot-dudqatdsf5cebwe3.eastus2-01.azurewebsites.net/api/iot',
+    sensorApiUrl: 'https://spotfinderback-eaehduf4ehh7hjah.eastus2-01.azurewebsites.net/api/iot',
     endpoints: {
       devices: '/devices',
-      register: '/devices',
-      telemetry: '/telemetry',
-      bind: (serial: string) => `/devices/${serial}/bind`,
-      unbind: (serial: string) => `/devices/${serial}/unbind`
+      status: '/status',
+      simulation: '/simulation',
+      bind: '/bind'
     },
     simulation: {
-      enabled: false,
-      mockDataInterval: 60000
+      enabled: false, // Deshabilitado en producción
+      mockDataInterval: 300000 // 5 minutos si se habilita
     }
   }
 };
