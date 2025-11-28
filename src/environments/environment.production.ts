@@ -81,9 +81,10 @@ export const environment: Environment = {
     sensorApiUrl: 'https://spotfinderback-eaehduf4ehh7hjah.eastus2-01.azurewebsites.net/api/iot',
     endpoints: {
       devices: '/devices',
-      status: '/status',
-      simulation: '/simulation',
-      bind: '/bind'
+      register: '/devices',
+      telemetry: '/telemetry',
+      bind: (serial: string) => `/devices/${serial}/bind`,
+      unbind: (serial: string) => `/devices/${serial}/unbind`
     },
     simulation: {
       enabled: false, // Deshabilitado en producción
