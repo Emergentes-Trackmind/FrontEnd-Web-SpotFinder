@@ -13,6 +13,7 @@ export interface EdgeIotDevice {
   model: string;
   type: string;
   status: string;
+  battery?: number;
   parkingId?: string;
   parkingSpotId?: string;
   createdAt: string;
@@ -75,8 +76,8 @@ export class IotService {
       serialNumber: edgeDevice.serialNumber,
       model: edgeDevice.displayName || edgeDevice.model,
       type: edgeDevice.type as any, // Cast to domain type
-      status: edgeDevice.status as any, // Cast to domain status
-      battery: 100, // Default values since edge API doesn't provide these
+      status: (edgeDevice.status || 'offline').toLowerCase() as any, // Normalize status to lowercase
+      battery: edgeDevice.battery || 100, // Use battery from edge API or default to 100
       lastCheckIn: edgeDevice.updatedAt,
       createdAt: edgeDevice.createdAt,
       updatedAt: edgeDevice.updatedAt

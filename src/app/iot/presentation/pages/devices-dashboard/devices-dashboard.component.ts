@@ -332,17 +332,25 @@ export class DevicesDashboardComponent implements OnInit {
     const criticalBatteryCount = batteries.filter(b => b < 15).length;
     const lowBatteryCount = batteries.filter(b => b >= 15 && b <= 30).length;
 
+    // Normalizar estados a minúsculas para comparación consistente
+    const normalizeStatus = (status: string) => status?.toLowerCase() || 'offline';
+
     const kpis = {
       totalDevices: devices.length,
-      onlineDevices: devices.filter(d => d.status === 'online').length,
-      offlineDevices: devices.filter(d => d.status === 'offline').length,
-      maintenanceDevices: devices.filter(d => d.status === 'maintenance').length,
+      onlineDevices: devices.filter(d => normalizeStatus(d.status) === 'online').length,
+      offlineDevices: devices.filter(d => normalizeStatus(d.status) === 'offline').length,
+      maintenanceDevices: devices.filter(d => normalizeStatus(d.status) === 'maintenance').length,
       averageBattery,
       criticalBatteryCount,
       lowBatteryCount
     };
 
     console.log('📊 [DevicesDashboard] KPIs calculados desde edge API:', kpis);
+    console.log('📋 [DevicesDashboard] Estados de dispositivos:', devices.map(d => ({
+      serial: d.serialNumber,
+      status: d.status,
+      normalized: normalizeStatus(d.status)
+    })));
 
     // Actualizar los KPIs en el facade
     this.facade.setKpis(kpis);
