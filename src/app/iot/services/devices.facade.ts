@@ -168,6 +168,22 @@ export class DevicesFacade {
     this.filters.update(current => ({ ...current, ...filters }));
   }
 
+  /**
+   * Actualiza la lista de dispositivos directamente (usado para APIs externas como edge API)
+   */
+  setDevices(devices: IotDevice[]): void {
+    this.devices.set(devices);
+    console.log('✅ [DevicesFacade] Signal actualizado con', devices.length, 'dispositivos desde fuente externa');
+  }
+
+  /**
+   * Actualiza los KPIs directamente (usado para APIs externas como edge API)
+   */
+  setKpis(kpis: DeviceKpisDto): void {
+    this.kpis.set(kpis);
+    console.log('✅ [DevicesFacade] KPIs actualizados desde fuente externa:', kpis);
+  }
+
   clearError(): void {
     this.error.set(null);
   }

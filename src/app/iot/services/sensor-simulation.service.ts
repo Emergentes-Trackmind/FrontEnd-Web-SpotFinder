@@ -65,8 +65,9 @@ export class SensorSimulationService {
       },
       error: (error) => {
         console.error('❌ Error conectando con edge server:', error);
-        // Fallback a dispositivos de ejemplo si hay error
-        this.generateMockSensorData();
+        console.info('💡 Usa tu script de simulación externa para registrar dispositivos');
+        // No generar mock data ya que tienes simulación externa
+        this.connectedDevicesSubject.next([]);
       }
     });
   }
@@ -81,11 +82,11 @@ export class SensorSimulationService {
 
   /**
    * Vincular un dispositivo físico (por número de serie) a un parking spot
+   * @deprecated Usar IotService.bindDevice() en su lugar
    */
   bindDeviceToSpot(serialNumber: string, parkingSpotId: string): Observable<any> {
-    const url = `${environment.iot?.sensorApiUrl}${environment.iot?.endpoints.bind}`;
+    const url = `${environment.iot?.sensorApiUrl}${environment.iot?.endpoints.bind(serialNumber)}`;
     return this.http.post(url, {
-      serialNumber,
       parkingSpotId,
       bindTime: new Date().toISOString()
     });
@@ -93,19 +94,14 @@ export class SensorSimulationService {
 
   /**
    * Desvincular un dispositivo de un parking spot
+   * @deprecated Usar IotService.unbindDevice() en su lugar
    */
   unbindDevice(serialNumber: string): Observable<any> {
-    const url = `${environment.iot?.sensorApiUrl}${environment.iot?.endpoints.bind}/${serialNumber}`;
+    const url = `${environment.iot?.sensorApiUrl}${environment.iot?.endpoints.unbind(serialNumber)}`;
     return this.http.delete(url);
   }
 
-  /**
-   * Obtener el estado actual de un dispositivo específico
-   */
-  getDeviceStatus(serialNumber: string): Observable<SensorDevice> {
-    const url = `${environment.iot?.sensorApiUrl}${environment.iot?.endpoints.status}/${serialNumber}`;
-    return this.http.get<SensorDevice>(url);
-  }
+
 
   /**
    * Iniciar simulación de lecturas de sensores

@@ -18,6 +18,26 @@ import { ParkingStateService, SpotData, SpotFilterType } from '../../../../servi
 import { SpotsService, SpotStatistics } from '../../../../services/spots.service';
 import { IoTService } from '../../../../services/iot-simulation.service';
 import { IoTAlertsService } from '../../../../services/iot-alerts.service';
+import { IotService } from '../../../../../iot/services/iot.service';
+
+// Tipo de dispositivo IoT usado en este componente (compatible con el dominio)
+interface IoTDevice {
+  id: string;
+  name: string; // displayName del dispositivo
+  serialNumber: string;
+  model: string;
+  type: string;
+  status: string;
+  battery: number;
+  lastCheckIn: string;
+  parkingId?: string;
+  spotNumber?: number | null;
+  signalStrength?: number;
+  ownerId?: string;
+  firmware?: string;
+  lastSeen?: string;
+  createdAt?: string;
+}
 
 /**
  * Step 2: Visualización de Plazas (Spots)
@@ -78,7 +98,8 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     private alertsService: IoTAlertsService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private edgeIotService: IotService
   ) {}
 
   // Helper para traducciones en plantilla
@@ -242,30 +263,67 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Carga los dispositivos IoT disponibles del usuario
+   * Carga los dispositivos IoT disponibles del usuario desde edge API
    */
   private async loadAvailableDevices(): Promise<void> {
     try {
-        const response = await fetch('http://localhost:3001/api/iot/devices', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+      // Obtener userId del token
+      const token = localStorage.getItem('token');
+      let userId = '1761826163261'; // Usuario por defecto
+
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          userId = payload.userId || payload.sub || userId;
+        } catch (e) {
+          console.warn('No se pudo decodificar el token, usando userId por defecto');
+        }
+      }
+
+      console.log('🔄 Cargando dispositivos desde edge API...');
+
+      // Usar el nuevo servicio edge IoT
+      this.edgeIotService.getUserDevices(userId.toString()).subscribe({
+        next: (devices: any[]) => {
+          console.log('📥 Dispositivos recibidos desde edge API:', devices);
+
+          // Convertir de domain IoT device al formato IoTDevice esperado por el componente
+          this.availableDevices = devices
+            .filter((d: any) => !d.parkingId || d.parkingId === '') // Filtrar solo disponibles
+            .map((d: any) => ({
+              id: d.id,
+              name: d.model, // Usar model como name/displayName
+              serialNumber: d.serialNumber,
+              model: d.model,
+              type: d.type as any,
+              status: d.status as any,
+              battery: d.battery,
+              lastCheckIn: d.lastCheckIn,
+              parkingId: d.parkingId,
+              spotNumber: d.parkingSpotId ? parseInt(d.parkingSpotId) : null,
+              signalStrength: 85, // Valor por defecto
+              ownerId: userId.toString(),
+              firmware: 'v1.0.0', // Valor por defecto
+              lastSeen: d.updatedAt,
+              createdAt: d.createdAt
+            } as IoTDevice));
+
+          // IMPORTANTE: Sincronizar con las asignaciones guardadas en los spots
+          this.syncDevicesWithSpots();
+
+          this.cdr.markForCheck();
+          console.log(`✅ ${this.availableDevices.length} dispositivos IoT disponibles desde edge API`);
+        },
+        error: (error: any) => {
+          console.error('❌ Error cargando dispositivos IoT desde edge API:', error);
+          this.availableDevices = [];
+          this.cdr.markForCheck();
         }
       });
-
-      if (response.ok) {
-        const devices = await response.json();
-        // Filtrar solo dispositivos disponibles (sin asignar)
-        this.availableDevices = devices.filter((d: IoTDevice) => !d.parkingId);
-
-        // IMPORTANTE: Sincronizar con las asignaciones guardadas en los spots
-        this.syncDevicesWithSpots();
-
-        this.cdr.markForCheck();
-        console.log(`✅ ${this.availableDevices.length} dispositivos IoT disponibles`);
-      }
     } catch (error) {
-      console.error('❌ Error cargando dispositivos IoT:', error);
+      console.error('❌ Error inesperado cargando dispositivos IoT:', error);
       this.availableDevices = [];
+      this.cdr.markForCheck();
     }
   }
 
@@ -334,6 +392,44 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     // Actualizar el dispositivo local para que la UI se actualice
     device.spotNumber = spotNumber;
 
+    // Obtener información del parking para la actualización en edge API
+    const basicInfo = this.parkingStateService.getBasicInfo();
+    // En fase de wizard, usar el nombre del parking como identificador temporal
+    const parkingId = basicInfo?.name || `parking-${Date.now()}`;
+
+    // Obtener userId del token
+    const token = localStorage.getItem('token');
+    let userId = '1761826163261';
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        userId = payload.userId || payload.sub || userId;
+      } catch (e) {
+        console.warn('No se pudo decodificar el token, usando userId por defecto');
+      }
+    }
+
+    // Solo actualizar edge API si no es un ID temporal generado automáticamente
+    if (basicInfo?.name && !parkingId.startsWith('parking-')) {
+      // Actualizar asignación en edge API solo si el parking ya existe
+      console.log(`🔄 Actualizando asignación en edge API para dispositivo ${device.serialNumber}`);
+      this.edgeIotService.updateDeviceAssignment(
+        userId.toString(),
+        device.serialNumber,
+        parkingId,
+        spotNumber.toString()
+      ).subscribe({
+        next: () => {
+          console.log(`✅ Dispositivo ${device.serialNumber} actualizado en edge API`);
+        },
+        error: (error: any) => {
+          console.warn(`⚠️ No se pudo actualizar en edge API:`, error);
+        }
+      });
+    } else {
+      console.log(`⏳ Asignación local guardada. Se actualizará en edge API cuando se cree el parking real.`);
+    }
+
     // ✨ CRÍTICO: Guardar INMEDIATAMENTE en el estado global
     const currentSpots = this.spotsService.getSpotsArray();
     this.parkingStateService.setSpotsData(currentSpots);
@@ -367,6 +463,42 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
 
     console.log(`🔗 Desasignando dispositivo ${device.name} del Spot ${spotNumber}`);
 
+    // Obtener userId del token
+    const token = localStorage.getItem('token');
+    let userId = '1761826163261';
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        userId = payload.userId || payload.sub || userId;
+      } catch (e) {
+        console.warn('No se pudo decodificar el token, usando userId por defecto');
+      }
+    }
+
+    // Obtener información del parking para verificar si es real o temporal
+    const basicInfo = this.parkingStateService.getBasicInfo();
+    const parkingId = basicInfo?.name || `parking-${Date.now()}`;
+
+    // Solo limpiar edge API si no es un ID temporal generado automáticamente
+    if (basicInfo?.name && !parkingId.startsWith('parking-')) {
+      console.log(`🔄 Limpiando asignación en edge API para dispositivo ${device.serialNumber}`);
+      this.edgeIotService.updateDeviceAssignment(
+        userId.toString(),
+        device.serialNumber,
+        '', // Parking vacío para limpiar asignación
+        '' // Spot vacío para limpiar asignación
+      ).subscribe({
+        next: () => {
+          console.log(`✅ Asignación limpiada en edge API para ${device.serialNumber}`);
+        },
+        error: (error: any) => {
+          console.warn(`⚠️ No se pudo limpiar asignación en edge API:`, error);
+        }
+      });
+    } else {
+      console.log(`⏳ Asignación local removida. No hay edge API que limpiar en modo wizard.`);
+    }
+
     // Actualizar el spot removiendo el dispositivo
     this.spotsService.assignDevice(spotNumber, null);
 
@@ -383,21 +515,4 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
   }
 }
 
-/**
- * Interfaz para dispositivos IoT
- */
-export interface IoTDevice {
-  id: string;
-  name: string;
-  type: 'ultrasonic' | 'magnetic' | 'infrared' | 'camera';
-  status: 'available' | 'assigned' | 'offline';
-  battery: number;
-  signalStrength: number;
-  parkingId: string | null;
-  spotNumber: number | null;
-  ownerId: string;
-  serialNumber: string;
-  firmware: string;
-  lastSeen: string;
-  createdAt: string;
-}
+

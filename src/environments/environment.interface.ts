@@ -84,9 +84,10 @@ export interface Environment {
     sensorApiUrl: string;
     endpoints: {
       devices: string;
-      status: string;
-      simulation: string;
-      bind: string;
+      register: string;
+      telemetry: string;
+      bind: (serial: string) => string;
+      unbind: (serial: string) => string;
     };
     simulation: {
       enabled: boolean;

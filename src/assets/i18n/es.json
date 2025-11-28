@@ -702,11 +702,5 @@
       "HAS_DEVICE": "con dispositivo",
       "NO_DEVICE": "sin dispositivo"
     }
-  },
-  "PARKING_TYPES": {
-    "COMERCIAL": "Comercial",
-    "PUBLICO": "Público",
-    "PRIVADO": "Privado",
-    "RESIDENCIAL": "Residencial"
   }
 }

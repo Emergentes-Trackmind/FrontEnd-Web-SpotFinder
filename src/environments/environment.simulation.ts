@@ -80,9 +80,10 @@ export const environment: Environment = {
     sensorApiUrl: 'http://localhost:8080/api/iot',
     endpoints: {
       devices: '/devices',
-      status: '/status',
-      simulation: '/simulation',
-      bind: '/bind'
+      register: '/register',
+      telemetry: '/telemetry',
+      bind: (serial: string) => `/bind/${serial}`,
+      unbind: (serial: string) => `/unbind/${serial}`,
     },
     simulation: {
       enabled: false, // Deshabilitado ya que usamos edge server real

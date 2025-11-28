@@ -2,7 +2,7 @@ import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: true,
-  apiBase: 'http://localhost:3001/api',
+  apiBase: 'http://localhost:3001',
   endpoints: {
     parkings: '/parkings',
     analytics: '/analytics',
@@ -78,16 +78,17 @@ export const environment: Environment = {
   },
   // IoT configuration (production ready)
   iot: {
-    sensorApiUrl: 'https://api.spotfinder.com/sensors', // API de producción
+    sensorApiUrl: 'https://edgeserverspot-dudqatdsf5cebwe3.eastus2-01.azurewebsites.net/api/iot',
     endpoints: {
-      devices: '/devices',
-      status: '/status',
-      simulation: '/simulation',
-      bind: '/bind'
+      devices: '/devices',              // GET /api/iot/devices  (listar dispositivos del usuario)
+      register: '/devices',             // POST /api/iot/devices (auto-registro del simulador)
+      telemetry: '/telemetry',          // POST /api/iot/telemetry
+      bind: (serial: string) => `/devices/${serial}/bind`,
+      unbind: (serial: string) => `/devices/${serial}/unbind`
     },
     simulation: {
-      enabled: false, // Deshabilitado en producción
-      mockDataInterval: 300000 // 5 minutos si se habilita
+      enabled: false,
+      mockDataInterval: 300000
     }
   }
 };

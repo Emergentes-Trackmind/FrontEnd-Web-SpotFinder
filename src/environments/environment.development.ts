@@ -74,18 +74,18 @@ export const environment: Environment = {
     appId: 'TU_APP_ID',
     vapidKey: 'TU_WEB_PUSH_CERTIFICATE_KEY'
   },
-  // IoT configuration (opcional en desarrollo)
+  // IoT configuration (desarrollo con edge API)
   iot: {
-    // Apunta al backend local (ruta compatible con el controlador de IoT: /api/iot)
-    sensorApiUrl: 'http://localhost:8080/api/iot',
+    sensorApiUrl: 'https://edgeserverspot-dudqatdsf5cebwe3.eastus2-01.azurewebsites.net/api/iot',
     endpoints: {
       devices: '/devices',
-      status: '/status',
-      simulation: '/simulation',
-      bind: '/bind'
+      register: '/devices',
+      telemetry: '/telemetry',
+      bind: (serial: string) => `/devices/${serial}/bind`,
+      unbind: (serial: string) => `/devices/${serial}/unbind`
     },
     simulation: {
-      enabled: false, // Deshabilitado por defecto en desarrollo
+      enabled: false,
       mockDataInterval: 60000
     }
   }

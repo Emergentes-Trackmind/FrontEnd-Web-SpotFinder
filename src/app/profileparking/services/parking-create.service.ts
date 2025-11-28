@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import {
   CreateBasicInfoDto,
   CreateLocationDto,
@@ -10,6 +11,8 @@ import {
 import { ParkingType } from '../model/profileparking.entity';
 import { ParkingsFacade } from '../../iot/services/parkings.facade';
 import { CreateParkingDto, Parking } from '../../iot/domain/entities/parking.entity';
+import { IotService } from '../../iot/services/iot.service';
+import { ParkingStateService } from './parking-state.service';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +40,11 @@ export class ParkingCreateService {
   public features$ = this.featuresSubject.asObservable();
   public pricing$ = this.pricingSubject.asObservable();
 
-  constructor(private parkingsFacade: ParkingsFacade) {
+  constructor(
+    private parkingsFacade: ParkingsFacade,
+    private iotService: IotService,
+    private parkingStateService: ParkingStateService
+  ) {
     this.loadDraft();
   }
 
@@ -179,7 +186,78 @@ export class ParkingCreateService {
       }
     };
 
-    return this.parkingsFacade.createParking(createDto);
+    return this.parkingsFacade.createParking(createDto).pipe(
+      tap((createdParking: Parking) => {
+        // Después de crear el parking, actualizar los dispositivos IoT con el ID real
+        this.updateIotDevicesWithRealParkingId(createdParking.id);
+      })
+    );
+  }
+
+  /**
+   * Actualiza los dispositivos IoT con el ID real del parking después de crearlo
+   */
+  private updateIotDevicesWithRealParkingId(realParkingId: string): void {
+    // Obtener la información de los spots con dispositivos asignados
+    const spotsData = this.parkingStateService.getSpots();
+    const assignedDevices = spotsData?.filter((spot: any) => spot.deviceId) || [];
+
+    if (assignedDevices.length === 0) {
+      console.log('🔍 No hay dispositivos IoT asignados, saltando actualización');
+      return;
+    }
+
+    // Obtener userId del token
+    const token = localStorage.getItem('token');
+    let userId = '1761826163261';
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        userId = payload.userId || payload.sub || userId;
+      } catch (e) {
+        console.warn('No se pudo decodificar el token, usando userId por defecto');
+      }
+    }
+
+    console.log(`🔄 Actualizando ${assignedDevices.length} dispositivos IoT con parking ID real: ${realParkingId}`);
+
+    // Primero obtener los dispositivos actuales desde edge API para mapear ID -> serialNumber
+    this.iotService.getUserDevices(userId).subscribe({
+      next: (devices) => {
+        // Crear un mapa de deviceId -> serialNumber
+        const deviceMap = new Map();
+        devices.forEach(device => {
+          deviceMap.set(device.id, device.serialNumber);
+        });
+
+        // Actualizar cada dispositivo asignado con el ID real del parking
+        assignedDevices.forEach((spot: any) => {
+          if (spot.deviceId) {
+            const serialNumber = deviceMap.get(spot.deviceId);
+            if (serialNumber) {
+              this.iotService.updateDeviceAssignment(
+                userId,
+                serialNumber, // Usar el serialNumber correcto
+                realParkingId,
+                spot.spotNumber.toString()
+              ).subscribe({
+                next: () => {
+                  console.log(`✅ Dispositivo ${serialNumber} actualizado con parking real ${realParkingId}`);
+                },
+                error: (error: any) => {
+                  console.error(`❌ Error actualizando dispositivo ${serialNumber}:`, error);
+                }
+              });
+            } else {
+              console.warn(`⚠️ No se encontró serialNumber para deviceId ${spot.deviceId}`);
+            }
+          }
+        });
+      },
+      error: (error: any) => {
+        console.error(`❌ Error obteniendo dispositivos para actualización:`, error);
+      }
+    });
   }
 
   clearDraft(): void {

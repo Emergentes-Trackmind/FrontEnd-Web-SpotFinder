@@ -16,8 +16,8 @@ import { CreationLimitGuard } from '../../../../billing/guards/creation-limit.gu
 import { DeviceKpisComponent } from '../../components/device-kpis/device-kpis.component';
 import { DeviceTableComponent } from '../../components/device-table/device-table.component';
 import { IotDevice } from '../../../domain/entities/iot-device.entity';
-import { DeviceFiltersDto } from '../../../domain/dtos/device-filters.dto';
 import { TranslateModule } from '@ngx-translate/core';
+import { IotService } from '../../../services/iot.service';
 
 /**
  * Dashboard principal de dispositivos IoT
@@ -217,6 +217,7 @@ export class DevicesDashboardComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
   private limitsService = inject(LimitsService);
   private limitGuard = inject(CreationLimitGuard);
+  private iotService = inject(IotService);
 
   searchQuery = '';
   selectedType: any = 'all';
@@ -246,41 +247,38 @@ export class DevicesDashboardComponent implements OnInit {
   }
 
   loadData(): void {
-    this.facade.loadKpis().subscribe({
-      error: (err) => {
-        this.snackBar.open('Error al cargar KPIs', 'Cerrar', { duration: 3000 });
+    // Obtener userId del localStorage
+    const token = localStorage.getItem('token');
+    let userId = '1761826163261'; // Usuario por defecto
+
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        userId = payload.userId || payload.sub || userId;
+      } catch (e) {
+        console.warn('No se pudo decodificar el token, usando userId por defecto');
       }
-    });
+    }
 
-    console.log('🔄 [DevicesDashboard] Iniciando carga de dispositivos...');
-    this.facade.loadDevices().subscribe({
-      next: (paginatedDevices) => {
-        console.log('📥 [DevicesDashboard] Respuesta recibida:', paginatedDevices);
+    console.log('🔄 [DevicesDashboard] Cargando dispositivos desde edge API...');
+    this.iotService.getUserDevices(userId.toString()).subscribe({
+      next: (devices) => {
+        console.log('📥 [DevicesDashboard] Dispositivos recibidos desde edge API:', devices);
 
-        if (!paginatedDevices) {
-          console.warn('⚠️ [DevicesDashboard] paginatedDevices es undefined');
-          return;
-        }
-
-        // 🔧 MANEJO: Si llega un Array directo en lugar de objeto paginado
-        let devicesArray: any[];
-        let totalDevices: number;
-
-        if (Array.isArray(paginatedDevices)) {
-          console.warn('⚠️ [DevicesDashboard] Respuesta es Array directo (middleware no se ejecutó)');
-          devicesArray = paginatedDevices;
-          totalDevices = paginatedDevices.length;
-        } else {
-          console.log('✅ [DevicesDashboard] Respuesta es objeto paginado correcto');
-          devicesArray = paginatedDevices.data || [];
-          totalDevices = paginatedDevices.total || 0;
-        }
+        const devicesArray = devices || [];
+        const totalDevices = devicesArray.length;
 
         console.log('📊 [DevicesDashboard] Dispositivos procesados:', {
           total: totalDevices,
-          data: devicesArray.length,
           devices: devicesArray
         });
+
+        // Actualizar el facade con los dispositivos recibidos de la edge API
+        // Esto mantiene compatibilidad con los componentes existentes
+        this.facade.setDevices(devicesArray);
+
+        // Calcular KPIs basados en los dispositivos reales del edge API
+        this.calculateAndSetKpis(devicesArray);
 
         // Actualizar el conteo de dispositivos IoT en el servicio de límites
         console.log(`🔢 [DevicesDashboard] Actualizando conteo IoT a: ${totalDevices}`);
@@ -295,8 +293,20 @@ export class DevicesDashboardComponent implements OnInit {
         }, 100);
       },
       error: (err) => {
-        console.error('❌ [DevicesDashboard] Error cargando dispositivos:', err);
-        this.snackBar.open('Error al cargar dispositivos', 'Cerrar', { duration: 3000 });
+        console.error('❌ [DevicesDashboard] Error cargando dispositivos desde edge API:', err);
+        let errorMessage = 'Error al cargar dispositivos';
+
+        if (err.status === 0) {
+          errorMessage = 'No se puede conectar con el servidor IoT. Verifica la conexión.';
+        } else if (err.status === 404) {
+          // En caso de 404, mostrar lista vacía en lugar de error
+          this.facade.setDevices([]);
+          this.calculateAndSetKpis([]); // También limpiar KPIs
+          this.limitsService.updateIotCount(0);
+          return;
+        }
+
+        this.snackBar.open(errorMessage, 'Cerrar', { duration: 5000 });
       }
     });
   }
@@ -306,20 +316,36 @@ export class DevicesDashboardComponent implements OnInit {
   }
 
   onFilterChange(): void {
-    const filters: DeviceFiltersDto = {
-      q: this.searchQuery || undefined,
-      type: this.selectedType,
-      status: this.selectedStatus,
-      parkingId: this.selectedParking,
-      page: 1,
-      size: 10
+    // Para mantener la funcionalidad de filtros, recargamos los datos
+    // En una implementación futura, el edge API podría soportar filtros
+    this.loadData();
+  }
+
+  /**
+   * Calcula los KPIs basándose en los dispositivos reales del edge API
+   */
+  private calculateAndSetKpis(devices: any[]): void {
+    // Calcular estadísticas de batería
+    const batteries = devices.map(d => d.battery || 100);
+    const averageBattery = batteries.length > 0 ?
+      Math.round(batteries.reduce((sum, battery) => sum + battery, 0) / batteries.length) : 0;
+    const criticalBatteryCount = batteries.filter(b => b < 15).length;
+    const lowBatteryCount = batteries.filter(b => b >= 15 && b <= 30).length;
+
+    const kpis = {
+      totalDevices: devices.length,
+      onlineDevices: devices.filter(d => d.status === 'online').length,
+      offlineDevices: devices.filter(d => d.status === 'offline').length,
+      maintenanceDevices: devices.filter(d => d.status === 'maintenance').length,
+      averageBattery,
+      criticalBatteryCount,
+      lowBatteryCount
     };
 
-    this.facade.loadDevices(filters).subscribe({
-      error: (err) => {
-        this.snackBar.open('Error al filtrar dispositivos', 'Cerrar', { duration: 3000 });
-      }
-    });
+    console.log('📊 [DevicesDashboard] KPIs calculados desde edge API:', kpis);
+
+    // Actualizar los KPIs en el facade
+    this.facade.setKpis(kpis);
   }
 
   onAddDevice(): void {
@@ -379,14 +405,37 @@ export class DevicesDashboardComponent implements OnInit {
   }
 
   onDeleteDevice(device: IotDevice): void {
-    if (confirm(`¿Estás seguro de eliminar el dispositivo ${device.model}?`)) {
-      this.facade.deleteDevice(device.id).subscribe({
+    const displayName = device.model || device.serialNumber;
+    if (confirm(`¿Estás seguro de desvincular el dispositivo "${displayName}"? El dispositivo seguirá existiendo en el sistema, pero no estará asociado a tu usuario.`)) {
+      // Obtener userId del localStorage
+      const token = localStorage.getItem('token');
+      let userId = '1761826163261';
+
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          userId = payload.userId || payload.sub || userId;
+        } catch (e) {
+          console.warn('No se pudo decodificar el token, usando userId por defecto');
+        }
+      }
+
+      this.iotService.unbindDevice(userId.toString(), device.serialNumber).subscribe({
         next: () => {
-          this.snackBar.open('Dispositivo eliminado', 'Cerrar', { duration: 3000 });
+          this.snackBar.open('✅ Dispositivo desvinculado exitosamente', 'Cerrar', { duration: 3000 });
           this.loadData();
         },
-        error: () => {
-          this.snackBar.open('Error al eliminar dispositivo', 'Cerrar', { duration: 3000 });
+        error: (err) => {
+          console.error('Error al desvincular dispositivo:', err);
+          let errorMessage = '❌ Error al desvincular dispositivo';
+
+          if (err.status === 404) {
+            errorMessage = '❌ Dispositivo no encontrado o ya no está vinculado.';
+          } else if (err.status === 403) {
+            errorMessage = '❌ No tienes permisos para desvincular este dispositivo.';
+          }
+
+          this.snackBar.open(errorMessage, 'Cerrar', { duration: 5000 });
         }
       });
     }

@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { DevicesFacade } from '../../../services/devices.facade';
+import { IotService } from '../../../services/iot.service';
 
 /**
  * Componente de detalle/edición de dispositivo IoT
@@ -42,26 +43,26 @@ import { DevicesFacade } from '../../../services/devices.facade';
           <div class="form-grid">
             <mat-form-field>
               <mat-label>Nombre del Dispositivo</mat-label>
-              <input matInput formControlName="name" placeholder="Ej: Sensor Plaza A">
-              <mat-hint>Nombre identificativo del sensor</mat-hint>
+              <input matInput formControlName="displayName" placeholder="Ej: Sensor Plaza A">
+              <mat-hint>Nombre identificativo que quieres dar al sensor</mat-hint>
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>Número de Serie</mat-label>
               <input matInput formControlName="serialNumber" placeholder="SN-2024-XXX">
-              <mat-hint>Ingresa el número de serie del dispositivo físico para vincularlo</mat-hint>
+              <mat-hint>Número de serie del dispositivo físico ya registrado por el simulador</mat-hint>
             </mat-form-field>
           </div>
 
           <div class="info-note">
             <mat-icon>info</mat-icon>
-            <p>Este sensor detectará automáticamente si una plaza está ocupada o libre mediante detección de movimiento.</p>
+            <p>El dispositivo debe estar previamente registrado por el simulador IoT. Aquí solo vinculas un dispositivo existente a tu usuario con el nombre que prefieras.</p>
           </div>
 
           <div class="actions">
             <button mat-button type="button" (click)="goBack()">Cancelar</button>
             <button mat-raised-button color="primary" type="submit" [disabled]="!deviceForm.valid || isSubmitting">
-              {{ isNewMode ? 'Registrar Sensor' : 'Guardar Cambios' }}
+              {{ isNewMode ? 'Vincular Dispositivo' : 'Guardar Cambios' }}
             </button>
           </div>
         </form>
@@ -192,6 +193,7 @@ export class DeviceDetailComponent implements OnInit {
   private router = inject(Router);
   private fb = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
+  private iotService = inject(IotService);
   facade = inject(DevicesFacade);
 
   deviceForm!: FormGroup;
@@ -218,10 +220,8 @@ export class DeviceDetailComponent implements OnInit {
 
   initForm(): void {
     this.deviceForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      serialNumber: ['', [Validators.required, Validators.minLength(5)]],
-      type: ['sensor'], // Siempre sensor de movimiento
-      status: ['available'] // Estado inicial siempre disponible
+      displayName: ['', [Validators.required, Validators.minLength(3)]],
+      serialNumber: ['', [Validators.required, Validators.minLength(5)]]
     });
 
     if (!this.isNewMode && !this.isEditMode) {
@@ -235,10 +235,8 @@ export class DeviceDetailComponent implements OnInit {
     this.facade.loadDeviceById(this.deviceId).subscribe({
       next: (device) => {
         this.deviceForm.patchValue({
-          name: device.model || '', // Compatibilidad
-          serialNumber: device.serialNumber,
-          type: device.type,
-          status: device.status
+          displayName: device.model || '',
+          serialNumber: device.serialNumber
         });
       },
       error: () => {
@@ -267,28 +265,23 @@ export class DeviceDetailComponent implements OnInit {
         }
       }
 
-      // Agregar campos adicionales requeridos
-      const deviceData = {
-        ...formValue,
-        ownerId: userId.toString(),
-        parkingId: null,
-        spotNumber: null,
-        status: 'available',
-        battery: 100,
-        signalStrength: 0,
-        firmware: 'v1.0.0',
-        lastSeen: new Date().toISOString(),
-        createdAt: new Date().toISOString()
-      };
-
-      this.facade.createDevice(deviceData).subscribe({
+      // Usar el nuevo servicio IoT para vincular el dispositivo existente
+      this.iotService.bindDevice(userId.toString(), formValue.serialNumber, formValue.displayName).subscribe({
         next: () => {
-          this.snackBar.open('✅ Dispositivo registrado exitosamente', 'Cerrar', { duration: 3000 });
+          this.snackBar.open('✅ Dispositivo vinculado exitosamente', 'Cerrar', { duration: 3000 });
           this.router.navigate(['/iot/devices']);
         },
         error: (err) => {
-          console.error('Error al crear dispositivo:', err);
-          this.snackBar.open('❌ Error al registrar dispositivo', 'Cerrar', { duration: 3000 });
+          console.error('Error al vincular dispositivo:', err);
+          let errorMessage = '❌ Error al vincular dispositivo';
+
+          if (err.status === 404) {
+            errorMessage = '❌ Dispositivo no encontrado. Verifica que el número de serie sea correcto y que el simulador haya registrado el dispositivo.';
+          } else if (err.status === 409) {
+            errorMessage = '❌ El dispositivo ya está vinculado a otro usuario.';
+          }
+
+          this.snackBar.open(errorMessage, 'Cerrar', { duration: 5000 });
           this.isSubmitting = false;
         }
       });
