@@ -50,7 +50,7 @@ export const environment: Environment = {
     base: '/reservationPayments'
   },
   featureFlags: {
-    useMockApi: false, // Usar datos reales del servidor
+    useMockApi: false,
     logHttp: false, // Deshabilitado en producción para mejor performance
     enableOfflineMode: false
   },
@@ -76,9 +76,9 @@ export const environment: Environment = {
     appId: '1:1020617092469:web:91d0bcf8b4a18f091bb73c',
     vapidKey: 'G-NWKEM9YZ6K'
   },
-  // IoT configuration (production ready)
+  // IoT configuration (production ready) - apunta al backend de Azure
   iot: {
-    sensorApiUrl: 'https://spotfinderback-eaehduf4ehh7hjah.eastus2-01.azurewebsites.net/api/iot', // API de Azure
+    sensorApiUrl: 'https://spotfinderback-eaehduf4ehh7hjah.eastus2-01.azurewebsites.net/api/iot',
     endpoints: {
       devices: '/devices',
       status: '/status',
@@ -91,3 +91,4 @@ export const environment: Environment = {
     }
   }
 };
+

@@ -30,8 +30,10 @@ export class FcmService {
   async init(): Promise<void> {
     try {
       // Verificar si Firebase está configurado en environment
-      if (!environment.firebase) {
-        console.warn('Firebase no está configurado en environment. FCM no estará disponible.');
+      if (!environment.firebase || environment.firebase.apiKey === 'TU_API_KEY') {
+        console.warn('⚠️ Firebase no está configurado. FCM no estará disponible.');
+        console.log('ℹ️ Las notificaciones funcionarán solo a través del backend.');
+        console.log('ℹ️ Para habilitar notificaciones push, configura Firebase en environment.ts');
         return;
       }
 

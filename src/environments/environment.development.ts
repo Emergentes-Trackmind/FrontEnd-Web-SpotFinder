@@ -66,13 +66,13 @@ export const environment: Environment = {
   },
   stripePublicKey: 'pk_test_YOUR_STRIPE_PUBLIC_KEY_HERE',
   firebase: {
-    apiKey: 'TU_API_KEY',
-    authDomain: 'TU_PROJECT_ID.firebaseapp.com',
-    projectId: 'TU_PROJECT_ID',
-    storageBucket: 'TU_PROJECT_ID.appspot.com',
-    messagingSenderId: 'TU_SENDER_ID',
-    appId: 'TU_APP_ID',
-    vapidKey: 'TU_WEB_PUSH_CERTIFICATE_KEY'
+    apiKey: 'AIzaSyAuG2UFUsYthFQSf7cHaHowXV7E_3j7TNM',
+    authDomain: 'spotfinder-notification.firebaseapp.com',
+    projectId: 'spotfinder-notification',
+    storageBucket: 'spotfinder-notification.firebasestorage.app',
+    messagingSenderId: '1020617092469',
+    appId: '1:1020617092469:web:91d0bcf8b4a18f091bb73c',
+    vapidKey: 'G-NWKEM9YZ6K'
   },
   // IoT configuration (opcional en desarrollo)
   iot: {
