@@ -78,6 +78,16 @@ export interface Environment {
       topParkings: string;
     };
   };
+  spots: {
+    base: string;
+    endpoints: {
+      list: (parkingId: string) => string;
+      create: (parkingId: string) => string;
+      createBulk: (parkingId: string) => string;
+      update: (parkingId: string, spotId: string) => string;
+      delete: (parkingId: string, spotId: string) => string;
+    };
+  };
   stripePublicKey: string;
   firebase?: FirebaseConfig; // Opcional para evitar errores si no está configurado
   iot?: {

@@ -265,6 +265,62 @@
       "createdAt": "2025-11-20T08:56:13.023Z",
       "lastLoginAt": "2025-11-20T08:56:13.023Z",
       "plan": "basic"
+    },
+    {
+      "id": "1764482926430",
+      "email": "drope200325@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-11-30T06:08:46.430Z",
+      "lastLoginAt": "2025-11-30T06:08:46.430Z",
+      "plan": "basic"
+    },
+    {
+      "id": "1764488230768",
+      "email": "wa123123@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-11-30T07:37:10.768Z",
+      "lastLoginAt": "2025-11-30T07:37:10.768Z",
+      "plan": "basic"
+    },
+    {
+      "id": "1764491406351",
+      "email": "32131231321112312312@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-11-30T08:30:06.351Z",
+      "lastLoginAt": "2025-11-30T08:30:06.351Z",
+      "plan": "basic"
+    },
+    {
+      "id": "1764495076255",
+      "email": "lol1231312312312312@gmail.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "firstName": "Luis Eduardo",
+      "lastName": "Lagos Aguilar",
+      "roles": [
+        "user"
+      ],
+      "isEmailVerified": false,
+      "createdAt": "2025-11-30T09:31:16.255Z",
+      "lastLoginAt": "2025-11-30T09:31:16.255Z",
+      "plan": "basic"
     }
   ],
   "parkings": [
@@ -444,6 +500,234 @@
       },
       "createdAt": "2025-11-20T08:57:08.714Z",
       "updatedAt": "2025-11-20T08:57:08.714Z"
+    },
+    {
+      "id": "1764489731892",
+      "ownerId": "1764488230768",
+      "name": "Patata",
+      "type": "Comercial",
+      "description": "Pueglo libre",
+      "totalSpaces": 3,
+      "accessibleSpaces": 1,
+      "phone": "2312312312312",
+      "email": "luis.eduardo.200325@gmail.com",
+      "website": "",
+      "status": "Activo",
+      "location": {
+        "addressLine": "Avenida Central",
+        "city": "Lima",
+        "postalCode": "15804",
+        "state": "Lima",
+        "country": "Peru",
+        "latitude": -12.1359819,
+        "longitude": -76.9616271
+      },
+      "pricing": {
+        "hourlyRate": 3,
+        "dailyRate": 2,
+        "monthlyRate": 3,
+        "currency": "EUR",
+        "minimumStay": "SinLimite",
+        "open24h": false,
+        "operatingHours": {
+          "openTime": "08:00",
+          "closeTime": "22:00"
+        },
+        "operatingDays": {
+          "monday": true,
+          "tuesday": true,
+          "wednesday": true,
+          "thursday": true,
+          "friday": true,
+          "saturday": true,
+          "sunday": false
+        },
+        "promotions": {
+          "earlyBird": false,
+          "weekend": false,
+          "longStay": false
+        }
+      },
+      "features": {
+        "security": {
+          "security24h": true,
+          "cameras": true,
+          "lighting": true,
+          "accessControl": true
+        },
+        "amenities": {
+          "covered": true,
+          "elevator": true,
+          "bathrooms": true,
+          "carWash": true
+        },
+        "services": {
+          "electricCharging": true,
+          "freeWifi": true,
+          "valetService": true,
+          "maintenance": true
+        },
+        "payments": {
+          "cardPayment": true,
+          "mobilePayment": true,
+          "monthlyPasses": true,
+          "corporateRates": true
+        }
+      },
+      "createdAt": "2025-11-30T08:02:11.892Z",
+      "updatedAt": "2025-11-30T08:02:11.892Z"
+    },
+    {
+      "id": "1764494677698",
+      "ownerId": "1764491406351",
+      "name": "Patatata",
+      "type": "Comercial",
+      "description": "patatata2312312",
+      "totalSpaces": 3,
+      "accessibleSpaces": 2,
+      "phone": "312312321",
+      "email": "luis.eduardo.200325@gmail.com",
+      "website": "",
+      "status": "Activo",
+      "location": {
+        "addressLine": "Avenida Central",
+        "city": "Lima",
+        "postalCode": "15804",
+        "state": "Lima",
+        "country": "España",
+        "latitude": -12.1359831,
+        "longitude": -76.9616312
+      },
+      "pricing": {
+        "hourlyRate": 3,
+        "dailyRate": 3,
+        "monthlyRate": 3,
+        "currency": "EUR",
+        "minimumStay": "SinLimite",
+        "open24h": false,
+        "operatingHours": {
+          "openTime": "08:00",
+          "closeTime": "22:00"
+        },
+        "operatingDays": {
+          "monday": true,
+          "tuesday": true,
+          "wednesday": true,
+          "thursday": true,
+          "friday": true,
+          "saturday": true,
+          "sunday": false
+        },
+        "promotions": {
+          "earlyBird": false,
+          "weekend": false,
+          "longStay": false
+        }
+      },
+      "features": {
+        "security": {
+          "security24h": false,
+          "cameras": false,
+          "lighting": false,
+          "accessControl": true
+        },
+        "amenities": {
+          "covered": false,
+          "elevator": false,
+          "bathrooms": false,
+          "carWash": true
+        },
+        "services": {
+          "electricCharging": true,
+          "freeWifi": false,
+          "valetService": false,
+          "maintenance": false
+        },
+        "payments": {
+          "cardPayment": true,
+          "mobilePayment": false,
+          "monthlyPasses": false,
+          "corporateRates": false
+        }
+      },
+      "createdAt": "2025-11-30T09:24:37.698Z",
+      "updatedAt": "2025-11-30T09:24:37.698Z"
+    },
+    {
+      "id": "1764497187518",
+      "ownerId": "1764495076255",
+      "name": "Patata",
+      "type": "Comercial",
+      "description": "sdsdadas32313",
+      "totalSpaces": 2,
+      "accessibleSpaces": 0,
+      "phone": "231312312",
+      "email": "luis.eduardo.200325@gmail.com",
+      "website": "",
+      "status": "Activo",
+      "location": {
+        "addressLine": "Avenida Central",
+        "city": "Lima",
+        "postalCode": "15804",
+        "state": "Lima",
+        "country": "Peru",
+        "latitude": -12.1359787,
+        "longitude": -76.9616159
+      },
+      "pricing": {
+        "hourlyRate": 2,
+        "dailyRate": 3,
+        "monthlyRate": 3,
+        "currency": "EUR",
+        "minimumStay": "SinLimite",
+        "open24h": false,
+        "operatingHours": {
+          "openTime": "08:00",
+          "closeTime": "22:00"
+        },
+        "operatingDays": {
+          "monday": true,
+          "tuesday": true,
+          "wednesday": true,
+          "thursday": true,
+          "friday": true,
+          "saturday": true,
+          "sunday": false
+        },
+        "promotions": {
+          "earlyBird": false,
+          "weekend": false,
+          "longStay": false
+        }
+      },
+      "features": {
+        "security": {
+          "security24h": false,
+          "cameras": true,
+          "lighting": false,
+          "accessControl": false
+        },
+        "amenities": {
+          "covered": false,
+          "elevator": true,
+          "bathrooms": false,
+          "carWash": false
+        },
+        "services": {
+          "electricCharging": true,
+          "freeWifi": false,
+          "valetService": false,
+          "maintenance": false
+        },
+        "payments": {
+          "cardPayment": true,
+          "mobilePayment": false,
+          "monthlyPasses": false,
+          "corporateRates": false
+        }
+      },
+      "createdAt": "2025-11-30T10:06:27.518Z",
+      "updatedAt": "2025-11-30T10:06:27.518Z"
     }
   ],
   "locations": [
@@ -1376,6 +1660,122 @@
         "theme": "light"
       },
       "updatedAt": "2025-11-20T08:56:13.024Z"
+    },
+    {
+      "id": "1764482926430",
+      "userId": "1764482926430",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "email": "drope200325@gmail.com",
+      "phone": null,
+      "avatar": null,
+      "bio": "",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2025-11-30T06:08:46.437Z"
+    },
+    {
+      "id": "1764488230768",
+      "userId": "1764488230768",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "email": "wa123123@gmail.com",
+      "phone": null,
+      "avatar": null,
+      "bio": "",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2025-11-30T07:37:10.769Z"
+    },
+    {
+      "id": "1764491406351",
+      "userId": "1764491406351",
+      "firstName": "Luis",
+      "lastName": "Lagos",
+      "email": "32131231321112312312@gmail.com",
+      "phone": null,
+      "avatar": null,
+      "bio": "",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2025-11-30T08:30:06.352Z"
+    },
+    {
+      "id": "1764495076255",
+      "userId": "1764495076255",
+      "firstName": "Luis Eduardo",
+      "lastName": "Lagos Aguilar",
+      "email": "lol1231312312312312@gmail.com",
+      "phone": null,
+      "avatar": null,
+      "bio": "",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "push": true,
+          "sms": false,
+          "marketing": false,
+          "parkingAlerts": true,
+          "systemUpdates": true
+        },
+        "language": "es",
+        "timezone": "America/Mexico_City",
+        "dateFormat": "DD/MM/YYYY",
+        "theme": "light"
+      },
+      "updatedAt": "2025-11-30T09:31:16.256Z"
+    }
+  ],
+  "spots": [
+    {
+      "row": 1,
+      "column": 1,
+      "label": "A1",
+      "id": 1,
+      "status": "UNASSIGNED"
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "label": "B1",
+      "id": 2,
+      "status": "UNASSIGNED"
     }
   ],
   "devices": [
@@ -2435,6 +2835,98 @@
       "cancelAtPeriodEnd": false,
       "stripeCustomerId": "cus_mock_1763628973023",
       "stripeSubscriptionId": "sub_mock_1763628973023"
+    },
+    {
+      "userId": "1764482926430",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Plan gratuito para empezar",
+        "price": 0,
+        "currency": "PEN",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-11-30T06:08:46.437Z",
+      "currentPeriodEnd": "2025-12-30T06:08:46.437Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_1764482926430",
+      "stripeSubscriptionId": "sub_mock_1764482926430"
+    },
+    {
+      "userId": "1764488230768",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Plan gratuito para empezar",
+        "price": 0,
+        "currency": "PEN",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-11-30T07:37:10.769Z",
+      "currentPeriodEnd": "2025-12-30T07:37:10.769Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_1764488230768",
+      "stripeSubscriptionId": "sub_mock_1764488230768"
+    },
+    {
+      "userId": "1764491406351",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Plan gratuito para empezar",
+        "price": 0,
+        "currency": "PEN",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-11-30T08:30:06.353Z",
+      "currentPeriodEnd": "2025-12-30T08:30:06.353Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_1764491406351",
+      "stripeSubscriptionId": "sub_mock_1764491406351"
+    },
+    {
+      "userId": "1764495076255",
+      "plan": {
+        "id": "plan_basic",
+        "name": "Plan Básico",
+        "code": "BASIC",
+        "description": "Plan gratuito para empezar",
+        "price": 0,
+        "currency": "PEN",
+        "interval": "month",
+        "parkingLimit": 3,
+        "iotLimit": 10,
+        "features": [],
+        "priceId": "price_basic_pen_monthly",
+        "isActive": true
+      },
+      "status": "ACTIVE",
+      "currentPeriodStart": "2025-11-30T09:31:16.256Z",
+      "currentPeriodEnd": "2025-12-30T09:31:16.256Z",
+      "cancelAtPeriodEnd": false,
+      "stripeCustomerId": "cus_mock_1764495076255",
+      "stripeSubscriptionId": "sub_mock_1764495076255"
     }
   ],
   "billingPayments": [

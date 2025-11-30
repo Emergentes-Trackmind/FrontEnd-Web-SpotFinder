@@ -13,6 +13,7 @@ import { ParkingsFacade } from '../../iot/services/parkings.facade';
 import { CreateParkingDto, Parking } from '../../iot/domain/entities/parking.entity';
 import { IotService } from '../../iot/services/iot.service';
 import { ParkingStateService } from './parking-state.service';
+import { SpotsService } from './spots-new.service';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,8 @@ export class ParkingCreateService {
   constructor(
     private parkingsFacade: ParkingsFacade,
     private iotService: IotService,
-    private parkingStateService: ParkingStateService
+    private parkingStateService: ParkingStateService,
+    private spotsService: SpotsService
   ) {
     this.loadDraft();
   }
@@ -57,13 +59,13 @@ export class ParkingCreateService {
   }
 
   goToStep(step: number): void {
-    if (step >= 1 && step <= 6) {
+    if (step >= 1 && step <= 5) {
       this.updateWizardState({ currentStep: step });
     }
   }
 
   nextStep(): void {
-    if (this.currentStep < 6 && this.isCurrentStepValid) {
+    if (this.currentStep < 5 && this.isCurrentStepValid) {
       this.goToStep(this.currentStep + 1);
     }
   }
@@ -120,8 +122,8 @@ export class ParkingCreateService {
       name: basicInfo.name,
       type: basicInfo.type as any,
       description: basicInfo.description,
-      totalSpaces: basicInfo.totalSpaces,
-      accessibleSpaces: basicInfo.accessibleSpaces,
+      totalSpaces: basicInfo.totalSpaces || 0, // Valor por defecto
+      accessibleSpaces: basicInfo.accessibleSpaces || 0, // Valor por defecto
       phone: basicInfo.phone,
       email: basicInfo.email,
       website: basicInfo.website || '',
@@ -188,6 +190,11 @@ export class ParkingCreateService {
 
     return this.parkingsFacade.createParking(createDto).pipe(
       tap((createdParking: Parking) => {
+        console.log('✅ Parking creado exitosamente:', createdParking.id);
+
+        // 🚀 NUEVA FUNCIONALIDAD: Crear spots automáticamente si hay pendientes
+        this.handlePendingSpotsCreation(createdParking.id);
+
         // Después de crear el parking, actualizar los dispositivos IoT con el ID real
         this.updateIotDevicesWithRealParkingId(createdParking.id);
       })
@@ -260,6 +267,42 @@ export class ParkingCreateService {
     });
   }
 
+  /**
+   * 🚀 NUEVA FUNCIONALIDAD: Maneja la creación de spots pendientes
+   * después de que se crea el parking exitosamente
+   */
+  private handlePendingSpotsCreation(realParkingId: string): void {
+    const pendingSpots = this.parkingStateService.getPendingSpotsCreation();
+
+    if (!pendingSpots || !pendingSpots.confirmed) {
+      console.log('🔍 No hay spots pendientes para crear');
+      return;
+    }
+
+    console.log(`🚀 Creando ${pendingSpots.totalSpots} spots automáticamente para parking ${realParkingId}`);
+
+    // Usar los spots data ya generados
+    const spotsToCreate = pendingSpots.spotsData;
+
+    this.spotsService.createBulkSpots(realParkingId, spotsToCreate).subscribe({
+      next: (createdSpots) => {
+        console.log(`✅ ${createdSpots.length} spots creados exitosamente:`, createdSpots);
+
+        // Limpiar los spots pendientes después de crearlos
+        this.parkingStateService.clearPendingSpotsCreation();
+
+        // Cargar los spots creados en el servicio para visualización
+        this.spotsService.loadSpotsForParking(realParkingId).subscribe();
+      },
+      error: (error) => {
+        console.error('❌ Error creando spots automáticamente:', error);
+
+        // Mostrar mensaje de error pero no limpiar los pendientes por si el usuario quiere reintentar
+        console.warn('⚠️ Los spots quedaron pendientes de creación manual');
+      }
+    });
+  }
+
   clearDraft(): void {
     localStorage.removeItem(this.storageKey);
     this.resetWizard();
@@ -293,11 +336,10 @@ export class ParkingCreateService {
   private isStepValid(step: number): boolean {
     switch (step) {
       case 1: return this.isBasicInfoValid();
-      case 2: return true; // Step 2 (Spots Visualizer) siempre es válido, solo visualización
-      case 3: return this.isLocationValid();
-      case 4: return this.isFeaturesValid();
-      case 5: return this.isPricingValid();
-      case 6: return this.isAllDataValid();
+      case 2: return this.isLocationValid();
+      case 3: return this.isFeaturesValid();
+      case 4: return this.isPricingValid();
+      case 5: return this.isAllDataValid();
       default: return false;
     }
   }
@@ -308,8 +350,6 @@ export class ParkingCreateService {
       data.name?.trim() &&
       data.type &&
       data.description?.trim() &&
-      data.totalSpaces && data.totalSpaces > 0 &&
-      data.accessibleSpaces !== undefined && data.accessibleSpaces >= 0 &&
       data.phone?.trim() &&
       data.email?.trim() && this.isValidEmail(data.email)
     );
@@ -384,8 +424,6 @@ export class ParkingCreateService {
       name: '',
       type: ParkingType.Comercial,
       description: '',
-      totalSpaces: 0,
-      accessibleSpaces: 0,
       phone: '',
       email: '',
       website: ''
@@ -462,4 +500,3 @@ export class ParkingCreateService {
     };
   }
 }
-

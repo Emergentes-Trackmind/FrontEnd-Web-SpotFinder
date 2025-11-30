@@ -7,7 +7,7 @@
     <mat-card class="progress-card">
       <div class="progress-header">
         <h2 class="progress-title">{{ 'PARKING_CREATE.PROGRESS.TITLE' | translate }}</h2>
-        <span class="step-indicator">{{ 'PARKING_CREATE.PROGRESS.STEP_OF' | translate:{current: currentStep, total: 6} }}</span>
+        <span class="step-indicator">{{ 'PARKING_CREATE.PROGRESS.STEP_OF' | translate:{current: currentStep, total: 5} }}</span>
       </div>
 
       <!-- Barra de progreso -->
@@ -55,33 +55,27 @@
       class="step-content">
     </app-step-basic>
 
-    <!-- Paso 2: Visualización de Plazas (NUEVO) -->
-    <app-spots-visualizer-step
-      *ngIf="currentStep === 2"
-      class="step-content">
-    </app-spots-visualizer-step>
-
-    <!-- Paso 3: Ubicación (antes Paso 2) -->
+    <!-- Paso 2: Ubicación -->
     <app-step-location
-      *ngIf="currentStep === 3"
+      *ngIf="currentStep === 2"
       class="step-content">
     </app-step-location>
 
-    <!-- Paso 4: Características (antes Paso 3) -->
+    <!-- Paso 3: Características -->
     <app-step-features
-      *ngIf="currentStep === 4"
+      *ngIf="currentStep === 3"
       class="step-content">
     </app-step-features>
 
-    <!-- Paso 5: Precios (antes Paso 4) -->
+    <!-- Paso 4: Precios -->
     <app-step-pricing
-      *ngIf="currentStep === 5"
+      *ngIf="currentStep === 4"
       class="step-content">
     </app-step-pricing>
 
-    <!-- Paso 6: Revisión (antes Paso 5) -->
+    <!-- Paso 5: Revisión -->
     <app-step-review
-      *ngIf="currentStep === 6"
+      *ngIf="currentStep === 5"
       class="step-content">
     </app-step-review>
 
@@ -119,8 +113,8 @@
         <button
           mat-raised-button
           type="button"
-          [disabled]="currentStep === 6 ? isSubmitting : !canGoNext"
-          (click)="currentStep === 6 ? onSubmitClick() : onNextClick()"
+          [disabled]="currentStep === 5 ? isSubmitting : !canGoNext"
+          (click)="currentStep === 5 ? onSubmitClick() : onNextClick()"
           class="next-btn">
 
           <!-- Loading spinner -->
@@ -134,10 +128,10 @@
           </mat-icon>
 
           <!-- Texto del botón -->
-          <span *ngIf="currentStep === 6">
+          <span *ngIf="currentStep === 5">
             {{ isSubmitting ? ('PARKING_CREATE.BUTTON.SAVING' | translate) : ('PARKING_CREATE.BUTTON.SAVE' | translate) }}
           </span>
-          <span *ngIf="currentStep < 6">
+          <span *ngIf="currentStep < 5">
             {{ 'PARKING_CREATE.BUTTON.NEXT' | translate }}
             <mat-icon>chevron_right</mat-icon>
           </span>

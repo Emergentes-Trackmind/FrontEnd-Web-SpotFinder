@@ -9,7 +9,8 @@ export const environment: Environment = {
     locations: '/locations',
     pricing: '/pricing',
     features: '/features',
-    uploads: '/uploads'
+    uploads: '/uploads',
+
   },
   auth: {
     base: '/auth',
@@ -62,6 +63,16 @@ export const environment: Environment = {
       occupancyByHour: '/occupancy',
       recentActivity: '/activity',
       topParkings: '/top-parkings'
+    }
+  },
+  spots: {
+    base: '/spots',
+    endpoints: {
+      list: (parkingId: string) => `/parkings/${parkingId}/spots`,
+      create: (parkingId: string) => `/parkings/${parkingId}/spots`,
+      createBulk: (parkingId: string) => `/parkings/${parkingId}/spots/bulk`,
+      update: (parkingId: string, spotId: string) => `/parkings/${parkingId}/spots/${spotId}`,
+      delete: (parkingId: string, spotId: string) => `/parkings/${parkingId}/spots/${spotId}`
     }
   },
   stripePublicKey: 'pk_test_YOUR_STRIPE_PUBLIC_KEY_HERE',

@@ -69,8 +69,6 @@ export class StepBasicComponent implements OnInit, OnDestroy {
     this.basicForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
       type: [ParkingType.Comercial, [Validators.required]],
-      totalSpaces: [null, [Validators.required, Validators.min(1), Validators.max(9999)]],
-      accessibleSpaces: [0, [Validators.required, Validators.min(0)]],
       description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
       phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9\s()\-]{9,15}$/)]],
       email: ['', [Validators.required, Validators.email]],
@@ -95,25 +93,11 @@ export class StepBasicComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(value => {
-        this.createService.updateBasicInfo(value);
-        // También actualizar el ParkingStateService para el nuevo Step 2
-        this.parkingStateService.setBasicInfo(value);
-      });
-
-    // Validación especial: plazas accesibles no pueden exceder el total
-    this.basicForm.get('totalSpaces')?.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(totalSpaces => {
-        const accessibleSpaces = this.basicForm.get('accessibleSpaces')?.value || 0;
-        if (accessibleSpaces > totalSpaces) {
-          this.basicForm.get('accessibleSpaces')?.setValue(totalSpaces);
+        if (value) {
+          this.createService.updateBasicInfo(value as any);
+          // También actualizar el ParkingStateService
+          this.parkingStateService.setBasicInfo(value as any);
         }
-        this.basicForm.get('accessibleSpaces')?.setValidators([
-          Validators.required,
-          Validators.min(0),
-          Validators.max(totalSpaces || 0)
-        ]);
-        this.basicForm.get('accessibleSpaces')?.updateValueAndValidity();
       });
   }
 
@@ -130,17 +114,7 @@ export class StepBasicComponent implements OnInit, OnDestroy {
         if (errors['maxlength']) return 'El nombre no puede exceder 100 caracteres';
         break;
 
-      case 'totalSpaces':
-        if (errors['required']) return 'El número total de plazas es obligatorio';
-        if (errors['min']) return 'Debe tener al menos 1 plaza';
-        if (errors['max']) return 'No puede exceder 9999 plazas';
-        break;
 
-      case 'accessibleSpaces':
-        if (errors['required']) return 'Las plazas accesibles son obligatorias';
-        if (errors['min']) return 'No puede ser menor a 0';
-        if (errors['max']) return 'No puede exceder el total de plazas';
-        break;
 
       case 'description':
         if (errors['required']) return 'La descripción es obligatoria';
@@ -170,4 +144,7 @@ export class StepBasicComponent implements OnInit, OnDestroy {
     const field = this.basicForm.get(fieldName);
     return !!(field && field.invalid && (field.dirty || field.touched));
   }
-}
+
+
+  }
+

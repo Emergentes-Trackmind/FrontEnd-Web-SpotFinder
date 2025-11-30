@@ -67,6 +67,15 @@
         [routerLink]="['/parkings', parking.id, 'analytics']">
         Ver Analytics
       </button>
+
+      <button
+        mat-raised-button
+        color="accent"
+        class="spots-btn"
+        [routerLink]="['/parkings', parking.id, 'spots']">
+        <mat-icon>grid_view</mat-icon>
+        Visualizar Spots
+      </button>
     </div>
   </mat-card-content>
 </mat-card>

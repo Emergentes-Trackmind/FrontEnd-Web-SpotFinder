@@ -14,8 +14,11 @@ import { takeUntil } from 'rxjs/operators';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { SpotBlockComponent } from '../../../../components/spot-block/spot-block.component';
-import { ParkingStateService, SpotData, SpotFilterType } from '../../../../services/parking-state.service';
-import { SpotsService, SpotStatistics } from '../../../../services/spots.service';
+import { ParkingStateService, SpotFilterType } from '../../../../services/parking-state.service';
+import { SpotsService } from '../../../../services/spots-new.service';
+import { ParkingWizardSpotsService } from '../../../../services/parking-wizard-spots.service';
+import { SpotData, SpotStatistics, SpotStatus, SPOT_CONSTANTS } from '../../../../models/spots.models';
+import { SpotDataMapper } from '../../../../mappers/spot-data.mapper';
 import { IoTService } from '../../../../services/iot-simulation.service';
 import { IoTAlertsService } from '../../../../services/iot-alerts.service';
 import { IotService } from '../../../../../iot/services/iot.service';
@@ -69,10 +72,9 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
   filteredSpots: SpotData[] = [];
   statistics: SpotStatistics = {
     total: 0,
-    free: 0,
+    unassigned: 0,
     occupied: 0,
-    maintenance: 0,
-    offline: 0
+    maintenance: 0
   };
 
   currentFilter: SpotFilterType = 'all';
@@ -87,13 +89,13 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     { value: 'all' as SpotFilterType, label: 'Todos', icon: 'grid_view' },
     { value: 'free' as SpotFilterType, label: 'Libres', icon: 'check_circle', color: 'free' },
     { value: 'occupied' as SpotFilterType, label: 'Ocupados', icon: 'local_parking', color: 'occupied' },
-    { value: 'maintenance' as SpotFilterType, label: 'Mantenimiento', icon: 'engineering', color: 'maintenance' },
-    { value: 'offline' as SpotFilterType, label: 'Offline', icon: 'wifi_off', color: 'offline' }
+    { value: 'maintenance' as SpotFilterType, label: 'Mantenimiento', icon: 'build', color: 'maintenance' }
   ];
 
   constructor(
     private parkingStateService: ParkingStateService,
     private spotsService: SpotsService,
+    private parkingWizardSpots: ParkingWizardSpotsService,
     private iotService: IoTService,
     private alertsService: IoTAlertsService,
     private router: Router,
@@ -118,43 +120,54 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
 
     this.totalSpots = basicInfo.totalSpaces;
 
-    // Validar rango
-    if (this.totalSpots < 1 || this.totalSpots > 300) {
-      this.alertsService.showError('El número de plazas debe estar entre 1 y 300');
+    // Validar rango usando las nuevas constantes
+    if (this.totalSpots < SPOT_CONSTANTS.MIN_TOTAL_SPOTS || this.totalSpots > SPOT_CONSTANTS.MAX_TOTAL_SPOTS) {
+      this.alertsService.showError(`El número de plazas debe estar entre ${SPOT_CONSTANTS.MIN_TOTAL_SPOTS} y ${SPOT_CONSTANTS.MAX_TOTAL_SPOTS}`);
       this.router.navigate(['/parkings/new']);
       return;
     }
 
-    // Generar spots o restaurar guardados
+    // 🚀 NUEVA FUNCIONALIDAD: Verificar si hay spots creados automáticamente
+    this.checkForAutoCreatedSpots();
+
+    // Generar spots usando el nuevo sistema
     const savedSpots = this.parkingStateService.getSpots();
 
     if (savedSpots && savedSpots.length === this.totalSpots) {
-      // Restaurar spots guardados con sus asignaciones
-      const spotsWithDevices = savedSpots.filter(s => s.deviceId);
+      // Restaurar spots guardados con sus asignaciones - convertir del formato antiguo al nuevo
+      this.spots = SpotDataMapper.arrayOldToNew(savedSpots);
+      const spotsWithDevices = this.spots.filter(s => s.deviceId);
       console.log(`✅ Restaurando ${savedSpots.length} spots guardados, ${spotsWithDevices.length} con dispositivos asignados`);
       if (spotsWithDevices.length > 0) {
-        console.log('📱 Spots con dispositivos:', spotsWithDevices.map(s => `Spot ${s.spotNumber} -> ${s.deviceId}`));
+        console.log('📱 Spots con dispositivos:', spotsWithDevices.map(s => `Spot ${s.label} -> ${s.deviceId}`));
       }
-      this.spots = savedSpots;
-      this.spotsService.restoreSpots(savedSpots); // Método para restaurar en el servicio
+      // Actualizar el estado local del servicio
+      this.spotsService.updateSpots(this.spots);
     } else {
-      // Generar spots nuevos
-      console.log('✅ Generando spots nuevos');
-      this.spots = this.spotsService.generateSpots(this.totalSpots);
+      // Generar spots nuevos usando el sistema refactorizado
+      console.log('✅ Generando spots nuevos con la regla del 5');
+      const spotsRequests = this.spotsService.generateAutoSpots(this.totalSpots);
+
+      // Convertir CreateSpotRequest a SpotData para el wizard
+      this.spots = spotsRequests.map((request: any, index: number) => ({
+        id: `temp-${index + 1}`,
+        row: request.row,
+        column: request.column,
+        label: request.label,
+        status: 'UNASSIGNED' as const,
+        deviceId: null,
+        lastUpdated: new Date()
+      }));
+
+      // Actualizar el estado local del servicio
+      this.spotsService.updateSpots(this.spots);
     }
 
     this.filteredSpots = [...this.spots];
 
     // NO registrar dispositivos simulados - usar solo los reales del usuario
 
-    // Suscribirse a actualizaciones de spots
-    this.spotsService.spots$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((spotsMap: Map<number, SpotData>) => {
-        this.spots = Array.from(spotsMap.values());
-        this.applyFilter(this.currentFilter);
-        this.cdr.markForCheck();
-      });
+    // La suscripción a spots$ se maneja en checkForAutoCreatedSpots()
 
     // Suscribirse a estadísticas
     this.spotsService.getSpotStatistics()
@@ -194,7 +207,28 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     if (filter === 'all') {
       this.filteredSpots = [...this.spots];
     } else {
-      this.filteredSpots = this.spots.filter(spot => spot.status === filter);
+      // Mapear el filtro del formato antiguo al nuevo
+      let newStatus: 'UNASSIGNED' | 'OCCUPIED' | 'MAINTENANCE' | null = null;
+      switch (filter) {
+        case 'free':
+          newStatus = 'UNASSIGNED';
+          break;
+        case 'occupied':
+          newStatus = 'OCCUPIED';
+          break;
+        case 'maintenance':
+          newStatus = 'MAINTENANCE';
+          break;
+        case 'offline':
+          newStatus = null; // No filtrar offline ya que no existe en el nuevo modelo
+          break;
+      }
+
+      if (newStatus) {
+        this.filteredSpots = this.spots.filter(spot => spot.status === newStatus);
+      } else {
+        this.filteredSpots = [...this.spots];
+      }
     }
 
     this.cdr.markForCheck();
@@ -213,10 +247,26 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
    * Maneja el click en "Marcar en mantenimiento"
    */
   onSetMaintenance(event: { id: number; inMaintenance: boolean }): void {
-    this.spotsService.setSpotMaintenance(event.id, event.inMaintenance);
+    // Encontrar el spot por número (convertir desde el ID numérico)
+    const spot = this.spots.find(s => {
+      const spotNum = parseInt(s.label.replace(/[A-Z]+/, ''), 10);
+      return spotNum === event.id;
+    });
+
+    if (!spot) {
+      console.error(`❌ Spot con número ${event.id} no encontrado`);
+      return;
+    }
+
+    // Actualizar el estado local
+    spot.status = event.inMaintenance ? 'MAINTENANCE' : 'UNASSIGNED';
+    spot.lastUpdated = new Date();
+
+    // Actualizar el servicio
+    this.spotsService.updateSpots([...this.spots]);
 
     const action = event.inMaintenance ? 'marcada en mantenimiento' : 'quitada de mantenimiento';
-    this.alertsService.showSuccess(`Plaza ${event.id} ${action}`);
+    this.alertsService.showSuccess(`Plaza ${spot.label} ${action}`);
   }
 
   /**
@@ -231,9 +281,10 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
    * Navega al siguiente paso
    */
   onNextClick(): void {
-    // Guardar datos de spots en el estado - obtener directamente del servicio para asegurar que tenemos la última versión
-    const currentSpots = this.spotsService.getSpotsArray();
-    this.parkingStateService.setSpotsData(currentSpots);
+    // Guardar datos de spots en el estado - convertir al formato antiguo
+    const currentSpots = [...this.spots];
+    const oldFormatSpots = SpotDataMapper.arrayNewToOld(currentSpots);
+    this.parkingStateService.setSpotsData(oldFormatSpots);
     this.parkingStateService.setCurrentStep(3);
 
     console.log(`✅ Guardando ${currentSpots.length} spots, ${currentSpots.filter(s => s.deviceId).length} con dispositivos IoT asignados`);
@@ -258,8 +309,70 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
   /**
    * TrackBy para optimización de rendering
    */
-  trackBySpotNumber(index: number, spot: SpotData): number {
-    return spot.spotNumber;
+  trackBySpotNumber(index: number, spot: SpotData): string {
+    return spot.id || spot.label;
+  }
+
+  /**
+   * Obtiene el número de spot desde el label (ej: "A1" -> 1, "B5" -> 5)
+   */
+  getSpotNumberFromLabel(label: string): number {
+    return parseInt(label.replace(/[A-Z]+/, ''), 10);
+  }
+
+  /**
+   * Obtiene el label del spot desde el número
+   */
+  getSpotLabelFromNumber(spotNumber: number): string {
+    const spot = this.spots.find(s => {
+      const num = parseInt(s.label.replace(/[A-Z]+/, ''), 10);
+      return num === spotNumber;
+    });
+    return spot ? spot.label : `Spot ${spotNumber}`;
+  }
+
+  /**
+   * Obtiene la cantidad de spots para un filtro específico
+   */
+  getFilterCount(filterValue: SpotFilterType): number {
+    switch (filterValue) {
+      case 'free':
+        return this.statistics.unassigned;
+      case 'occupied':
+        return this.statistics.occupied;
+      case 'maintenance':
+        return this.statistics.maintenance;
+      case 'offline':
+        return 0; // No existe en el nuevo modelo
+      case 'all':
+        return this.statistics.total;
+      default:
+        return 0;
+    }
+  }
+
+  /**
+   * Obtiene spots disponibles (sin dispositivo asignado)
+   */
+  getAvailableSpots(): SpotData[] {
+    return this.spots.filter(spot => !spot.deviceId);
+  }
+
+
+  /**
+   * Mapea el nuevo estado al formato antiguo para compatibilidad con SpotBlockComponent
+   */
+  mapNewStatusToOld(newStatus: SpotStatus): 'free' | 'occupied' | 'maintenance' | 'offline' {
+    switch (newStatus) {
+      case 'UNASSIGNED':
+        return 'free';
+      case 'OCCUPIED':
+        return 'occupied';
+      case 'MAINTENANCE':
+        return 'maintenance';
+      default:
+        return 'free';
+    }
   }
 
   /**
@@ -331,14 +444,15 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
    * Sincroniza los dispositivos cargados con las asignaciones guardadas en los spots
    */
   private syncDevicesWithSpots(): void {
-    const currentSpots = this.spotsService.getSpotsArray();
+    const currentSpots = [...this.spots];
     let syncCount = 0;
 
     // Para cada dispositivo, verificar si está asignado a algún spot
     this.availableDevices.forEach(device => {
       const assignedSpot = currentSpots.find(spot => spot.deviceId === device.id);
       if (assignedSpot) {
-        device.spotNumber = assignedSpot.spotNumber;
+        // Extraer el número del spot del label (ej: "A1" -> 1, "B5" -> 5)
+        device.spotNumber = parseInt(assignedSpot.label.replace(/[A-Z]+/, ''), 10);
         syncCount++;
       }
     });
@@ -366,12 +480,6 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Obtiene los spots disponibles (sin dispositivo asignado)
-   */
-  getAvailableSpots(): SpotData[] {
-    return this.spots.filter(spot => !spot.deviceId);
-  }
 
   /**
    * Asigna un dispositivo IoT a un spot
@@ -384,10 +492,25 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log(`📱 Asignando dispositivo ${device.name} (${deviceId}) al Spot ${spotNumber}`);
+    // Encontrar el spot por número (extraer del label)
+    const spot = this.spots.find(s => {
+      const num = parseInt(s.label.replace(/[A-Z]+/, ''), 10);
+      return num === spotNumber;
+    });
 
-    // Actualizar el spot con el dispositivo en el servicio
-    this.spotsService.assignDevice(spotNumber, deviceId);
+    if (!spot) {
+      console.error(`❌ Spot ${spotNumber} no encontrado`);
+      return;
+    }
+
+    console.log(`📱 Asignando dispositivo ${device.name} (${deviceId}) al Spot ${spot.label}`);
+
+    // Actualizar el spot local
+    spot.deviceId = deviceId;
+    spot.lastUpdated = new Date();
+
+    // Actualizar el servicio
+    this.spotsService.updateSpots([...this.spots]);
 
     // Actualizar el dispositivo local para que la UI se actualice
     device.spotNumber = spotNumber;
@@ -431,23 +554,19 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     }
 
     // ✨ CRÍTICO: Guardar INMEDIATAMENTE en el estado global
-    const currentSpots = this.spotsService.getSpotsArray();
-    this.parkingStateService.setSpotsData(currentSpots);
+    const currentSpots = [...this.spots];
+    const oldFormatSpots = SpotDataMapper.arrayNewToOld(currentSpots);
+    this.parkingStateService.setSpotsData(oldFormatSpots);
     console.log(`💾 Estado guardado inmediatamente - ${currentSpots.filter(s => s.deviceId).length} dispositivos asignados`);
 
-    // Verificar que se guardó correctamente en el servicio
-    const updatedSpot = this.spotsService.getSpot(spotNumber);
-    console.log(`✅ Spot ${spotNumber} actualizado en servicio:`, updatedSpot);
-
-    // Verificar en el array local (debería actualizarse por la suscripción)
-    const localSpot = this.spots.find(s => s.spotNumber === spotNumber);
-    console.log(`📍 Spot ${spotNumber} en array local:`, localSpot);
+    // Verificar que se guardó correctamente
+    console.log(`✅ Spot ${spot.label} actualizado:`, spot);
 
     // Verificar total de dispositivos asignados
-    const totalAssigned = this.spotsService.getSpotsArray().filter(s => s.deviceId).length;
+    const totalAssigned = currentSpots.filter(s => s.deviceId).length;
     console.log(`📊 Total de dispositivos asignados: ${totalAssigned}`);
 
-    this.alertsService.showSuccess(`✅ Dispositivo ${device.name} asignado al Spot ${spotNumber}`);
+    this.alertsService.showSuccess(`✅ Dispositivo ${device.name} asignado al Spot ${spot.label}`);
     this.cdr.markForCheck();
   }
 
@@ -499,20 +618,73 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
       console.log(`⏳ Asignación local removida. No hay edge API que limpiar en modo wizard.`);
     }
 
-    // Actualizar el spot removiendo el dispositivo
-    this.spotsService.assignDevice(spotNumber, null);
+    // Encontrar y actualizar el spot
+    const spot = this.spots.find(s => {
+      const num = parseInt(s.label.replace(/[A-Z]+/, ''), 10);
+      return num === spotNumber;
+    });
+
+    if (spot) {
+      spot.deviceId = null;
+      spot.lastUpdated = new Date();
+
+      // Actualizar el servicio
+      this.spotsService.updateSpots([...this.spots]);
+    }
 
     // Actualizar el dispositivo local
     device.spotNumber = null;
 
     // ✨ CRÍTICO: Guardar INMEDIATAMENTE en el estado global
-    const currentSpots = this.spotsService.getSpotsArray();
-    this.parkingStateService.setSpotsData(currentSpots);
+    const currentSpots = [...this.spots];
+    const oldFormatSpots = SpotDataMapper.arrayNewToOld(currentSpots);
+    this.parkingStateService.setSpotsData(oldFormatSpots);
     console.log(`💾 Estado guardado inmediatamente - ${currentSpots.filter(s => s.deviceId).length} dispositivos asignados`);
 
     this.alertsService.showSuccess(`🔗 Dispositivo ${device.name} desasignado del Spot ${spotNumber}`);
     this.cdr.markForCheck();
   }
+
+  /**
+   * 🚀 NUEVA FUNCIONALIDAD: Verifica si hay spots creados automáticamente
+   * y maneja todas las actualizaciones de spots
+   */
+  private checkForAutoCreatedSpots(): void {
+    let hasShownAutoCreatedMessage = false;
+
+    // Suscribirse a cambios del servicio de spots (única suscripción consolidada)
+    this.spotsService.spots$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((apiSpots: SpotData[]) => {
+        if (apiSpots && apiSpots.length > 0) {
+          const isFromAPI = apiSpots.some(spot => spot.id && !spot.id.toString().startsWith('temp-'));
+
+          if (isFromAPI && !hasShownAutoCreatedMessage) {
+            console.log(`✅ Detectados ${apiSpots.length} spots cargados desde la API`);
+
+            // Mostrar mensaje de éxito solo una vez
+            this.alertsService.showSuccess(
+              `¡Perfecto! Se han creado ${apiSpots.length} plazas automáticamente`
+            );
+            hasShownAutoCreatedMessage = true;
+          }
+        }
+
+        // Actualizar spots locales siempre (tanto para API como para cambios locales)
+        this.spots = apiSpots || [];
+        this.applyFilter(this.currentFilter);
+        this.cdr.markForCheck();
+      });
+
+    // Verificar si hay spots pendientes que se hayan creado
+    const pendingSpots = this.parkingStateService.getPendingSpotsCreation();
+    if (pendingSpots && pendingSpots.confirmed) {
+      console.log('🔍 Detectados spots pendientes de creación automática:', pendingSpots);
+
+      // Mostrar mensaje informativo
+      this.alertsService.showInfo(
+        `Se están creando ${pendingSpots.totalSpots} plazas automáticamente...`
+      );
+    }
+  }
 }
-
-

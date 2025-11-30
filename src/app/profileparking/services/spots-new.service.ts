@@ -20,7 +20,7 @@ import { environment } from '../../../environments/environment';
 })
 export class SpotsService {
   private readonly baseUrl = environment.apiBase + '/parkings';
-  public spotsSubject = new BehaviorSubject<SpotData[]>([]);
+  private spotsSubject = new BehaviorSubject<SpotData[]>([]);
 
   spots$ = this.spotsSubject.asObservable();
 
@@ -183,6 +183,10 @@ export class SpotsService {
   labelExists(label: string): boolean {
     const currentSpots = this.spotsSubject.value;
     return SpotGeneratorHelper.labelExists(label, currentSpots);
+  }
+
+  updateSpots(spots: SpotData[]): void {
+    this.spotsSubject.next(spots);
   }
 
   clearSpots(): void {

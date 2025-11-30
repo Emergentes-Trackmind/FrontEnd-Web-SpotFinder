@@ -2,7 +2,7 @@ import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: true,
-  apiBase: 'http://localhost:3001',
+  apiBase: 'https://spotfinderback-eaehduf4ehh7hjah.eastus2-01.azurewebsites.net/api',
   endpoints: {
     parkings: '/parkings',
     analytics: '/analytics',
@@ -62,6 +62,16 @@ export const environment: Environment = {
       occupancyByHour: '/occupancy',
       recentActivity: '/activity',
       topParkings: '/top-parkings'
+    }
+  },
+  spots: {
+    base: '/spots',
+    endpoints: {
+      list: (parkingId: string) => `/parkings/${parkingId}/spots`,
+      create: (parkingId: string) => `/parkings/${parkingId}/spots`,
+      createBulk: (parkingId: string) => `/parkings/${parkingId}/spots/bulk`,
+      update: (parkingId: string, spotId: string) => `/parkings/${parkingId}/spots/${spotId}`,
+      delete: (parkingId: string, spotId: string) => `/parkings/${parkingId}/spots/${spotId}`
     }
   },
   stripePublicKey: 'pk_test_YOUR_STRIPE_PUBLIC_KEY_HERE',

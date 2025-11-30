@@ -80,6 +80,12 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'parkings/:id/spots',
+    loadComponent: () => import('./profileparking/pages/spots-dashboard/spots-dashboard.component').then(m => m.SpotsDashboardComponent),
+    title: 'Gestión de Plazas',
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'me',
     canActivate: [AuthGuard],
     children: [

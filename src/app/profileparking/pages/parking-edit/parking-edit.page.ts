@@ -12,7 +12,6 @@ import { takeUntil } from 'rxjs/operators';
 import { ParkingEditService } from '../../services/parking-edit.service';
 import { WizardState } from '../../services/create-types';
 import { StepBasicEditComponent } from './steps/step-basic-edit/step-basic-edit.component';
-import { SpotsVisualizerStepComponent } from '../parking-created/steps/spots-visualizer-step/spots-visualizer-step.component';
 import { StepLocationEditComponent } from './steps/step-location-edit/step-location-edit.component';
 import { StepFeaturesEditComponent } from './steps/step-features-edit/step-features-edit.component';
 import { StepPricingEditComponent } from './steps/step-pricing-edit/step-pricing-edit.component';
@@ -30,7 +29,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatIconModule,
     MatSnackBarModule,
     StepBasicEditComponent,
-    SpotsVisualizerStepComponent,
     StepLocationEditComponent,
     StepFeaturesEditComponent,
     StepPricingEditComponent,
@@ -50,11 +48,10 @@ export class ParkingEditPageComponent implements OnInit, OnDestroy {
 
   readonly steps = [
     { number: 1, title: 'Información Básica', subtitle: 'Nombre y descripción del parking' },
-    { number: 2, title: 'Visualización de Plazas', subtitle: 'Gestión de spots y dispositivos IoT' },
-    { number: 3, title: 'Ubicación', subtitle: 'Dirección y localización en el mapa' },
-    { number: 4, title: 'Características', subtitle: 'Servicios y comodidades disponibles' },
-    { number: 5, title: 'Precios', subtitle: 'Tarifas y horarios de funcionamiento' },
-    { number: 6, title: 'Revisión', subtitle: 'Confirma la información antes de guardar' }
+    { number: 2, title: 'Ubicación', subtitle: 'Dirección y localización en el mapa' },
+    { number: 3, title: 'Características', subtitle: 'Servicios y comodidades disponibles' },
+    { number: 4, title: 'Precios', subtitle: 'Tarifas y horarios de funcionamiento' },
+    { number: 5, title: 'Revisión', subtitle: 'Confirma la información antes de guardar' }
   ];
 
   constructor(
@@ -112,7 +109,7 @@ export class ParkingEditPageComponent implements OnInit, OnDestroy {
 
   get canGoNext(): boolean {
     if (!this.wizardState) return false;
-    return this.editService.isCurrentStepValid && this.currentStep < 6;
+    return this.editService.isCurrentStepValid && this.currentStep < 5;
   }
 
   get canGoPrevious(): boolean {
@@ -120,7 +117,7 @@ export class ParkingEditPageComponent implements OnInit, OnDestroy {
   }
 
   get progressPercentage(): number {
-    return (this.currentStep / 6) * 100;
+    return (this.currentStep / 5) * 100;
   }
 
   get currentStepData() {
@@ -147,7 +144,7 @@ export class ParkingEditPageComponent implements OnInit, OnDestroy {
   }
 
   async onSubmitClick(): Promise<void> {
-    if (this.currentStep !== 6 || this.isSubmitting) {
+    if (this.currentStep !== 5 || this.isSubmitting) {
       return;
     }
 

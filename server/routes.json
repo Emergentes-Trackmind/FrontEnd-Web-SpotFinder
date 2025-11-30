@@ -17,6 +17,9 @@
   "/api/billing/cancel": "/billing/cancel",
   "/api/parkings": "/parkings",
   "/api/parkings/:id/analytics": "/parkings/:id/analytics",
+  "/api/parkings/:id/spots": "/spots",
+  "/api/parkings/:id/spots/:spotId": "/spots/:spotId",
+  "/api/parkings/:id/spots/bulk": "/spots/bulk",
 
   "/api/locations": "/locations",
   "/api/pricing": "/pricing",

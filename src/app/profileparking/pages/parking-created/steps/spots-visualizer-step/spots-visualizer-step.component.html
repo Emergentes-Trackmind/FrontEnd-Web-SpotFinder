@@ -14,14 +14,14 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="stat-card stat-free">
+    <mat-card class="stat-card stat-unassigned">
       <mat-card-content>
         <div class="stat-icon">
           <mat-icon>check_circle</mat-icon>
         </div>
         <div class="stat-info">
-          <div class="stat-value">{{ statistics.free }}</div>
-          <div class="stat-label">{{ 'SPOTS.KPI.FREE' | translate }}</div>
+          <div class="stat-value">{{ statistics.unassigned }}</div>
+          <div class="stat-label">{{ 'SPOTS.KPI.UNASSIGNED' | translate }}</div>
         </div>
       </mat-card-content>
     </mat-card>
@@ -41,23 +41,11 @@
     <mat-card class="stat-card stat-maintenance">
       <mat-card-content>
         <div class="stat-icon">
-          <mat-icon>engineering</mat-icon>
+          <mat-icon>build</mat-icon>
         </div>
         <div class="stat-info">
           <div class="stat-value">{{ statistics.maintenance }}</div>
           <div class="stat-label">{{ 'SPOTS.KPI.MAINTENANCE' | translate }}</div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card class="stat-card stat-offline">
-      <mat-card-content>
-        <div class="stat-icon">
-          <mat-icon>wifi_off</mat-icon>
-        </div>
-        <div class="stat-info">
-          <div class="stat-value">{{ statistics.offline }}</div>
-          <div class="stat-label">{{ 'SPOTS.KPI.OFFLINE' | translate }}</div>
         </div>
       </mat-card-content>
     </mat-card>
@@ -77,7 +65,6 @@
           'chip-free': filter.value === 'free',
           'chip-occupied': filter.value === 'occupied',
           'chip-maintenance': filter.value === 'maintenance',
-          'chip-offline': filter.value === 'offline',
           'selected': currentFilter === filter.value
         }"
         (click)="applyFilter(filter.value)"
@@ -85,7 +72,7 @@
         <mat-icon>{{ filter.icon }}</mat-icon>
         {{ filter.label }}
         <span class="chip-count" *ngIf="filter.value !== 'all'">
-          ({{ statistics[filter.value] }})
+          ({{ getFilterCount(filter.value) }})
         </span>
       </mat-chip-option>
     </div>
@@ -111,11 +98,11 @@
       <div class="spots-grid">
         <app-spot-block
           *cdkVirtualFor="let spot of filteredSpots; trackBy: trackBySpotNumber"
-          [id]="spot.id"
-          [spotNumber]="spot.spotNumber"
-          [status]="spot.status"
-          [deviceId]="spot.deviceId"
-          [inMaintenance]="spot.inMaintenance"
+          [id]="getSpotNumberFromLabel(spot.label)"
+          [spotNumber]="getSpotNumberFromLabel(spot.label)"
+          [status]="mapNewStatusToOld(spot.status)"
+          [deviceId]="spot.deviceId || null"
+          [inMaintenance]="spot.status === 'MAINTENANCE'"
           (openDetails)="onOpenDeviceDetails($event)"
           (setMaintenance)="onSetMaintenance($event)"
         ></app-spot-block>
@@ -164,7 +151,7 @@
           <div class="device-status" *ngIf="device.spotNumber">
             <mat-chip class="assigned-chip">
               <mat-icon>link</mat-icon>
-              {{ 'SPOTS.DEVICES.ASSIGNED_TO' | translate }} {{ device.spotNumber }}
+              {{ 'SPOTS.DEVICES.ASSIGNED_TO' | translate }} {{ getSpotLabelFromNumber(device.spotNumber) }}
             </mat-chip>
           </div>
 
@@ -196,10 +183,10 @@
               <button
                 mat-menu-item
                 *ngFor="let spot of getAvailableSpots()"
-                (click)="assignDeviceToSpot(device.id, spot.spotNumber)"
+                (click)="assignDeviceToSpot(device.id, getSpotNumberFromLabel(spot.label))"
               >
                 <mat-icon>place</mat-icon>
-                {{ 'SPOTS.DEVICES.MENU.SPOT' | translate }} {{ spot.spotNumber }}
+                {{ 'SPOTS.DEVICES.MENU.SPOT' | translate }} {{ spot.label }}
               </button>
               <div class="spot-menu-empty" *ngIf="getAvailableSpots().length === 0">
                 {{ 'SPOTS.DEVICES.MENU.ALL_ASSIGNED' | translate }}

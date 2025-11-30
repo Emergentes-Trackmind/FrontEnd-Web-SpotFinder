@@ -33,38 +33,6 @@
         </mat-form-field>
       </div>
 
-      <!-- Segunda fila: Total de plazas y Plazas accesibles -->
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ 'PARKING_STEPS.BASIC.LABELS.TOTAL_SPACES' | translate }} *</mat-label>
-          <input
-            matInput
-            type="number"
-            formControlName="totalSpaces"
-            placeholder="150"
-            min="1"
-            max="9999">
-          <mat-icon matSuffix>local_parking</mat-icon>
-          <mat-error *ngIf="isFieldInvalid('totalSpaces')">
-            {{ getErrorMessage('totalSpaces') }}
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ 'PARKING_STEPS.BASIC.LABELS.ACCESSIBLE_SPACES' | translate }} *</mat-label>
-          <input
-            matInput
-            type="number"
-            formControlName="accessibleSpaces"
-            placeholder="5"
-            min="0">
-          <mat-icon matSuffix>accessible</mat-icon>
-          <mat-error *ngIf="isFieldInvalid('accessibleSpaces')">
-            {{ getErrorMessage('accessibleSpaces') }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-
       <!-- Descripción -->
       <div class="form-row full-width">
         <mat-form-field appearance="outline" class="form-field">

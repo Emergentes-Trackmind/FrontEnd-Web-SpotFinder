@@ -1,0 +1,325 @@
+<div class="spots-dashboard">
+  <!-- Header con título y botón volver -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <button mat-icon-button (click)="goBack()" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1 class="page-title">Gestión de Plazas</h1>
+    </div>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="toggleCreateForm()"
+      class="create-spot-btn">
+      <mat-icon>add</mat-icon>
+      Nueva Plaza
+    </button>
+  </div>
+
+  <!-- Estadísticas KPI -->
+  <div class="kpi-section">
+    <div class="kpi-card total">
+      <mat-icon class="kpi-icon">grid_view</mat-icon>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ statistics.total }}</span>
+        <span class="kpi-label">Plazas totales</span>
+      </div>
+    </div>
+
+    <div class="kpi-card unassigned">
+      <mat-icon class="kpi-icon">check_circle</mat-icon>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ statistics.unassigned }}</span>
+        <span class="kpi-label">Libres</span>
+      </div>
+    </div>
+
+    <div class="kpi-card occupied">
+      <mat-icon class="kpi-icon">local_parking</mat-icon>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ statistics.occupied }}</span>
+        <span class="kpi-label">Ocupadas</span>
+      </div>
+    </div>
+
+    <div class="kpi-card maintenance">
+      <mat-icon class="kpi-icon">build</mat-icon>
+      <div class="kpi-content">
+        <span class="kpi-value">{{ statistics.maintenance }}</span>
+        <span class="kpi-label">Mantenimiento</span>
+      </div>
+    </div>
+
+    <div class="kpi-card offline">
+      <mat-icon class="kpi-icon">wifi_off</mat-icon>
+      <div class="kpi-content">
+        <span class="kpi-value">0</span>
+        <span class="kpi-label">Sin conexión</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulario crear plaza manual -->
+  <mat-card *ngIf="showCreateForm" class="create-form-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>add_location</mat-icon>
+        Crear Plaza Manual
+      </mat-card-title>
+      <mat-card-subtitle>
+        Cree una plaza específica ingresando la columna y fila deseada
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="createSpotForm" (ngSubmit)="createManualSpot()" class="create-form">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="column-field">
+            <mat-label>Columna</mat-label>
+            <input
+              matInput
+              formControlName="columnLetter"
+              placeholder="A, B, AA..."
+              maxlength="3"
+              [class.error]="createSpotForm.get('columnLetter')?.invalid && createSpotForm.get('columnLetter')?.touched">
+            <mat-icon matSuffix>text_fields</mat-icon>
+            <mat-error *ngIf="createSpotForm.get('columnLetter')?.hasError('required')">
+              La columna es requerida
+            </mat-error>
+            <mat-error *ngIf="createSpotForm.get('columnLetter')?.hasError('pattern')">
+              Solo letras (máx. 3 caracteres)
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="row-field">
+            <mat-label>Fila</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="rowNumber"
+              placeholder="1, 2, 20..."
+              min="1"
+              max="999"
+              [class.error]="createSpotForm.get('rowNumber')?.invalid && createSpotForm.get('rowNumber')?.touched">
+            <mat-icon matSuffix>numbers</mat-icon>
+            <mat-error *ngIf="createSpotForm.get('rowNumber')?.hasError('required')">
+              La fila es requerida
+            </mat-error>
+            <mat-error *ngIf="createSpotForm.get('rowNumber')?.hasError('min') || createSpotForm.get('rowNumber')?.hasError('max')">
+              Fila debe estar entre 1 y 999
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="preview-section" *ngIf="createSpotForm.get('columnLetter')?.value && createSpotForm.get('rowNumber')?.value">
+          <span class="preview-label">Vista previa:</span>
+          <span class="preview-spot">{{ (createSpotForm.get('columnLetter')?.value || '').toUpperCase() }}{{ createSpotForm.get('rowNumber')?.value }}</span>
+        </div>
+
+        <div class="form-actions">
+          <button
+            mat-button
+            type="button"
+            (click)="toggleCreateForm()"
+            class="cancel-btn">
+            Cancelar
+          </button>
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="createSpotForm.invalid || creatingSpot"
+            class="submit-btn">
+            <mat-spinner *ngIf="creatingSpot" diameter="20"></mat-spinner>
+            <mat-icon *ngIf="!creatingSpot">add</mat-icon>
+            {{ creatingSpot ? 'Creando...' : 'Crear Plaza' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Filtros de plazas -->
+  <div class="filters-section">
+    <div class="filters-header">
+      <mat-icon class="filter-icon">filter_alt</mat-icon>
+      <span class="filter-title">Filtrar plazas</span>
+    </div>
+
+    <form [formGroup]="filtersForm" class="filters-form">
+      <!-- Filtros por chips de estado -->
+      <div class="status-chips">
+        <mat-chip-listbox>
+          <mat-chip-option
+            *ngFor="let status of ['', 'UNASSIGNED', 'OCCUPIED', 'MAINTENANCE']"
+            [value]="status"
+            (click)="filtersForm.patchValue({status: status === filtersForm.get('status')?.value ? '' : status})"
+            [selected]="filtersForm.get('status')?.value === status">
+            <mat-icon *ngIf="status !== ''">{{ getStatusIcon(status) }}</mat-icon>
+            {{ status === '' ? 'Todos' :
+               status === 'UNASSIGNED' ? 'Libres' :
+               status === 'OCCUPIED' ? 'Ocupadas' :
+               'Mantenimiento' }}
+            ({{ status === '' ? statistics.total :
+                status === 'UNASSIGNED' ? statistics.unassigned :
+                status === 'OCCUPIED' ? statistics.occupied :
+                statistics.maintenance }})
+          </mat-chip-option>
+        </mat-chip-listbox>
+      </div>
+
+      <div class="filter-controls">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Buscar plaza</mat-label>
+          <input matInput formControlName="searchTerm" placeholder="A1, B5, dispositivo...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="device-filter">
+          <mat-label>Dispositivo</mat-label>
+          <mat-select formControlName="hasDevice">
+            <mat-option value="">Todos</mat-option>
+            <mat-option value="true">Con dispositivo</mat-option>
+            <mat-option value="false">Sin dispositivo</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button
+          mat-button
+          (click)="clearFilters()"
+          class="clear-filters-btn">
+          <mat-icon>clear</mat-icon>
+          Limpiar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Visualizador de plazas -->
+  <div class="spots-section">
+    <div class="section-header">
+      <mat-icon class="section-icon">grid_view</mat-icon>
+      <h2 class="section-title">Visualizador de plazas</h2>
+      <span class="spots-count">({{ getFilteredSpots().length }})</span>
+    </div>
+
+    <!-- Loading spinner -->
+    <div *ngIf="loading" class="loading-container">
+      <mat-spinner></mat-spinner>
+      <span>Cargando plazas...</span>
+    </div>
+
+    <!-- Grid de plazas -->
+    <div *ngIf="!loading" class="spots-grid">
+      <div
+        *ngFor="let spot of getFilteredSpots(); trackBy: trackBySpotId"
+        class="spot-card"
+        [class.spot-unassigned]="spot.status === 'UNASSIGNED'"
+        [class.spot-occupied]="spot.status === 'OCCUPIED'"
+        [class.spot-maintenance]="spot.status === 'MAINTENANCE'">
+
+        <!-- Número/Label de la plaza -->
+        <div class="spot-number">{{ spot.label }}</div>
+
+        <!-- Icono de estado -->
+        <mat-icon class="spot-status-icon">{{ getStatusIcon(spot.status) }}</mat-icon>
+
+        <!-- Menú de opciones -->
+        <button mat-icon-button [matMenuTriggerFor]="spotMenu" class="spot-menu-btn">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #spotMenu="matMenu">
+          <button mat-menu-item (click)="updateSpotStatus(spot, 'UNASSIGNED')" *ngIf="spot.status !== 'UNASSIGNED'">
+            <mat-icon>check_circle</mat-icon>
+            <span>Marcar como libre</span>
+          </button>
+
+          <button mat-menu-item (click)="updateSpotStatus(spot, 'OCCUPIED')" *ngIf="spot.status !== 'OCCUPIED'">
+            <mat-icon>local_parking</mat-icon>
+            <span>Marcar como ocupada</span>
+          </button>
+
+          <button mat-menu-item (click)="updateSpotStatus(spot, 'MAINTENANCE')" *ngIf="spot.status !== 'MAINTENANCE'">
+            <mat-icon>build</mat-icon>
+            <span>Marcar mantenimiento</span>
+          </button>
+
+          <mat-divider></mat-divider>
+
+          <button mat-menu-item>
+            <mat-icon>sensors</mat-icon>
+            <span>Ver dispositivo</span>
+          </button>
+
+          <button mat-menu-item (click)="deleteSpot(spot)" class="delete-action">
+            <mat-icon>delete</mat-icon>
+            <span>Eliminar plaza</span>
+          </button>
+        </mat-menu>
+
+        <!-- Información adicional -->
+        <div class="spot-info" *ngIf="spot.deviceId">
+          <mat-icon class="device-icon">sensors</mat-icon>
+          <span class="device-id">{{ spot.deviceId }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estado vacío -->
+    <div *ngIf="!loading && getFilteredSpots().length === 0" class="empty-state">
+      <mat-icon class="empty-icon">search_off</mat-icon>
+      <h3>No se encontraron plazas</h3>
+      <p>No hay plazas que coincidan con los filtros aplicados.</p>
+      <button mat-button (click)="clearFilters()">
+        <mat-icon>refresh</mat-icon>
+        Mostrar todas las plazas
+      </button>
+    </div>
+  </div>
+
+  <!-- Sección de dispositivos disponibles (como en la imagen) -->
+  <div class="devices-section">
+    <div class="section-header">
+      <mat-icon class="section-icon">sensors</mat-icon>
+      <h2 class="section-title">Dispositivos disponibles</h2>
+      <span class="devices-count">(4)</span>
+    </div>
+
+    <div class="devices-grid">
+      <div class="device-card" *ngFor="let device of [
+        {id: 'SENSOR-001', name: 'SpotSensor-X1000', battery: 100, signal: 85},
+        {id: 'SENSOR-002', name: 'SpotSensor-X1000', battery: 39, signal: 85},
+        {id: 'SENSOR-005', name: 'SpotSensor-X1000', battery: 67, signal: 85},
+        {id: 'SENSOR-011', name: 'SpotSensor-X1000', battery: 100, signal: 85}
+      ]">
+        <div class="device-header">
+          <mat-icon class="device-main-icon">sensors</mat-icon>
+          <div class="device-info">
+            <h4 class="device-name">{{ device.name }}</h4>
+            <span class="device-id">{{ device.id }}</span>
+          </div>
+        </div>
+
+        <div class="device-metrics">
+          <div class="metric">
+            <mat-icon class="metric-icon battery">battery_full</mat-icon>
+            <span class="metric-value">{{ device.battery }}%</span>
+          </div>
+          <div class="metric">
+            <mat-icon class="metric-icon signal">signal_cellular_4_bar</mat-icon>
+            <span class="metric-value">{{ device.signal }}%</span>
+          </div>
+        </div>
+
+        <button mat-raised-button color="primary" class="assign-btn">
+          <mat-icon>link</mat-icon>
+          Asignar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

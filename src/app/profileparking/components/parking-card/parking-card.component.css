@@ -257,19 +257,42 @@
 /* Actions */
 .card-actions {
   display: flex;
+  flex-direction: column;
   gap: 8px;
   margin-top: auto;
   padding-top: 16px;
 }
 
 .edit-btn,
-.analytics-btn {
+.analytics-btn,
+.spots-btn {
   flex: 1;
   font-size: 13px;
   display: flex;
   align-items: center;
   gap: 4px;
   justify-content: center;
+}
+
+/* Estilo específico para el botón de spots */
+.spots-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 500;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.spots-btn:hover {
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.spots-btn mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 .edit-btn mat-icon,

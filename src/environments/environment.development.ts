@@ -64,6 +64,16 @@ export const environment: Environment = {
       topParkings: '/top-parkings'
     }
   },
+  spots: {
+    base: '/spots',
+    endpoints: {
+      list: (parkingId: string) => `/parkings/${parkingId}/spots`,
+      create: (parkingId: string) => `/parkings/${parkingId}/spots`,
+      createBulk: (parkingId: string) => `/parkings/${parkingId}/spots/bulk`,
+      update: (parkingId: string, spotId: string) => `/parkings/${parkingId}/spots/${spotId}`,
+      delete: (parkingId: string, spotId: string) => `/parkings/${parkingId}/spots/${spotId}`
+    }
+  },
   stripePublicKey: 'pk_test_YOUR_STRIPE_PUBLIC_KEY_HERE',
   firebase: {
     apiKey: 'AIzaSyAuG2UFUsYthFQSf7cHaHowXV7E_3j7TNM',

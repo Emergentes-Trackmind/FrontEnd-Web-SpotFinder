@@ -16,7 +16,8 @@ export class ParkingStateService {
     location: null,
     features: null,
     pricing: null,
-    filterSelection: 'all'
+    filterSelection: 'all',
+    pendingSpotsCreation: null
   });
 
   state$: Observable<ParkingTemporaryState> = this.stateSubject.asObservable();
@@ -53,6 +54,24 @@ export class ParkingStateService {
     return this.currentState.spots;
   }
 
+  setPendingSpotsCreation(pending: PendingSpotsCreation): void {
+    this.updateState({ pendingSpotsCreation: pending });
+    console.log('💾 ParkingStateService: Spots pendientes guardados:', pending);
+  }
+
+  getPendingSpotsCreation(): PendingSpotsCreation | null {
+    return this.currentState.pendingSpotsCreation;
+  }
+
+  hasPendingSpotsCreation(): boolean {
+    const pending = this.currentState.pendingSpotsCreation;
+    return !!(pending && pending.confirmed);
+  }
+
+  clearPendingSpotsCreation(): void {
+    this.updateState({ pendingSpotsCreation: null });
+  }
+
   clearState(): void {
     this.stateSubject.next({
       step: 1,
@@ -61,7 +80,8 @@ export class ParkingStateService {
       location: null,
       features: null,
       pricing: null,
-      filterSelection: 'all'
+      filterSelection: 'all',
+      pendingSpotsCreation: null
     });
   }
 
@@ -81,6 +101,14 @@ export interface ParkingTemporaryState {
   features: any | null;
   pricing: any | null;
   filterSelection: SpotFilterType;
+  pendingSpotsCreation: PendingSpotsCreation | null;
+}
+
+export interface PendingSpotsCreation {
+  totalSpots: number;
+  spotsData: any[];
+  confirmed: boolean;
+  createdAt: Date;
 }
 
 export interface BasicInfoState {
