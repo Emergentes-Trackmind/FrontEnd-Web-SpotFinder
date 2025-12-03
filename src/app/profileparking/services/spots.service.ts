@@ -141,7 +141,7 @@ export class SpotsService {
     return this.spots$.pipe(
       map(spots => ({
         total: spots.length,
-        unassigned: spots.filter(s => s.status === 'UNASSIGNED').length,
+        unassigned: spots.filter(s => s.status === 'AVAILABLE' || s.status === 'UNASSIGNED').length,
         occupied: spots.filter(s => s.status === 'OCCUPIED').length,
         maintenance: spots.filter(s => s.status === 'MAINTENANCE').length
       }))

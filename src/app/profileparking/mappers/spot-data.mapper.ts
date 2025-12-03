@@ -56,8 +56,9 @@ export class SpotDataMapper {
     return oldSpots.map(spot => this.oldToNew(spot));
   }
 
-  private static mapNewStatusToOld(newStatus: 'UNASSIGNED' | 'OCCUPIED' | 'MAINTENANCE'): 'free' | 'occupied' | 'maintenance' | 'offline' {
+  private static mapNewStatusToOld(newStatus: 'AVAILABLE' | 'UNASSIGNED' | 'OCCUPIED' | 'MAINTENANCE'): 'free' | 'occupied' | 'maintenance' | 'offline' {
     switch (newStatus) {
+      case 'AVAILABLE':
       case 'UNASSIGNED': return 'free';
       case 'OCCUPIED': return 'occupied';
       case 'MAINTENANCE': return 'maintenance';
@@ -65,13 +66,13 @@ export class SpotDataMapper {
     }
   }
 
-  private static mapOldStatusToNew(oldStatus: 'free' | 'occupied' | 'maintenance' | 'offline'): 'UNASSIGNED' | 'OCCUPIED' | 'MAINTENANCE' {
+  private static mapOldStatusToNew(oldStatus: 'free' | 'occupied' | 'maintenance' | 'offline'): 'AVAILABLE' | 'UNASSIGNED' | 'OCCUPIED' | 'MAINTENANCE' {
     switch (oldStatus) {
-      case 'free': return 'UNASSIGNED';
+      case 'free': return 'AVAILABLE'; // Mapear a AVAILABLE para consistencia con el backend
       case 'occupied': return 'OCCUPIED';
       case 'maintenance': return 'MAINTENANCE';
-      case 'offline': return 'UNASSIGNED'; // Mapear offline a unassigned por defecto
-      default: return 'UNASSIGNED';
+      case 'offline': return 'AVAILABLE'; // Mapear offline a available por defecto
+      default: return 'AVAILABLE';
     }
   }
 

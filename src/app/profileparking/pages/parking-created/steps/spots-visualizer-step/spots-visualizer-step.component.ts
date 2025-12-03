@@ -8,6 +8,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -22,19 +23,21 @@ import { SpotDataMapper } from '../../../../mappers/spot-data.mapper';
 import { IoTService } from '../../../../services/iot-simulation.service';
 import { IoTAlertsService } from '../../../../services/iot-alerts.service';
 import { IotService } from '../../../../../iot/services/iot.service';
+import { DeviceAssignmentDialogComponent, DeviceAssignmentData, AssignmentResult } from '../../../../../iot/presentation/components/device-assignment-dialog/device-assignment-dialog.component';
+import { AssignmentConfirmationDialogComponent, AssignmentConfirmationData } from '../../../../../iot/presentation/components/assignment-confirmation-dialog/assignment-confirmation-dialog.component';
 
 // Tipo de dispositivo IoT usado en este componente (compatible con el dominio)
 interface IoTDevice {
   id: string;
-  name: string; // displayName del dispositivo
   serialNumber: string;
-  model: string;
+  model: string; // Nombre del dispositivo
   type: string;
   status: string;
   battery: number;
   lastCheckIn: string;
   parkingId?: string;
-  spotNumber?: number | null;
+  spotLabel?: string | null; // Label completo como "A1", "B2", etc.
+  spotNumber?: number | null; // Mantener para compatibilidad
   signalStrength?: number;
   ownerId?: string;
   firmware?: string;
@@ -59,6 +62,7 @@ interface IoTDevice {
     MatToolbarModule,
     MatMenuModule,
     MatTooltipModule,
+    MatDialogModule,
     ScrollingModule,
     SpotBlockComponent,
     TranslateModule
@@ -98,6 +102,7 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     private parkingWizardSpots: ParkingWizardSpotsService,
     private iotService: IoTService,
     private alertsService: IoTAlertsService,
+    private dialog: MatDialog,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private translate: TranslateService,
@@ -402,10 +407,8 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
 
           // Convertir de domain IoT device al formato IoTDevice esperado por el componente
           this.availableDevices = devices
-            .filter((d: any) => !d.parkingId || d.parkingId === '') // Filtrar solo disponibles
             .map((d: any) => ({
               id: d.id,
-              name: d.model, // Usar model como name/displayName
               serialNumber: d.serialNumber,
               model: d.model,
               type: d.type as any,
@@ -413,7 +416,8 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
               battery: d.battery,
               lastCheckIn: d.lastCheckIn,
               parkingId: d.parkingId,
-              spotNumber: d.parkingSpotId ? parseInt(d.parkingSpotId) : null,
+              spotLabel: d.parkingSpotLabel || null, // Usar el label completo (A1, B2, etc.)
+              spotNumber: null, // Ya no usamos números simples
               signalStrength: 85, // Valor por defecto
               ownerId: userId.toString(),
               firmware: 'v1.0.0', // Valor por defecto
@@ -426,6 +430,11 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
 
           this.cdr.markForCheck();
           console.log(`✅ ${this.availableDevices.length} dispositivos IoT disponibles desde edge API`);
+          console.log('🔍 Dispositivos convertidos:', this.availableDevices.map(d => ({
+            id: d.id,
+            model: d.model,
+            spotLabel: d.spotLabel
+          })));
         },
         error: (error: any) => {
           console.error('❌ Error cargando dispositivos IoT desde edge API:', error);
@@ -451,8 +460,9 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     this.availableDevices.forEach(device => {
       const assignedSpot = currentSpots.find(spot => spot.deviceId === device.id);
       if (assignedSpot) {
-        // Extraer el número del spot del label (ej: "A1" -> 1, "B5" -> 5)
-        device.spotNumber = parseInt(assignedSpot.label.replace(/[A-Z]+/, ''), 10);
+        // Usar el label completo del spot (ej: "A1", "B2", etc.)
+        device.spotLabel = assignedSpot.label;
+        device.spotNumber = parseInt(assignedSpot.label.replace(/[A-Z]+/, ''), 10); // Para compatibilidad
         syncCount++;
       }
     });
@@ -482,9 +492,9 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
 
 
   /**
-   * Asigna un dispositivo IoT a un spot
+   * Asigna un dispositivo IoT a un spot usando el label del spot
    */
-  assignDeviceToSpot(deviceId: string, spotNumber: number): void {
+  assignDeviceToSpot(deviceId: string, spotLabel: string): void {
     // Encontrar el dispositivo
     const device = this.availableDevices.find(d => d.id === deviceId);
     if (!device) {
@@ -492,18 +502,15 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Encontrar el spot por número (extraer del label)
-    const spot = this.spots.find(s => {
-      const num = parseInt(s.label.replace(/[A-Z]+/, ''), 10);
-      return num === spotNumber;
-    });
+    // Encontrar el spot por label
+    const spot = this.spots.find(s => s.label === spotLabel);
 
     if (!spot) {
-      console.error(`❌ Spot ${spotNumber} no encontrado`);
+      console.error(`❌ Spot ${spotLabel} no encontrado`);
       return;
     }
 
-    console.log(`📱 Asignando dispositivo ${device.name} (${deviceId}) al Spot ${spot.label}`);
+    console.log(`📱 Asignando dispositivo ${device.model} (${deviceId}) al Spot ${spot.label}`);
 
     // Actualizar el spot local
     spot.deviceId = deviceId;
@@ -513,7 +520,8 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     this.spotsService.updateSpots([...this.spots]);
 
     // Actualizar el dispositivo local para que la UI se actualice
-    device.spotNumber = spotNumber;
+    device.spotLabel = spotLabel;
+    device.spotNumber = parseInt(spotLabel.replace(/[A-Z]+/, ''), 10); // Para compatibilidad
 
     // Obtener información del parking para la actualización en edge API
     const basicInfo = this.parkingStateService.getBasicInfo();
@@ -540,7 +548,7 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
         userId.toString(),
         device.serialNumber,
         parkingId,
-        spotNumber.toString()
+        spotLabel
       ).subscribe({
         next: () => {
           console.log(`✅ Dispositivo ${device.serialNumber} actualizado en edge API`);
@@ -566,7 +574,7 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     const totalAssigned = currentSpots.filter(s => s.deviceId).length;
     console.log(`📊 Total de dispositivos asignados: ${totalAssigned}`);
 
-    this.alertsService.showSuccess(`✅ Dispositivo ${device.name} asignado al Spot ${spot.label}`);
+    this.alertsService.showSuccess(`✅ Dispositivo ${device.model} asignado al Spot ${spot.label}`);
     this.cdr.markForCheck();
   }
 
@@ -576,11 +584,11 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
   unassignDevice(deviceId: string): void {
     // Encontrar el dispositivo
     const device = this.availableDevices.find(d => d.id === deviceId);
-    if (!device || !device.spotNumber) return;
+    if (!device || !device.spotLabel) return;
 
-    const spotNumber = device.spotNumber;
+    const spotLabel = device.spotLabel;
 
-    console.log(`🔗 Desasignando dispositivo ${device.name} del Spot ${spotNumber}`);
+    console.log(`🔗 Desasignando dispositivo ${device.model} del Spot ${spotLabel}`);
 
     // Obtener userId del token
     const token = localStorage.getItem('token');
@@ -619,10 +627,7 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     }
 
     // Encontrar y actualizar el spot
-    const spot = this.spots.find(s => {
-      const num = parseInt(s.label.replace(/[A-Z]+/, ''), 10);
-      return num === spotNumber;
-    });
+    const spot = this.spots.find(s => s.label === spotLabel);
 
     if (spot) {
       spot.deviceId = null;
@@ -633,6 +638,7 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     }
 
     // Actualizar el dispositivo local
+    device.spotLabel = null;
     device.spotNumber = null;
 
     // ✨ CRÍTICO: Guardar INMEDIATAMENTE en el estado global
@@ -641,7 +647,7 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     this.parkingStateService.setSpotsData(oldFormatSpots);
     console.log(`💾 Estado guardado inmediatamente - ${currentSpots.filter(s => s.deviceId).length} dispositivos asignados`);
 
-    this.alertsService.showSuccess(`🔗 Dispositivo ${device.name} desasignado del Spot ${spotNumber}`);
+    this.alertsService.showSuccess(`🔗 Dispositivo ${device.model} desasignado del Spot ${spotLabel}`);
     this.cdr.markForCheck();
   }
 
@@ -686,5 +692,93 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
         `Se están creando ${pendingSpots.totalSpots} plazas automáticamente...`
       );
     }
+  }
+
+  /**
+   * Maneja el click en "Asignar" dispositivo desde la lista
+   */
+  onAssignDevice(device: IoTDevice): void {
+    console.log('🔥 BOTÓN ASIGNAR PRESIONADO - MÉTODO LLAMADO');
+    alert('¡Botón Asignar presionado! Método onAssignDevice ejecutándose correctamente');
+
+    try {
+      console.log('📱 Iniciando asignación de dispositivo:', device);
+
+      // Por ahora, mostrar un menú simple con las plazas disponibles
+      const availableSpots = this.getAvailableSpots();
+      console.log('🏗️ Plazas disponibles:', availableSpots);
+
+      if (availableSpots.length === 0) {
+        alert('No hay plazas disponibles para asignar');
+        return;
+      }
+
+      // Crear una lista de opciones para mostrar en un prompt
+      const spotOptions = availableSpots.map((spot, index) => `${index + 1}. ${spot.label}`).join('\n');
+      const choice = prompt(`Selecciona una plaza para asignar al dispositivo ${device.model}:\n\n${spotOptions}\n\nEscribe el número de la plaza:`);
+
+      if (choice && !isNaN(Number(choice))) {
+        const selectedIndex = Number(choice) - 1;
+        if (selectedIndex >= 0 && selectedIndex < availableSpots.length) {
+          const selectedSpot = availableSpots[selectedIndex];
+          console.log('✅ Plaza seleccionada:', selectedSpot);
+
+          // Confirmar la asignación
+          if (confirm(`¿Confirmas asignar el dispositivo ${device.model} a la plaza ${selectedSpot.label}?`)) {
+            this.assignDeviceToSpot(device.id, selectedSpot.label);
+          }
+        } else {
+          alert('Número de plaza inválido');
+        }
+      }
+    } catch (error) {
+      console.error('❌ Error en onAssignDevice:', error);
+      alert('Error: ' + error);
+    }
+  }
+
+  /**
+   * Muestra el diálogo de confirmación para la asignación
+   */
+  private showAssignmentConfirmation(assignmentResult: AssignmentResult): void {
+    const confirmationData: AssignmentConfirmationData = {
+      device: assignmentResult.device,
+      spot: assignmentResult.assignedSpot,
+      action: assignmentResult.action
+    };
+
+    const confirmationRef = this.dialog.open(AssignmentConfirmationDialogComponent, {
+      width: '550px',
+      maxHeight: '90vh',
+      data: confirmationData,
+      disableClose: false
+    });
+
+    confirmationRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.executeDeviceAssignment(assignmentResult);
+      }
+    });
+  }
+
+  /**
+   * Ejecuta la asignación del dispositivo al spot
+   */
+  private executeDeviceAssignment(assignmentResult: AssignmentResult): void {
+    console.log('🔄 Ejecutando asignación:', assignmentResult);
+
+    // Usar el label completo del spot (ej: "A1", "B2", etc.)
+    const spotLabel = assignmentResult.assignedSpot.label;
+
+    // Usar el método existente assignDeviceToSpot
+    this.assignDeviceToSpot(assignmentResult.device.id, spotLabel);
+  }
+
+  /**
+   * Método de prueba para verificar que el click funciona
+   */
+  testClick(): void {
+    console.log('🧪 MÉTODO DE PRUEBA EJECUTADO');
+    alert('¡El método testClick() funciona correctamente!');
   }
 }

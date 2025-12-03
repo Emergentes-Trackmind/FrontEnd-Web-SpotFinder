@@ -45,7 +45,8 @@ export class SpotBlockComponent {
    * Obtiene el icono según el estado
    */
   getStatusIcon(): string {
-    switch (this.status) {
+    const normalizedStatus = this.normalizeStatus(this.status);
+    switch (normalizedStatus) {
       case 'free':
         return 'check_circle';
       case 'occupied':
@@ -63,7 +64,8 @@ export class SpotBlockComponent {
    * Obtiene el color del badge según el estado
    */
   getStatusColor(): string {
-    switch (this.status) {
+    const normalizedStatus = this.normalizeStatus(this.status);
+    switch (normalizedStatus) {
       case 'free':
         return 'status-free';
       case 'occupied':
@@ -81,7 +83,8 @@ export class SpotBlockComponent {
    * Obtiene el texto descriptivo del estado
    */
   getStatusText(): string {
-    switch (this.status) {
+    const normalizedStatus = this.normalizeStatus(this.status);
+    switch (normalizedStatus) {
       case 'free':
         return this.translate.instant('SPOT.STATUS.FREE');
       case 'occupied':
@@ -128,6 +131,29 @@ export class SpotBlockComponent {
     const statusText = this.getStatusText();
     const deviceText = this.hasDevice ? this.translate.instant('SPOT.ARIA.HAS_DEVICE') : this.translate.instant('SPOT.ARIA.NO_DEVICE');
     return `Spot ${this.spotNumber}, ${statusText}, ${deviceText}`;
+  }
+
+  /**
+   * Normaliza el estado del backend al formato del frontend
+   */
+  private normalizeStatus(status: any): 'free' | 'occupied' | 'maintenance' | 'offline' {
+    // Convertir estados del backend a estados del frontend
+    switch (status) {
+      case 'AVAILABLE':
+      case 'UNASSIGNED':
+      case 'free':
+        return 'free';
+      case 'OCCUPIED':
+      case 'occupied':
+        return 'occupied';
+      case 'MAINTENANCE':
+      case 'maintenance':
+        return 'maintenance';
+      case 'offline':
+        return 'offline';
+      default:
+        return 'offline'; // Estado por defecto más seguro que unknown
+    }
   }
 
   // Helper para traducir desde la plantilla sin usar el pipe
