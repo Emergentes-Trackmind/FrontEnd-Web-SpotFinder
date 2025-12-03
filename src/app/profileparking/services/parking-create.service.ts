@@ -231,9 +231,13 @@ export class ParkingCreateService {
     // Primero obtener los dispositivos actuales desde edge API para mapear ID -> serialNumber
     this.iotService.getUserDevices(userId).subscribe({
       next: (devices) => {
+        // Validar que devices sea un array
+        const devicesArray = Array.isArray(devices) ? devices : [];
+        console.log(`✅ [ParkingCreate] Dispositivos validados: ${devicesArray.length} dispositivos`);
+
         // Crear un mapa de deviceId -> serialNumber
         const deviceMap = new Map();
-        devices.forEach(device => {
+        devicesArray.forEach(device => {
           deviceMap.set(device.id, device.serialNumber);
         });
 

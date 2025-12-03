@@ -271,8 +271,13 @@ export class DevicesDashboardComponent implements OnInit {
       next: (devices) => {
         console.log('📥 [DevicesDashboard] Dispositivos recibidos desde edge API:', devices);
 
-        const devicesArray = devices || [];
+        // Doble validación: asegurar que siempre sea un array
+        const devicesArray = Array.isArray(devices) ? devices : [];
         const totalDevices = devicesArray.length;
+
+        if (!Array.isArray(devices)) {
+          console.warn('⚠️ [DevicesDashboard] La respuesta no era un array, convertido a array vacío');
+        }
 
         console.log('📊 [DevicesDashboard] Dispositivos procesados:', {
           total: totalDevices,

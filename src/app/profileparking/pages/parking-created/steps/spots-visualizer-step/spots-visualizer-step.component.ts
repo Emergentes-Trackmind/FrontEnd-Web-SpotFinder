@@ -408,8 +408,12 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
         next: (devices: IotDevice[]) => {
           console.log('📥 Dispositivos recibidos desde edge API:', devices);
 
+          // Validar que devices sea un array
+          const devicesArray = Array.isArray(devices) ? devices : [];
+          console.log(`✅ Dispositivos validados: ${devicesArray.length} dispositivos`);
+
           // Usar directamente los dispositivos del dominio
-          this.availableDevices = devices;
+          this.availableDevices = devicesArray;
 
           // IMPORTANTE: Sincronizar con las asignaciones guardadas en los spots
           this.syncDevicesWithSpots();

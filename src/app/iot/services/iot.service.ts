@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
 // Import domain IotDevice type
@@ -61,7 +61,19 @@ export class IotService {
       `${this.baseUrl}${environment.iot?.endpoints.devices}`,
       { headers, params }
     ).pipe(
-      map(edgeDevices => edgeDevices.map(edgeDevice => this.mapEdgeDeviceToDomain(edgeDevice)))
+      map(response => {
+        // Validar que la respuesta es un array
+        if (!Array.isArray(response)) {
+          console.warn('❌ [IoTService] La respuesta del edge API no es un array:', response);
+          return [];
+        }
+        return response.map(edgeDevice => this.mapEdgeDeviceToDomain(edgeDevice));
+      }),
+      catchError(error => {
+        console.error('❌ [IoTService] Error en getUserDevices:', error);
+        // Devolver array vacío en caso de error para mantener la interfaz funcionando
+        return of([]);
+      })
     );
   }
 
