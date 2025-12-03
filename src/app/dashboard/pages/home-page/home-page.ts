@@ -145,7 +145,7 @@ export class HomePage implements OnInit, OnDestroy {
         id: 'occupancy',
         title: 'Espacios Ocupados',
         value: `${totals.occupiedSpaces.occupied}/${totals.occupiedSpaces.total}`,
-        delta: `${totals.occupiedSpaces.percentage}%`,
+        delta: totals.occupiedSpaces.deltaText,
         deltaType: totals.occupiedSpaces.percentage >= 70 ? 'positive' : 'neutral',
         icon: 'local_parking',
         color: '#6D5AE6'

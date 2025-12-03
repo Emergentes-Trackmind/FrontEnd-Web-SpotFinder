@@ -4,22 +4,26 @@ export interface TotalsKpiDTO {
     currency: string;
     deltaPercentage: number;
     deltaText: string;
+    text: string;
   };
   occupiedSpaces: {
     occupied: number;
     total: number;
     percentage: number;
     text: string;
+    deltaText: string;
   };
   activeUsers: {
     count: number;
     deltaPercentage: number;
     deltaText: string;
+    newThisMonth: number;
   };
   registeredParkings: {
     total: number;
     newThisMonth: number;
     deltaText: string;
+    deltaPercentage: number;
   };
 }
 
