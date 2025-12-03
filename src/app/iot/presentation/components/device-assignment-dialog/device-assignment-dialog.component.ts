@@ -92,7 +92,7 @@ export interface AssignmentResult {
                 </mat-option>
               }
             </mat-select>
-            <mat-hint>Solo se muestran las plazas disponibles</mat-hint>
+            <mat-hint>Solo se muestran las plazas con sensores en estado OFFLINE</mat-hint>
           </mat-form-field>
 
           @if (assignmentForm.get('spotId')?.errors?.['required'] && assignmentForm.get('spotId')?.touched) {
@@ -113,8 +113,8 @@ export interface AssignmentResult {
         @if (availableSpots.length === 0 && !loading) {
           <div class="empty-state">
             <mat-icon>info</mat-icon>
-            <p>No hay plazas disponibles para asignar</p>
-            <small>Todas las plazas están ocupadas o reservadas</small>
+            <p>No hay plazas con sensores en estado OFFLINE</p>
+            <small>Todas las plazas tienen sensores conectados o no tienen sensor asignado</small>
           </div>
         }
       </mat-dialog-content>
@@ -335,17 +335,17 @@ export class DeviceAssignmentDialogComponent implements OnInit {
 
     this.spotsService.loadSpotsForParking(this.data.parkingId).subscribe({
       next: () => {
-        // Filtrar solo plazas disponibles
+        // Filtrar solo plazas con IoT en estado OFFLINE
         this.spotsService.spots$.subscribe(allSpots => {
           this.availableSpots = allSpots.filter(spot =>
-            spot.status === 'AVAILABLE'
+            spot.iotStatus === 'OFFLINE'
           );
           this.loading = false;
         });
       },
       error: (error) => {
         console.error('Error cargando plazas:', error);
-        this.snackBar.open('Error cargando plazas disponibles', 'Cerrar', { duration: 3000 });
+        this.snackBar.open('Error cargando plazas', 'Cerrar', { duration: 3000 });
         this.loading = false;
       }
     });
