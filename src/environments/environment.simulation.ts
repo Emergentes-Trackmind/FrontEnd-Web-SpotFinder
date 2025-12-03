@@ -2,7 +2,7 @@ import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: false,
-  apiBase: 'http://localhost:3001/api',
+  apiBase: 'https://spotfinderback-eaehduf4ehh7hjah.eastus2-01.azurewebsites.net/api',
   endpoints: {
     parkings: '/parkings',
     analytics: '/analytics',
