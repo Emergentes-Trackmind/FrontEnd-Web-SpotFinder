@@ -10,9 +10,14 @@
       </mat-icon>
     </div>
 
-    <!-- Indicador de dispositivo -->
-    <div class="device-indicator" *ngIf="!hasDevice">
-      <mat-icon class="no-sensor-icon" [matTooltip]="noSensorTooltip">sensors_off</mat-icon>
+    <!-- Indicador de estado IoT -->
+    <div class="iot-indicator">
+      <mat-icon
+        [class]="getIotIconColor()"
+        [matTooltip]="getIotTooltip()"
+        class="iot-icon">
+        {{ getIotIcon() }}
+      </mat-icon>
     </div>
 
     <!-- Menú de acciones -->

@@ -36,6 +36,8 @@ export class SpotBlockComponent {
   @Input() spotNumber!: number;
   @Input() status: SpotStatus = 'AVAILABLE';
   @Input() deviceId: string | null = null;
+  @Input() iotStatus: 'CONNECTED' | 'OFFLINE' | null = null;
+  @Input() sensorSerialNumber: string | null = null;
   @Output() openDetails = new EventEmitter<string>();
   @Output() markAsAvailable = new EventEmitter<number>();
   @Output() markAsOccupied = new EventEmitter<number>();
@@ -157,5 +159,43 @@ export class SpotBlockComponent {
 
   get isReserved(): boolean {
     return this.status === 'RESERVED';
+  }
+
+  /**
+   * Obtiene el icono del estado IoT
+   */
+  getIotIcon(): string {
+    if (!this.iotStatus) {
+      return 'wifi_off';
+    }
+    return this.iotStatus === 'CONNECTED' ? 'wifi' : 'wifi_off';
+  }
+
+  /**
+   * Obtiene el color del icono IoT
+   */
+  getIotIconColor(): string {
+    if (!this.iotStatus) {
+      return 'iot-no-sensor';
+    }
+    return this.iotStatus === 'CONNECTED' ? 'iot-connected' : 'iot-offline';
+  }
+
+  /**
+   * Obtiene el tooltip del estado IoT
+   */
+  getIotTooltip(): string {
+    if (!this.sensorSerialNumber) {
+      return this.t('SPOT.IOT.NO_SENSOR');
+    }
+    const statusKey = this.iotStatus === 'CONNECTED' ? 'SPOT.IOT.CONNECTED' : 'SPOT.IOT.OFFLINE';
+    return `${this.t(statusKey)} - ${this.sensorSerialNumber}`;
+  }
+
+  /**
+   * Verifica si el spot tiene sensor IoT vinculado
+   */
+  get hasSensor(): boolean {
+    return !!this.sensorSerialNumber;
   }
 }

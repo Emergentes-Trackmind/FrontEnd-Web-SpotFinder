@@ -215,6 +215,28 @@
         [class.spot-occupied]="spot.status === 'OCCUPIED'"
         [class.spot-reserved]="spot.status === 'RESERVED'">
 
+        <!-- Indicador de estado IoT -->
+        <div class="spot-iot-indicator">
+          <mat-icon
+            *ngIf="spot.iotStatus === 'CONNECTED'"
+            class="iot-icon iot-connected"
+            matTooltip="Sensor conectado: {{ spot.sensorSerialNumber }}">
+            wifi
+          </mat-icon>
+          <mat-icon
+            *ngIf="spot.iotStatus === 'OFFLINE'"
+            class="iot-icon iot-offline"
+            matTooltip="Sensor offline: {{ spot.sensorSerialNumber }}">
+            wifi_off
+          </mat-icon>
+          <mat-icon
+            *ngIf="!spot.sensorSerialNumber"
+            class="iot-icon iot-no-sensor"
+            matTooltip="Sin sensor vinculado">
+            wifi_off
+          </mat-icon>
+        </div>
+
         <!-- Número/Label de la plaza -->
         <div class="spot-number">{{ spot.label }}</div>
 
@@ -244,9 +266,27 @@
 
           <mat-divider></mat-divider>
 
-          <button mat-menu-item>
+          <button
+            mat-menu-item
+            (click)="openLinkSensorDialog(spot)"
+            *ngIf="!spot.sensorSerialNumber">
+            <mat-icon>link</mat-icon>
+            <span>Vincular Sensor</span>
+          </button>
+
+          <button
+            mat-menu-item
+            (click)="unlinkSensor(spot)"
+            *ngIf="spot.sensorSerialNumber">
+            <mat-icon>link_off</mat-icon>
+            <span>Desvincular Sensor</span>
+          </button>
+
+          <button
+            mat-menu-item
+            *ngIf="spot.sensorSerialNumber">
             <mat-icon>sensors</mat-icon>
-            <span>Ver dispositivo</span>
+            <span>Ver Sensor ({{ spot.sensorSerialNumber }})</span>
           </button>
         </mat-menu>
 

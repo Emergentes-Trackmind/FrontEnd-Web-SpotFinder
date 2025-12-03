@@ -133,6 +133,8 @@ export class SpotsService {
       column: spot.columnIndex,
       label: spot.label,
       status: spot.status,
+      iotStatus: spot.iotStatus as any,
+      sensorSerialNumber: spot.sensorSerialNumber,
       lastUpdated: new Date()
     }));
   }
@@ -183,6 +185,60 @@ export class SpotsService {
   labelExists(label: string): boolean {
     const currentSpots = this.spotsSubject.value;
     return SpotGeneratorHelper.labelExists(label, currentSpots);
+  }
+
+  /**
+   * Asigna un dispositivo IoT a un spot específico
+   * @param parkingId ID del parking
+   * @param spotId ID del spot
+   * @param sensorSerialNumber Serial del sensor IoT a vincular
+   * @returns Observable con el spot actualizado
+   */
+  assignIoTDevice(parkingId: string, spotId: string, sensorSerialNumber: string): Observable<SpotResponse> {
+    console.log(`🔗 Asignando sensor IoT ${sensorSerialNumber} al spot ${spotId}`);
+
+    const body = { sensorSerialNumber };
+
+    return this.http.put<SpotResponse>(
+      `${this.baseUrl}/${parkingId}/spots/${spotId}/assign-iot`,
+      body
+    ).pipe(
+      map(response => {
+        console.log(`✅ Sensor ${sensorSerialNumber} asignado exitosamente al spot ${response.label}`);
+        // Recargar los spots para reflejar el cambio
+        this.loadSpotsForParking(parkingId).subscribe();
+        return response;
+      }),
+      catchError(error => {
+        console.error('❌ Error asignando sensor IoT:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * Desvincula un dispositivo IoT de un spot
+   * @param parkingId ID del parking
+   * @param spotId ID del spot
+   * @returns Observable con el spot actualizado
+   */
+  unassignIoTDevice(parkingId: string, spotId: string): Observable<SpotResponse> {
+    console.log(`🔓 Desvinculando sensor IoT del spot ${spotId}`);
+
+    return this.http.delete<SpotResponse>(
+      `${this.baseUrl}/${parkingId}/spots/${spotId}/unassign-iot`
+    ).pipe(
+      map(response => {
+        console.log(`✅ Sensor desvinculado exitosamente del spot ${response.label}`);
+        // Recargar los spots para reflejar el cambio
+        this.loadSpotsForParking(parkingId).subscribe();
+        return response;
+      }),
+      catchError(error => {
+        console.error('❌ Error desvinculando sensor IoT:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   clearSpots(): void {

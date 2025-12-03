@@ -696,11 +696,18 @@
       "OCCUPIED": "Ocupada",
       "MAINTENANCE": "Mantenimiento",
       "OFFLINE": "Sin conexión",
-      "UNKNOWN": "Desconocido"
+      "UNKNOWN": "Desconocido",
+      "AVAILABLE": "Disponible",
+      "RESERVED": "Reservada"
     },
     "ARIA": {
       "HAS_DEVICE": "con dispositivo",
       "NO_DEVICE": "sin dispositivo"
+    },
+    "IOT": {
+      "NO_SENSOR": "Sin sensor vinculado",
+      "CONNECTED": "Sensor conectado",
+      "OFFLINE": "Sensor sin conexión"
     }
   }
 }

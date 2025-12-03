@@ -359,6 +359,32 @@
   background: rgba(245, 158, 11, 0.05);
 }
 
+/* Indicador de estado IoT */
+.spot-iot-indicator {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1;
+}
+
+.iot-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.iot-connected {
+  color: #000000;  /* Negro para conectado */
+}
+
+.iot-offline {
+  color: #9E9E9E;  /* Gris/plomo para offline */
+}
+
+.iot-no-sensor {
+  color: #BDBDBD;  /* Gris claro para sin sensor */
+}
+
 .spot-number {
   font-size: 32px;
   font-weight: 700;

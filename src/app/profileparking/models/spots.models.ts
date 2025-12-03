@@ -16,6 +16,8 @@ export interface SpotResponse {
   columnIndex: number;  // El backend lo manda así
   label: string;        // Ej: "A1"
   status: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED';
+  iotStatus?: 'CONNECTED' | 'OFFLINE' | null;  // Estado de conexión del sensor IoT
+  sensorSerialNumber?: string | null;           // Serial del sensor vinculado
 }
 
 /**
@@ -41,6 +43,14 @@ export interface ManualSpotInput {
 export type SpotStatus = 'AVAILABLE' | 'OCCUPIED' | 'RESERVED';
 
 /**
+ * Estado de conexión IoT del sensor vinculado al spot
+ */
+export enum ParkingSpotIotStatus {
+  CONNECTED = 'CONNECTED',
+  OFFLINE = 'OFFLINE'
+}
+
+/**
  * Modelo unificado para usar en el frontend
  */
 export interface SpotData {
@@ -52,6 +62,8 @@ export interface SpotData {
   status: SpotStatus;
   deviceId?: string | null;
   lastUpdated?: Date;
+  iotStatus?: ParkingSpotIotStatus | null;  // Estado de conexión del sensor IoT
+  sensorSerialNumber?: string | null;        // Serial del sensor vinculado
 }
 
 /**

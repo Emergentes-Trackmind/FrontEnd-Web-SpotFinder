@@ -472,6 +472,95 @@ export class SpotsDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  // ====== MÉTODOS PARA VINCULACIÓN DE SENSORES IOT ======
+
+  /**
+   * Abre un diálogo para vincular un sensor IoT a un spot
+   */
+  openLinkSensorDialog(spot: SpotData): void {
+    console.log('🔗 [SpotsDashboard] Abriendo diálogo para vincular sensor al spot:', spot.label);
+
+    // Crear un prompt para ingresar el serial number
+    const serialNumber = prompt(
+      `Ingrese el número de serie del sensor IoT para vincular al spot ${spot.label}:`,
+      ''
+    );
+
+    if (!serialNumber || serialNumber.trim() === '') {
+      console.log('❌ [SpotsDashboard] Vinculación cancelada - no se ingresó serial');
+      return;
+    }
+
+    this.linkSensorToSpot(spot, serialNumber.trim());
+  }
+
+  /**
+   * Vincula un sensor IoT a un spot
+   */
+  private linkSensorToSpot(spot: SpotData, serialNumber: string): void {
+    if (!spot.id) {
+      this.showError('ID de spot inválido');
+      return;
+    }
+
+    console.log(`🔄 [SpotsDashboard] Vinculando sensor ${serialNumber} al spot ${spot.label}...`);
+
+    this.spotsService.assignIoTDevice(this.parkingId, spot.id, serialNumber)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          console.log('✅ [SpotsDashboard] Sensor vinculado exitosamente:', response);
+          this.showSuccess(`Sensor ${serialNumber} vinculado al spot ${spot.label}`);
+        },
+        error: (error) => {
+          console.error('❌ [SpotsDashboard] Error vinculando sensor:', error);
+          let errorMessage = 'Error al vincular el sensor';
+
+          if (error.status === 404) {
+            errorMessage = 'Sensor no encontrado';
+          } else if (error.status === 400) {
+            errorMessage = 'Datos inválidos o sensor ya vinculado';
+          }
+
+          this.showError(errorMessage);
+        }
+      });
+  }
+
+  /**
+   * Desvincula un sensor IoT de un spot
+   */
+  unlinkSensor(spot: SpotData): void {
+    if (!spot.id) {
+      this.showError('ID de spot inválido');
+      return;
+    }
+
+    const confirmed = confirm(
+      `¿Está seguro que desea desvincular el sensor ${spot.sensorSerialNumber} del spot ${spot.label}?`
+    );
+
+    if (!confirmed) {
+      console.log('❌ [SpotsDashboard] Desvinculación cancelada por el usuario');
+      return;
+    }
+
+    console.log(`🔄 [SpotsDashboard] Desvinculando sensor del spot ${spot.label}...`);
+
+    this.spotsService.unassignIoTDevice(this.parkingId, spot.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          console.log('✅ [SpotsDashboard] Sensor desvinculado exitosamente');
+          this.showSuccess(`Sensor desvinculado del spot ${spot.label}`);
+        },
+        error: (error) => {
+          console.error('❌ [SpotsDashboard] Error desvinculando sensor:', error);
+          this.showError('Error al desvincular el sensor');
+        }
+      });
+  }
+
   // Método para volver a la lista de parkings
   goBack(): void {
     this.router.navigate(['/parkings']);
