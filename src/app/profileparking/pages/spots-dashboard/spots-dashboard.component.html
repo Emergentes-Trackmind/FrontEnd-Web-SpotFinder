@@ -28,11 +28,11 @@
       </div>
     </div>
 
-    <div class="kpi-card unassigned">
+    <div class="kpi-card available">
       <mat-icon class="kpi-icon">check_circle</mat-icon>
       <div class="kpi-content">
-        <span class="kpi-value">{{ statistics.unassigned }}</span>
-        <span class="kpi-label">Libres</span>
+        <span class="kpi-value">{{ statistics.available }}</span>
+        <span class="kpi-label">Disponibles</span>
       </div>
     </div>
 
@@ -44,21 +44,15 @@
       </div>
     </div>
 
-    <div class="kpi-card maintenance">
-      <mat-icon class="kpi-icon">build</mat-icon>
+    <div class="kpi-card reserved">
+      <mat-icon class="kpi-icon">event_seat</mat-icon>
       <div class="kpi-content">
-        <span class="kpi-value">{{ statistics.maintenance }}</span>
-        <span class="kpi-label">Mantenimiento</span>
+        <span class="kpi-value">{{ statistics.reserved }}</span>
+        <span class="kpi-label">Reservados</span>
       </div>
     </div>
 
-    <div class="kpi-card offline">
-      <mat-icon class="kpi-icon">wifi_off</mat-icon>
-      <div class="kpi-content">
-        <span class="kpi-value">0</span>
-        <span class="kpi-label">Sin conexión</span>
-      </div>
-    </div>
+
   </div>
 
   <!-- Formulario crear plaza manual -->
@@ -154,19 +148,19 @@
       <div class="status-chips">
         <mat-chip-listbox>
           <mat-chip-option
-            *ngFor="let status of ['', 'UNASSIGNED', 'OCCUPIED', 'MAINTENANCE']"
+            *ngFor="let status of ['', 'AVAILABLE', 'OCCUPIED', 'RESERVED']"
             [value]="status"
             (click)="filtersForm.patchValue({status: status === filtersForm.get('status')?.value ? '' : status})"
             [selected]="filtersForm.get('status')?.value === status">
             <mat-icon *ngIf="status !== ''">{{ getStatusIcon(status) }}</mat-icon>
             {{ status === '' ? 'Todos' :
-               status === 'UNASSIGNED' ? 'Libres' :
+               status === 'AVAILABLE' ? 'Disponibles' :
                status === 'OCCUPIED' ? 'Ocupadas' :
-               'Mantenimiento' }}
+               'Reservados' }}
             ({{ status === '' ? statistics.total :
-                status === 'UNASSIGNED' ? statistics.unassigned :
+                status === 'AVAILABLE' ? statistics.available :
                 status === 'OCCUPIED' ? statistics.occupied :
-                statistics.maintenance }})
+                statistics.reserved }})
           </mat-chip-option>
         </mat-chip-listbox>
       </div>
@@ -217,9 +211,9 @@
       <div
         *ngFor="let spot of getFilteredSpots(); trackBy: trackBySpotId"
         class="spot-card"
-        [class.spot-unassigned]="spot.status === 'UNASSIGNED'"
+        [class.spot-available]="spot.status === 'AVAILABLE'"
         [class.spot-occupied]="spot.status === 'OCCUPIED'"
-        [class.spot-maintenance]="spot.status === 'MAINTENANCE'">
+        [class.spot-reserved]="spot.status === 'RESERVED'">
 
         <!-- Número/Label de la plaza -->
         <div class="spot-number">{{ spot.label }}</div>
@@ -233,7 +227,7 @@
         </button>
 
         <mat-menu #spotMenu="matMenu">
-          <button mat-menu-item (click)="updateSpotStatus(spot, 'UNASSIGNED')" *ngIf="spot.status !== 'UNASSIGNED'">
+          <button mat-menu-item (click)="updateSpotStatus(spot, 'AVAILABLE')" *ngIf="spot.status !== 'AVAILABLE'">
             <mat-icon>check_circle</mat-icon>
             <span>Marcar como libre</span>
           </button>
@@ -243,9 +237,9 @@
             <span>Marcar como ocupada</span>
           </button>
 
-          <button mat-menu-item (click)="updateSpotStatus(spot, 'MAINTENANCE')" *ngIf="spot.status !== 'MAINTENANCE'">
-            <mat-icon>build</mat-icon>
-            <span>Marcar mantenimiento</span>
+          <button mat-menu-item (click)="updateSpotStatus(spot, 'RESERVED')" *ngIf="spot.status !== 'RESERVED'">
+            <mat-icon>event_seat</mat-icon>
+            <span>Marcar como reservada</span>
           </button>
 
           <mat-divider></mat-divider>
@@ -253,11 +247,6 @@
           <button mat-menu-item>
             <mat-icon>sensors</mat-icon>
             <span>Ver dispositivo</span>
-          </button>
-
-          <button mat-menu-item (click)="deleteSpot(spot)" class="delete-action">
-            <mat-icon>delete</mat-icon>
-            <span>Eliminar plaza</span>
           </button>
         </mat-menu>
 

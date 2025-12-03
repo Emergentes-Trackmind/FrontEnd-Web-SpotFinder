@@ -14,14 +14,14 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="stat-card stat-unassigned">
+    <mat-card class="stat-card stat-available">
       <mat-card-content>
         <div class="stat-icon">
           <mat-icon>check_circle</mat-icon>
         </div>
         <div class="stat-info">
-          <div class="stat-value">{{ statistics.unassigned }}</div>
-          <div class="stat-label">{{ 'SPOTS.KPI.UNASSIGNED' | translate }}</div>
+          <div class="stat-value">{{ statistics.available }}</div>
+          <div class="stat-label">{{ 'SPOTS.KPI.AVAILABLE' | translate }}</div>
         </div>
       </mat-card-content>
     </mat-card>
@@ -38,14 +38,14 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="stat-card stat-maintenance">
+    <mat-card class="stat-card stat-reserved">
       <mat-card-content>
         <div class="stat-icon">
-          <mat-icon>build</mat-icon>
+          <mat-icon>event_seat</mat-icon>
         </div>
         <div class="stat-info">
-          <div class="stat-value">{{ statistics.maintenance }}</div>
-          <div class="stat-label">{{ 'SPOTS.KPI.MAINTENANCE' | translate }}</div>
+          <div class="stat-value">{{ statistics.reserved }}</div>
+          <div class="stat-label">{{ 'SPOTS.KPI.RESERVED' | translate }}</div>
         </div>
       </mat-card-content>
     </mat-card>
@@ -62,9 +62,9 @@
       <mat-chip-option
         *ngFor="let filter of filterOptions"
         [ngClass]="{
-          'chip-free': filter.value === 'free',
+          'chip-available': filter.value === 'available',
           'chip-occupied': filter.value === 'occupied',
-          'chip-maintenance': filter.value === 'maintenance',
+          'chip-reserved': filter.value === 'reserved',
           'selected': currentFilter === filter.value
         }"
         (click)="applyFilter(filter.value)"
@@ -100,11 +100,11 @@
           *cdkVirtualFor="let spot of filteredSpots; trackBy: trackBySpotNumber"
           [id]="getSpotNumberFromLabel(spot.label)"
           [spotNumber]="getSpotNumberFromLabel(spot.label)"
-          [status]="mapNewStatusToOld(spot.status)"
+          [status]="spot.status"
           [deviceId]="spot.deviceId || null"
-          [inMaintenance]="spot.status === 'MAINTENANCE'"
           (openDetails)="onOpenDeviceDetails($event)"
-          (setMaintenance)="onSetMaintenance($event)"
+          (markAsAvailable)="onMarkAsAvailable($event)"
+          (markAsOccupied)="onMarkAsOccupied($event)"
         ></app-spot-block>
       </div>
     </cdk-virtual-scroll-viewport>
@@ -126,7 +126,7 @@
       <mat-card
         *ngFor="let device of availableDevices"
         class="device-card"
-        [class.assigned]="device.spotNumber"
+        [class.assigned]="device.parkingSpotLabel"
       >
         <mat-card-content>
           <div class="device-header">
@@ -144,14 +144,14 @@
             </div>
             <div class="device-stat">
               <mat-icon class="stat-icon">signal_cellular_alt</mat-icon>
-              <span>{{ device.signalStrength }}%</span>
+              <span>85%</span>
             </div>
           </div>
 
-          <div class="device-status" *ngIf="device.spotLabel">
+          <div class="device-status" *ngIf="device.parkingSpotLabel">
             <mat-chip class="assigned-chip">
               <mat-icon>link</mat-icon>
-              {{ 'SPOTS.DEVICES.ASSIGNED_TO' | translate }} {{ device.spotLabel }}
+              {{ 'SPOTS.DEVICES.ASSIGNED_TO' | translate }} {{ device.parkingSpotLabel }}
             </mat-chip>
           </div>
 
@@ -174,13 +174,13 @@
               class="assign-button"
             >
               <mat-icon>add_link</mat-icon>
-              {{ device.spotLabel ? 'Reasignar' : ('SPOTS.DEVICES.ASSIGN' | translate) }}
+              {{ device.parkingSpotLabel ? 'Reasignar' : ('SPOTS.DEVICES.ASSIGN' | translate) }}
             </button>
 
             <button
               mat-stroked-button
               color="warn"
-              *ngIf="device.spotLabel"
+              *ngIf="device.parkingSpotLabel"
               (click)="unassignDevice(device.id)"
               class="unassign-button"
             >

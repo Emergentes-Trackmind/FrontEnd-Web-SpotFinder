@@ -19,7 +19,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class SpotsService {
-  private readonly baseUrl = environment.apiBase + '/parkings';
+  private readonly baseUrl = environment.apiBase + environment.endpoints.parkings;
   private spotsSubject = new BehaviorSubject<SpotData[]>([]);
 
   spots$ = this.spotsSubject.asObservable();
@@ -141,9 +141,9 @@ export class SpotsService {
     return this.spots$.pipe(
       map(spots => ({
         total: spots.length,
-        unassigned: spots.filter(s => s.status === 'UNASSIGNED').length,
+        available: spots.filter(s => s.status === 'AVAILABLE').length,
         occupied: spots.filter(s => s.status === 'OCCUPIED').length,
-        maintenance: spots.filter(s => s.status === 'MAINTENANCE').length
+        reserved: spots.filter(s => s.status === 'RESERVED').length
       }))
     );
   }

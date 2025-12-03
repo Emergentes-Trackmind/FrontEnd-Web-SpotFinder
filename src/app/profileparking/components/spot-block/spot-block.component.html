@@ -28,19 +28,29 @@
     <mat-menu #menu="matMenu">
       <button
         mat-menu-item
+        (click)="onMarkAsAvailable()"
+        *ngIf="!isAvailable"
+      >
+        <mat-icon>check_circle</mat-icon>
+        <span>Marcar como libre</span>
+      </button>
+
+      <button
+        mat-menu-item
+        (click)="onMarkAsOccupied()"
+        *ngIf="!isOccupied"
+      >
+        <mat-icon>local_parking</mat-icon>
+        <span>Marcar como ocupada</span>
+      </button>
+
+      <button
+        mat-menu-item
         (click)="onOpenDetails()"
         [disabled]="!hasDevice"
       >
         <mat-icon>devices</mat-icon>
         <span>{{ viewDeviceLabel }}</span>
-      </button>
-
-      <button
-        mat-menu-item
-        (click)="onToggleMaintenance()"
-      >
-        <mat-icon>{{ inMaintenance ? 'check_circle' : 'engineering' }}</mat-icon>
-        <span>{{ maintenanceActionLabel }}</span>
       </button>
     </mat-menu>
   </mat-card-content>

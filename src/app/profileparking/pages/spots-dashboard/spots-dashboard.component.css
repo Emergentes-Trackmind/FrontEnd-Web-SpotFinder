@@ -123,24 +123,22 @@
   color: var(--primary);
 }
 
-.kpi-card.unassigned .kpi-icon {
+/* AVAILABLE = Verde */
+.kpi-card.available .kpi-icon {
   background: rgba(16, 185, 129, 0.1);
-  color: var(--success);
+  color: #10B981;
 }
 
+/* OCCUPIED = Rojo */
 .kpi-card.occupied .kpi-icon {
   background: rgba(239, 68, 68, 0.1);
-  color: var(--error);
+  color: #EF4444;
 }
 
-.kpi-card.maintenance .kpi-icon {
+/* RESERVED = Amarillo */
+.kpi-card.reserved .kpi-icon {
   background: rgba(245, 158, 11, 0.1);
-  color: var(--warning);
-}
-
-.kpi-card.offline .kpi-icon {
-  background: rgba(107, 114, 128, 0.1);
-  color: var(--muted);
+  color: #F59E0B;
 }
 
 /* ====== FORMULARIO CREAR PLAZA ====== */

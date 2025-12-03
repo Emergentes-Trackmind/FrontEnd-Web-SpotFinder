@@ -44,27 +44,39 @@ export class IoTAlertsService {
   private handleStatusChange(update: IoTStatusUpdate, previousStatus: SpotStatus): void {
     const spotNumber = update.spotNumber;
 
-    // Occupied → Free (plaza liberada)
-    if (previousStatus === 'occupied' && update.status === 'free') {
-      this.showSuccess(`✅ Plaza ${spotNumber} ahora está libre`);
+    // OCCUPIED → AVAILABLE (plaza liberada)
+    if (previousStatus === 'OCCUPIED' && update.status === 'AVAILABLE') {
+      this.showSuccess(`✅ Plaza ${spotNumber} ahora está disponible`);
       return;
     }
 
-    // Free → Occupied (plaza ocupada)
-    if (previousStatus === 'free' && update.status === 'occupied') {
+    // AVAILABLE → OCCUPIED (plaza ocupada)
+    if (previousStatus === 'AVAILABLE' && update.status === 'OCCUPIED') {
       this.showInfo(`🚗 Plaza ${spotNumber} ocupada`);
       return;
     }
 
-    // Offline → Online (sensor recuperado)
-    if (previousStatus === 'offline' && update.status !== 'offline') {
-      this.showSuccess(`🔌 Sensor de plaza ${spotNumber} conectado`);
+    // RESERVED → AVAILABLE (reserva cancelada)
+    if (previousStatus === 'RESERVED' && update.status === 'AVAILABLE') {
+      this.showInfo(`🅿️ Reserva de plaza ${spotNumber} cancelada`);
       return;
     }
 
-    // Online → Offline (sensor perdido)
-    if (previousStatus !== 'offline' && update.status === 'offline') {
-      this.showWarning(`⚠️ Sensor de plaza ${spotNumber} desconectado`);
+    // AVAILABLE → RESERVED (plaza reservada)
+    if (previousStatus === 'AVAILABLE' && update.status === 'RESERVED') {
+      this.showInfo(`📅 Plaza ${spotNumber} reservada`);
+      return;
+    }
+
+    // OCCUPIED → RESERVED (cambio de ocupado a reservado)
+    if (previousStatus === 'OCCUPIED' && update.status === 'RESERVED') {
+      this.showInfo(`📅 Plaza ${spotNumber} ahora está reservada`);
+      return;
+    }
+
+    // RESERVED → OCCUPIED (reserva confirmada)
+    if (previousStatus === 'RESERVED' && update.status === 'OCCUPIED') {
+      this.showInfo(`✅ Reserva de plaza ${spotNumber} confirmada`);
       return;
     }
 

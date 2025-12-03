@@ -16,9 +16,9 @@ export class SpotDataMapper {
     return {
       id: parseInt(newSpot.id || '0'),
       spotNumber: spotNumber,
-      status: this.mapNewStatusToOld(newSpot.status),
+      status: newSpot.status, // Usar directamente el status sin mapear
       deviceId: newSpot.deviceId || null,
-      inMaintenance: newSpot.status === 'MAINTENANCE',
+      inMaintenance: false, // Ya no se usa maintenance
       lastUpdated: newSpot.lastUpdated || new Date()
     };
   }
@@ -36,7 +36,7 @@ export class SpotDataMapper {
       row: row || this.extractRowFromSpotNumber(oldSpot.spotNumber),
       column: column || this.extractColumnFromSpotNumber(oldSpot.spotNumber),
       label: label,
-      status: this.mapOldStatusToNew(oldSpot.status),
+      status: oldSpot.status, // Usar directamente el status sin mapear
       deviceId: oldSpot.deviceId,
       lastUpdated: oldSpot.lastUpdated
     };
@@ -56,24 +56,14 @@ export class SpotDataMapper {
     return oldSpots.map(spot => this.oldToNew(spot));
   }
 
-  private static mapNewStatusToOld(newStatus: 'AVAILABLE' | 'UNASSIGNED' | 'OCCUPIED' | 'MAINTENANCE'): 'free' | 'occupied' | 'maintenance' | 'offline' {
-    switch (newStatus) {
-      case 'AVAILABLE':
-      case 'UNASSIGNED': return 'free';
-      case 'OCCUPIED': return 'occupied';
-      case 'MAINTENANCE': return 'maintenance';
-      default: return 'free';
-    }
+  private static mapNewStatusToOld(newStatus: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED'): 'AVAILABLE' | 'OCCUPIED' | 'RESERVED' {
+    // Ahora ambos formatos usan los mismos enums del backend
+    return newStatus;
   }
 
-  private static mapOldStatusToNew(oldStatus: 'free' | 'occupied' | 'maintenance' | 'offline'): 'AVAILABLE' | 'UNASSIGNED' | 'OCCUPIED' | 'MAINTENANCE' {
-    switch (oldStatus) {
-      case 'free': return 'AVAILABLE'; // Mapear a AVAILABLE para consistencia con el backend
-      case 'occupied': return 'OCCUPIED';
-      case 'maintenance': return 'MAINTENANCE';
-      case 'offline': return 'AVAILABLE'; // Mapear offline a available por defecto
-      default: return 'AVAILABLE';
-    }
+  private static mapOldStatusToNew(oldStatus: 'AVAILABLE' | 'OCCUPIED' | 'RESERVED'): 'AVAILABLE' | 'OCCUPIED' | 'RESERVED' {
+    // Ahora ambos formatos usan los mismos enums del backend
+    return oldStatus;
   }
 
   private static generateLabelFromSpotNumber(spotNumber: number): string {

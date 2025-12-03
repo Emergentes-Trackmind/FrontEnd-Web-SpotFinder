@@ -131,6 +131,6 @@ export interface SpotData {
   lastUpdated: Date;
 }
 
-export type SpotStatus = 'free' | 'occupied' | 'maintenance' | 'offline';
-export type SpotFilterType = 'all' | 'free' | 'occupied' | 'maintenance' | 'offline';
+export type SpotStatus = 'AVAILABLE' | 'OCCUPIED' | 'RESERVED';
+export type SpotFilterType = 'all' | 'available' | 'occupied' | 'reserved';
 

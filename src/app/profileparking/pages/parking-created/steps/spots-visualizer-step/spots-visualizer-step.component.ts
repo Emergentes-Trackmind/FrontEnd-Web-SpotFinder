@@ -25,25 +25,9 @@ import { IoTAlertsService } from '../../../../services/iot-alerts.service';
 import { IotService } from '../../../../../iot/services/iot.service';
 import { DeviceAssignmentDialogComponent, DeviceAssignmentData, AssignmentResult } from '../../../../../iot/presentation/components/device-assignment-dialog/device-assignment-dialog.component';
 import { AssignmentConfirmationDialogComponent, AssignmentConfirmationData } from '../../../../../iot/presentation/components/assignment-confirmation-dialog/assignment-confirmation-dialog.component';
+import { IotDevice } from '../../../../../iot/domain/entities/iot-device.entity';
 
-// Tipo de dispositivo IoT usado en este componente (compatible con el dominio)
-interface IoTDevice {
-  id: string;
-  serialNumber: string;
-  model: string; // Nombre del dispositivo
-  type: string;
-  status: string;
-  battery: number;
-  lastCheckIn: string;
-  parkingId?: string;
-  spotLabel?: string | null; // Label completo como "A1", "B2", etc.
-  spotNumber?: number | null; // Mantener para compatibilidad
-  signalStrength?: number;
-  ownerId?: string;
-  firmware?: string;
-  lastSeen?: string;
-  createdAt?: string;
-}
+
 
 /**
  * Step 2: Visualización de Plazas (Spots)
@@ -76,24 +60,24 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
   filteredSpots: SpotData[] = [];
   statistics: SpotStatistics = {
     total: 0,
-    unassigned: 0,
+    available: 0,
     occupied: 0,
-    maintenance: 0
+    reserved: 0
   };
 
   currentFilter: SpotFilterType = 'all';
   totalSpots = 0;
 
   // Dispositivos IoT disponibles
-  availableDevices: IoTDevice[] = [];
+  availableDevices: IotDevice[] = [];
 
   private destroy$ = new Subject<void>();
 
   readonly filterOptions = [
     { value: 'all' as SpotFilterType, label: 'Todos', icon: 'grid_view' },
-    { value: 'free' as SpotFilterType, label: 'Libres', icon: 'check_circle', color: 'free' },
+    { value: 'available' as SpotFilterType, label: 'Disponibles', icon: 'check_circle', color: 'available' },
     { value: 'occupied' as SpotFilterType, label: 'Ocupados', icon: 'local_parking', color: 'occupied' },
-    { value: 'maintenance' as SpotFilterType, label: 'Mantenimiento', icon: 'build', color: 'maintenance' }
+    { value: 'reserved' as SpotFilterType, label: 'Reservados', icon: 'event_seat', color: 'reserved' }
   ];
 
   constructor(
@@ -159,7 +143,7 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
         row: request.row,
         column: request.column,
         label: request.label,
-        status: 'UNASSIGNED' as const,
+        status: 'AVAILABLE' as const,
         deviceId: null,
         lastUpdated: new Date()
       }));
@@ -212,20 +196,17 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     if (filter === 'all') {
       this.filteredSpots = [...this.spots];
     } else {
-      // Mapear el filtro del formato antiguo al nuevo
-      let newStatus: 'UNASSIGNED' | 'OCCUPIED' | 'MAINTENANCE' | null = null;
+      // Mapear el filtro del formato de UI al enum del backend
+      let newStatus: SpotStatus | null = null;
       switch (filter) {
-        case 'free':
-          newStatus = 'UNASSIGNED';
+        case 'available':
+          newStatus = 'AVAILABLE';
           break;
         case 'occupied':
           newStatus = 'OCCUPIED';
           break;
-        case 'maintenance':
-          newStatus = 'MAINTENANCE';
-          break;
-        case 'offline':
-          newStatus = null; // No filtrar offline ya que no existe en el nuevo modelo
+        case 'reserved':
+          newStatus = 'RESERVED';
           break;
       }
 
@@ -249,29 +230,53 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Maneja el click en "Marcar en mantenimiento"
+   * Maneja el click en "Marcar como disponible"
    */
-  onSetMaintenance(event: { id: number; inMaintenance: boolean }): void {
+  onMarkAsAvailable(spotId: number): void {
     // Encontrar el spot por número (convertir desde el ID numérico)
     const spot = this.spots.find(s => {
       const spotNum = parseInt(s.label.replace(/[A-Z]+/, ''), 10);
-      return spotNum === event.id;
+      return spotNum === spotId;
     });
 
     if (!spot) {
-      console.error(`❌ Spot con número ${event.id} no encontrado`);
+      console.error(`❌ Spot con número ${spotId} no encontrado`);
       return;
     }
 
     // Actualizar el estado local
-    spot.status = event.inMaintenance ? 'MAINTENANCE' : 'UNASSIGNED';
+    spot.status = 'AVAILABLE';
     spot.lastUpdated = new Date();
 
     // Actualizar el servicio
     this.spotsService.updateSpots([...this.spots]);
 
-    const action = event.inMaintenance ? 'marcada en mantenimiento' : 'quitada de mantenimiento';
-    this.alertsService.showSuccess(`Plaza ${spot.label} ${action}`);
+    this.alertsService.showSuccess(`Plaza ${spot.label} marcada como disponible`);
+  }
+
+  /**
+   * Maneja el click en "Marcar como ocupado"
+   */
+  onMarkAsOccupied(spotId: number): void {
+    // Encontrar el spot por número (convertir desde el ID numérico)
+    const spot = this.spots.find(s => {
+      const spotNum = parseInt(s.label.replace(/[A-Z]+/, ''), 10);
+      return spotNum === spotId;
+    });
+
+    if (!spot) {
+      console.error(`❌ Spot con número ${spotId} no encontrado`);
+      return;
+    }
+
+    // Actualizar el estado local
+    spot.status = 'OCCUPIED';
+    spot.lastUpdated = new Date();
+
+    // Actualizar el servicio
+    this.spotsService.updateSpots([...this.spots]);
+
+    this.alertsService.showSuccess(`Plaza ${spot.label} marcada como ocupada`);
   }
 
   /**
@@ -341,14 +346,12 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
    */
   getFilterCount(filterValue: SpotFilterType): number {
     switch (filterValue) {
-      case 'free':
-        return this.statistics.unassigned;
+      case 'available':
+        return this.statistics.available;
       case 'occupied':
         return this.statistics.occupied;
-      case 'maintenance':
-        return this.statistics.maintenance;
-      case 'offline':
-        return 0; // No existe en el nuevo modelo
+      case 'reserved':
+        return this.statistics.reserved;
       case 'all':
         return this.statistics.total;
       default:
@@ -367,14 +370,14 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
   /**
    * Mapea el nuevo estado al formato antiguo para compatibilidad con SpotBlockComponent
    */
-  mapNewStatusToOld(newStatus: SpotStatus): 'free' | 'occupied' | 'maintenance' | 'offline' {
+  mapNewStatusToOld(newStatus: SpotStatus): 'free' | 'occupied' | 'reserved' {
     switch (newStatus) {
-      case 'UNASSIGNED':
+      case 'AVAILABLE':
         return 'free';
       case 'OCCUPIED':
         return 'occupied';
-      case 'MAINTENANCE':
-        return 'maintenance';
+      case 'RESERVED':
+        return 'reserved';
       default:
         return 'free';
     }
@@ -402,38 +405,21 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
 
       // Usar el nuevo servicio edge IoT
       this.edgeIotService.getUserDevices(userId.toString()).subscribe({
-        next: (devices: any[]) => {
+        next: (devices: IotDevice[]) => {
           console.log('📥 Dispositivos recibidos desde edge API:', devices);
 
-          // Convertir de domain IoT device al formato IoTDevice esperado por el componente
-          this.availableDevices = devices
-            .map((d: any) => ({
-              id: d.id,
-              serialNumber: d.serialNumber,
-              model: d.model,
-              type: d.type as any,
-              status: d.status as any,
-              battery: d.battery,
-              lastCheckIn: d.lastCheckIn,
-              parkingId: d.parkingId,
-              spotLabel: d.parkingSpotLabel || null, // Usar el label completo (A1, B2, etc.)
-              spotNumber: null, // Ya no usamos números simples
-              signalStrength: 85, // Valor por defecto
-              ownerId: userId.toString(),
-              firmware: 'v1.0.0', // Valor por defecto
-              lastSeen: d.updatedAt,
-              createdAt: d.createdAt
-            } as IoTDevice));
+          // Usar directamente los dispositivos del dominio
+          this.availableDevices = devices;
 
           // IMPORTANTE: Sincronizar con las asignaciones guardadas en los spots
           this.syncDevicesWithSpots();
 
           this.cdr.markForCheck();
           console.log(`✅ ${this.availableDevices.length} dispositivos IoT disponibles desde edge API`);
-          console.log('🔍 Dispositivos convertidos:', this.availableDevices.map(d => ({
+          console.log('🔍 Dispositivos cargados:', this.availableDevices.map(d => ({
             id: d.id,
             model: d.model,
-            spotLabel: d.spotLabel
+            parkingSpotLabel: d.parkingSpotLabel
           })));
         },
         error: (error: any) => {
@@ -460,9 +446,8 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     this.availableDevices.forEach(device => {
       const assignedSpot = currentSpots.find(spot => spot.deviceId === device.id);
       if (assignedSpot) {
-        // Usar el label completo del spot (ej: "A1", "B2", etc.)
-        device.spotLabel = assignedSpot.label;
-        device.spotNumber = parseInt(assignedSpot.label.replace(/[A-Z]+/, ''), 10); // Para compatibilidad
+        // Actualizar el parkingSpotLabel del dispositivo
+        (device as any).parkingSpotLabel = assignedSpot.label;
         syncCount++;
       }
     });
@@ -520,8 +505,7 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     this.spotsService.updateSpots([...this.spots]);
 
     // Actualizar el dispositivo local para que la UI se actualice
-    device.spotLabel = spotLabel;
-    device.spotNumber = parseInt(spotLabel.replace(/[A-Z]+/, ''), 10); // Para compatibilidad
+    (device as any).parkingSpotLabel = spotLabel;
 
     // Obtener información del parking para la actualización en edge API
     const basicInfo = this.parkingStateService.getBasicInfo();
@@ -584,9 +568,9 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
   unassignDevice(deviceId: string): void {
     // Encontrar el dispositivo
     const device = this.availableDevices.find(d => d.id === deviceId);
-    if (!device || !device.spotLabel) return;
+    if (!device || !(device as any).parkingSpotLabel) return;
 
-    const spotLabel = device.spotLabel;
+    const spotLabel = (device as any).parkingSpotLabel;
 
     console.log(`🔗 Desasignando dispositivo ${device.model} del Spot ${spotLabel}`);
 
@@ -638,8 +622,7 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     }
 
     // Actualizar el dispositivo local
-    device.spotLabel = null;
-    device.spotNumber = null;
+    (device as any).parkingSpotLabel = null;
 
     // ✨ CRÍTICO: Guardar INMEDIATAMENTE en el estado global
     const currentSpots = [...this.spots];
@@ -695,9 +678,17 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Método de prueba temporal para verificar que los eventos funcionan
+   */
+  testClick(): void {
+    console.log('🧪 BOTÓN DE PRUEBA PRESIONADO');
+    alert('¡Botón de prueba funcionando correctamente!');
+  }
+
+  /**
    * Maneja el click en "Asignar" dispositivo desde la lista
    */
-  onAssignDevice(device: IoTDevice): void {
+  onAssignDevice(device: IotDevice): void {
     console.log('🔥 BOTÓN ASIGNAR PRESIONADO - MÉTODO LLAMADO');
     alert('¡Botón Asignar presionado! Método onAssignDevice ejecutándose correctamente');
 
@@ -774,11 +765,5 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
     this.assignDeviceToSpot(assignmentResult.device.id, spotLabel);
   }
 
-  /**
-   * Método de prueba para verificar que el click funciona
-   */
-  testClick(): void {
-    console.log('🧪 MÉTODO DE PRUEBA EJECUTADO');
-    alert('¡El método testClick() funciona correctamente!');
-  }
+
 }

@@ -114,7 +114,7 @@ export interface AssignmentResult {
           <div class="empty-state">
             <mat-icon>info</mat-icon>
             <p>No hay plazas disponibles para asignar</p>
-            <small>Todas las plazas están ocupadas o en mantenimiento</small>
+            <small>Todas las plazas están ocupadas o reservadas</small>
           </div>
         }
       </mat-dialog-content>
@@ -338,7 +338,7 @@ export class DeviceAssignmentDialogComponent implements OnInit {
         // Filtrar solo plazas disponibles
         this.spotsService.spots$.subscribe(allSpots => {
           this.availableSpots = allSpots.filter(spot =>
-            spot.status === 'AVAILABLE' || spot.status === 'UNASSIGNED'
+            spot.status === 'AVAILABLE'
           );
           this.loading = false;
         });
@@ -394,9 +394,8 @@ export class DeviceAssignmentDialogComponent implements OnInit {
   getSpotStatusLabel(status: string): string {
     const labels = {
       AVAILABLE: 'Disponible',
-      UNASSIGNED: 'Sin asignar',
       OCCUPIED: 'Ocupado',
-      MAINTENANCE: 'Mantenimiento'
+      RESERVED: 'Reservado'
     };
     return labels[status as keyof typeof labels] || status;
   }

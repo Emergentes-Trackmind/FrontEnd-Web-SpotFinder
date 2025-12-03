@@ -62,7 +62,7 @@ export class SpotsDashboardComponent implements OnInit, OnDestroy {
 
   // Datos locales
   spots: SpotData[] = [];
-  statistics: SpotStatistics = { total: 0, unassigned: 0, occupied: 0, maintenance: 0 };
+  statistics: SpotStatistics = { total: 0, available: 0, occupied: 0, reserved: 0 };
 
   constructor(
     private route: ActivatedRoute,
@@ -269,18 +269,18 @@ export class SpotsDashboardComponent implements OnInit, OnDestroy {
 
   getStatusIcon(status: SpotStatus | string): string {
     switch (status) {
-      case 'UNASSIGNED': return 'check_circle';
+      case 'AVAILABLE': return 'check_circle';
       case 'OCCUPIED': return 'local_parking';
-      case 'MAINTENANCE': return 'build';
+      case 'RESERVED': return 'event_seat';
       default: return 'help';
     }
   }
 
   getStatusColor(status: SpotStatus): string {
     switch (status) {
-      case 'UNASSIGNED': return 'success';
+      case 'AVAILABLE': return 'success';
       case 'OCCUPIED': return 'error';
-      case 'MAINTENANCE': return 'warning';
+      case 'RESERVED': return 'primary';
       default: return 'default';
     }
   }

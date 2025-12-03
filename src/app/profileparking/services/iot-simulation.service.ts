@@ -63,7 +63,7 @@ export class IoTService {
    */
   private simulateRandomUpdate(totalSpots: number): void {
     const spotNumber = Math.floor(Math.random() * totalSpots) + 1;
-    const statuses: SpotStatus[] = ['free', 'occupied', 'offline'];
+    const statuses: SpotStatus[] = ['AVAILABLE', 'OCCUPIED', 'RESERVED'];
     const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
 
     const deviceId = `dev-${String(spotNumber).padStart(3, '0')}`;
@@ -87,7 +87,7 @@ export class IoTService {
       battery: update.battery,
       signalStrength: update.signalStrength,
       lastSeen: update.lastSeen,
-      isOnline: randomStatus !== 'offline'
+      isOnline: true // Todos los dispositivos están online con los nuevos enums
     });
     this.devicesMapSubject.next(new Map(devicesMap));
 
@@ -157,7 +157,7 @@ export class IoTService {
     const device: IoTDeviceStatus = {
       deviceId,
       spotNumber,
-      status: 'free',
+      status: 'AVAILABLE',
       battery: 100,
       signalStrength: 95,
       lastSeen: new Date().toISOString(),

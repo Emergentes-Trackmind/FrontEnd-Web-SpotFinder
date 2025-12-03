@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { SpotStatus } from '../../services/parking-state.service';
+import { SpotStatus } from '../../models/spots.models';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 /**
@@ -34,29 +34,25 @@ export class SpotBlockComponent {
 
   @Input() id!: number;
   @Input() spotNumber!: number;
-  @Input() status: SpotStatus = 'free';
+  @Input() status: SpotStatus = 'AVAILABLE';
   @Input() deviceId: string | null = null;
-  @Input() inMaintenance = false;
-
   @Output() openDetails = new EventEmitter<string>();
-  @Output() setMaintenance = new EventEmitter<{ id: number; inMaintenance: boolean }>();
+  @Output() markAsAvailable = new EventEmitter<number>();
+  @Output() markAsOccupied = new EventEmitter<number>();
 
   /**
    * Obtiene el icono según el estado
    */
   getStatusIcon(): string {
-    const normalizedStatus = this.normalizeStatus(this.status);
-    switch (normalizedStatus) {
-      case 'free':
+    switch (this.status) {
+      case 'AVAILABLE':
         return 'check_circle';
-      case 'occupied':
+      case 'OCCUPIED':
         return 'local_parking';
-      case 'maintenance':
-        return 'engineering';
-      case 'offline':
-        return 'wifi_off';
+      case 'RESERVED':
+        return 'event_seat';
       default:
-        return 'help';
+        return 'help_outline';
     }
   }
 
@@ -64,18 +60,15 @@ export class SpotBlockComponent {
    * Obtiene el color del badge según el estado
    */
   getStatusColor(): string {
-    const normalizedStatus = this.normalizeStatus(this.status);
-    switch (normalizedStatus) {
-      case 'free':
-        return 'status-free';
-      case 'occupied':
-        return 'status-occupied';
-      case 'maintenance':
-        return 'status-maintenance';
-      case 'offline':
-        return 'status-offline';
+    switch (this.status) {
+      case 'AVAILABLE':
+        return 'spot-available';
+      case 'OCCUPIED':
+        return 'spot-occupied';
+      case 'RESERVED':
+        return 'spot-reserved';
       default:
-        return 'status-unknown';
+        return 'spot-unknown';
     }
   }
 
@@ -83,16 +76,13 @@ export class SpotBlockComponent {
    * Obtiene el texto descriptivo del estado
    */
   getStatusText(): string {
-    const normalizedStatus = this.normalizeStatus(this.status);
-    switch (normalizedStatus) {
-      case 'free':
-        return this.translate.instant('SPOT.STATUS.FREE');
-      case 'occupied':
+    switch (this.status) {
+      case 'AVAILABLE':
+        return this.translate.instant('SPOT.STATUS.AVAILABLE');
+      case 'OCCUPIED':
         return this.translate.instant('SPOT.STATUS.OCCUPIED');
-      case 'maintenance':
-        return this.translate.instant('SPOT.STATUS.MAINTENANCE');
-      case 'offline':
-        return this.translate.instant('SPOT.STATUS.OFFLINE');
+      case 'RESERVED':
+        return this.translate.instant('SPOT.STATUS.RESERVED');
       default:
         return this.translate.instant('SPOT.STATUS.UNKNOWN');
     }
@@ -108,13 +98,17 @@ export class SpotBlockComponent {
   }
 
   /**
-   * Maneja el click en "Marcar en mantenimiento"
+   * Maneja el click en "Marcar como disponible"
    */
-  onToggleMaintenance(): void {
-    this.setMaintenance.emit({
-      id: this.id,
-      inMaintenance: !this.inMaintenance
-    });
+  onMarkAsAvailable(): void {
+    this.markAsAvailable.emit(this.id);
+  }
+
+  /**
+   * Maneja el click en "Marcar como ocupado"
+   */
+  onMarkAsOccupied(): void {
+    this.markAsOccupied.emit(this.id);
   }
 
   /**
@@ -133,28 +127,7 @@ export class SpotBlockComponent {
     return `Spot ${this.spotNumber}, ${statusText}, ${deviceText}`;
   }
 
-  /**
-   * Normaliza el estado del backend al formato del frontend
-   */
-  private normalizeStatus(status: any): 'free' | 'occupied' | 'maintenance' | 'offline' {
-    // Convertir estados del backend a estados del frontend
-    switch (status) {
-      case 'AVAILABLE':
-      case 'UNASSIGNED':
-      case 'free':
-        return 'free';
-      case 'OCCUPIED':
-      case 'occupied':
-        return 'occupied';
-      case 'MAINTENANCE':
-      case 'maintenance':
-        return 'maintenance';
-      case 'offline':
-        return 'offline';
-      default:
-        return 'offline'; // Estado por defecto más seguro que unknown
-    }
-  }
+
 
   // Helper para traducir desde la plantilla sin usar el pipe
   t(key: string, params?: any): string {
@@ -174,7 +147,15 @@ export class SpotBlockComponent {
     return this.t('SPOT.ACTIONS.VIEW_DEVICE');
   }
 
-  get maintenanceActionLabel(): string {
-    return this.inMaintenance ? this.t('SPOT.ACTIONS.REMOVE_MAINTENANCE') : this.t('SPOT.ACTIONS.MARK_MAINTENANCE');
+  get isAvailable(): boolean {
+    return this.status === 'AVAILABLE';
+  }
+
+  get isOccupied(): boolean {
+    return this.status === 'OCCUPIED';
+  }
+
+  get isReserved(): boolean {
+    return this.status === 'RESERVED';
   }
 }
