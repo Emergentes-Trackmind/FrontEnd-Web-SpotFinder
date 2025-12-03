@@ -19,6 +19,11 @@ import { takeUntil, finalize } from 'rxjs/operators';
 import { SpotsService } from '../../services/spots.service';
 import { SpotData, SpotStatistics, SpotFilters, ManualSpotInput, SpotStatus } from '../../models/spots.models';
 import {MatDivider} from '@angular/material/divider';
+import { IotService } from '../../../iot/services/iot.service';
+import { IotDevice } from '../../../iot/domain/entities/iot-device.entity';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { DeviceAssignmentDialogComponent, DeviceAssignmentData, AssignmentResult } from '../../../iot/presentation/components/device-assignment-dialog/device-assignment-dialog.component';
+import { AssignmentConfirmationDialogComponent, AssignmentConfirmationData } from '../../../iot/presentation/components/assignment-confirmation-dialog/assignment-confirmation-dialog.component';
 
 @Component({
   selector: 'app-spots-dashboard',
@@ -37,7 +42,8 @@ import {MatDivider} from '@angular/material/divider';
     MatTooltipModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    MatDivider
+    MatDivider,
+    MatDialogModule
   ],
   templateUrl: './spots-dashboard.component.html',
   styleUrls: ['./spots-dashboard.component.css']
@@ -63,27 +69,42 @@ export class SpotsDashboardComponent implements OnInit, OnDestroy {
   // Datos locales
   spots: SpotData[] = [];
   statistics: SpotStatistics = { total: 0, available: 0, occupied: 0, reserved: 0 };
+  availableDevices: IotDevice[] = [];
+  loadingDevices = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private spotsService: SpotsService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private iotService: IotService,
+    private dialog: MatDialog
   ) {
     this.initializeForms();
   }
 
   ngOnInit(): void {
+    console.log('🚀 [SpotsDashboard] ===== COMPONENTE INICIALIZADO =====');
     this.parkingId = this.route.snapshot.paramMap.get('id')!;
+    console.log('🚀 [SpotsDashboard] parkingId:', this.parkingId);
 
     if (!this.parkingId) {
+      console.warn('⚠️ [SpotsDashboard] No hay parkingId, redirigiendo...');
       this.router.navigate(['/parkings']);
       return;
     }
 
+    console.log('🚀 [SpotsDashboard] Llamando a setupObservables()...');
     this.setupObservables();
+
+    console.log('🚀 [SpotsDashboard] Llamando a loadSpots()...');
     this.loadSpots();
+
+    console.log('🚀 [SpotsDashboard] Llamando a loadAvailableDevices()...');
+    this.loadAvailableDevices();
+
+    console.log('🚀 [SpotsDashboard] ===== INICIALIZACIÓN COMPLETADA =====');
   }
 
   ngOnDestroy(): void {
@@ -148,6 +169,47 @@ export class SpotsDashboardComponent implements OnInit, OnDestroy {
         error: (error: any) => {
           console.error('❌ Error cargando spots:', error);
           this.showError('Error cargando las plazas del parking');
+        }
+      });
+  }
+
+  /**
+   * Carga los dispositivos IoT disponibles desde la API edge
+   */
+  private loadAvailableDevices(): void {
+    // Obtener userId del localStorage
+    const token = localStorage.getItem('token');
+    let userId = '1761826163261'; // Usuario por defecto
+
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        userId = payload.userId || payload.sub || userId;
+      } catch (e) {
+        console.warn('No se pudo decodificar el token, usando userId por defecto');
+      }
+    }
+
+    console.log('🔄 [SpotsDashboard] Cargando dispositivos IoT desde edge API...');
+    this.loadingDevices = true;
+
+    this.iotService.getUserDevices(userId.toString())
+      .pipe(
+        finalize(() => this.loadingDevices = false),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (devices: IotDevice[]) => {
+          console.log('📥 [SpotsDashboard] Dispositivos recibidos desde edge API:', devices);
+
+          // Filtrar solo dispositivos no asignados a spots
+          this.availableDevices = devices.filter(device => !device.parkingSpotId);
+
+          console.log(`✅ [SpotsDashboard] ${this.availableDevices.length} dispositivos disponibles (sin asignar)`);
+        },
+        error: (error: any) => {
+          console.error('❌ [SpotsDashboard] Error cargando dispositivos IoT desde edge API:', error);
+          this.availableDevices = [];
         }
       });
   }
@@ -303,6 +365,110 @@ export class SpotsDashboardComponent implements OnInit, OnDestroy {
     this.snackBar.open(message, 'Cerrar', {
       duration: 5000,
       panelClass: ['error-snackbar']
+    });
+  }
+
+  // ====== MÉTODOS PARA ASIGNACIÓN DE DISPOSITIVOS ======
+
+  /**
+   * Abre el diálogo para asignar un dispositivo IoT a un spot
+   */
+  onAssignDevice(device: IotDevice): void {
+    console.log('🔗 [SpotsDashboard] Iniciando asignación de dispositivo:', device);
+
+    const dialogData: DeviceAssignmentData = {
+      device,
+      parkingId: this.parkingId
+    };
+
+    const dialogRef = this.dialog.open(DeviceAssignmentDialogComponent, {
+      width: '600px',
+      maxHeight: '90vh',
+      data: dialogData,
+      disableClose: false
+    });
+
+    dialogRef.afterClosed().subscribe((result: AssignmentResult) => {
+      if (result) {
+        console.log('✅ [SpotsDashboard] Resultado de asignación:', result);
+        this.showAssignmentConfirmation(result);
+      } else {
+        console.log('❌ [SpotsDashboard] Asignación cancelada');
+      }
+    });
+  }
+
+  /**
+   * Muestra el diálogo de confirmación de asignación
+   */
+  private showAssignmentConfirmation(assignmentResult: AssignmentResult): void {
+    const confirmationData: AssignmentConfirmationData = {
+      device: assignmentResult.device,
+      spot: assignmentResult.assignedSpot,
+      action: assignmentResult.action
+    };
+
+    const confirmationRef = this.dialog.open(AssignmentConfirmationDialogComponent, {
+      width: '550px',
+      maxHeight: '90vh',
+      data: confirmationData,
+      disableClose: false
+    });
+
+    confirmationRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        console.log('✅ [SpotsDashboard] Confirmación aceptada, ejecutando asignación...');
+        this.executeDeviceAssignment(assignmentResult);
+      } else {
+        console.log('❌ [SpotsDashboard] Confirmación cancelada');
+      }
+    });
+  }
+
+  /**
+   * Ejecuta la asignación del dispositivo al spot
+   */
+  private executeDeviceAssignment(assignmentResult: AssignmentResult): void {
+    // Obtener userId del localStorage
+    const token = localStorage.getItem('token');
+    let userId = '1761826163261';
+
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        userId = payload.userId || payload.sub || userId;
+      } catch (e) {
+        console.warn('No se pudo decodificar el token, usando userId por defecto');
+      }
+    }
+
+    const { device, assignedSpot } = assignmentResult;
+
+    console.log('🔄 [SpotsDashboard] Ejecutando asignación:', {
+      deviceId: device.serialNumber,
+      parkingId: this.parkingId,
+      spotLabel: assignedSpot.label
+    });
+
+    // Llamar al servicio para asignar el dispositivo
+    this.iotService.updateDeviceAssignment(
+      userId,
+      device.serialNumber,
+      this.parkingId,
+      assignedSpot.label
+    ).subscribe({
+      next: () => {
+        console.log('✅ [SpotsDashboard] Dispositivo asignado exitosamente');
+        this.showSuccess(`Dispositivo ${device.model} asignado a ${assignedSpot.label}`);
+
+        // Recargar dispositivos y spots
+        this.loadAvailableDevices();
+        this.loadSpots();
+      },
+      error: (error: any) => {
+        console.error('❌ [SpotsDashboard] Error asignando dispositivo:', error);
+        this.showError('Error al asignar el dispositivo');
+      }
     });
   }
 

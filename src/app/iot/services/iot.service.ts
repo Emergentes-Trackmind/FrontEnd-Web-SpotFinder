@@ -57,17 +57,50 @@ export class IotService {
     });
     const params = new HttpParams().set('userId', userId);
 
-    return this.http.get<EdgeIotDevice[]>(
-      `${this.baseUrl}${environment.iot?.endpoints.devices}`,
-      { headers, params }
-    ).pipe(
+    const url = `${this.baseUrl}${environment.iot?.endpoints.devices}`;
+    console.log('🌐 [IoTService] ===== INICIANDO PETICIÓN getUserDevices =====');
+    console.log('🌐 [IoTService] URL completa:', url);
+    console.log('🌐 [IoTService] baseUrl:', this.baseUrl);
+    console.log('🌐 [IoTService] endpoint:', environment.iot?.endpoints.devices);
+    console.log('🌐 [IoTService] userId:', userId);
+    console.log('🌐 [IoTService] headers:', headers);
+    console.log('🌐 [IoTService] params:', params);
+
+    return this.http.get<any>(url, { headers, params }).pipe(
       map(response => {
-        // Validar que la respuesta es un array
-        if (!Array.isArray(response)) {
-          console.warn('❌ [IoTService] La respuesta del edge API no es un array:', response);
+        console.log('📥 [IoTService] Respuesta raw del edge API:', response);
+        console.log('📥 [IoTService] Tipo de respuesta:', typeof response);
+        console.log('📥 [IoTService] Es array?:', Array.isArray(response));
+        let devicesArray: EdgeIotDevice[] = [];
+
+        // Caso 1: La respuesta ya es un array
+        if (Array.isArray(response)) {
+          devicesArray = response;
+        }
+        // Caso 2: La respuesta es un objeto con una propiedad que contiene el array
+        else if (response && typeof response === 'object') {
+          // Intentar extraer el array de diferentes posibles propiedades
+          if (Array.isArray(response.devices)) {
+            devicesArray = response.devices;
+          } else if (Array.isArray(response.data)) {
+            devicesArray = response.data;
+          } else if (Array.isArray(response.items)) {
+            devicesArray = response.items;
+          } else if (Array.isArray(response.results)) {
+            devicesArray = response.results;
+          } else {
+            console.warn('❌ [IoTService] La respuesta no contiene un array en ninguna propiedad conocida:', Object.keys(response));
+            return [];
+          }
+        }
+        // Caso 3: Respuesta inválida
+        else {
+          console.warn('❌ [IoTService] La respuesta del edge API no es ni array ni objeto:', response);
           return [];
         }
-        return response.map(edgeDevice => this.mapEdgeDeviceToDomain(edgeDevice));
+
+        console.log(`✅ [IoTService] Dispositivos extraídos: ${devicesArray.length}`);
+        return devicesArray.map(edgeDevice => this.mapEdgeDeviceToDomain(edgeDevice));
       }),
       catchError(error => {
         console.error('❌ [IoTService] Error en getUserDevices:', error);

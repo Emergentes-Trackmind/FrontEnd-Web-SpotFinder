@@ -275,21 +275,30 @@
     <div class="section-header">
       <mat-icon class="section-icon">sensors</mat-icon>
       <h2 class="section-title">Dispositivos disponibles</h2>
-      <span class="devices-count">(4)</span>
+      <span class="devices-count">({{ availableDevices.length }})</span>
     </div>
 
-    <div class="devices-grid">
-      <div class="device-card" *ngFor="let device of [
-        {id: 'SENSOR-001', name: 'SpotSensor-X1000', battery: 100, signal: 85},
-        {id: 'SENSOR-002', name: 'SpotSensor-X1000', battery: 39, signal: 85},
-        {id: 'SENSOR-005', name: 'SpotSensor-X1000', battery: 67, signal: 85},
-        {id: 'SENSOR-011', name: 'SpotSensor-X1000', battery: 100, signal: 85}
-      ]">
+    <!-- Loading spinner -->
+    <div *ngIf="loadingDevices" class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Cargando dispositivos IoT...</p>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!loadingDevices && availableDevices.length === 0" class="empty-state">
+      <mat-icon>sensors_off</mat-icon>
+      <p>No hay dispositivos IoT disponibles</p>
+      <small>Crea dispositivos IoT desde el Dashboard de Dispositivos</small>
+    </div>
+
+    <!-- Dispositivos grid -->
+    <div class="devices-grid" *ngIf="!loadingDevices && availableDevices.length > 0">
+      <div class="device-card" *ngFor="let device of availableDevices">
         <div class="device-header">
           <mat-icon class="device-main-icon">sensors</mat-icon>
           <div class="device-info">
-            <h4 class="device-name">{{ device.name }}</h4>
-            <span class="device-id">{{ device.id }}</span>
+            <h4 class="device-name">{{ device.model }}</h4>
+            <span class="device-id">{{ device.serialNumber }}</span>
           </div>
         </div>
 
@@ -300,11 +309,16 @@
           </div>
           <div class="metric">
             <mat-icon class="metric-icon signal">signal_cellular_4_bar</mat-icon>
-            <span class="metric-value">{{ device.signal }}%</span>
+            <span class="metric-value">85%</span>
           </div>
         </div>
 
-        <button mat-raised-button color="primary" class="assign-btn">
+        <button
+          mat-raised-button
+          color="primary"
+          class="assign-btn"
+          (click)="onAssignDevice(device)"
+          [disabled]="loadingDevices">
           <mat-icon>link</mat-icon>
           Asignar
         </button>
