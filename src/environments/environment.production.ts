@@ -51,7 +51,7 @@ export const environment: Environment = {
   },
   featureFlags: {
     useMockApi: false,
-    logHttp: false, // Deshabilitado en producción para mejor performance
+    logHttp: true, // Deshabilitado en producción para mejor performance
     enableOfflineMode: false
   },
   analytics: {
