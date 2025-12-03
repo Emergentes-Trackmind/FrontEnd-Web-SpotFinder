@@ -15,7 +15,7 @@ export interface SpotResponse {
   rowIndex: number;     // El backend lo manda así
   columnIndex: number;  // El backend lo manda así
   label: string;        // Ej: "A1"
-  status: 'UNASSIGNED' | 'OCCUPIED' | 'MAINTENANCE';
+  status: 'AVAILABLE' | 'UNASSIGNED' | 'OCCUPIED' | 'MAINTENANCE';
 }
 
 /**
@@ -38,7 +38,7 @@ export interface ManualSpotInput {
 
 // ====== TIPOS PARA EL FRONTEND ======
 
-export type SpotStatus = 'UNASSIGNED' | 'OCCUPIED' | 'MAINTENANCE';
+export type SpotStatus = 'AVAILABLE' | 'UNASSIGNED' | 'OCCUPIED' | 'MAINTENANCE';
 
 /**
  * Modelo unificado para usar en el frontend

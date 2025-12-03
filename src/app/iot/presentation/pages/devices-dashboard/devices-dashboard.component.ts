@@ -9,12 +9,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DevicesFacade } from '../../../services/devices.facade';
 import { LimitsService } from '../../../../billing/services/limits.service';
 import { CreationLimitGuard } from '../../../../billing/guards/creation-limit.guard';
 import { DeviceKpisComponent } from '../../components/device-kpis/device-kpis.component';
 import { DeviceTableComponent } from '../../components/device-table/device-table.component';
+import { DeviceAssignmentDialogComponent, DeviceAssignmentData, AssignmentResult } from '../../components/device-assignment-dialog/device-assignment-dialog.component';
+import { AssignmentConfirmationDialogComponent, AssignmentConfirmationData } from '../../components/assignment-confirmation-dialog/assignment-confirmation-dialog.component';
 import { IotDevice } from '../../../domain/entities/iot-device.entity';
 import { TranslateModule } from '@ngx-translate/core';
 import { IotService } from '../../../services/iot.service';
@@ -37,6 +40,7 @@ import { IotService } from '../../../services/iot.service';
     MatFormFieldModule,
     MatSnackBarModule,
     MatTooltipModule,
+    MatDialogModule,
     DeviceKpisComponent,
     DeviceTableComponent,
     TranslateModule
@@ -108,6 +112,7 @@ import { IotService } from '../../../services/iot.service';
       <app-device-table
         [devices]="facade.devices$()"
         (onView)="onViewDevice($event)"
+        (onAssign)="onAssignDevice($event)"
         (onEdit)="onEditDevice($event)"
         (onMaintenance)="onToggleMaintenance($event)"
         (onDelete)="onDeleteDevice($event)">
@@ -215,6 +220,7 @@ export class DevicesDashboardComponent implements OnInit {
   facade = inject(DevicesFacade);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
   private limitsService = inject(LimitsService);
   private limitGuard = inject(CreationLimitGuard);
   private iotService = inject(IotService);
@@ -447,5 +453,101 @@ export class DevicesDashboardComponent implements OnInit {
         }
       });
     }
+  }
+
+  onAssignDevice(device: IotDevice): void {
+    // Abrir el diálogo de asignación de dispositivos
+    const dialogData: DeviceAssignmentData = {
+      device,
+      parkingId: device.parkingId || this.getUserParkingId()
+    };
+
+    const dialogRef = this.dialog.open(DeviceAssignmentDialogComponent, {
+      width: '600px',
+      maxHeight: '90vh',
+      data: dialogData,
+      disableClose: false
+    });
+
+    dialogRef.afterClosed().subscribe((result: AssignmentResult) => {
+      if (result) {
+        // Mostrar diálogo de confirmación
+        this.showAssignmentConfirmation(result);
+      }
+    });
+  }
+
+  private showAssignmentConfirmation(assignmentResult: AssignmentResult): void {
+    const confirmationData: AssignmentConfirmationData = {
+      device: assignmentResult.device,
+      spot: assignmentResult.assignedSpot,
+      action: assignmentResult.action
+    };
+
+    const confirmationRef = this.dialog.open(AssignmentConfirmationDialogComponent, {
+      width: '550px',
+      maxHeight: '90vh',
+      data: confirmationData,
+      disableClose: false
+    });
+
+    confirmationRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.executeDeviceAssignment(assignmentResult);
+      }
+    });
+  }
+
+  private executeDeviceAssignment(assignmentResult: AssignmentResult): void {
+    // Obtener userId del localStorage
+    const token = localStorage.getItem('token');
+    let userId = '1761826163261';
+
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        userId = payload.userId || payload.sub || userId;
+      } catch (e) {
+        console.warn('No se pudo decodificar el token, usando userId por defecto');
+      }
+    }
+
+    // Actualizar el dispositivo con los nuevos IDs de la plaza
+    const parkingId = assignmentResult.assignedSpot.parkingId?.toString() || assignmentResult.device.parkingId || '1';
+    const spotId = assignmentResult.assignedSpot.id;
+
+    // Usar el método correcto del servicio IoT
+    this.iotService.updateDeviceAssignment(
+      userId.toString(),
+      assignmentResult.device.serialNumber,
+      parkingId,
+      spotId || undefined
+    ).subscribe({
+      next: () => {
+        const actionText = assignmentResult.action === 'reassign' ? 'reasignado' : 'asignado';
+        this.snackBar.open(
+          `✅ Dispositivo ${actionText} exitosamente a la plaza ${assignmentResult.assignedSpot.label}`,
+          'Cerrar',
+          { duration: 4000 }
+        );
+        // Recargar los datos para mostrar los cambios
+        this.loadData();
+      },
+      error: (error) => {
+        console.error('Error al asignar dispositivo:', error);
+        const actionText = assignmentResult.action === 'reassign' ? 'reasignar' : 'asignar';
+        this.snackBar.open(
+          `❌ Error al ${actionText} dispositivo. Inténtalo de nuevo.`,
+          'Cerrar',
+          { duration: 4000 }
+        );
+      }
+    });
+  }
+
+  private getUserParkingId(): string {
+    // Método auxiliar para obtener el parkingId del usuario actual
+    // Esto debería obtenerse del contexto del usuario o localStorage
+    return localStorage.getItem('currentParkingId') || '1';
   }
 }

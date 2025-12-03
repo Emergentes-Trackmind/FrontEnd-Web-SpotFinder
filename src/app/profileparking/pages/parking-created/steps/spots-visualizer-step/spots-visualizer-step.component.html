@@ -132,7 +132,7 @@
           <div class="device-header">
             <mat-icon class="device-icon">{{ getDeviceIcon(device.type) }}</mat-icon>
             <div class="device-info-header">
-              <h4 class="device-name">{{ device.name }}</h4>
+              <h4 class="device-name">{{ device.model }}</h4>
               <span class="device-serial">{{ device.serialNumber }}</span>
             </div>
           </div>
@@ -148,50 +148,45 @@
             </div>
           </div>
 
-          <div class="device-status" *ngIf="device.spotNumber">
+          <div class="device-status" *ngIf="device.spotLabel">
             <mat-chip class="assigned-chip">
               <mat-icon>link</mat-icon>
-              {{ 'SPOTS.DEVICES.ASSIGNED_TO' | translate }} {{ getSpotLabelFromNumber(device.spotNumber) }}
+              {{ 'SPOTS.DEVICES.ASSIGNED_TO' | translate }} {{ device.spotLabel }}
             </mat-chip>
           </div>
 
           <div class="device-actions">
+            <!-- Botón de prueba temporal -->
+            <button
+              mat-stroked-button
+              color="accent"
+              (click)="testClick()"
+              class="test-button"
+              style="margin-bottom: 8px;"
+            >
+              🧪 PRUEBA
+            </button>
+
             <button
               mat-raised-button
               color="primary"
-              *ngIf="!device.spotNumber"
-              [matMenuTriggerFor]="spotMenu"
+              (click)="onAssignDevice(device)"
               class="assign-button"
             >
               <mat-icon>add_link</mat-icon>
-              {{ 'SPOTS.DEVICES.ASSIGN' | translate }}
+              {{ device.spotLabel ? 'Reasignar' : ('SPOTS.DEVICES.ASSIGN' | translate) }}
             </button>
 
             <button
               mat-stroked-button
               color="warn"
-              *ngIf="device.spotNumber"
+              *ngIf="device.spotLabel"
               (click)="unassignDevice(device.id)"
               class="unassign-button"
             >
               <mat-icon>link_off</mat-icon>
               {{ 'SPOTS.DEVICES.UNASSIGN' | translate }}
             </button>
-
-            <mat-menu #spotMenu="matMenu" class="spot-menu">
-              <div class="spot-menu-header">{{ 'SPOTS.DEVICES.MENU.SELECT_SPOT' | translate }}</div>
-              <button
-                mat-menu-item
-                *ngFor="let spot of getAvailableSpots()"
-                (click)="assignDeviceToSpot(device.id, getSpotNumberFromLabel(spot.label))"
-              >
-                <mat-icon>place</mat-icon>
-                {{ 'SPOTS.DEVICES.MENU.SPOT' | translate }} {{ spot.label }}
-              </button>
-              <div class="spot-menu-empty" *ngIf="getAvailableSpots().length === 0">
-                {{ 'SPOTS.DEVICES.MENU.ALL_ASSIGNED' | translate }}
-              </div>
-            </mat-menu>
           </div>
         </mat-card-content>
       </mat-card>

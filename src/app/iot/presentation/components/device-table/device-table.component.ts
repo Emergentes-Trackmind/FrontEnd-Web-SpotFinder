@@ -32,7 +32,7 @@ import { IotDevice } from '../../../domain/entities/iot-device.entity';
           <th mat-header-cell *matHeaderCellDef>Dispositivo</th>
           <td mat-cell *matCellDef="let device">
             <div class="device-info">
-              <strong>{{ device.model || device.name || 'Sin nombre' }}</strong>
+              <strong>{{ device.model || 'Sin nombre' }}</strong>
               <small>{{ device.serialNumber }}</small>
             </div>
           </td>
@@ -109,6 +109,10 @@ import { IotDevice } from '../../../domain/entities/iot-device.entity';
               <button mat-menu-item (click)="onView.emit(device)">
                 <mat-icon>visibility</mat-icon>
                 <span>Ver</span>
+              </button>
+              <button mat-menu-item (click)="onAssign.emit(device)">
+                <mat-icon>link</mat-icon>
+                <span>{{ device.parkingSpotLabel ? 'Reasignar' : 'Asignar' }}</span>
               </button>
               <button mat-menu-item (click)="onEdit.emit(device)">
                 <mat-icon>edit</mat-icon>
@@ -284,6 +288,7 @@ export class DeviceTableComponent {
   devices = input<IotDevice[]>([]);
 
   onView = output<IotDevice>();
+  onAssign = output<IotDevice>();
   onEdit = output<IotDevice>();
   onMaintenance = output<IotDevice>();
   onDelete = output<IotDevice>();
