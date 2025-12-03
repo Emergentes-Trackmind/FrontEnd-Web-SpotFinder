@@ -88,7 +88,7 @@ export const environment: Environment = {
   },
   // IoT configuration (production ready) - apunta al backend de Azure
   iot: {
-    sensorApiUrl: 'https://spotfinderback-eaehduf4ehh7hjah.eastus2-01.azurewebsites.net/api/iot',
+    sensorApiUrl: 'https://edgeserverspot-dudqatdsf5cebwe3.eastus2-01.azurewebsites.net/api/iot',
     endpoints: {
       devices: '/devices',
       register: '/devices',
