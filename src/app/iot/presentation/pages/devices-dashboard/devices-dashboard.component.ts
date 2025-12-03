@@ -21,6 +21,8 @@ import { AssignmentConfirmationDialogComponent, AssignmentConfirmationData } fro
 import { IotDevice } from '../../../domain/entities/iot-device.entity';
 import { TranslateModule } from '@ngx-translate/core';
 import { IotService } from '../../../services/iot.service';
+import { SpotsService } from '../../../../profileparking/services/spots-new.service';
+import { SpotData } from '../../../../profileparking/models/spots.models';
 
 /**
  * Dashboard principal de dispositivos IoT
@@ -224,6 +226,7 @@ export class DevicesDashboardComponent implements OnInit {
   private limitsService = inject(LimitsService);
   private limitGuard = inject(CreationLimitGuard);
   private iotService = inject(IotService);
+  private spotsService = inject(SpotsService);
 
   searchQuery = '';
   selectedType: any = 'all';
@@ -461,23 +464,69 @@ export class DevicesDashboardComponent implements OnInit {
   }
 
   onAssignDevice(device: IotDevice): void {
-    // Abrir el diálogo de asignación de dispositivos
-    const dialogData: DeviceAssignmentData = {
-      device,
-      parkingId: device.parkingId || this.getUserParkingId()
-    };
+    console.log('🔥 BOTÓN ASIGNAR PRESIONADO - Desde Dashboard IoT');
+    console.log('📱 Dispositivo seleccionado:', device);
 
-    const dialogRef = this.dialog.open(DeviceAssignmentDialogComponent, {
-      width: '600px',
-      maxHeight: '90vh',
-      data: dialogData,
-      disableClose: false
-    });
+    // Obtener el parkingId del dispositivo o del usuario
+    const parkingId = device.parkingId || this.getUserParkingId();
 
-    dialogRef.afterClosed().subscribe((result: AssignmentResult) => {
-      if (result) {
-        // Mostrar diálogo de confirmación
-        this.showAssignmentConfirmation(result);
+    if (!parkingId) {
+      this.snackBar.open('⚠️ No se pudo determinar el parking. Asegúrate de tener un parking seleccionado.', 'Cerrar', { duration: 4000 });
+      return;
+    }
+
+    console.log('🏗️ Cargando spots del parking:', parkingId);
+
+    // Cargar los spots del parking
+    this.spotsService.loadSpotsForParking(parkingId).subscribe({
+      next: () => {
+        // Obtener spots disponibles (sin dispositivo asignado)
+        this.spotsService.spots$.subscribe(allSpots => {
+          const availableSpots = allSpots.filter(spot => !spot.deviceId);
+          console.log('🏗️ Plazas disponibles para asignar:', availableSpots.length);
+
+          if (availableSpots.length === 0) {
+            this.snackBar.open('⚠️ No hay plazas disponibles para asignar en este parking', 'Cerrar', { duration: 4000 });
+            return;
+          }
+
+          // Preparar datos para el diálogo
+          const dialogData: DeviceAssignmentData = {
+            device,
+            parkingId: parkingId,
+            availableSpots: availableSpots
+          };
+
+          console.log('🚀 Abriendo diálogo de asignación con datos:', {
+            device: device.model,
+            parkingId,
+            spotsCount: availableSpots.length
+          });
+
+          // Abrir el diálogo de asignación
+          const dialogRef = this.dialog.open(DeviceAssignmentDialogComponent, {
+            width: '600px',
+            maxHeight: '90vh',
+            data: dialogData,
+            disableClose: false
+          });
+
+          dialogRef.afterClosed().subscribe((result: AssignmentResult | undefined) => {
+            console.log('📋 Resultado del diálogo:', result);
+
+            if (result) {
+              console.log('✅ Usuario confirmó la asignación');
+              // Mostrar diálogo de confirmación
+              this.showAssignmentConfirmation(result);
+            } else {
+              console.log('❌ Usuario canceló la asignación');
+            }
+          });
+        });
+      },
+      error: (error) => {
+        console.error('❌ Error cargando spots del parking:', error);
+        this.snackBar.open('❌ Error al cargar las plazas del parking', 'Cerrar', { duration: 4000 });
       }
     });
   }

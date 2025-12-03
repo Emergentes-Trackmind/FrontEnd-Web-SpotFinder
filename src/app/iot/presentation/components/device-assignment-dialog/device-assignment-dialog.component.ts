@@ -8,15 +8,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
 import { IotDevice } from '../../../domain/entities/iot-device.entity';
 import { SpotData } from '../../../../profileparking/models/spots.models';
 import { SpotsService } from '../../../../profileparking/services/spots.service';
-import { DevicesFacade } from '../../../services/devices.facade';
 
 export interface DeviceAssignmentData {
   device: IotDevice;
   parkingId: string;
+  availableSpots: SpotData[]; // Spots disponibles para asignar
 }
 
 export interface AssignmentResult {
@@ -92,7 +91,7 @@ export interface AssignmentResult {
                 </mat-option>
               }
             </mat-select>
-            <mat-hint>Solo se muestran las plazas con sensores en estado OFFLINE</mat-hint>
+            <mat-hint>Solo se muestran las plazas sin dispositivo asignado</mat-hint>
           </mat-form-field>
 
           @if (assignmentForm.get('spotId')?.errors?.['required'] && assignmentForm.get('spotId')?.touched) {
@@ -113,8 +112,8 @@ export interface AssignmentResult {
         @if (availableSpots.length === 0 && !loading) {
           <div class="empty-state">
             <mat-icon>info</mat-icon>
-            <p>No hay plazas con sensores en estado OFFLINE</p>
-            <small>Todas las plazas tienen sensores conectados o no tienen sensor asignado</small>
+            <p>No hay plazas disponibles</p>
+            <small>Todas las plazas ya tienen un dispositivo asignado</small>
           </div>
         }
       </mat-dialog-content>

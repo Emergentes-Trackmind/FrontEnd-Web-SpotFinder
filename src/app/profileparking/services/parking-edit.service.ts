@@ -219,8 +219,6 @@ export class ParkingEditService {
       data.name?.trim() &&
       data.type &&
       data.description?.trim() &&
-      data.totalSpaces && data.totalSpaces > 0 &&
-      data.accessibleSpaces !== undefined && data.accessibleSpaces >= 0 &&
       data.phone?.trim() &&
       data.email?.trim() && this.isValidEmail(data.email)
     );
@@ -392,8 +390,6 @@ export class ParkingEditService {
       name: '',
       type: ParkingType.Comercial,
       description: '',
-      totalSpaces: 0,
-      accessibleSpaces: 0,
       phone: '',
       email: '',
       website: ''

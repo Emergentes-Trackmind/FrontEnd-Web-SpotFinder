@@ -376,9 +376,19 @@ export class SpotsDashboardComponent implements OnInit, OnDestroy {
   onAssignDevice(device: IotDevice): void {
     console.log('🔗 [SpotsDashboard] Iniciando asignación de dispositivo:', device);
 
+    // Obtener spots disponibles (sin dispositivo asignado)
+    const availableSpots = this.spots.filter(spot => !spot.deviceId);
+    console.log('🏗️ [SpotsDashboard] Plazas disponibles para asignar:', availableSpots.length);
+
+    if (availableSpots.length === 0) {
+      this.showError('No hay plazas disponibles para asignar');
+      return;
+    }
+
     const dialogData: DeviceAssignmentData = {
       device,
-      parkingId: this.parkingId
+      parkingId: this.parkingId,
+      availableSpots: availableSpots
     };
 
     const dialogRef = this.dialog.open(DeviceAssignmentDialogComponent, {

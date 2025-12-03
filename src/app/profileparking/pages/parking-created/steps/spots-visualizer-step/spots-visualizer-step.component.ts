@@ -693,43 +693,59 @@ export class SpotsVisualizerStepComponent implements OnInit, OnDestroy {
    * Maneja el click en "Asignar" dispositivo desde la lista
    */
   onAssignDevice(device: IotDevice): void {
-    console.log('🔥 BOTÓN ASIGNAR PRESIONADO - MÉTODO LLAMADO');
-    alert('¡Botón Asignar presionado! Método onAssignDevice ejecutándose correctamente');
+    console.log('🔥 BOTÓN ASIGNAR PRESIONADO');
+    console.log('📱 Dispositivo seleccionado:', device);
 
-    try {
-      console.log('📱 Iniciando asignación de dispositivo:', device);
-
-      // Por ahora, mostrar un menú simple con las plazas disponibles
-      const availableSpots = this.getAvailableSpots();
-      console.log('🏗️ Plazas disponibles:', availableSpots);
-
-      if (availableSpots.length === 0) {
-        alert('No hay plazas disponibles para asignar');
-        return;
-      }
-
-      // Crear una lista de opciones para mostrar en un prompt
-      const spotOptions = availableSpots.map((spot, index) => `${index + 1}. ${spot.label}`).join('\n');
-      const choice = prompt(`Selecciona una plaza para asignar al dispositivo ${device.model}:\n\n${spotOptions}\n\nEscribe el número de la plaza:`);
-
-      if (choice && !isNaN(Number(choice))) {
-        const selectedIndex = Number(choice) - 1;
-        if (selectedIndex >= 0 && selectedIndex < availableSpots.length) {
-          const selectedSpot = availableSpots[selectedIndex];
-          console.log('✅ Plaza seleccionada:', selectedSpot);
-
-          // Confirmar la asignación
-          if (confirm(`¿Confirmas asignar el dispositivo ${device.model} a la plaza ${selectedSpot.label}?`)) {
-            this.assignDeviceToSpot(device.id, selectedSpot.label);
-          }
-        } else {
-          alert('Número de plaza inválido');
-        }
-      }
-    } catch (error) {
-      console.error('❌ Error en onAssignDevice:', error);
-      alert('Error: ' + error);
+    // Obtener información del parking
+    const basicInfo = this.parkingStateService.getBasicInfo();
+    if (!basicInfo) {
+      console.error('❌ No hay información básica del parking');
+      this.alertsService.showError('Error: No se encontró información del parking');
+      return;
     }
+
+    // Usar el nombre del parking como ID temporal en modo wizard
+    const parkingId = basicInfo.name || `parking-${Date.now()}`;
+    console.log('🏗️ Parking ID:', parkingId);
+
+    // Obtener spots disponibles (sin dispositivo asignado)
+    const availableSpots = this.spots.filter(spot => !spot.deviceId);
+    console.log('🏗️ Plazas disponibles para asignar:', availableSpots.length);
+
+    if (availableSpots.length === 0) {
+      this.alertsService.showWarning('No hay plazas disponibles para asignar');
+      return;
+    }
+
+    // Preparar datos para el diálogo
+    const dialogData: DeviceAssignmentData = {
+      device: device,
+      parkingId: parkingId,
+      availableSpots: availableSpots
+    };
+
+    console.log('🚀 Abriendo diálogo de asignación con datos:', dialogData);
+
+    // Abrir el diálogo de asignación
+    const dialogRef = this.dialog.open(DeviceAssignmentDialogComponent, {
+      width: '600px',
+      maxHeight: '90vh',
+      data: dialogData,
+      disableClose: false
+    });
+
+    // Manejar el resultado del diálogo
+    dialogRef.afterClosed().subscribe((result: AssignmentResult | undefined) => {
+      console.log('📋 Resultado del diálogo:', result);
+
+      if (result) {
+        console.log('✅ Usuario confirmó la asignación');
+        // Mostrar diálogo de confirmación
+        this.showAssignmentConfirmation(result);
+      } else {
+        console.log('❌ Usuario canceló la asignación');
+      }
+    });
   }
 
   /**
